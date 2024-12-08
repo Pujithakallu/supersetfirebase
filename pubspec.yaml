@@ -14,6 +14,11 @@ dependencies:
   firebase_auth: ^5.3.3
   firebase_database: ^11.1.6
   cloud_firestore: ^5.5.1
+  provider: ^6.1.2
+  flip_card: ^0.6.0
+  http: ^1.2.2
+  audioplayers: ^6.0.1
+  firebase_analytics: ^11.3.0 
 
 dev_dependencies:
   flutter_test:
@@ -22,3 +27,12 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/Mathmingle/
+    - assets/Mathmingle/audio/
+    - assets/Mathmingle/homescreen/
+    - assets/Mathmingle/matchGame/chapter1.json
+    - assets/Mathmingle/matchGame/chapter2.json
+    - assets/Mathmingle/matchGame/chapter3.json
+    - assets/Mathmingle/matchGame/chapter4.json
+    - assets/Mathmingle/matchGame/chapter5.json

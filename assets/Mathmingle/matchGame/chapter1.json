@@ -1,0 +1,47 @@
+{
+  "english"
+  : [
+  "One",
+  "Two",
+  "Three",
+  "Four",
+  "Five",
+  "Six",
+  "Seven",
+  "Eight",
+  "Nine",
+  "Ten",
+  "Eleven",
+  "Twelve",
+  "Thirteen",
+  "Fourteen",
+  "Fifteen",
+  "Sixteen",
+  "Seventeen",
+  "Eighteen",
+  "Nineteen",
+  "Twenty"
+],
+  "spanish": [
+    "Uno",
+    "Dos",
+    "Tres",
+    "Cuatro",
+    "Cinco",
+    "Seis",
+    "Siete",
+    "Ocho",
+    "Nueve",
+    "Diez",
+    "Once",
+    "Doce",
+    "Trece",
+    "Catorce",
+    "Quince",
+    "Dieciséis",
+    "Diecisiete",
+    "Dieciocho",
+    "Diecinueve",
+    "Veinte"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "chapter1": {
+    "english": ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty"],
+    "spanish": ["uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez", "Once", "Doce", "Trece", "Catorce", "Quince", "Dieciséis", "Diecisiete", "Dieciocho", "Diecinueve", "Veinte"]
+  },
+  "chapter2": {
+    "english": ["Numbers", "Addition", "Subtraction", "Multiplication", "Division", "Equal", "Greater than", "Less than", "Plus", "Minus", "Times", "Divided by", "Sum", "Difference", "Product", "Quotient", "Fraction", "Decimal", "Ratio", "Equation"],
+    "spanish": ["Número", "Adición", "Resta", "Multiplicación", "División", "Igual", "Mayor que", "Menor que", "Más", "Menos", "Por", "Dividido por", "Suma", "Diferencia", "Producto", "Cociente", "Fracción", "Decimal", "Proporción", "Ecuación"]
+  },
+  "chapter3": {
+    "english": ["Circle", "Triangle", "Square", "Rectangle", "Rhombus", "Parallelogram", "Trapezium", "Oval", "Ellipse", "Sphere", "Cube", "Cylinder", "Cone", "Pentagonal prism", "Hexagonal prism", "Pyramid", "Cuboid", "Triangular prism", "Hemisphere", "Torus"],
+    "spanish": ["Círculo", "Triángulo", "Cuadrado", "Rectángulo", "Rombus", "Paralelogramo", "Trapecio", "Óvalo", "Elipse", "Esfera", "Cubo", "Cilindro", "Cono", "Prisma pentagonal", "Prisma hexagonal", "Pirámide", "Cuboide", "Prisma triangular", "Hemisferio", "Toro"]
+  },
+  "chapter4": {
+    "english": ["+", "-", "=", ">", "<", "×", "÷", "√", "/", "%", "^", "∑", "∫", "d/dx", "∞", "≠", "≥", "≤", "≈", "lim"],
+    "spanish": ["Más", "Menos", "Igual", "Mayor que", "Menor que", "Por", "Dividido por", "Raíz cuadrada", "Fracción", "Porcentaje", "Exponenciación", "Sumatoria", "Integral", "Derivada", "Infinito", "No igual a", "Mayor o igual que", "Menor o igual que", "Aproximadamente igual a", "Límite"]
+  },
+  "chapter5": {
+    "english": ["Length", "Width", "Height", "Diameter", "Radius", "Perimeter", "Circumference", "Area", "Volume", "Angle", "Slope", "Intersection", "Symmetry", "Perpendicular", "Parallel", "Coordinate", "Vertex", "Axis", "Hypotenuse", "Gradient"],
+    "spanish": ["Longitud", "Ancho", "Altura", "Diámetro", "Radio", "Perímetro", "Circunferencia", "Superficie", "Volumen", "Ángulo", "Pendiente", "Intersección", "Simetría", "Perpendicular", "Paralelo", "Coordenada", "Vértice", "Eje", "Hipotenusa", "Gradiente"]
+  }
+}

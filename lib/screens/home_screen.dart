@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
+import '../gamescreen/mathmingle/mathminglemain.dart'; 
+import '../gamescreen/mathmingle/mathminglemenu.dart';
+
 
 class HomeScreen extends StatelessWidget {
   final String pin;
@@ -82,7 +85,6 @@ class HomeScreen extends StatelessWidget {
         child: SafeArea(
           child: CustomScrollView(
             slivers: [
-              // Updated Welcome Message with PIN
               SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.all(16),
@@ -125,7 +127,6 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
 
-              // Game Blocks Grid
               SliverPadding(
                 padding: EdgeInsets.all(16),
                 sliver: SliverGrid(
@@ -139,17 +140,26 @@ class HomeScreen extends StatelessWidget {
                     (context, index) {
                       return InkWell(
                         onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                '🎮 ${games[index]['title']} is coming soon!',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 14),
+                          if (index == 0) { // Math Mingle
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MathmingleMain(userPin: '$pin'),
                               ),
-                              backgroundColor: games[index]['color'],
-                              duration: Duration(seconds: 2),
-                            ),
-                          );
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  '🎮 ${games[index]['title']} is coming soon!',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                                backgroundColor: games[index]['color'],
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
+                          }
                         },
                         child: Container(
                           decoration: BoxDecoration(

@@ -10,24 +10,22 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
-  // Controllers for the 3 PIN input fields
+  
   final List<TextEditingController> _controllers = List.generate(3, (_) => TextEditingController());
-  // Focus nodes for handling keyboard focus between PIN fields
   final List<FocusNode> _focusNodes = List.generate(3, (_) => FocusNode());
   
-  // Animation controller for the bouncing title
   late AnimationController _bounceController;
   late Animation<double> _bounceAnimation;
   
-  // Error message and loading state
+ 
   String _errorMessage = '';
   bool _isLoading = false;
 
-  // Colors for the PIN input boxes
+ 
   final List<Color> _pinBoxColors = [
-    Color(0xFFFF9999),  // Pink
-    Color(0xFF99FF99),  // Green
-    Color(0xFF9999FF),  // Blue
+    Color(0xFFFF9999),  
+    Color(0xFF99FF99), 
+    Color(0xFF9999FF),  
   ];
 
   @override
@@ -62,10 +60,10 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   }
 
   Future<void> _login() async {
-    // Combine the 3 PIN numbers into a single string
+    
     String pin = _controllers.map((c) => c.text).join();
     
-    // Validate PIN length
+   
     if (pin.length != 3) {
       setState(() {
         _errorMessage = 'Please enter all 3 numbers!';
@@ -122,8 +120,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFFFFECE1),  // Light peach
-              Color(0xFFE1F6FF),  // Light blue
+              Color(0xFFFFECE1),  
+              Color(0xFFE1F6FF), 
             ],
           ),
         ),
