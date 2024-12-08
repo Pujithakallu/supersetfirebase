@@ -1,0 +1,12 @@
+specVersion: "v1beta"
+serviceId: "supersetfirebase"
+location: "us-central1"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "fdcdb"
+      cloudSql:
+        instanceId: "supersetfirebase-fdc"
+      # schemaValidation: "COMPATIBLE"
+connectorDirs: ["./connector"]
