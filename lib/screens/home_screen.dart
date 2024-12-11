@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
-import '../gamescreen/mathmingle/mathminglemain.dart'; 
-import '../gamescreen/mathmingle/mathminglemenu.dart';
+import '../gamescreen/mathmingle/main.dart'; 
+
 
 
 class HomeScreen extends StatelessWidget {
@@ -144,7 +144,7 @@ class HomeScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => MathmingleMain(userPin: '$pin'),
+                                builder: (context) => WelcomeScreen(userPin: pin),
                               ),
                             );
                           } else {
