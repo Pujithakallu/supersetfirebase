@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:supersetfirebase/screens/login_screen.dart';
-import 'home_screen.dart';
+import 'package:supersetfirebase/screens/home_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
