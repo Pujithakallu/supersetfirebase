@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
       'description': 'Master equations!'
     },
     {
-      'title': '3. Word Play',
+      'title': '3. Math Operators',
       'icon': Icons.abc,
       'color': Color(0xFF9999FF),
       'description': 'Learn new words!'
