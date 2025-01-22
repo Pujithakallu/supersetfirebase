@@ -19,7 +19,9 @@ dependencies:
   http: ^1.2.2
   audioplayers: ^6.0.1
   firebase_analytics: ^11.3.0 
-
+  confetti: ^0.8.0
+  flutter_tts: ^4.2.1
+  equations: ^5.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -36,3 +38,6 @@ flutter:
     - assets/Mathmingle/matchGame/chapter3.json
     - assets/Mathmingle/matchGame/chapter4.json
     - assets/Mathmingle/matchGame/chapter5.json
+    - assets/Mathequations/Background.png
+    - assets/Mathequations/PartsOfEquation.png
+

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
-import '../gamescreen/mathmingle/main.dart'; 
-
-
+import '../gamescreen/mathmingle/main.dart';
+import '../gamescreen/mathequations/main.dart';
 
 class HomeScreen extends StatelessWidget {
   final String pin;
@@ -20,10 +19,10 @@ class HomeScreen extends StatelessWidget {
       'description': 'Fun with numbers!'
     },
     {
-      'title': '2. Equations',
-      'icon': Icons.grid_view,
+      'title': '2. Math Equations',
+      'icon': Icons.functions,
       'color': Color(0xFF99FF99),
-      'description': 'Test your memory!'
+      'description': 'Master equations!'
     },
     {
       'title': '3. Word Play',
@@ -126,7 +125,6 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
               SliverPadding(
                 padding: EdgeInsets.all(16),
                 sliver: SliverGrid(
@@ -145,6 +143,13 @@ class HomeScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => WelcomeScreen(userPin: pin),
+                              ),
+                            );
+                          } else if (index == 1) { // Math Equations
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MyApp(userPin: pin),
                               ),
                             );
                           } else {

@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 
-
 void main() {
   runApp(
     MultiProvider(
@@ -63,7 +62,7 @@ class _MatchGameState extends State<MatchGame> {
         body: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/forest.gif"),
+              image: AssetImage("assets/Mathmingle/forest.gif"),
               fit: BoxFit.cover,
             ),
           ),
@@ -144,7 +143,7 @@ class _MatchGameState extends State<MatchGame> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/forest.gif"),
+            image: AssetImage("assets/Mathmingle/forest.gif"),
             fit: BoxFit.cover,
           ),
         ),
@@ -368,7 +367,7 @@ class _MatchGameState extends State<MatchGame> {
 
 
   Future<Map<String, List<String>>> loadJsonData(int chapter) async {
-    String jsonString = await rootBundle.loadString('assets/matchGame/chapter$chapter.json');
+    String jsonString = await rootBundle.loadString('assets/Mathmingle/matchGame/chapter$chapter.json');
     Map<String, dynamic> jsonMap = json.decode(jsonString);
     List<String> spanish = List<String>.from(jsonMap['spanish']);
     List<String> english = List<String>.from(jsonMap['english']);

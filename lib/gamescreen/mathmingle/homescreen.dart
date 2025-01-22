@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   CircleAvatar(
                     radius: 50,
-                    backgroundImage: AssetImage('assets/NoPic.png'),
+                    backgroundImage: AssetImage('assets/Mathmingle/NoPic.png'),
                   ),
                   SizedBox(height: 10),
                   Text(
@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     buildGameCard(
                       context,
                       'Learn\n', // Force two lines
-                      'assets/homescreen/level_1.png',
+                      'assets/Mathmingle/homescreen/level_1.png',
                       'Learn new words and numbers. Use your gained knowledge to win points in learning based games.',
                       '/studymaterial',
                       chapter,
@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     buildGameCard(
                       context,
                       'Jungle Matching Safari\n', // Force two lines
-                      'assets/homescreen/level_2.png',
+                      'assets/Mathmingle/homescreen/level_2.png',
                       'Match and test your memory in the wild jungle themed drag and drop game.',
                       '/matching',
                       chapter,
@@ -88,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     buildGameCard(
                       context,
                       'Remember & Win\n', // Force two lines
-                      'assets/homescreen/level_3.png',
+                      'assets/Mathmingle/homescreen/level_3.png',
                       'Boost your memory with this exciting matching tile game and earn rewards.',
                       '/memory',
                       chapter,

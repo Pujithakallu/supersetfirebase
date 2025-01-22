@@ -3,7 +3,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:audioplayers/audioplayers.dart';
 
 Future<Map<String, List<String>>> loadJsonData(int chapter) async {
-  String jsonString = await rootBundle.loadString('assets/matchGame/chapter$chapter.json');
+  String jsonString = await rootBundle.loadString('assets/Mathmingle/matchGame/chapter$chapter.json');
   Map<String, dynamic> jsonMap = json.decode(jsonString);
   List<String> spanish = List<String>.from(jsonMap['spanish']);
   List<String> english = List<String>.from(jsonMap['english']);
@@ -14,7 +14,7 @@ class AudioHelper {
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   Future<void> playAudio(String word) async {
-    String audioFile = 'assets/audio/${word.toLowerCase()}.mp3';
+    String audioFile = 'assets/Mathmingle/audio/${word.toLowerCase()}.mp3';
     await _audioPlayer.play(AssetSource(audioFile));
   }
 

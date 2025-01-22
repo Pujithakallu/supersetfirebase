@@ -349,7 +349,7 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
       body: Stack(
         children: [
           Image.asset(
-            'assets/study_material.png',
+            'assets/Mathmingle/study_material.png',
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
