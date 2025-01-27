@@ -41,14 +41,16 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCwFR31xal1PqWluaVjnG4wq1fx2QFKDN4',
-    appId: '1:801818774864:web:d6296cd04d44d613e67055',
-    messagingSenderId: '801818774864',
-    projectId: 'math-equations-demo',
-    authDomain: 'math-equations-demo.firebaseapp.com',
-    storageBucket: 'math-equations-demo.appspot.com',
-    measurementId: 'G-SVDRFS3D60',
+    apiKey: "AIzaSyDYC7_yReYQZJWTl1O9n3auL9pRCZQp4A4",
+    authDomain: "fih-superset-dev.firebaseapp.com",
+    projectId: "fih-superset-dev",
+    storageBucket: "fih-superset-dev.firebasestorage.app",
+    messagingSenderId: "1058242616848",
+    appId: "1:1058242616848:web:7f407ce57f5ae4eafb3495",
+    measurementId: "G-1MLYB5F9ZG"
   );
+
+  
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAreEkdrMEHplPYTnDThr1vs3lN6engl2k',

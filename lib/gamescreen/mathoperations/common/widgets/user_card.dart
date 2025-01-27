@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class UserCard extends StatelessWidget {
-  final String username;
-  final String avatarUrl;
+  //final String username;
+  // final String avatarUrl;
   final int score;
 
   const UserCard({
     Key? key,
-    required this.username,
-    required this.avatarUrl,
+    //required this.username,
+    // required this.avatarUrl,
     required this.score,
   }) : super(key: key);
 
@@ -26,23 +26,23 @@ class UserCard extends StatelessWidget {
               width: 5,
             ),
           ),
-          child: CircleAvatar(
-            backgroundImage: AssetImage(avatarUrl),
-            radius: screenWidth/80,
-          ),
+          // child: CircleAvatar(
+          //   backgroundImage: AssetImage(avatarUrl),
+          //   radius: screenWidth/80,
+          // ),
         ),
         SizedBox(width: screenWidth/80),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              username,
-              style: TextStyle(
-                fontSize: screenWidth/40,
-                fontWeight: FontWeight.bold,
-                color: Colors.white
-              ),
-            ),
+            // Text(
+            //   username,
+            //   style: TextStyle(
+            //     fontSize: screenWidth/40,
+            //     fontWeight: FontWeight.bold,
+            //     color: Colors.white
+            //   ),
+            // ),
             SizedBox(width: screenWidth/2),
             Text(
               'Score: $score',

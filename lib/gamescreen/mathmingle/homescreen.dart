@@ -9,7 +9,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String userName = 'XYZ';
+  //String userName = 'XYZ';
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    'Welcome $userName',
+                    'Welcome',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,

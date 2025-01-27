@@ -68,8 +68,8 @@ class _HomePageState extends State<HomePage> {
                     valueListenable: GlobalVariables.totalScore,
                     builder: (context, int score, child) {
                       return UserCard(
-                        username: GlobalVariables.userName,
-                        avatarUrl: "assets/Mathoperations/orange.png",
+                       // username: GlobalVariables.userName,
+                        // avatarUrl: "assets/Mathoperations/orange.png",
                         score: score,
                       );
                     },

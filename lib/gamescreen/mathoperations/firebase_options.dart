@@ -41,13 +41,13 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCJ5L4OQVulBKUNORoKDEgOdko5OMADQiY',
-    appId: '1:582477984848:web:d0eb66ba709c927aa28d55',
-    messagingSenderId: '582477984848',
-    projectId: 'op-games-e9bd1',
-    authDomain: 'op-games-e9bd1.firebaseapp.com',
-    storageBucket: 'op-games-e9bd1.firebasestorage.app',
-    measurementId: 'G-W4HL89K4T2',
+   apiKey: "AIzaSyDYC7_yReYQZJWTl1O9n3auL9pRCZQp4A4",
+   authDomain: "fih-superset-dev.firebaseapp.com",
+   projectId: "fih-superset-dev",
+   storageBucket: "fih-superset-dev.firebasestorage.app",
+   messagingSenderId: "1058242616848",
+   appId: "1:1058242616848:web:7f407ce57f5ae4eafb3495",
+   measurementId: "G-1MLYB5F9ZG"
   );
 
   static const FirebaseOptions android = FirebaseOptions(
