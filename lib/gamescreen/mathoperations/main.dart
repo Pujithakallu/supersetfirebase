@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/Mathoperations/Mathoperationsts/home_screen.png'),
+            image: AssetImage('assets/Mathoperations/home_screen.png'),
             fit: BoxFit.cover,
           ),
         ),
@@ -69,13 +69,13 @@ class _HomePageState extends State<HomePage> {
                     builder: (context, int score, child) {
                       return UserCard(
                         username: GlobalVariables.userName,
-                        avatarUrl: "assets/Mathoperations/Mathoperations/orange.png",
+                        avatarUrl: "assets/Mathoperations/orange.png",
                         score: score,
                       );
                     },
                   ),
                   Spacer(flex: 1),
-                  ImageBanner("assets/Mathoperations/Mathoperations/heading.png", screenWidth/5, screenWidth/2.3),
+                  ImageBanner("assets/Mathoperations/heading.png", screenWidth/5, screenWidth/2.3),
                   Spacer(flex: 1),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

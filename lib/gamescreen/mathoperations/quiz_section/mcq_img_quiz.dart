@@ -376,7 +376,7 @@ class _Orange extends StatelessWidget {
         ],
       ),
       child: Image.asset(
-        'assets/orange.png',
+        'assets/Mathoperations/orange.png',
         width: screenWidth/60,
         height: screenWidth/40,
       ),
