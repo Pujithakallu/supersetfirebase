@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'login_screen.dart';
 import '../gamescreen/mathmingle/main.dart';
 import '../gamescreen/mathequations/main.dart';
+import '../gamescreen/mathoperations/main.dart';
 
 class HomeScreen extends StatelessWidget {
   final String pin;
@@ -150,6 +151,13 @@ class HomeScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => MyApp(userPin: pin),
+                              ),
+                            );
+                          }else if (index == 2) { // Math Operators
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Operators( ),
                               ),
                             );
                           } else {
