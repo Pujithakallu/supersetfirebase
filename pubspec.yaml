@@ -15,13 +15,19 @@ dependencies:
   firebase_database: ^11.1.6
   cloud_firestore: ^5.5.1
   provider: ^6.1.2
-  flip_card: ^0.6.0
+
   http: ^1.2.2
   audioplayers: ^6.0.1
   firebase_analytics: ^11.3.0 
   confetti: ^0.8.0
   flutter_tts: ^4.2.1
   equations: ^5.0.2
+  translator: ^1.0.0
+  flip_card: ^0.7.0
+  number_to_words_english: ^2.0.2
+  number_to_words: ^1.0.0
+  animated_text_kit: ^4.2.2
+  spelling_number: ^0.0.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -40,4 +46,15 @@ flutter:
     - assets/Mathmingle/matchGame/chapter5.json
     - assets/Mathequations/Background.png
     - assets/Mathequations/PartsOfEquation.png
+    - assets/Mathoperations/home_screen.png
+    - assets/Mathoperations/heading.png
+    - assets/Mathoperations/background.png
+    - assets/Mathoperations/home_screen_vertical.png
+    - assets/Mathoperations/background_vertical.png
+    - assets/Mathoperations/plus.png
+    - assets/Mathoperations/orange.png
+    - assets/Mathoperations/despicable-me-minions.gif
+    - assets/Mathoperations/apple.png
+    - assets/Mathoperations/egg.png
+    - assets/Mathoperations/child.png
 
