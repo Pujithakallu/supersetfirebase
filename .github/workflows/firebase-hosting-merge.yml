@@ -23,7 +23,7 @@ jobs:
 
       # Build Flutter web
       - name: Build Flutter web
-        run: flutter build web
+        run: flutter build web --no-tree-shake-icons
 
       # Build Flutter APK
       - name: Build Flutter APK
