@@ -9,7 +9,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  //String userName = 'XYZ';
+  String userName = 'XYZ';
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    'Welcome',
+                    'Welcome $userName',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -88,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     buildGameCard(
                       context,
                       'Remember & Win\n', // Force two lines
-                      'assets/Mathmingle/homescreen/level_3.png',
+                      'assets/homescreen/level_3.png',
                       'Boost your memory with this exciting matching tile game and earn rewards.',
                       '/memory',
                       chapter,

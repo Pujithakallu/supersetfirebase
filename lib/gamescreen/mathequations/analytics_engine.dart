@@ -12,7 +12,7 @@ class AnalyticsEngine {
     print(
         'Equation to Words - Translate button clicked for language: $language');
     await instance.logEvent(
-      name: 'eq_to_words_translate',
+      name: 'Math_equations: eq_to_words_translate',
       parameters: <String, Object>{
         'language': language,
       },
@@ -24,7 +24,7 @@ class AnalyticsEngine {
     print(
         'Parts Of Equations - Translate button clicked for language: $language');
     await instance.logEvent(
-      name: 'parts_of_eq__translate',
+      name: 'Math_equations: parts_of_eq__translate',
       parameters: <String, Object>{
         'language': language,
       },
@@ -35,7 +35,7 @@ class AnalyticsEngine {
   static void logTranslateButtonClickLearn(String language) async {
     print('Learn Section - Translate button clicked for language: $language');
     await instance.logEvent(
-      name: 'learn_section_translate',
+      name: 'Math_equations: learn_section_translate',
       parameters: <String, Object>{
         'language': language,
       },
@@ -47,7 +47,7 @@ class AnalyticsEngine {
     print(
         '$game - Audio button clicked for language: ${isSpanish ? 'Spanish' : 'English'}');
     await instance.logEvent(
-      name: 'audio_button_click',
+      name: 'Math_equations: audio_button_click',
       parameters: <String, Object>{
         'language': isSpanish ? 'Spanish' : 'English',
         'game': game,

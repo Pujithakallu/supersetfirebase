@@ -143,7 +143,7 @@ class HomeScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => WelcomeScreen(userPin: pin),
+                                builder: (context) => WelcomeScreen(),
                               ),
                             );
                           } else if (index == 1) { // Math Equations
