@@ -27,6 +27,7 @@ class GameData1 extends ChangeNotifier {
 }
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,6 +64,7 @@ class HomeScreen extends StatelessWidget {
 }
 
 class MemoryGame extends StatefulWidget {
+  const MemoryGame({Key? key}) : super(key: key);
   @override
   _MemoryGameState createState() => _MemoryGameState();
 }

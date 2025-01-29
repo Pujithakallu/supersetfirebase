@@ -27,6 +27,7 @@ class GameData extends ChangeNotifier {
 }
 
 class MatchGame extends StatefulWidget {
+  const MatchGame({Key? key}) : super(key: key);
   @override
   _MatchGameState createState() => _MatchGameState();
 }
@@ -107,7 +108,7 @@ class _MatchGameState extends State<MatchGame> {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.of(context).pop(); // Exit the screen
+                        Navigator.pop(context); // Exit the screen
                       },
                       child: Text(
                         'Exit',

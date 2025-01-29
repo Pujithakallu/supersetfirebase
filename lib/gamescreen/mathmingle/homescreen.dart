@@ -3,8 +3,13 @@ import 'studymaterial.dart';
 import 'matching.dart';
 import 'memory.dart';
 
+
 class MyHomePage extends StatefulWidget {
   @override
+  final int chapterNumber;
+
+  const MyHomePage({Key? key,required this.chapterNumber}) : super(key: key);
+
   _MyHomePageState createState() => _MyHomePageState();
 }
 
@@ -13,7 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final chapter = ModalRoute.of(context)?.settings.arguments as int? ?? 1;
+  
 
     return Scaffold(
       appBar: AppBar(
@@ -73,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       'assets/Mathmingle/homescreen/level_1.png',
                       'Learn new words and numbers. Use your gained knowledge to win points in learning based games.',
                       '/studymaterial',
-                      chapter,
+                      widget.chapterNumber,
                       20, // Example points
                     ),
                     buildGameCard(
@@ -82,16 +87,16 @@ class _MyHomePageState extends State<MyHomePage> {
                       'assets/Mathmingle/homescreen/level_2.png',
                       'Match and test your memory in the wild jungle themed drag and drop game.',
                       '/matching',
-                      chapter,
+                      widget.chapterNumber,
                       30, // Example points
                     ),
                     buildGameCard(
                       context,
                       'Remember & Win\n', // Force two lines
-                      'assets/homescreen/level_3.png',
+                      'assets/Mathmingle/homescreen/level_3.png',
                       'Boost your memory with this exciting matching tile game and earn rewards.',
                       '/memory',
-                      chapter,
+                      widget.chapterNumber,
                       40, // Example points
                     ),
                   ],
@@ -110,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget buildGameCard(BuildContext context, String title, String imagePath, String description, String route, int chapter, int points) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, route, arguments: chapter);
+        Navigator.pushNamed(context, route, arguments: widget.chapterNumber);
       },
       child: Container(
         width: 250,  // Set a fixed width for each card
@@ -189,3 +194,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+
+
+
+

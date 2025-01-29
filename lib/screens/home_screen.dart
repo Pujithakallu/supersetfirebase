@@ -143,7 +143,7 @@ class HomeScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => WelcomeScreen(),
+                                builder: (context) => MathMingleApp(),
                               ),
                             );
                           } else if (index == 1) { // Math Equations

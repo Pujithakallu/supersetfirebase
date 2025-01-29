@@ -4,20 +4,21 @@ import 'matching.dart';
 import 'memory.dart';
 import 'package:provider/provider.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: Menu(),
-  ));
-}
+// void main() {
+//   runApp(MaterialApp(
+//     home: Menu(),
+//   ));
+// }
 
 class Menu extends StatelessWidget {
   // Customize the spacing between each option
   final double buttonSpacing = 20.0;
+  const Menu({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    int? total = Provider.of<GameData>(context).total;
-    int? total1 = Provider.of<GameData1>(context).total;
+    int? total = 1;
+    int? total1 = 2;
     int? GT = total + total1;
     return Scaffold(
       body: Container(
@@ -85,7 +86,9 @@ class Menu extends StatelessWidget {
   Widget buildChapterButton(BuildContext context, String title,int chapterNumber, String chapterName, Color color) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/home',arguments:chapterNumber);
+        print("Navigating to /home with chapterNumber: $chapterNumber");
+
+        Navigator.pushNamed(context, '/home',arguments:chapterNumber ?? 1);
       },
       child: Container(
         width: 300, // Set width for consistency
