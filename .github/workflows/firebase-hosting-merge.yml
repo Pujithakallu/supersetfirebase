@@ -26,8 +26,8 @@ jobs:
         run: flutter build web --no-tree-shake-icons
 
       # Build Flutter APK
-      - name: Build Flutter APK
-        run: flutter build apk --release
+      # - name: Build Flutter APK
+      #   run: flutter build apk --release
 
       # Deploy Flutter web to Firebase Hosting
       - name: Deploying Web to Firebase Hosting
@@ -38,14 +38,14 @@ jobs:
           channelId: live
           projectId: fih-superset-dev
 
-      # Install Firebase CLI to deploy APK
-      - name: Install Firebase CLI
-        run: |
-          curl -sL https://firebase.tools | bash
+      # # Install Firebase CLI to deploy APK
+      # - name: Install Firebase CLI
+      #   run: |
+      #     curl -sL https://firebase.tools | bash
 
-      # Deploy APK to Firebase App Distribution
-      - name: Deploying APK to Firebase App Distribution
-        run: |
-          firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
-          --app "1:1058242616848:web:7f407ce57f5ae4eafb3495" \
-          --token ${{ secrets.FIREBASE_TOKEN }}
+      # # Deploy APK to Firebase App Distribution
+      # - name: Deploying APK to Firebase App Distribution
+      #   run: |
+      #     firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
+      #     --app "1:1058242616848:web:7f407ce57f5ae4eafb3495" \
+      #     --token ${{ secrets.FIREBASE_TOKEN }}
