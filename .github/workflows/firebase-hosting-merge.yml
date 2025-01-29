@@ -37,8 +37,7 @@ jobs:
           firebaseServiceAccount: ${{ secrets.firebaseservice_accountkey}}
           channelId: live
           projectId: fih-superset-dev
-        env:
-          FIREBASE_CLI_EXPERIMENTS: webframeworks 
+        
 
       # # Install Firebase CLI to deploy APK
       # - name: Install Firebase CLI
