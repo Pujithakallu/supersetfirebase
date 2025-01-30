@@ -86,40 +86,53 @@ class HomeScreen extends StatelessWidget {
           child: CustomScrollView(
             slivers: [
               SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.stars_rounded,
-                        size: 40,
+              child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
+              children: [
+                    // Profile Picture added here
+                    // Full-width profile image
+                    SizedBox(
+                      width: double.infinity,  // Makes image full-width
+                      child: Image.asset(
+                        'assets/images/profile_pic.png',  // Ensure the correct path
+                        fit: BoxFit.cover,  // Fills width while maintaining aspect ratio
+                      ),
+                    ),
+                    SizedBox(height: 12), // Add spacing below the image
+
+                    
+                    
+                    Icon(
+                      Icons.stars_rounded,
+                      size: 40,
+                      color: Color(0xFF6C63FF),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      'Hi, $pin!',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF4A4A4A),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      'Welcome to the Fun Zone!',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF4A4A4A),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      'Choose your adventure!',
+                      style: TextStyle(
+                        fontSize: 16,
                         color: Color(0xFF6C63FF),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Hi, $pin!',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF4A4A4A),
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        'Welcome to the Fun Zone!',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF4A4A4A),
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        'Choose your adventure!',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Color(0xFF6C63FF),
                         ),
                       ),
                     ],
@@ -135,96 +148,136 @@ class HomeScreen extends StatelessWidget {
                     mainAxisSpacing: 12,
                     childAspectRatio: 1.1,
                   ),
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          if (index == 0) { // Math Mingle
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => WelcomeScreen(userPin: pin),
-                              ),
-                            );
-                          } else if (index == 1) { // Math Equations
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MyApp(userPin: pin),
-                              ),
-                            );
-                          }else if (index == 2) { // Math Operators
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Operators(),
-                              ),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  '🎮 ${games[index]['title']} is coming soon!',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                                backgroundColor: games[index]['color'],
-                                duration: Duration(seconds: 2),
-                              ),
-                            );
-                          }
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: [
-                              BoxShadow(
-                                color: games[index]['color'].withOpacity(0.5),
-                                blurRadius: 6,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
+                                delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      if (index == 0) { // Math Mingle
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WelcomeScreen(userPin: pin),
                           ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  color: games[index]['color'].withOpacity(0.2),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(
-                                  games[index]['icon'],
-                                  size: 32,
-                                  color: games[index]['color'],
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                games[index]['title'],
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF4A4A4A),
-                                ),
-                              ),
-                              SizedBox(height: 4),
-                              Text(
-                                games[index]['description'],
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                            ],
+                        );
+                      } else if (index == 1) { // Math Equations
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MyApp(userPin: pin),
                           ),
-                        ),
-                      );
+                        );
+                      } else if (index == 2) { // Math Operators
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Operators(),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              '🎮 ${games[index]['title']} is coming soon!',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            backgroundColor: games[index]['color'],
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                      }
                     },
-                    childCount: games.length,
-                  ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: games[index]['color'].withOpacity(0.5),
+                            blurRadius: 6,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Display Math Mingle Image
+                          if (index == 0) // Math Mingle Image
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.asset(
+                                  'assets/images/math_mingle.png',
+                                  width: double.infinity,
+                                  height: 80,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            )
+                          else if (index == 1) // Math Equations Image
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.asset(
+                                  'assets/images/math_equations.png', // Math Equations image
+                                  width: double.infinity,
+                                  height: 80,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            )
+                          else if (index == 2) // Math Operators Image
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.asset(
+                                  'assets/images/math_operators.png', // Math Operators image
+                                  width: double.infinity,
+                                  height: 80,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            )
+                          else // Default icons for other games
+                            Container(
+                              padding: EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: games[index]['color'].withOpacity(0.2),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                games[index]['icon'],
+                                size: 32,
+                                color: games[index]['color'],
+                              ),
+                            ),
+                          SizedBox(height: 8),
+                          Text(
+                            games[index]['title'],
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF4A4A4A),
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            games[index]['description'],
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+                childCount: games.length,
+              ),
+
+
                 ),
               ),
             ],
