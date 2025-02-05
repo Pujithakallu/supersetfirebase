@@ -4,19 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 
-void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => GameData()),
-      ],
-      child: MaterialApp(
-        home: MatchGame(),
-      ),
-    ),
-  );
-}
-
 class GameData extends ChangeNotifier {
   int total = 0; // Initialize total
 
