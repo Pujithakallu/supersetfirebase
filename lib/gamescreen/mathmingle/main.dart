@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'homescreen.dart';
 import 'menu.dart';
@@ -12,48 +13,59 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MathMingleApp());
+
+  // Now we simply run MathMingleApp; MultiProvider is inside MathMingleApp.
+  runApp(MathMingleApp());
 }
 
-// main.dart
 class MathMingleApp extends StatelessWidget {
-  const MathMingleApp({Key? key}) : super(key: key);
+  // Do not mark this widget as const
+  MathMingleApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const WelcomeScreen(),
-        '/menu': (context) => const Menu(),
-        '/studymaterial': (context) => const StudyMaterialScreen(),
-        '/matching': (context) => const MatchGame(),
-        '/memory': (context) => const MemoryGame(),
-      },
-     onGenerateRoute: (RouteSettings settings) {
-      switch (settings.name) {
-        case '/home':
-          final chapterArg = settings.arguments as int? ?? 1; // Ensure it's an int, default to 1
-          return MaterialPageRoute(
-            builder: (context) => MyHomePage(chapterNumber: chapterArg),
-          );
-        default:
-          return MaterialPageRoute(
-            builder: (context) => const WelcomeScreen(),
-          );
-    }
-}
-
-
+    // Wrap MaterialApp with MultiProvider here.
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => GameData()),
+        ChangeNotifierProvider(create: (_) => GameData1()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: '/',
+        // Optionally, add a builder to MaterialApp:
+        builder: (context, child) {
+          return child!;
+        },
+        routes: {
+          '/': (context) => WelcomeScreen(),
+          '/menu': (context) => Menu(), // Make sure you instantiate Menu without const.
+          '/studymaterial': (context) => StudyMaterialScreen(),
+          '/matching': (context) => MatchGame(),
+          '/memory': (context) => MemoryGame(),
+        },
+        onGenerateRoute: (RouteSettings settings) {
+          switch (settings.name) {
+            case '/home':
+              final chapterArg = settings.arguments as int? ?? 1;
+              return MaterialPageRoute(
+                builder: (context) => MyHomePage(chapterNumber: chapterArg),
+              );
+            default:
+              return MaterialPageRoute(
+                builder: (context) => WelcomeScreen(),
+              );
+          }
+        },
+      ),
     );
   }
 }
-// WelcomeScreen remains unchanged
+
 class WelcomeScreen extends StatelessWidget {
   final String? userPin;
 
-  const WelcomeScreen({Key? key, this.userPin}) : super(key: key);
+  WelcomeScreen({Key? key, this.userPin}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -88,14 +100,17 @@ class WelcomeScreen extends StatelessWidget {
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (context, animation1, animation2) => const Menu(),
+                      pageBuilder: (context, animation1, animation2) => Menu(),
                       transitionsBuilder: (context, animation1, animation2, child) {
                         const begin = Offset(1.0, 0.0);
                         const end = Offset.zero;
                         const curve = Curves.easeInOut;
                         var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
                         var offsetAnimation = animation1.drive(tween);
-                        return SlideTransition(position: offsetAnimation, child: child);
+                        return SlideTransition(
+                          position: offsetAnimation,
+                          child: child,
+                        );
                       },
                       fullscreenDialog: true,
                     ),
