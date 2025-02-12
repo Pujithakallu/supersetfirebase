@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
       'description': 'Learn new words!'
     },
     {
-      'title': '4. Art Studio',
+      'title': '4.  Studio',
       'icon': Icons.palette,
       'color': Color(0xFFFFB366),
       'description': 'Draw and create!'
