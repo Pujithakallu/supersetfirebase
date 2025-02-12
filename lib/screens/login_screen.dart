@@ -133,19 +133,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Profile Picture added here
-                    // Full-width profile image
-                    SizedBox(
-                      width: double.infinity,  // Full screen width
-                      child: Image.asset(
-                        'assets/images/profile_pic.png',  // Make sure the path is correct
-                        fit: BoxFit.cover,  // Ensures it fills the width while maintaining aspect ratio
-                      ),
-                    ),
-                    SizedBox(height: 12), // Spacing below the image
-
-                  
-                    SizedBox(height: 12), // Spacing below profile picture
                     // Bouncing title animation
                     AnimatedBuilder(
                       animation: _bounceAnimation,
