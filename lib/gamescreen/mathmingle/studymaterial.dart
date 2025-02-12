@@ -253,7 +253,6 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
                 IconButton(
                   icon: Icon(Icons.volume_up, size: 30, color: Colors.blue),
                   onPressed: () {
-                     String fileName = english.toLowerCase().replaceAll("/", "_");
                     _audioPlayer.play(
                       AssetSource('Mathmingle/audio/${english.toLowerCase()}.mp3'),
                     );
