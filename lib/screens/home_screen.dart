@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
       'title': '3. Math Operators',
       'icon': Icons.abc,
       'color': Color(0xFF9999FF),
-      'description': 'Learn new words!'
+      'description': 'Learn new Symbols n more!'
     },
     {
       'title': '4.  Studio',
