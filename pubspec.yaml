@@ -33,10 +33,16 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^5.0.0
 
+
+    
+
+
 flutter:
   uses-material-design: true
   assets:
+    - assets/images/profile_pic.png
     - assets/Mathmingle/
+    - assets/images/math_mingle.png
     - assets/Mathmingle/audio/
     - assets/Mathmingle/homescreen/
     - assets/Mathmingle/matchGame/chapter1.json
@@ -45,10 +51,12 @@ flutter:
     - assets/Mathmingle/matchGame/chapter4.json
     - assets/Mathmingle/matchGame/chapter5.json
     - assets/Mathequations/Background.png
+    - assets/images/math_equations.png
     - assets/Mathequations/PartsOfEquation.png
     - assets/Mathoperations/home_screen.png
     - assets/Mathoperations/heading.png
     - assets/Mathoperations/background.png
+    - assets/images/math_operators.png
     - assets/Mathoperations/home_screen_vertical.png
     - assets/Mathoperations/background_vertical.png
     - assets/Mathoperations/plus.png
@@ -57,4 +65,5 @@ flutter:
     - assets/Mathoperations/apple.png
     - assets/Mathoperations/egg.png
     - assets/Mathoperations/child.png
+    
 
