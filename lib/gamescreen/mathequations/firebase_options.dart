@@ -47,11 +47,11 @@ class DefaultFirebaseOptions {
     storageBucket: "fih-superset-dev.firebasestorage.app",
     messagingSenderId: "1058242616848",
     appId: "1:1058242616848:web:7f407ce57f5ae4eafb3495",
-    measurementId: "G-1MLYB5F9ZG"
+  measurementId: "G-1MLYB5F9ZG"
   );
 
   
-
+// we need to change firebase options for other platforms ..we chnaged only for webapp
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAreEkdrMEHplPYTnDThr1vs3lN6engl2k',
     appId: '1:801818774864:android:26d32c5a8ea5e3fce67055',

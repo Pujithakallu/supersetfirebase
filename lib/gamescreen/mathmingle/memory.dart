@@ -4,19 +4,6 @@ import 'dart:async';
 import 'dart:math';
 import 'package:provider/provider.dart';
 
-void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => GameData1()),
-      ],
-      child: MaterialApp(
-        home: HomeScreen(),
-      ),
-    ),
-  );
-}
-
 class GameData1 extends ChangeNotifier {
   int total = 0; // Initialize total
 
@@ -27,6 +14,7 @@ class GameData1 extends ChangeNotifier {
 }
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,6 +51,7 @@ class HomeScreen extends StatelessWidget {
 }
 
 class MemoryGame extends StatefulWidget {
+  const MemoryGame({Key? key}) : super(key: key);
   @override
   _MemoryGameState createState() => _MemoryGameState();
 }

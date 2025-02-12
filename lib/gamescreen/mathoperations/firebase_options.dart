@@ -49,7 +49,7 @@ class DefaultFirebaseOptions {
    appId: "1:1058242616848:web:7f407ce57f5ae4eafb3495",
    measurementId: "G-1MLYB5F9ZG"
   );
-
+// we need to change firebase options for other platforms ..we chnaged only for webapp
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDnAReKuJP4j1D_i8IgyekWOjaON_jOx6Y',
     appId: '1:582477984848:android:14e00f23881d5beea28d55',

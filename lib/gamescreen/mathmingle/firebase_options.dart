@@ -41,13 +41,13 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAx8_WLepOXwadr3p1jS6t7_fUyviq12mY',
-    appId: '1:305130774164:web:ec80ddbcb1835ca67b1e81',
-    messagingSenderId: '305130774164',
-    projectId: 'test-math-ddd87',
-    authDomain: 'test-math-ddd87.firebaseapp.com',
-    storageBucket: 'test-math-ddd87.firebasestorage.app',
-    measurementId: 'G-G44Y42RYE0',
+   apiKey: "AIzaSyDYC7_yReYQZJWTl1O9n3auL9pRCZQp4A4",
+   authDomain: "fih-superset-dev.firebaseapp.com",
+   projectId: "fih-superset-dev",
+   storageBucket: "fih-superset-dev.firebasestorage.app",
+   messagingSenderId: "1058242616848",
+   appId: "1:1058242616848:web:7f407ce57f5ae4eafb3495",
+   measurementId: "G-1MLYB5F9ZG"
   );
 
   static const FirebaseOptions android = FirebaseOptions(
