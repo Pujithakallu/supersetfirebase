@@ -10,18 +10,15 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
-  
   final List<TextEditingController> _controllers = List.generate(3, (_) => TextEditingController());
   final List<FocusNode> _focusNodes = List.generate(3, (_) => FocusNode());
   
   late AnimationController _bounceController;
   late Animation<double> _bounceAnimation;
   
- 
   String _errorMessage = '';
   bool _isLoading = false;
 
- 
   final List<Color> _pinBoxColors = [
     Color(0xFFFF9999),  
     Color(0xFF99FF99), 
@@ -31,7 +28,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   @override
   void initState() {
     super.initState();
-    // Initialize the bouncing animation
     _bounceController = AnimationController(
       duration: Duration(milliseconds: 1500),
       vsync: this,
@@ -48,7 +44,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
   @override
   void dispose() {
-    // Clean up resources when widget is disposed
     _bounceController.dispose();
     for (var controller in _controllers) {
       controller.dispose();
@@ -60,10 +55,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   }
 
   Future<void> _login() async {
-    
     String pin = _controllers.map((c) => c.text).join();
     
-   
     if (pin.length != 3) {
       setState(() {
         _errorMessage = 'Please enter all 3 numbers!';
@@ -77,7 +70,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     });
 
     try {
-      // Check if PIN exists in Firestore
       final pinDoc = await FirebaseFirestore.instance
           .collection('pins')
           .where('pin', isEqualTo: pin)
@@ -91,7 +83,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
         return;
       }
 
-      // Navigate to HomeScreen if PIN is valid
       if (mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
@@ -114,7 +105,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Container(
-        // Gradient background
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -133,7 +123,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Bouncing title animation
                     AnimatedBuilder(
                       animation: _bounceAnimation,
                       builder: (context, child) {
@@ -158,7 +147,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       },
                     ),
                     SizedBox(height: 30),
-                    // Main login card
                     Container(
                       padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
@@ -183,7 +171,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             ),
                           ),
                           SizedBox(height: 30),
-                          // PIN input fields
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: List.generate(3, (index) {
@@ -202,6 +189,22 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
                                   ),
+                                  // Add text input action
+                                  textInputAction: index < 2 
+                                      ? TextInputAction.next 
+                                      : TextInputAction.done,
+                                  // Handle keyboard actions
+                                  onSubmitted: (value) {
+                                    if (index < 2) {
+                                      _focusNodes[index + 1].requestFocus();
+                                    } else {
+                                      // If all fields are filled, trigger login
+                                      if (_controllers.every((controller) => 
+                                          controller.text.isNotEmpty)) {
+                                        _login();
+                                      }
+                                    }
+                                  },
                                   decoration: InputDecoration(
                                     counterText: '',
                                     filled: true,
@@ -225,7 +228,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                       ),
                                     ),
                                   ),
-                                  // Auto-focus handling
                                   onChanged: (value) {
                                     if (value.length == 1 && index < 2) {
                                       _focusNodes[index + 1].requestFocus();
@@ -236,7 +238,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             }),
                           ),
                           SizedBox(height: 20),
-                          // Error message display
                           if (_errorMessage.isNotEmpty)
                             Container(
                               padding: EdgeInsets.all(10),
@@ -254,7 +255,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               ),
                             ),
                           SizedBox(height: 30),
-                          // Login button
                           ElevatedButton(
                             onPressed: _isLoading ? null : _login,
                             style: ElevatedButton.styleFrom(
@@ -285,7 +285,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                   ),
                           ),
                           SizedBox(height: 20),
-                          // Sign up link
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).push(
