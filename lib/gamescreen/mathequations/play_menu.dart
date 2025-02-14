@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../utils/util.dart';
+import '../../utils/logout_util.dart';
 
 class PlayMenu extends StatelessWidget {
   const PlayMenu({Key? key}) : super(key: key);
@@ -7,25 +7,6 @@ class PlayMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Play Games'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.logout_rounded,
-              color: Color(0xFF6C63FF),
-              size: 26,
-            ),
-            onPressed: () => logout(context),
-          ),
-        ],
-      ),
       extendBodyBehindAppBar: true,
       body: Stack(
         children: [
@@ -55,10 +36,9 @@ class PlayMenu extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 16, horizontal: 32), // Set button padding
-                    textStyle:
-                        const TextStyle(fontSize: 24), // Set button text size
-                    elevation: 6, // Set button elevation (shadow)
+                        vertical: 16, horizontal: 32),
+                    textStyle: const TextStyle(fontSize: 24),
+                    elevation: 6,
                   ),
                   child: const Text('Parts of an Equation'),
                 ),
@@ -69,14 +49,43 @@ class PlayMenu extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 16, horizontal: 32), // Set button padding
-                    textStyle:
-                        const TextStyle(fontSize: 24), // Set button text size
-                    elevation: 6, // Set button elevation (shadow)
+                        vertical: 16, horizontal: 32),
+                    textStyle: const TextStyle(fontSize: 24),
+                    elevation: 6,
                   ),
                   child: const Text('Equation to words'),
                 ),
               ],
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: Stack(
+        children: [
+          Positioned(
+            left: 24, // Adjusted for better positioning
+            top: 16,
+            child: FloatingActionButton(
+              onPressed: () => Navigator.pop(context),
+              backgroundColor: Colors.white,
+              child: const Icon(
+                Icons.arrow_back_rounded,
+                color: Color(0xFF6C63FF),
+                size: 26,
+              ),
+            ),
+          ),
+          Positioned(
+            right: 16,
+            top: 16,
+            child: FloatingActionButton(
+              onPressed: () => logout(context),
+              backgroundColor: Colors.white,
+              child: const Icon(
+                Icons.logout_rounded,
+                color: Color(0xFF6C63FF),
+                size: 26,
+              ),
             ),
           ),
         ],

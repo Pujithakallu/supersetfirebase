@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'analytics_engine.dart';
-import '../../utils/util.dart';
+import '../../utils/logout_util.dart';
 
 class LinearEquationsIntroduction extends StatefulWidget {
   const LinearEquationsIntroduction({Key? key}) : super(key: key);

@@ -1,10 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'util.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import '../../utils/util.dart';
+import '../../utils/logout_util.dart';
 
 class StudyMaterialScreen extends StatefulWidget {
   @override
@@ -22,7 +21,8 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(viewportFraction: 0.3); // Smaller fraction for more cards
+    _pageController = PageController(
+        viewportFraction: 0.3); // Smaller fraction for more cards
   }
 
   @override
@@ -75,9 +75,15 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         title: Text(
           'V O C A B U L A R Y',
           style: TextStyle(fontSize: 45),
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Color(0xFF4A4A4A)),
+          onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
@@ -162,7 +168,8 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                     ),
                     onPressed: () {
                       _pageController.nextPage(
@@ -178,13 +185,15 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
                       style: TextStyle(fontSize: 25, color: Colors.blue),
                     ),
                   ),
-                if (currentPage > 0 && currentPage < (translations["spanish"]?.length ?? 1) - 1)
+                if (currentPage > 0 &&
+                    currentPage < (translations["spanish"]?.length ?? 1) - 1)
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                     ),
                     onPressed: () {
                       _pageController.nextPage(
@@ -206,7 +215,8 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                     ),
                     onPressed: () {
                       Navigator.pop(context);
@@ -251,7 +261,8 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start, // Align text to the start
+          crossAxisAlignment:
+              CrossAxisAlignment.start, // Align text to the start
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -266,7 +277,8 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
                   icon: Icon(Icons.volume_up, size: 30, color: Colors.blue),
                   onPressed: () {
                     _audioPlayer.play(
-                      AssetSource('Mathmingle/audio/${english.toLowerCase()}.mp3'),
+                      AssetSource(
+                          'Mathmingle/audio/${english.toLowerCase()}.mp3'),
                     );
                     _logAudioButtonClick(english, chapter); // Log the event
                   },

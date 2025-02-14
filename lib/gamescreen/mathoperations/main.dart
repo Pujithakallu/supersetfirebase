@@ -10,9 +10,7 @@ import 'package:supersetfirebase/gamescreen/mathoperations/common/widgets/user_c
 import 'package:supersetfirebase/gamescreen/mathoperations/common/global.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/common/api/api_util.dart';
 import 'package:supersetfirebase/screens/home_screen.dart';
-import '../../utils/util.dart';
-
-void main() => runApp(Operators());
+import '../../utils/logout_util.dart';
 
 class Operators extends StatelessWidget {
   final String userPin;
@@ -65,14 +63,13 @@ class _HomePageState extends State<HomePage> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => HomeScreen(pin: widget.pin)
-                  ),
+                      builder: (context) => HomeScreen(pin: widget.pin)),
                 );
               },
               foregroundColor: Colors.black,
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.lightBlue,
               shape: const CircleBorder(),
-              child: const Icon(Icons.arrow_back, size: 32),
+              child: const Icon(Icons.arrow_back_ios, size: 32),
             ),
           ),
           // Logout button
@@ -81,32 +78,7 @@ class _HomePageState extends State<HomePage> {
             top: 0,
             child: FloatingActionButton(
               heroTag: "logoutButton",
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: const Text('Logout'),
-                      content: const Text('Are you sure you want to logout?'),
-                      actions: <Widget>[
-                        TextButton(
-                          child: const Text('Cancel'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        TextButton(
-                          child: const Text('Logout'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            Navigator.of(context).popUntil((route) => route.isFirst);
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
+              onPressed: () => logout(context),
               foregroundColor: Colors.white,
               backgroundColor: Colors.blue,
               shape: const CircleBorder(),
@@ -143,7 +115,7 @@ class _HomePageState extends State<HomePage> {
               child: Text(
                 'PIN: ${widget.pin}',
                 style: TextStyle(
-                  fontSize: screenWidth/30,
+                  fontSize: screenWidth / 30,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
                 ),
@@ -164,7 +136,8 @@ class _HomePageState extends State<HomePage> {
                       },
                     ),
                     Spacer(flex: 1),
-                    ImageBanner("assets/Mathoperations/heading.png", screenWidth/5, screenWidth/2.3),
+                    ImageBanner("assets/Mathoperations/heading.png",
+                        screenWidth / 5, screenWidth / 2.3),
                     Spacer(flex: 1),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -172,11 +145,14 @@ class _HomePageState extends State<HomePage> {
                         Spacer(flex: 2),
                         InkWell(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => LearnPage()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LearnPage()));
                           },
                           borderRadius: BorderRadius.circular(30),
                           child: Container(
-                            width: screenWidth/7,
+                            width: screenWidth / 7,
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
@@ -188,10 +164,9 @@ class _HomePageState extends State<HomePage> {
                                 Text(
                                   'Learn',
                                   style: TextStyle(
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: screenWidth/30
-                                  ),
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: screenWidth / 30),
                                 ),
                               ],
                             ),
@@ -200,11 +175,14 @@ class _HomePageState extends State<HomePage> {
                         Spacer(flex: 1),
                         InkWell(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => PlayPage()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PlayPage()));
                           },
                           borderRadius: BorderRadius.circular(30),
                           child: Container(
-                            width: screenWidth/7,
+                            width: screenWidth / 7,
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
@@ -216,10 +194,9 @@ class _HomePageState extends State<HomePage> {
                                 Text(
                                   'Quiz',
                                   style: TextStyle(
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: screenWidth/30
-                                  ),
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: screenWidth / 30),
                                 ),
                               ],
                             ),

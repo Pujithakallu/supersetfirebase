@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'what_are_equations_detail.dart';
 import 'importance_of_equations.dart';
 import 'real_world_applications.dart';
-import '../../utils/util.dart';
+import '../../utils/logout_util.dart';
 
 class WhatAreEquations extends StatelessWidget {
   const WhatAreEquations({Key? key}) : super(key: key);
@@ -10,19 +10,6 @@ class WhatAreEquations extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('What are Equations?'),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.logout_rounded,
-              color: Color(0xFF6C63FF),
-              size: 26,
-            ),
-            onPressed: () => logout(context),
-          ),
-        ],
-      ),
       extendBodyBehindAppBar: true,
       body: Stack(
         children: [
@@ -47,10 +34,9 @@ class WhatAreEquations extends StatelessWidget {
                               const WhatAreEquationsDetail())),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 16, horizontal: 32), // Set button padding
-                    textStyle:
-                        const TextStyle(fontSize: 24), // Set button text size
-                    elevation: 6, // Set button elevation (shadow)
+                        vertical: 16, horizontal: 32),
+                    textStyle: const TextStyle(fontSize: 24),
+                    elevation: 6,
                   ),
                   child: const Text('What Are Equations?'),
                 ),
@@ -62,10 +48,9 @@ class WhatAreEquations extends StatelessWidget {
                           builder: (context) => const ImportanceOfEquations())),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 16, horizontal: 32), // Set button padding
-                    textStyle:
-                        const TextStyle(fontSize: 24), // Set button text size
-                    elevation: 6, // Set button elevation (shadow)
+                        vertical: 16, horizontal: 32),
+                    textStyle: const TextStyle(fontSize: 24),
+                    elevation: 6,
                   ),
                   child: const Text('Importance of Equations in Mathematics'),
                 ),
@@ -77,14 +62,43 @@ class WhatAreEquations extends StatelessWidget {
                           builder: (context) => const RealWorldApplications())),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 16, horizontal: 32), // Set button padding
-                    textStyle:
-                        const TextStyle(fontSize: 24), // Set button text size
-                    elevation: 6, // Set button elevation (shadow)
+                        vertical: 16, horizontal: 32),
+                    textStyle: const TextStyle(fontSize: 24),
+                    elevation: 6,
                   ),
                   child: const Text('Real-world Applications of Equations'),
                 ),
               ],
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: Stack(
+        children: [
+          Positioned(
+            left: 24, // Adjusted for better positioning
+            top: 16,
+            child: FloatingActionButton(
+              onPressed: () => Navigator.pop(context),
+              backgroundColor: Colors.white,
+              child: const Icon(
+                Icons.arrow_back_rounded,
+                color: Color(0xFF6C63FF),
+                size: 26,
+              ),
+            ),
+          ),
+          Positioned(
+            right: 16,
+            top: 16,
+            child: FloatingActionButton(
+              onPressed: () => logout(context),
+              backgroundColor: Colors.white,
+              child: const Icon(
+                Icons.logout_rounded,
+                color: Color(0xFF6C63FF),
+                size: 26,
+              ),
             ),
           ),
         ],

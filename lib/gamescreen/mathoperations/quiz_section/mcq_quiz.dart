@@ -10,10 +10,13 @@ import 'package:supersetfirebase/gamescreen/mathoperations/common/global.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/quiz_section/result_page.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/common/level/level_info.dart';
 import 'dart:developer';
+import 'package:supersetfirebase/utils/logout_util.dart';
+
 class McqQuiz extends StatefulWidget {
   final String opSign;
   final LevelInfo level;
-  const McqQuiz({Key? key,required this.opSign, required this.level }) : super(key: key);
+  const McqQuiz({Key? key, required this.opSign, required this.level})
+      : super(key: key);
 
   @override
   State<McqQuiz> createState() => _McqQuizState();
@@ -25,7 +28,7 @@ class _McqQuizState extends State<McqQuiz> {
   //late double screenWidth = MediaQuery.of(context).size.width;
   late List<McqQuestion> questions;
   FlutterTts flutterTts = FlutterTts();
-  int currentLanguage= 0;
+  int currentLanguage = 0;
   late Map<String, dynamic> pageLangData;
   late List<String> quesHeading;
   late List<String> LangKeys;
@@ -36,27 +39,34 @@ class _McqQuizState extends State<McqQuiz> {
   @override
   void initState() {
     super.initState();
-    if (widget.opSign == 'mix'){
+    if (widget.opSign == 'mix') {
       questions = getMixMcqQuestions(widget.opSign);
-    }
-    else {
+    } else {
       questions = getMcqQuestions(widget.opSign);
     }
-    pageLangData = getMCQLanguageData(GlobalVariables.priLang, GlobalVariables.secLang);
-    quesHeading = [pageLangData["ques_heading"]["pri_lang"], pageLangData["ques_heading"]["sec_lang"]];
-    LangKeys = [getSpeakLangKey(GlobalVariables.priLang), getSpeakLangKey(GlobalVariables.secLang)];
+    pageLangData =
+        getMCQLanguageData(GlobalVariables.priLang, GlobalVariables.secLang);
+    quesHeading = [
+      pageLangData["ques_heading"]["pri_lang"],
+      pageLangData["ques_heading"]["sec_lang"]
+    ];
+    LangKeys = [
+      getSpeakLangKey(GlobalVariables.priLang),
+      getSpeakLangKey(GlobalVariables.secLang)
+    ];
 
-    questionResults = List.generate(questions.length, (_) => {
-      "question": "",
-      "options": [],
-      "selected_ans_index": -1, // -1 means no answer selected
-      "is_right": false,
-      "sign": ""
-    });
-
+    questionResults = List.generate(
+        questions.length,
+        (_) => {
+              "question": "",
+              "options": [],
+              "selected_ans_index": -1, // -1 means no answer selected
+              "is_right": false,
+              "sign": ""
+            });
   }
 
-  void changeLang(){
+  void changeLang() {
     setState(() {
       currentLanguage = currentLanguage == 0 ? 1 : 0;
     });
@@ -68,7 +78,7 @@ class _McqQuizState extends State<McqQuiz> {
     await flutterTts.speak(text);
   }
 
-  void pickAnswer(int value){
+  void pickAnswer(int value) {
     selectedAnswerIndex = value;
     final question = questions[questionIndex];
 
@@ -76,19 +86,19 @@ class _McqQuizState extends State<McqQuiz> {
       "question": question.question[0],
       "options": question.options,
       "selected_ans_index": selectedAnswerIndex,
-      "correct_ans_index":question.correctAnswerIndex,
+      "correct_ans_index": question.correctAnswerIndex,
       "is_right": selectedAnswerIndex == question.correctAnswerIndex,
       "sign": question.sign
     };
-    if (selectedAnswerIndex == question.correctAnswerIndex){
+    if (selectedAnswerIndex == question.correctAnswerIndex) {
       score += 2;
       correctAnswersCount++;
     }
     setState(() {});
   }
 
-  void gotoNextQuestion(){
-    if (questionIndex < questions.length - 1){
+  void gotoNextQuestion() {
+    if (questionIndex < questions.length - 1) {
       questionIndex++;
       selectedAnswerIndex = null;
     }
@@ -99,71 +109,89 @@ class _McqQuizState extends State<McqQuiz> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     final question = questions[questionIndex];
-    bool isLastQuestion = questionIndex == questions.length-1;
+    bool isLastQuestion = questionIndex == questions.length - 1;
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          foregroundColor: Colors.black,
-          backgroundColor: Colors.lightBlue,
-          shape: CircleBorder(),
-
-          child: const Icon(Icons.arrow_back_ios),
+        floatingActionButton: Stack(
+          children: [
+            //backbutton
+            Positioned(
+              left: 16,
+              top: 16,
+              child: FloatingActionButton(
+                heroTag: "backButton",
+                onPressed: () => Navigator.pop(context),
+                foregroundColor: Colors.black,
+                backgroundColor: Colors.lightBlue,
+                shape: const CircleBorder(),
+                child: const Icon(Icons.arrow_back_ios, size: 32),
+              ),
+            ),
+            // Logout button
+            Positioned(
+              right: 30,
+              top: 0,
+              child: FloatingActionButton(
+                heroTag: "logoutButton",
+                onPressed: () => logout(context),
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.blue,
+                shape: const CircleBorder(),
+                child: const Icon(Icons.logout_rounded, size: 32),
+              ),
+            ),
+          ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-        body:Container(
+        body: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage('assets/Mathoperations/background.png'),
               fit: BoxFit.cover,
             ),
           ),
-          child:
-          Padding(
-            padding: EdgeInsets.fromLTRB(screenWidth/10,screenWidth/20, screenWidth/10,screenWidth/40),
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(screenWidth / 10, screenWidth / 20,
+                screenWidth / 10, screenWidth / 40),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
               children: [
                 Container(
-                  height: (screenWidth / 8).clamp(120.0, 120.0),
-                  width: screenWidth,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.white54,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        quesHeading[currentLanguage],
-                        style: TextStyle(
-                          fontSize: (screenWidth / 25).clamp(16.0, 28.0),
-                          fontWeight: FontWeight.bold,
+                    height: (screenWidth / 8).clamp(120.0, 120.0),
+                    width: screenWidth,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.white54,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          quesHeading[currentLanguage],
+                          style: TextStyle(
+                            fontSize: (screenWidth / 25).clamp(16.0, 28.0),
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        question.question[currentLanguage],
-                        style: TextStyle(
-                          fontSize: (screenWidth / 25).clamp(16.0, 28.0),
-                          fontWeight: FontWeight.bold,
+                        Text(
+                          question.question[currentLanguage],
+                          style: TextStyle(
+                            fontSize: (screenWidth / 25).clamp(16.0, 28.0),
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  )
-                ),
+                      ],
+                    )),
 
                 ListView.builder(
                   shrinkWrap: true,
                   itemCount: question.options.length,
-                  itemBuilder: (context, index){
+                  itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: selectedAnswerIndex == null
-                          ? ()=> pickAnswer(index)
+                          ? () => pickAnswer(index)
                           : null,
                       child: AnswerCard(
                         currentIndex: index,
@@ -176,17 +204,20 @@ class _McqQuizState extends State<McqQuiz> {
                   },
                 ),
                 // Next button
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     InkWell(
                       onTap: () {
-                        ReadOut('$quesHeading[currentLanguage], ${question.question}');
+                        ReadOut(
+                            '$quesHeading[currentLanguage], ${question.question}');
                       },
                       borderRadius: BorderRadius.circular(30),
                       child: Container(
-                        width: screenWidth/10,
+                        width: screenWidth / 10,
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
@@ -197,7 +228,7 @@ class _McqQuizState extends State<McqQuiz> {
                           children: <Widget>[
                             Icon(
                               Icons.volume_up,
-                              size: screenWidth/40,
+                              size: screenWidth / 40,
                             ),
                           ],
                         ),
@@ -209,35 +240,49 @@ class _McqQuizState extends State<McqQuiz> {
                       onTap: () {
                         //print("..Current Question Index: $questionIndex");
                         //print("..Total Questions: ${questions.length}");
-                        if (questionIndex == questions.length-1 && selectedAnswerIndex != null) {
+                        if (questionIndex == questions.length - 1 &&
+                            selectedAnswerIndex != null) {
                           // print("..Navigating to results page.");
                           widget.level.updateScore(score);
-                          log("global score: " + GlobalVariables.totalScore.toString());
-                          log(GlobalVariables.levels[widget.level.levelNumber].toString());
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => ResultsPage(
-                            correctAnswersCount: correctAnswersCount,
-                            totalQuestions: questions.length,
-                            score: score,
-                            questionResults: questionResults,
-                            questionType: "mcq",
-                          )));
-                        } else if (selectedAnswerIndex != null){
+                          log("global score: " +
+                              GlobalVariables.totalScore.toString());
+                          log(GlobalVariables.levels[widget.level.levelNumber]
+                              .toString());
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ResultsPage(
+                                        correctAnswersCount:
+                                            correctAnswersCount,
+                                        totalQuestions: questions.length,
+                                        score: score,
+                                        questionResults: questionResults,
+                                        questionType: "mcq",
+                                      )));
+                        } else if (selectedAnswerIndex != null) {
                           gotoNextQuestion();
                         }
                       },
                       borderRadius: BorderRadius.circular(30),
                       child: Container(
-                        width: screenWidth/4,
+                        width: screenWidth / 4,
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
-                          color: selectedAnswerIndex != null ? Colors.lightBlue : Colors.grey,
+                          color: selectedAnswerIndex != null
+                              ? Colors.lightBlue
+                              : Colors.grey,
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text( 'Next' ,
-                              style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold, fontSize: (screenWidth / 30).clamp(16.0, 30.0)),
+                            Text(
+                              'Next',
+                              style: TextStyle(
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize:
+                                      (screenWidth / 30).clamp(16.0, 30.0)),
                             ),
                           ],
                         ),
@@ -251,7 +296,7 @@ class _McqQuizState extends State<McqQuiz> {
                       },
                       borderRadius: BorderRadius.circular(30),
                       child: Container(
-                        width: screenWidth/10,
+                        width: screenWidth / 10,
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
@@ -262,7 +307,7 @@ class _McqQuizState extends State<McqQuiz> {
                           children: <Widget>[
                             Icon(
                               Icons.translate,
-                              size: screenWidth/40,
+                              size: screenWidth / 40,
                             ),
                           ],
                         ),
@@ -273,7 +318,6 @@ class _McqQuizState extends State<McqQuiz> {
               ],
             ),
           ),
-        )
-    );
+        ));
   }
 }

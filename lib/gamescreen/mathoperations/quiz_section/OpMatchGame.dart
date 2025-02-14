@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:supersetfirebase/utils/logout_util.dart';
 
 class OperatorsMatchingGamePage extends StatefulWidget {
   const OperatorsMatchingGamePage({Key? key}) : super(key: key);
 
   @override
-  State<OperatorsMatchingGamePage> createState() => _OperatorsMatchingGamePageState();
+  State<OperatorsMatchingGamePage> createState() =>
+      _OperatorsMatchingGamePageState();
 }
 
-final Color defaultNameColor = Colors.lightBlue[100]!; // Default color for names
-final Color defaultSymbolColor = Colors.lightGreen[50]!; // Default color for symbols
+final Color defaultNameColor =
+    Colors.lightBlue[100]!; // Default color for names
+final Color defaultSymbolColor =
+    Colors.lightGreen[50]!; // Default color for symbols
 
 class _OperatorsMatchingGamePageState extends State<OperatorsMatchingGamePage> {
   final List<Map<String, String>> gameItems = [
@@ -35,8 +39,7 @@ class _OperatorsMatchingGamePageState extends State<OperatorsMatchingGamePage> {
   }
 
   void _shuffleGameItems() {
-    shuffledNames = List<Map<String, String>>.from(gameItems)
-      ..shuffle();
+    shuffledNames = List<Map<String, String>>.from(gameItems)..shuffle();
     shuffledSymbols = List<Map<String, String>>.from(gameItems)
       ..shuffle(math.Random());
   }
@@ -44,8 +47,8 @@ class _OperatorsMatchingGamePageState extends State<OperatorsMatchingGamePage> {
   void _handleItemTap(String name, String symbol, bool isName) {
     setState(() {
       // This logic handles the tap, checks for matches, and updates UI accordingly.
-      final isSelectedBefore = isName ? selectedName != null : selectedSymbol !=
-          null;
+      final isSelectedBefore =
+          isName ? selectedName != null : selectedSymbol != null;
 
       if (isName) {
         if (isSelectedBefore || selectedSymbol == null) {
@@ -70,7 +73,7 @@ class _OperatorsMatchingGamePageState extends State<OperatorsMatchingGamePage> {
   void _checkAndApplyMatch() {
     if (selectedName != null && selectedSymbol != null) {
       bool isMatch = gameItems.any((item) =>
-      item['name'] == selectedName && item['symbol'] == selectedSymbol);
+          item['name'] == selectedName && item['symbol'] == selectedSymbol);
       if (isMatch) {
         // Correct match
         itemColors[selectedName!] = Colors.green;
@@ -149,7 +152,9 @@ class _OperatorsMatchingGamePageState extends State<OperatorsMatchingGamePage> {
               _restartGame();
               Navigator.pop(context);
             },
-            child: Text('Restart', style: TextStyle(fontWeight: FontWeight.bold),
+            child: Text(
+              'Restart',
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
           FilledButton(
@@ -178,15 +183,35 @@ class _OperatorsMatchingGamePageState extends State<OperatorsMatchingGamePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.lightBlue,
-        shape: CircleBorder(),
-
-        child: const Icon(Icons.arrow_back_ios),
+      floatingActionButton: Stack(
+        children: [
+          //backbutton
+          Positioned(
+            left: 16,
+            top: 16,
+            child: FloatingActionButton(
+              heroTag: "backButton",
+              onPressed: () => Navigator.pop(context),
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.lightBlue,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.arrow_back_ios, size: 32),
+            ),
+          ),
+          // Logout button
+          Positioned(
+            right: 30,
+            top: 0,
+            child: FloatingActionButton(
+              heroTag: "logoutButton",
+              onPressed: () => logout(context),
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.blue,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.logout_rounded, size: 32),
+            ),
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       body: Container(
@@ -204,8 +229,12 @@ class _OperatorsMatchingGamePageState extends State<OperatorsMatchingGamePage> {
               mainAxisAlignment: MainAxisAlignment.center, // Center vertically
               children: [
                 SizedBox(height: 20),
-                Text('Operator Matching',
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 50),
+                Text(
+                  'Operator Matching',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 50),
                 ),
                 SizedBox(height: 80),
                 Expanded(
@@ -222,18 +251,18 @@ class _OperatorsMatchingGamePageState extends State<OperatorsMatchingGamePage> {
                               margin: const EdgeInsets.symmetric(
                                   vertical: 30, horizontal: 100),
                               // Adjust card spacing
-                              color: itemColors[item['name']] ??
-                                  defaultNameColor,
+                              color:
+                                  itemColors[item['name']] ?? defaultNameColor,
                               child: ListTile(
                                 title: Text(
                                   item['name']!,
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.bold, fontSize: 26),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 26),
                                 ),
-                                onTap: () =>
-                                    _handleItemTap(
-                                        item['name']!, item['symbol']!, true),
+                                onTap: () => _handleItemTap(
+                                    item['name']!, item['symbol']!, true),
                               ),
                             );
                           },
@@ -255,11 +284,11 @@ class _OperatorsMatchingGamePageState extends State<OperatorsMatchingGamePage> {
                                   item['symbol']!,
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.w900, fontSize: 26),
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 26),
                                 ),
-                                onTap: () =>
-                                    _handleItemTap(
-                                        item['name']!, item['symbol']!, false),
+                                onTap: () => _handleItemTap(
+                                    item['name']!, item['symbol']!, false),
                               ),
                             );
                           },
@@ -276,4 +305,3 @@ class _OperatorsMatchingGamePageState extends State<OperatorsMatchingGamePage> {
     );
   }
 }
-

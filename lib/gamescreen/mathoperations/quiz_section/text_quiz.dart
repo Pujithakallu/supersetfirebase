@@ -8,11 +8,12 @@ import "package:supersetfirebase/gamescreen/mathoperations/common/translate/tran
 import 'package:supersetfirebase/gamescreen/mathoperations/common/global.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/quiz_section/result_page.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/common/level/level_info.dart';
+import 'package:supersetfirebase/utils/logout_util.dart';
 
 class TextQuiz extends StatefulWidget {
   final String opSign;
   final LevelInfo level;
-  const TextQuiz({super.key,required this.opSign, required this.level });
+  const TextQuiz({super.key, required this.opSign, required this.level});
 
   @override
   State<TextQuiz> createState() => _TextQuizState();
@@ -26,7 +27,7 @@ class _TextQuizState extends State<TextQuiz> {
   int submissionAttempts = 0;
   String feedbackMessage = '';
   FlutterTts flutterTts = FlutterTts();
-  int currentLanguage= 0;
+  int currentLanguage = 0;
   late Map<String, dynamic> pageLangData;
   late List<String> quesHeading;
   late List<String> hintText;
@@ -36,26 +37,37 @@ class _TextQuizState extends State<TextQuiz> {
   int correctAnswersCount = 0;
   List<Map<String, dynamic>> questionResults = [];
 
-
   TextEditingController textEditingController = TextEditingController();
   late List<TextQuestion> questions;
   @override
   void initState() {
     super.initState();
-    if (widget.opSign == 'mix'){
+    if (widget.opSign == 'mix') {
       questions = getMixTextQuestions(widget.opSign);
-    }
-    else {
+    } else {
       questions = getTextQuestions(widget.opSign);
     }
-    pageLangData = getTextLanguageData(GlobalVariables.priLang, GlobalVariables.secLang);
-    quesHeading = [pageLangData["ques_heading"]["pri_lang"], pageLangData["ques_heading"]["sec_lang"]];
-    hintText = [pageLangData["hint_text"]["pri_lang"], pageLangData["hint_text"]["sec_lang"]];
-    popUpText = [pageLangData["pop_up_heading"]["pri_lang"], pageLangData["pop_up_heading"]["sec_lang"]];
-    LangKeys = [getSpeakLangKey(GlobalVariables.priLang), getSpeakLangKey(GlobalVariables.secLang)];
+    pageLangData =
+        getTextLanguageData(GlobalVariables.priLang, GlobalVariables.secLang);
+    quesHeading = [
+      pageLangData["ques_heading"]["pri_lang"],
+      pageLangData["ques_heading"]["sec_lang"]
+    ];
+    hintText = [
+      pageLangData["hint_text"]["pri_lang"],
+      pageLangData["hint_text"]["sec_lang"]
+    ];
+    popUpText = [
+      pageLangData["pop_up_heading"]["pri_lang"],
+      pageLangData["pop_up_heading"]["sec_lang"]
+    ];
+    LangKeys = [
+      getSpeakLangKey(GlobalVariables.priLang),
+      getSpeakLangKey(GlobalVariables.secLang)
+    ];
   }
 
-  void changeLang(){
+  void changeLang() {
     setState(() {
       currentLanguage = currentLanguage == 0 ? 1 : 0;
     });
@@ -67,7 +79,6 @@ class _TextQuizState extends State<TextQuiz> {
     await flutterTts.speak(text);
   }
 
-
   void pickAnswer(String value) {
     selectedAnswer = value;
     setState(() {
@@ -78,11 +89,13 @@ class _TextQuizState extends State<TextQuiz> {
 
   void submitAnswer() {
     if (isAnswerSubmitted) {
-      return ;
+      return;
     }
     final currQuestion = questions[questionIndex];
-    bool correct = selectedAnswer?.toLowerCase() == currQuestion.answer.toLowerCase() ||
-        selectedAnswer?.toLowerCase() == currQuestion.answer.replaceAll("-", "").toLowerCase() ;
+    bool correct =
+        selectedAnswer?.toLowerCase() == currQuestion.answer.toLowerCase() ||
+            selectedAnswer?.toLowerCase() ==
+                currQuestion.answer.replaceAll("-", "").toLowerCase();
     if (correct) {
       setState(() {
         isCorrect = true;
@@ -125,15 +138,18 @@ class _TextQuizState extends State<TextQuiz> {
       isCorrect = null; // Reset correctness feedback
       isAnswerSubmitted = false; // Reset answer submitted status
       textEditingController.clear(); // Clear text field
-    }else{
+    } else {
       widget.level.updateScore(score);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => ResultsPage(
-        correctAnswersCount: correctAnswersCount,
-        totalQuestions: questions.length,
-        score: score,
-        questionResults: questionResults,
-        questionType: "text",
-      )));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ResultsPage(
+                    correctAnswersCount: correctAnswersCount,
+                    totalQuestions: questions.length,
+                    score: score,
+                    questionResults: questionResults,
+                    questionType: "text",
+                  )));
     }
     setState(() {});
   }
@@ -158,15 +174,35 @@ class _TextQuizState extends State<TextQuiz> {
     bool isLastQuestion = questionIndex == questions.length - 1;
     bool isFirstQuestion = questionIndex == 0;
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.lightBlue,
-        shape: CircleBorder(),
-
-        child: const Icon(Icons.arrow_back_ios),
+      floatingActionButton: Stack(
+        children: [
+          //backbutton
+          Positioned(
+            left: 16,
+            top: 16,
+            child: FloatingActionButton(
+              heroTag: "backButton",
+              onPressed: () => Navigator.pop(context),
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.lightBlue,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.arrow_back_ios, size: 32),
+            ),
+          ),
+          // Logout button
+          Positioned(
+            right: 30,
+            top: 0,
+            child: FloatingActionButton(
+              heroTag: "logoutButton",
+              onPressed: () => logout(context),
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.blue,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.logout_rounded, size: 32),
+            ),
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       body: Container(
@@ -177,7 +213,8 @@ class _TextQuizState extends State<TextQuiz> {
           ),
         ),
         child: Padding(
-          padding: EdgeInsets.fromLTRB(screenWidth / 10, screenWidth / 20, screenWidth / 10, screenWidth / 40),
+          padding: EdgeInsets.fromLTRB(screenWidth / 10, screenWidth / 20,
+              screenWidth / 10, screenWidth / 40),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -194,25 +231,23 @@ class _TextQuizState extends State<TextQuiz> {
                   children: [
                     Text(
                       quesHeading[currentLanguage],
-                  style: TextStyle(
-                    fontSize: (screenWidth / 25).clamp(16.0, 30.0),
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                  Text(
-                  quizquestion.question[currentLanguage],
-                  style:  TextStyle(
-                    fontSize: (screenWidth / 25).clamp(16.0, 30.0),
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-
+                      style: TextStyle(
+                        fontSize: (screenWidth / 25).clamp(16.0, 30.0),
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      quizquestion.question[currentLanguage],
+                      style: TextStyle(
+                        fontSize: (screenWidth / 25).clamp(16.0, 30.0),
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                   ],
                 ),
               ),
-
               TextField(
                 controller: textEditingController,
                 onChanged: (value) {
@@ -223,14 +258,22 @@ class _TextQuizState extends State<TextQuiz> {
                   fontWeight: FontWeight.bold, // Make the text bold
                 ),
                 decoration: InputDecoration(
-                  hintText: hintText[currentLanguage],// need to change the hintText according to the user selected language,
+                  hintText: hintText[
+                      currentLanguage], // need to change the hintText according to the user selected language,
                   border: OutlineInputBorder(),
                   filled: true, // Enable filling of the background
-                  fillColor: isCorrect == null ? Colors.white54 : isCorrect == true ? Colors.green : Colors.red, // Set background color based on correctness
-                  errorBorder: OutlineInputBorder( // Border color when there is an error
+                  fillColor: isCorrect == null
+                      ? Colors.white54
+                      : isCorrect == true
+                          ? Colors.green
+                          : Colors
+                              .red, // Set background color based on correctness
+                  errorBorder: OutlineInputBorder(
+                    // Border color when there is an error
                     borderSide: BorderSide(color: Colors.red),
                   ),
-                  focusedErrorBorder: OutlineInputBorder( // Border color when there is an error and the field is focused
+                  focusedErrorBorder: OutlineInputBorder(
+                    // Border color when there is an error and the field is focused
                     borderSide: BorderSide(color: Colors.red),
                   ),
                 ),
@@ -240,7 +283,8 @@ class _TextQuizState extends State<TextQuiz> {
                 children: [
                   InkWell(
                     onTap: () {
-                      ReadOut('${quesHeading[currentLanguage]} ${quizquestion.question[currentLanguage]}');
+                      ReadOut(
+                          '${quesHeading[currentLanguage]} ${quizquestion.question[currentLanguage]}');
                     },
                     borderRadius: BorderRadius.circular(30),
                     child: Container(
@@ -255,7 +299,7 @@ class _TextQuizState extends State<TextQuiz> {
                         children: <Widget>[
                           Icon(
                             Icons.volume_up,
-                            size:  screenWidth / 40,
+                            size: screenWidth / 40,
                           ),
                         ],
                       ),
@@ -293,21 +337,22 @@ class _TextQuizState extends State<TextQuiz> {
                   Spacer(flex: 1),
                   InkWell(
                     onTap: () {
-                      if (!isLastQuestion || isAnswerSubmitted || selectedAnswer != null) {
-                        gotoNextQuestion() ;
+                      if (!isLastQuestion ||
+                          isAnswerSubmitted ||
+                          selectedAnswer != null) {
+                        gotoNextQuestion();
                       } else {
                         Navigator.pop(context);
                       }
-                      },
+                    },
                     borderRadius: BorderRadius.circular(30),
                     child: Container(
                       width: screenWidth / 4,
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
-                        color: isAnswerSubmitted
-                            ? Colors.lightBlue
-                            : Colors.grey,
+                        color:
+                            isAnswerSubmitted ? Colors.lightBlue : Colors.grey,
                       ),
                       child: Center(
                         child: Text(
@@ -346,7 +391,6 @@ class _TextQuizState extends State<TextQuiz> {
                       ),
                     ),
                   ),
-
                 ],
               ),
             ],

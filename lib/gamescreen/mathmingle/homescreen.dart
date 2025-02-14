@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'studymaterial.dart';
 import 'matching.dart';
 import 'memory.dart';
-import '../../utils/util.dart';
-
+import '../../utils/logout_util.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
   final int chapterNumber;
 
-  const MyHomePage({Key? key,required this.chapterNumber}) : super(key: key);
+  const MyHomePage({Key? key, required this.chapterNumber}) : super(key: key);
 
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -19,10 +18,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-  
-
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Color(0xFF4A4A4A)),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          'Hi, userPin!',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF4A4A4A),
+          ),
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.logout),
@@ -30,17 +41,12 @@ class _MyHomePageState extends State<MyHomePage> {
               logout(context);
             },
           ), // Logout button
-          IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context); // Navigate back to the main menu
-            },
-          ),
         ],
       ),
+      extendBodyBehindAppBar: true,
       body: Container(
-        width: MediaQuery.of(context).size.width,  // Full screen width
-        height: MediaQuery.of(context).size.height,  // Full screen height
+        width: MediaQuery.of(context).size.width, // Full screen width
+        height: MediaQuery.of(context).size.height, // Full screen height
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.lightBlue, Colors.white],
@@ -52,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             // Top section with user icon and welcome text
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              padding: const EdgeInsets.symmetric(vertical: 50.0),
               child: Column(
                 children: [
                   CircleAvatar(
@@ -119,28 +125,32 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget buildGameCard(BuildContext context, String title, String imagePath, String description, String route, int chapter, int points) {
+  Widget buildGameCard(BuildContext context, String title, String imagePath,
+      String description, String route, int chapter, int points) {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, route, arguments: widget.chapterNumber);
       },
       child: Container(
-        width: 250,  // Set a fixed width for each card
+        width: 250, // Set a fixed width for each card
         margin: EdgeInsets.symmetric(horizontal: 10.0),
         child: Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
           elevation: 4,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(  // Center the heading text horizontally
+                Center(
+                  // Center the heading text horizontally
                   child: Text(
                     title,
                     maxLines: 2, // Ensure the text takes up 2 lines
-                    overflow: TextOverflow.ellipsis, // Ellipsis if content is too long
-                    textAlign: TextAlign.center,  // Center the text
+                    overflow: TextOverflow
+                        .ellipsis, // Ellipsis if content is too long
+                    textAlign: TextAlign.center, // Center the text
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -156,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         imagePath,
                         width: double.infinity,
                         height: 150,
-                        fit: BoxFit.cover,  // Make the image fit completely
+                        fit: BoxFit.cover, // Make the image fit completely
                       ),
                     ),
                     Positioned(
@@ -188,7 +198,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(height: 10),
                 Text(
                   description,
-                  textAlign: TextAlign.justify,  // Justify the text
+                  textAlign: TextAlign.justify, // Justify the text
                   style: TextStyle(
                     fontSize: 16,
                   ),
@@ -201,8 +211,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-
-
-
-

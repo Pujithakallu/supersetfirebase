@@ -3,8 +3,10 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/quiz_section/Play_Page.dart';
 import 'dart:math';
 import 'package:number_to_words_english/number_to_words_english.dart';
+import 'package:supersetfirebase/utils/logout_util.dart';
 
 enum Language { English, Spanish }
+
 enum Operation { Addition, Subtraction }
 
 class QuizPage extends StatefulWidget {
@@ -28,17 +30,24 @@ class _QuizPageState extends State<QuizPage> {
   void initState() {
     super.initState();
     flutterTts = FlutterTts();
-    questions = generateRandomQuestions(5); // For example, generate 5 random questions at initialization
+    questions = generateRandomQuestions(
+        5); // For example, generate 5 random questions at initialization
   }
+
   List<Question> generateRandomQuestions(int count) {
     List<Question> generatedQuestions = [];
     Random random = Random();
 
     for (int i = 0; i < count; i++) {
-      Operation operation = random.nextBool() ? Operation.Addition : Operation.Subtraction;
-      int firstNumber = random.nextInt(5) + 1; // Generates a number between 1 and 5
-      int secondNumber = random.nextInt(5) + 1; // Generates a number between 1 and 5
-      int result = operation == Operation.Addition ? firstNumber + secondNumber : firstNumber - secondNumber;
+      Operation operation =
+          random.nextBool() ? Operation.Addition : Operation.Subtraction;
+      int firstNumber =
+          random.nextInt(5) + 1; // Generates a number between 1 and 5
+      int secondNumber =
+          random.nextInt(5) + 1; // Generates a number between 1 and 5
+      int result = operation == Operation.Addition
+          ? firstNumber + secondNumber
+          : firstNumber - secondNumber;
 
       Set<int> optionsSet = {result};
       while (optionsSet.length < 4) {
@@ -48,16 +57,17 @@ class _QuizPageState extends State<QuizPage> {
 
       options.shuffle();
 
-      String questionText = operation == Operation.Addition ?
-      "How many oranges are there in total?" :
-      "How many oranges are left?";
+      String questionText = operation == Operation.Addition
+          ? "How many oranges are there in total?"
+          : "How many oranges are left?";
       String correctAnswer = result.toString();
 
       generatedQuestions.add(Question(
         questionText: questionText,
         options: options,
         correctAnswer: correctAnswer,
-        numberOfOranges: result, // This might need adjustment based on your visual representation needs
+        numberOfOranges:
+            result, // This might need adjustment based on your visual representation needs
         orangeSets: [firstNumber, secondNumber],
         operation: operation,
       ));
@@ -67,13 +77,15 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   Future<void> speakQuestion(String text) async {
-    await flutterTts.setLanguage(selectedLanguage == Language.English ? 'en-US' : 'es-ES');
+    await flutterTts
+        .setLanguage(selectedLanguage == Language.English ? 'en-US' : 'es-ES');
     await flutterTts.setSpeechRate(0.35);
     await flutterTts.speak(text);
   }
 
   void checkAnswer(String selectedAnswer) {
-    bool isCorrect = selectedAnswer == questions[currentQuestionIndex].correctAnswer;
+    bool isCorrect =
+        selectedAnswer == questions[currentQuestionIndex].correctAnswer;
 
     setState(() {
       selectedOption = selectedAnswer;
@@ -105,13 +117,13 @@ class _QuizPageState extends State<QuizPage> {
     });
   }
 
-
   void toggleLanguage() {
     setState(() {
-      selectedLanguage = selectedLanguage == Language.English ? Language.Spanish : Language.English;
+      selectedLanguage = selectedLanguage == Language.English
+          ? Language.Spanish
+          : Language.English;
     });
   }
-
 
   String getQuestionText() {
     // Assuming questions[currentQuestionIndex].questionText is in English
@@ -120,12 +132,14 @@ class _QuizPageState extends State<QuizPage> {
     if (selectedLanguage == Language.Spanish) {
       // Translate or replace with the Spanish text
       // Example:
-      questionText = questionText.replaceAll('How many oranges are there in total?', '¿Cuántas naranjas hay en total?')
-          .replaceAll('How many oranges are left?', '¿Cuántas naranjas quedan?');
+      questionText = questionText
+          .replaceAll('How many oranges are there in total?',
+              '¿Cuántas naranjas hay en total?')
+          .replaceAll(
+              'How many oranges are left?', '¿Cuántas naranjas quedan?');
     }
     return questionText;
   }
-
 
   String getOptionText(String option) {
     try {
@@ -141,6 +155,7 @@ class _QuizPageState extends State<QuizPage> {
       return option;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     Question currentQuestion = questions[currentQuestionIndex];
@@ -151,12 +166,35 @@ class _QuizPageState extends State<QuizPage> {
     buttonWidth = buttonWidth > maxButtonWidth ? maxButtonWidth : buttonWidth;
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.pop(context),
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.white38,
-        shape: CircleBorder(),
-        child: const Icon(Icons.arrow_back_ios),
+      floatingActionButton: Stack(
+        children: [
+          //backbutton
+          Positioned(
+            left: 16,
+            top: 16,
+            child: FloatingActionButton(
+              heroTag: "backButton",
+              onPressed: () => Navigator.pop(context),
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.lightBlue,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.arrow_back_ios, size: 32),
+            ),
+          ),
+          // Logout button
+          Positioned(
+            right: 30,
+            top: 0,
+            child: FloatingActionButton(
+              heroTag: "logoutButton",
+              onPressed: () => logout(context),
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.blue,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.logout_rounded, size: 32),
+            ),
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       body: Container(
@@ -180,18 +218,25 @@ class _QuizPageState extends State<QuizPage> {
               SizedBox(height: 20),
               Text(
                 getQuestionText(),
-                style: TextStyle(color: Colors.black87, fontSize: 36, fontWeight: FontWeight.w900),
+                style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: 36,
+                    fontWeight: FontWeight.w900),
               ),
               SizedBox(height: 20),
               Column(
                 children: questions[currentQuestionIndex].options.map((option) {
                   return Container(
-                    width: buttonWidth, // Consider using MediaQuery to adjust for screen width.
-                    margin: EdgeInsets.only(bottom: 8), // Add some spacing between buttons
+                    width:
+                        buttonWidth, // Consider using MediaQuery to adjust for screen width.
+                    margin: EdgeInsets.only(
+                        bottom: 8), // Add some spacing between buttons
                     child: ElevatedButton(
-                      onPressed: !questionAnswered ? () => checkAnswer(option) : null,
+                      onPressed:
+                          !questionAnswered ? () => checkAnswer(option) : null,
                       child: Text(
-                        getOptionText(option), // This method should handle the conversion or fetching of the option text.
+                        getOptionText(
+                            option), // This method should handle the conversion or fetching of the option text.
                         style: TextStyle(
                           color: Colors.black87,
                           fontSize: 30,
@@ -199,13 +244,23 @@ class _QuizPageState extends State<QuizPage> {
                         ),
                       ),
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                              (states) {
+                        backgroundColor:
+                            MaterialStateProperty.resolveWith<Color>(
+                          (states) {
                             // Change the color based on the answer status
-                            if (!questionAnswered) return Colors.white54; // Default color before selection
-                            if (option == selectedOption && option != questions[currentQuestionIndex].correctAnswer) return Colors.redAccent; // Wrong answer
-                            if (option == questions[currentQuestionIndex].correctAnswer) return Colors.greenAccent; // Correct answer
-                            return Colors.white54; // Default color for unselected options
+                            if (!questionAnswered)
+                              return Colors
+                                  .white54; // Default color before selection
+                            if (option == selectedOption &&
+                                option !=
+                                    questions[currentQuestionIndex]
+                                        .correctAnswer)
+                              return Colors.redAccent; // Wrong answer
+                            if (option ==
+                                questions[currentQuestionIndex].correctAnswer)
+                              return Colors.greenAccent; // Correct answer
+                            return Colors
+                                .white54; // Default color for unselected options
                           },
                         ),
                       ),
@@ -213,22 +268,30 @@ class _QuizPageState extends State<QuizPage> {
                   );
                 }).toList(),
               ),
-
-
-
               if (isLastQuestion && questionAnswered)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PlayPage())); // Use pushReplacement to prevent going back to the quiz
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  PlayPage())); // Use pushReplacement to prevent going back to the quiz
                     },
-                    child: Text('Back to Levels', style: TextStyle(fontSize: 20)),
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.black, foregroundColor: Colors.white),
+                    child:
+                        Text('Back to Levels', style: TextStyle(fontSize: 20)),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        foregroundColor: Colors.white),
                   ),
                 ),
               SizedBox(height: 30),
-              Text('Score: $score', style: TextStyle(color: Colors.black, fontSize: 28, fontWeight: FontWeight.bold)),
+              Text('Score: $score',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -313,7 +376,7 @@ class _Oranges extends StatelessWidget {
     return Row(
       children: List.generate(
         count,
-            (index) => _OrangeWithSpacing(),
+        (index) => _OrangeWithSpacing(),
       ),
     );
   }
@@ -340,9 +403,9 @@ class _OrangeWithSpacing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4.0), // Adjust spacing between oranges as needed
+      padding: const EdgeInsets.symmetric(
+          horizontal: 4.0), // Adjust spacing between oranges as needed
       child: _Orange(),
     );
   }
 }
-

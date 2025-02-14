@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'analytics_engine.dart';
-import '../../utils/util.dart';
+import '../../utils/logout_util.dart';
 
 class PartsOfEquations extends StatefulWidget {
   @override
@@ -81,8 +81,9 @@ class _PartsOfEquationsState extends State<PartsOfEquations> {
                   isSpanish ? 'Changed to Spanish' : 'Changed to English');
             },
           ),
-        Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0), // Adjust horizontal padding as needed
+          Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: 8.0), // Adjust horizontal padding as needed
             child: IconButton(
               icon: Icon(
                 Icons.logout_rounded,
@@ -91,7 +92,7 @@ class _PartsOfEquationsState extends State<PartsOfEquations> {
               ),
               onPressed: () => logout(context),
             ),
-        ),
+          ),
         ],
       ),
       extendBodyBehindAppBar: true,

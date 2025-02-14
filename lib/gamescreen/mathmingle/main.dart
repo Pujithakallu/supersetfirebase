@@ -7,6 +7,7 @@ import 'menu.dart';
 import 'studymaterial.dart';
 import 'matching.dart';
 import 'memory.dart';
+import '../../utils/logout_util.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,7 +40,8 @@ class MathMingleApp extends StatelessWidget {
         },
         routes: {
           '/': (context) => WelcomeScreen(),
-          '/menu': (context) => Menu(), // Make sure you instantiate Menu without const.
+          '/menu': (context) =>
+              Menu(), // Make sure you instantiate Menu without const.
           '/studymaterial': (context) => StudyMaterialScreen(),
           '/matching': (context) => MatchGame(),
           '/memory': (context) => MemoryGame(),
@@ -70,29 +72,45 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: AppBar(
+      appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color(0xFF4A4A4A)),
-          onPressed: () => Navigator.pop(context),
-        ),
         title: Text(
-            'Hi, $userPin!',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF4A4A4A),
-            ),
+          'Hi, $userPin!',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF4A4A4A),
+          ),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.logout_rounded,
-              color: Color(0xFF6C63FF),
-              size: 26,
+      ),
+      floatingActionButton: Stack(
+        children: [
+          //backbutton
+          Positioned(
+            left: 30,
+            top: 20,
+            child: FloatingActionButton(
+              heroTag: "backButton",
+              onPressed: () => Navigator.pop(context),
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.white,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.arrow_back_ios, size: 32),
             ),
-            onPressed: () => logout(context),
+          ),
+          // Logout button
+          Positioned(
+            right: 30,
+            top: 20,
+            child: FloatingActionButton(
+              heroTag: "logoutButton",
+              onPressed: () => logout(context),
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.white,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.logout_rounded, size: 32),
+            ),
           ),
         ],
       ),
@@ -128,11 +146,13 @@ class WelcomeScreen extends StatelessWidget {
                     context,
                     PageRouteBuilder(
                       pageBuilder: (context, animation1, animation2) => Menu(),
-                      transitionsBuilder: (context, animation1, animation2, child) {
+                      transitionsBuilder:
+                          (context, animation1, animation2, child) {
                         const begin = Offset(1.0, 0.0);
                         const end = Offset.zero;
                         const curve = Curves.easeInOut;
-                        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                        var tween = Tween(begin: begin, end: end)
+                            .chain(CurveTween(curve: curve));
                         var offsetAnimation = animation1.drive(tween);
                         return SlideTransition(
                           position: offsetAnimation,

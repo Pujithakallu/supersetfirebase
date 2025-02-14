@@ -3,14 +3,14 @@ import 'homescreen.dart';
 import 'matching.dart';
 import 'memory.dart';
 import 'package:provider/provider.dart';
-import '../../utils/util.dart';
+import '../../utils/logout_util.dart';
 
 // Assume GameData and GameData1 are defined and provided by the MultiProvider in MathMingleApp
 
 class Menu extends StatelessWidget {
   // Customize the spacing between each option
   final double buttonSpacing = 20.0;
-  
+
   // Remove the const keyword from the constructor.
   Menu({Key? key}) : super(key: key);
 
@@ -20,14 +20,22 @@ class Menu extends StatelessWidget {
     int total = Provider.of<GameData>(context).total;
     int total1 = Provider.of<GameData1>(context).total;
     int GT = total + total1;
-    
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Color(0xFF4A4A4A)),
-          onPressed: () => logout(context),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          'Hi, userPin!',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF4A4A4A),
+          ),
         ),
         actions: [
           IconButton(
@@ -75,20 +83,25 @@ class Menu extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  buildChapterButton(context, 'C H A P T E R   1', 1, 'Numbers', Colors.white),
+                  buildChapterButton(
+                      context, 'C H A P T E R   1', 1, 'Numbers', Colors.white),
                   SizedBox(width: buttonSpacing),
-                  buildChapterButton(context, 'C H A P T E R   2', 2, 'Foundations', Colors.white),
+                  buildChapterButton(context, 'C H A P T E R   2', 2,
+                      'Foundations', Colors.white),
                   SizedBox(width: buttonSpacing),
-                  buildChapterButton(context, 'C H A P T E R   3', 3, 'Shapes', Colors.white),
+                  buildChapterButton(
+                      context, 'C H A P T E R   3', 3, 'Shapes', Colors.white),
                 ],
               ),
               SizedBox(height: buttonSpacing),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  buildChapterButton(context, 'C H A P T E R   4', 4, 'Symbols', Colors.white),
+                  buildChapterButton(
+                      context, 'C H A P T E R   4', 4, 'Symbols', Colors.white),
                   SizedBox(width: buttonSpacing),
-                  buildChapterButton(context, 'C H A P T E R   5', 5, 'Geometry', Colors.white),
+                  buildChapterButton(context, 'C H A P T E R   5', 5,
+                      'Geometry', Colors.white),
                 ],
               ),
             ],
@@ -98,7 +111,8 @@ class Menu extends StatelessWidget {
     );
   }
 
-  Widget buildChapterButton(BuildContext context, String title, int chapterNumber, String chapterName, Color color) {
+  Widget buildChapterButton(BuildContext context, String title,
+      int chapterNumber, String chapterName, Color color) {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, '/home', arguments: chapterNumber);

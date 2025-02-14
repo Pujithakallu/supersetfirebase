@@ -3,7 +3,7 @@ import 'package:flip_card/flip_card.dart';
 import 'dart:async';
 import 'dart:math';
 import 'package:provider/provider.dart';
-import '../../utils/util.dart';
+import '../../utils/logout_util.dart';
 
 class GameData1 extends ChangeNotifier {
   int total = 0; // Initialize total
@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Color(0xFF4A4A4A)),
-          onPressed: () => logout(context),
+          onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
@@ -183,7 +183,6 @@ class _MemoryGameState extends State<MemoryGame> {
     });
   }
 
-
   void showEndGameDialog(int score) {
     showDialog(
       context: context,
@@ -264,7 +263,8 @@ class _MemoryGameState extends State<MemoryGame> {
 
           if (_matchedPairs == _data.length ~/ 2) {
             _timer.cancel();
-            int score = (_seconds / 60 * 10).toInt(); // Calculate score based on time remaining
+            int score = (_seconds / 60 * 10)
+                .toInt(); // Calculate score based on time remaining
             showEndGameDialog(score);
             Future.delayed(Duration.zero, () {
               Provider.of<GameData1>(context, listen: false).setTotal(score);
@@ -275,13 +275,13 @@ class _MemoryGameState extends State<MemoryGame> {
 
           Future.delayed(
             const Duration(milliseconds: 1500),
-                () {
+            () {
               _cardStateKeys[_previousIndex]?.currentState?.toggleCard();
               _cardStateKeys[currentIndex]?.currentState?.toggleCard();
 
               Future.delayed(
                 const Duration(milliseconds: 160),
-                    () {
+                () {
                   setState(() {
                     _wait = false;
                   });
@@ -304,7 +304,8 @@ class _MemoryGameState extends State<MemoryGame> {
   Widget build(BuildContext context) {
     final int? chapter = ModalRoute.of(context)?.settings.arguments as int?;
 
-    bool isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     int crossAxisCount = isPortrait ? 4 : 5;
 
     if (!isPortrait && MediaQuery.of(context).size.shortestSide >= 600) {
@@ -321,7 +322,7 @@ class _MemoryGameState extends State<MemoryGame> {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Color(0xFF4A4A4A)),
-          onPressed: () => logout(context),
+          onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
@@ -345,7 +346,7 @@ class _MemoryGameState extends State<MemoryGame> {
         ),
         child: Column(
           children: <Widget>[
-            SizedBox(height: 20),
+            SizedBox(height: 60),
             ClockDisplay(seconds: _seconds),
             Expanded(
               child: Padding(
@@ -371,7 +372,9 @@ class _MemoryGameState extends State<MemoryGame> {
                         front: getQuestionMarkCard(),
                         back: Container(
                           decoration: BoxDecoration(
-                            color: _cardFlips[index] ? Colors.grey[100] : Colors.green,
+                            color: _cardFlips[index]
+                                ? Colors.grey[100]
+                                : Colors.green,
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black45,
@@ -420,54 +423,232 @@ class _MemoryGameState extends State<MemoryGame> {
     switch (chapter) {
       case 1:
         englishWords = [
-          'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',"Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty"
+          'one',
+          'two',
+          'three',
+          'four',
+          'five',
+          'six',
+          'seven',
+          'eight',
+          'nine',
+          'ten',
+          "Eleven",
+          "Twelve",
+          "Thirteen",
+          "Fourteen",
+          "Fifteen",
+          "Sixteen",
+          "Seventeen",
+          "Eighteen",
+          "Nineteen",
+          "Twenty"
         ];
         spanishWords = [
-          'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez',"Once","Doce", "Trece", "Catorce", "Quince", "Dieciséis", "Diecisiete", "Dieciocho", "Diecinueve", "Veinte"
+          'uno',
+          'dos',
+          'tres',
+          'cuatro',
+          'cinco',
+          'seis',
+          'siete',
+          'ocho',
+          'nueve',
+          'diez',
+          "Once",
+          "Doce",
+          "Trece",
+          "Catorce",
+          "Quince",
+          "Dieciséis",
+          "Diecisiete",
+          "Dieciocho",
+          "Diecinueve",
+          "Veinte"
         ];
         break;
       case 2:
         englishWords = [
-          'Numbers','Addition', 'Subtraction', 'Multiplication', 'Division', 'Equal',
-          'Greater than', 'Less than', 'Plus', 'Minus', 'Times','Divided by',
-          'Sum', 'Difference', 'Product', 'Quotient', 'Fraction',
-          'Decimal', 'Ratio', 'Equation'];
+          'Numbers',
+          'Addition',
+          'Subtraction',
+          'Multiplication',
+          'Division',
+          'Equal',
+          'Greater than',
+          'Less than',
+          'Plus',
+          'Minus',
+          'Times',
+          'Divided by',
+          'Sum',
+          'Difference',
+          'Product',
+          'Quotient',
+          'Fraction',
+          'Decimal',
+          'Ratio',
+          'Equation'
+        ];
         spanishWords = [
-          'Número','Adición', 'Resta', 'Multiplicación', 'División', 'Igual',
-          'Mayor que', 'Menor que', 'Más', 'Menos', 'Por','Dividido por',
-          'Suma', 'Diferencia', 'Producto', 'Cociente', 'Fracción',
-          'Decimal', 'Proporción', 'Ecuación'
+          'Número',
+          'Adición',
+          'Resta',
+          'Multiplicación',
+          'División',
+          'Igual',
+          'Mayor que',
+          'Menor que',
+          'Más',
+          'Menos',
+          'Por',
+          'Dividido por',
+          'Suma',
+          'Diferencia',
+          'Producto',
+          'Cociente',
+          'Fracción',
+          'Decimal',
+          'Proporción',
+          'Ecuación'
         ];
         break;
       case 3:
         englishWords = [
-          'Circle', 'Triangle', 'Square', 'Rectangle', 'Rhombus',
-          'Parallelogram', 'Trapezium', 'Oval', 'Ellipse', 'Sphere',
-          'Cube', 'Cylinder', 'Cone', 'Pentagonal prism', 'Hexagonal prism',
-          'Pyramid', 'Cuboid', 'Triangular prism', 'Hemisphere', 'Torus',];
+          'Circle',
+          'Triangle',
+          'Square',
+          'Rectangle',
+          'Rhombus',
+          'Parallelogram',
+          'Trapezium',
+          'Oval',
+          'Ellipse',
+          'Sphere',
+          'Cube',
+          'Cylinder',
+          'Cone',
+          'Pentagonal prism',
+          'Hexagonal prism',
+          'Pyramid',
+          'Cuboid',
+          'Triangular prism',
+          'Hemisphere',
+          'Torus',
+        ];
         spanishWords = [
-          'Círculo', 'Triángulo', 'Cuadrado', 'Rectángulo', 'Rombus',
-          'Paralelogramo', 'Trapecio', 'Óvalo', 'Elipse', 'Esfera',
-          'Cubo', 'Cilindro', 'Cono', 'Prisma pentagonal', 'Prisma hexagonal',
-          'Pirámide', 'Cuboide', 'Prisma triangular', 'Hemisferio', 'Toro',
+          'Círculo',
+          'Triángulo',
+          'Cuadrado',
+          'Rectángulo',
+          'Rombus',
+          'Paralelogramo',
+          'Trapecio',
+          'Óvalo',
+          'Elipse',
+          'Esfera',
+          'Cubo',
+          'Cilindro',
+          'Cono',
+          'Prisma pentagonal',
+          'Prisma hexagonal',
+          'Pirámide',
+          'Cuboide',
+          'Prisma triangular',
+          'Hemisferio',
+          'Toro',
         ];
         break;
       case 4:
-        englishWords = ['+', '-', '=', '>', '<', '×', '÷', '√', '/', '%', '^', '∑', '∫', 'd/dx', '∞', '≠', '≥', '≤', '≈', 'lim'];
+        englishWords = [
+          '+',
+          '-',
+          '=',
+          '>',
+          '<',
+          '×',
+          '÷',
+          '√',
+          '/',
+          '%',
+          '^',
+          '∑',
+          '∫',
+          'd/dx',
+          '∞',
+          '≠',
+          '≥',
+          '≤',
+          '≈',
+          'lim'
+        ];
         spanishWords = [
-          'Más', 'Menos', 'Igual', 'Mayor que', 'Menor que', 'Por', 'Dividido por', 'Raíz cuadrada',
-          'Fracción', 'Porcentaje', 'Exponenciación', 'Sumatoria', 'Integral', 'Derivada', 'Infinito',
-          'No igual a', 'Mayor o igual que', 'Menor o igual que', 'Aproximadamente igual a', 'Límite',
+          'Más',
+          'Menos',
+          'Igual',
+          'Mayor que',
+          'Menor que',
+          'Por',
+          'Dividido por',
+          'Raíz cuadrada',
+          'Fracción',
+          'Porcentaje',
+          'Exponenciación',
+          'Sumatoria',
+          'Integral',
+          'Derivada',
+          'Infinito',
+          'No igual a',
+          'Mayor o igual que',
+          'Menor o igual que',
+          'Aproximadamente igual a',
+          'Límite',
         ];
         break;
       case 5:
-        englishWords = ["Length", "Width", "Height", "Diameter", "Radius", "Perimeter", "Circumference",
-          "Area", "Volume", "Angle", "Slope", "Intersection", "Symmetry", "Perpendicular", "Parallel",
-          "Coordinate", "Vertex", "Axis", "Hypotenuse", "Gradient",];
-        spanishWords =[
-          "Longitud", "Ancho", "Altura", "Diámetro", "Radio", "Perímetro", "Circunferencia", "Superficie",
-          "Volumen", "Ángulo", "Pendiente", "Intersección", "Simetría", "Perpendicular",
-          "Paralelo", "Coordenada", "Vértice", "Eje", "Hipotenusa", "Gradiente",
+        englishWords = [
+          "Length",
+          "Width",
+          "Height",
+          "Diameter",
+          "Radius",
+          "Perimeter",
+          "Circumference",
+          "Area",
+          "Volume",
+          "Angle",
+          "Slope",
+          "Intersection",
+          "Symmetry",
+          "Perpendicular",
+          "Parallel",
+          "Coordinate",
+          "Vertex",
+          "Axis",
+          "Hypotenuse",
+          "Gradient",
+        ];
+        spanishWords = [
+          "Longitud",
+          "Ancho",
+          "Altura",
+          "Diámetro",
+          "Radio",
+          "Perímetro",
+          "Circunferencia",
+          "Superficie",
+          "Volumen",
+          "Ángulo",
+          "Pendiente",
+          "Intersección",
+          "Simetría",
+          "Perpendicular",
+          "Paralelo",
+          "Coordenada",
+          "Vértice",
+          "Eje",
+          "Hipotenusa",
+          "Gradiente",
         ];
         break;
       default:
@@ -539,15 +720,14 @@ class _MemoryGameState extends State<MemoryGame> {
           'ten': 'diez',
           "Eleven": "Once",
           "Twelve": "Doce",
-          "Thirteen":"Trece",
-          "Fourteen" : "Catorce",
-          "Fifteen" : "Quince",
-          "Sixteen" : "Dieciséis",
+          "Thirteen": "Trece",
+          "Fourteen": "Catorce",
+          "Fifteen": "Quince",
+          "Sixteen": "Dieciséis",
           "Seventeen": "Diecisiete",
-          "Eighteen" : "Dieciocho",
-          "Nineteen" : "Diecinueve",
-          "Twenty" : "Veinte",
-
+          "Eighteen": "Dieciocho",
+          "Nineteen": "Diecinueve",
+          "Twenty": "Veinte",
         };
       case 2:
         return {
