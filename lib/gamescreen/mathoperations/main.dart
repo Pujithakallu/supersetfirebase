@@ -9,46 +9,108 @@ import 'package:supersetfirebase/gamescreen/mathoperations/quiz_section/Play_Pag
 import 'package:supersetfirebase/gamescreen/mathoperations/common/widgets/user_card.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/common/global.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/common/api/api_util.dart';
-void main() => runApp(Operators());
+import 'package:supersetfirebase/screens/home_screen.dart';
 
 class Operators extends StatelessWidget {
-  const Operators({super.key});
+  final String userPin;
+
+  const Operators({
+    required this.userPin,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'OP Game',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: HomePage(),
+      home: HomePage(pin: userPin),
       routes: {
         '/level': (context) => PlayPage(),
       },
     );
   }
 }
+
 class HomePage extends StatefulWidget {
+  final String pin;
+
+  const HomePage({
+    required this.pin,
+    Key? key,
+  }) : super(key: key);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  // const HomePage({super.key});
-
   @override
   Widget build(BuildContext context) {
-    // test();
     GlobalVariables.setLevelData();
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          SystemNavigator.pop();
-        },
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.red,
-        shape: const CircleBorder(),
-
-        child: const Icon(Icons.clear, size: 40,),
+      floatingActionButton: Stack(
+        children: [
+          //backbutton
+          Positioned(
+            left: 16,
+            top: 16,
+            child: FloatingActionButton(
+              heroTag: "backButton",
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomeScreen(pin: widget.pin)
+                  ),
+                );
+              },
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.white,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.arrow_back, size: 32),
+            ),
+          ),
+          // Logout button
+          Positioned(
+            right: 0,
+            top: 0,
+            child: FloatingActionButton(
+              heroTag: "logoutButton",
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Logout'),
+                      content: const Text('Are you sure you want to logout?'),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('Cancel'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        TextButton(
+                          child: const Text('Logout'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).popUntil((route) => route.isFirst);
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.blue,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.logout_rounded, size: 32),
+            ),
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       body: Container(
@@ -58,140 +120,119 @@ class _HomePageState extends State<HomePage> {
             fit: BoxFit.cover,
           ),
         ),
-          child: Center(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children :[
-                  // SizedBox(height: 90),
-                  Spacer(flex: 1),
-                  ValueListenableBuilder<int>(
-                    valueListenable: GlobalVariables.totalScore,
-                    builder: (context, int score, child) {
-                      return UserCard(
-                       // username: GlobalVariables.userName,
-                        // avatarUrl: "assets/Mathoperations/orange.png",
-                        score: score,
-                      );
-                    },
+        child: Column(
+          children: [
+            // PIN 
+            Container(
+              margin: EdgeInsets.only(top: 80),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 4,
+                    offset: Offset(0, 2),
                   ),
-                  Spacer(flex: 1),
-                  ImageBanner("assets/Mathoperations/heading.png", screenWidth/5, screenWidth/2.3),
-                  Spacer(flex: 1),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children :[
-                      // SizedBox(width: 400),
-                      Spacer(flex: 2),
-                      InkWell(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => LearnPage()));
-                      },
-                      borderRadius: BorderRadius.circular(30),
-                      child: Container(
-                        width: screenWidth/7,
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.lightGreen,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Text('Learn',
-                              style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold, fontSize: screenWidth/30),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                      Spacer(flex: 1),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => PlayPage()));
-                        },
-                        borderRadius: BorderRadius.circular(30),
-                        child: Container(
-                          width: screenWidth/7,
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Colors.lightBlue,
-                          ),
-                          child:  Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Text('Quiz',
-                                style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold, fontSize: screenWidth/30),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Spacer(flex: 2),
-                      // SizedBox(width: 100),
-
-                      // InkWell(
-                      //   onTap: () {
-                      //     Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //         builder: (context) => ScorePage(),
-                      //       ),
-                      //     );
-                      //   },
-                      //   borderRadius: BorderRadius.circular(30),
-                      //   child: Container(
-                      //     width: 200,
-                      //     padding: const EdgeInsets.all(10),
-                      //     decoration: BoxDecoration(
-                      //       borderRadius: BorderRadius.circular(30),
-                      //       color: Colors.orange,
-                      //     ),
-                      //     child: const Row(
-                      //       mainAxisAlignment: MainAxisAlignment.center,
-                      //       children: <Widget>[
-                      //         Text('Score',
-                      //           style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 40),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
-                    ]
-                  ),
-                  Spacer(flex: 2),
-
-                ]
+                ],
+              ),
+              child: Text(
+                'PIN: ${widget.pin}',
+                style: TextStyle(
+                  fontSize: screenWidth/30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
             ),
-          )
+            Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Spacer(flex: 1),
+                    ValueListenableBuilder<int>(
+                      valueListenable: GlobalVariables.totalScore,
+                      builder: (context, int score, child) {
+                        return UserCard(
+                          score: score,
+                        );
+                      },
+                    ),
+                    Spacer(flex: 1),
+                    ImageBanner("assets/Mathoperations/heading.png", screenWidth/5, screenWidth/2.3),
+                    Spacer(flex: 1),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Spacer(flex: 2),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => LearnPage()));
+                          },
+                          borderRadius: BorderRadius.circular(30),
+                          child: Container(
+                            width: screenWidth/7,
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Colors.lightGreen,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Text(
+                                  'Learn',
+                                  style: TextStyle(
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: screenWidth/30
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Spacer(flex: 1),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => PlayPage()));
+                          },
+                          borderRadius: BorderRadius.circular(30),
+                          child: Container(
+                            width: screenWidth/7,
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Colors.lightBlue,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Text(
+                                  'Quiz',
+                                  style: TextStyle(
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: screenWidth/30
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Spacer(flex: 2),
+                      ],
+                    ),
+                    Spacer(flex: 2),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
-
   }
 }
-
-
-
-
-
-// bottomNavigationBar: BottomNavigationBar(
-//   type: BottomNavigationBarType.fixed,
-//   backgroundColor: Colors.black87,
-//   currentIndex: 0,
-//   items: [
-//     BottomNavigationBarItem(
-//       icon: Icon(Icons.home, color: Colors.white,),
-//       label: 'Home',
-//       backgroundColor: Colors.white
-//     ),
-//     BottomNavigationBarItem(
-//         icon: Icon(Icons.access_alarm, color: Colors.white),
-//         label: 'Home'
-//     ),
-//     BottomNavigationBarItem(
-//         icon: Icon(Icons.access_time_filled_outlined, color: Colors.white),
-//         label: 'Home',
-//         backgroundColor: Colors.black38
-//     ),
-//   ],
-// ),

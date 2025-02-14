@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       case 2:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Operators()),
+          MaterialPageRoute(builder: (context) => Operators(userPin: widget.pin)),
         );
         break;
       default:
