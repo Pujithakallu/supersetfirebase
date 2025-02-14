@@ -28,6 +28,9 @@ dependencies:
   number_to_words: ^1.0.0
   animated_text_kit: ^4.2.2
   spelling_number: ^0.0.4
+  flutter_svg: ^2.0.5
+  shared_preferences: ^2.2.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -57,4 +60,5 @@ flutter:
     - assets/Mathoperations/apple.png
     - assets/Mathoperations/egg.png
     - assets/Mathoperations/child.png
+   
 

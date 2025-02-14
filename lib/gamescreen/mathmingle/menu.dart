@@ -5,22 +5,22 @@ import 'memory.dart';
 import 'package:provider/provider.dart';
 import '../../utils/util.dart';
 
-// void main() {
-//   runApp(MaterialApp(
-//     home: Menu(),
-//   ));
-// }
+// Assume GameData and GameData1 are defined and provided by the MultiProvider in MathMingleApp
 
 class Menu extends StatelessWidget {
   // Customize the spacing between each option
   final double buttonSpacing = 20.0;
-  const Menu({Key? key}) : super(key: key);
+  
+  // Remove the const keyword from the constructor.
+  Menu({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    int? total = 1;
-    int? total1 = 2;
-    int? GT = total + total1;
+    // Access provider values
+    int total = Provider.of<GameData>(context).total;
+    int total1 = Provider.of<GameData1>(context).total;
+    int GT = total + total1;
+    
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -57,7 +57,6 @@ class Menu extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Display the total value in a styled card
               Card(
                 elevation: 8.0,
                 shape: RoundedRectangleBorder(
@@ -68,30 +67,28 @@ class Menu extends StatelessWidget {
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
                     'T O T A L : $GT',
-                    style: TextStyle(fontSize: 24, color: Colors.red),
+                    style: const TextStyle(fontSize: 24, color: Colors.red),
                   ),
                 ),
               ),
-              SizedBox(height: buttonSpacing * 0.5), // Adjusted spacing
-              // Row 1
+              SizedBox(height: buttonSpacing * 0.5),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  buildChapterButton(context, 'C H A P T E R   1',1, 'Numbers',  Colors.white),
+                  buildChapterButton(context, 'C H A P T E R   1', 1, 'Numbers', Colors.white),
                   SizedBox(width: buttonSpacing),
-                  buildChapterButton(context, 'C H A P T E R   2', 2,'Foundations',  Colors.white),
+                  buildChapterButton(context, 'C H A P T E R   2', 2, 'Foundations', Colors.white),
                   SizedBox(width: buttonSpacing),
-                  buildChapterButton(context, 'C H A P T E R   3', 3 ,'Shapes', Colors.white),
+                  buildChapterButton(context, 'C H A P T E R   3', 3, 'Shapes', Colors.white),
                 ],
               ),
-              SizedBox(height: buttonSpacing), // Spacing between rows
-              // Row 2
+              SizedBox(height: buttonSpacing),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  buildChapterButton(context, 'C H A P T E R   4', 4,'Symbols',  Colors.white),
+                  buildChapterButton(context, 'C H A P T E R   4', 4, 'Symbols', Colors.white),
                   SizedBox(width: buttonSpacing),
-                  buildChapterButton(context, 'C H A P T E R   5',5, 'Geometry',  Colors.white),
+                  buildChapterButton(context, 'C H A P T E R   5', 5, 'Geometry', Colors.white),
                 ],
               ),
             ],
@@ -101,20 +98,16 @@ class Menu extends StatelessWidget {
     );
   }
 
-
-
-  Widget buildChapterButton(BuildContext context, String title,int chapterNumber, String chapterName, Color color) {
+  Widget buildChapterButton(BuildContext context, String title, int chapterNumber, String chapterName, Color color) {
     return GestureDetector(
       onTap: () {
-        print("Navigating to /home with chapterNumber: $chapterNumber");
-
-        Navigator.pushNamed(context, '/home',arguments:chapterNumber ?? 1);
+        Navigator.pushNamed(context, '/home', arguments: chapterNumber);
       },
       child: Container(
-        width: 300, // Set width for consistency
-        height: 120, // Set height for consistency
+        width: 300,
+        height: 120,
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey, width: 4), // Thicker gray border
+          border: Border.all(color: Colors.grey, width: 4),
           borderRadius: BorderRadius.circular(150),
         ),
         child: Stack(
@@ -123,14 +116,14 @@ class Menu extends StatelessWidget {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: color,
-                minimumSize: Size(double.infinity, double.infinity), // Make button fill the container
+                minimumSize: const Size(double.infinity, double.infinity),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(150),
-                  side: BorderSide(color: Colors.transparent), // No internal border
+                  side: const BorderSide(color: Colors.transparent),
                 ),
               ),
               onPressed: () {
-                Navigator.pushNamed(context, '/home',arguments:chapterNumber);
+                Navigator.pushNamed(context, '/home', arguments: chapterNumber);
               },
               child: Center(
                 child: Column(
@@ -138,11 +131,11 @@ class Menu extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: TextStyle(fontSize: 27, color: Colors.black),
+                      style: const TextStyle(fontSize: 27, color: Colors.black),
                     ),
                     Text(
                       chapterName,
-                      style: TextStyle(fontSize: 20, color: Colors.black),
+                      style: const TextStyle(fontSize: 20, color: Colors.black),
                     ),
                   ],
                 ),
@@ -153,9 +146,4 @@ class Menu extends StatelessWidget {
       ),
     );
   }
-
-
-
-
-
 }

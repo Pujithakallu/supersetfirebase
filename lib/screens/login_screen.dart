@@ -9,29 +9,31 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
-  
+class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
   final List<TextEditingController> _controllers = List.generate(3, (_) => TextEditingController());
   final List<FocusNode> _focusNodes = List.generate(3, (_) => FocusNode());
   
   late AnimationController _bounceController;
   late Animation<double> _bounceAnimation;
+  late AnimationController _characterController;
+  late Animation<double> _characterAnimation;
+  late AnimationController _starController;
+  late Animation<double> _starScale;
   
- 
   String _errorMessage = '';
   bool _isLoading = false;
+  bool _showStars = false;
 
- 
   final List<Color> _pinBoxColors = [
-    Color(0xFFFF9999),  
-    Color(0xFF99FF99), 
-    Color(0xFF9999FF),  
+    Color(0xFFFF9999),
+    Color(0xFF99FF99),
+    Color(0xFF9999FF),
   ];
 
   @override
   void initState() {
     super.initState();
-    // Initialize the bouncing animation
+    // Title bounce animation
     _bounceController = AnimationController(
       duration: Duration(milliseconds: 1500),
       vsync: this,
@@ -44,12 +46,51 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       parent: _bounceController,
       curve: Curves.easeInOut,
     ));
+
+    // Character idle animation
+    _characterController = AnimationController(
+      duration: Duration(milliseconds: 2000),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _characterAnimation = Tween<double>(
+      begin: -15.0,
+      end: 15.0,
+    ).animate(CurvedAnimation(
+      parent: _characterController,
+      curve: Curves.easeInOut,
+    ));
+
+    // Star animation
+    _starController = AnimationController(
+      duration: Duration(milliseconds: 500),
+      vsync: this,
+    );
+
+    _starScale = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _starController,
+      curve: Curves.elasticOut,
+    ));
+
+    // Add listeners to text controllers for star animation
+    for (var controller in _controllers) {
+      controller.addListener(() {
+        if (controller.text.isNotEmpty && !_showStars) {
+          setState(() => _showStars = true);
+          _starController.forward(from: 0.0);
+        }
+      });
+    }
   }
 
   @override
   void dispose() {
-    // Clean up resources when widget is disposed
     _bounceController.dispose();
+    _characterController.dispose();
+    _starController.dispose();
     for (var controller in _controllers) {
       controller.dispose();
     }
@@ -60,10 +101,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   }
 
   Future<void> _login() async {
-    
     String pin = _controllers.map((c) => c.text).join();
     
-   
     if (pin.length != 3) {
       setState(() {
         _errorMessage = 'Please enter all 3 numbers!';
@@ -77,7 +116,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     });
 
     try {
-      // Check if PIN exists in Firestore
       final pinDoc = await FirebaseFirestore.instance
           .collection('pins')
           .where('pin', isEqualTo: pin)
@@ -91,13 +129,10 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
         return;
       }
 
-      // Navigate to HomeScreen if PIN is valid
       if (mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (_) => HomeScreen(
-              pin: pin,
-            ),
+            builder: (_) => HomeScreen(pin: pin),
           ),
         );
       }
@@ -109,19 +144,63 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     }
   }
 
+  Widget _buildAnimatedCharacter() {
+    return AnimatedBuilder(
+      animation: _characterAnimation,
+      builder: (context, child) {
+        return Transform.translate(
+          offset: Offset(_characterAnimation.value, 0),
+          child: Container(
+            width: 120,
+            height: 120,
+            child: Stack(
+              children: [
+                // You can replace this with an actual character image
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.blue[200],
+                  ),
+                  child: Center(
+                    child: Text(
+                      '🦸‍♂️',
+                      style: TextStyle(fontSize: 50),
+                    ),
+                  ),
+                ),
+                if (_showStars)
+                  AnimatedBuilder(
+                    animation: _starScale,
+                    builder: (context, child) {
+                      return Transform.scale(
+                        scale: _starScale.value,
+                        child: Container(
+                          alignment: Alignment.topRight,
+                          child: Text('✨', style: TextStyle(fontSize: 24)),
+                        ),
+                      );
+                    },
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Container(
-        // Gradient background
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFFFFECE1),  
-              Color(0xFFE1F6FF), 
+              Color(0xFFFFECE1),
+              Color(0xFFE1F6FF),
             ],
           ),
         ),
@@ -133,7 +212,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Bouncing title animation
+                    _buildAnimatedCharacter(),
+                    SizedBox(height: 20),
                     AnimatedBuilder(
                       animation: _bounceAnimation,
                       builder: (context, child) {
@@ -158,7 +238,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       },
                     ),
                     SizedBox(height: 30),
-                    // Main login card
                     Container(
                       padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
@@ -174,16 +253,33 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       ),
                       child: Column(
                         children: [
-                          Text(
-                            'Enter your secret code!',
-                            style: TextStyle(
-                              fontSize: 24,
-                              color: Color(0xFF4A4A4A),
-                              fontWeight: FontWeight.w600,
-                            ),
+                          Stack(
+                            children: [
+                              Text(
+                                'Enter your secret code!',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  color: Color(0xFF4A4A4A),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              if (_showStars)
+                                Positioned(
+                                  right: -10,
+                                  top: -10,
+                                  child: AnimatedBuilder(
+                                    animation: _starScale,
+                                    builder: (context, child) {
+                                      return Transform.scale(
+                                        scale: _starScale.value,
+                                        child: Text('✨', style: TextStyle(fontSize: 24)),
+                                      );
+                                    },
+                                  ),
+                                ),
+                            ],
                           ),
                           SizedBox(height: 30),
-                          // PIN input fields
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: List.generate(3, (index) {
@@ -202,6 +298,19 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
                                   ),
+                                  textInputAction: index < 2 
+                                      ? TextInputAction.next 
+                                      : TextInputAction.done,
+                                  onSubmitted: (value) {
+                                    if (index < 2) {
+                                      _focusNodes[index + 1].requestFocus();
+                                    } else {
+                                      if (_controllers.every((controller) => 
+                                          controller.text.isNotEmpty)) {
+                                        _login();
+                                      }
+                                    }
+                                  },
                                   decoration: InputDecoration(
                                     counterText: '',
                                     filled: true,
@@ -225,7 +334,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                       ),
                                     ),
                                   ),
-                                  // Auto-focus handling
                                   onChanged: (value) {
                                     if (value.length == 1 && index < 2) {
                                       _focusNodes[index + 1].requestFocus();
@@ -236,7 +344,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             }),
                           ),
                           SizedBox(height: 20),
-                          // Error message display
                           if (_errorMessage.isNotEmpty)
                             Container(
                               padding: EdgeInsets.all(10),
@@ -244,17 +351,24 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                 color: Colors.red.withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: Text(
-                                _errorMessage,
-                                style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 16,
-                                ),
-                                textAlign: TextAlign.center,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('🤔 ', style: TextStyle(fontSize: 20)),
+                                  Flexible(
+                                    child: Text(
+                                      _errorMessage,
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontSize: 16,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           SizedBox(height: 30),
-                          // Login button
                           ElevatedButton(
                             onPressed: _isLoading ? null : _login,
                             style: ElevatedButton.styleFrom(
@@ -285,20 +399,25 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                   ),
                           ),
                           SizedBox(height: 20),
-                          // Sign up link
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(builder: (_) => SignupScreen())
                               );
                             },
-                            child: Text(
-                              'Create New Secret Code',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Color(0xFF6C63FF),
-                                decoration: TextDecoration.underline,
-                              ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  'Create New Secret Code',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Color(0xFF6C63FF),
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                                Text(' 🎯', style: TextStyle(fontSize: 16)),
+                              ],
                             ),
                           ),
                         ],

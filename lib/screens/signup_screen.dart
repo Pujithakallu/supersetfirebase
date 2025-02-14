@@ -16,11 +16,10 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
   String _errorMessage = '';
   bool _isLoading = false;
 
-  // Fun colors for kids
   final List<Color> _pinBoxColors = [
-    Color(0xFFFF9999), // Light Red
-    Color(0xFF99FF99), // Light Green
-    Color(0xFF9999FF), // Light Blue
+    Color(0xFFFF9999),
+    Color(0xFF99FF99),
+    Color(0xFF9999FF),
   ];
 
   @override
@@ -68,7 +67,6 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
     });
 
     try {
-      // Check if PIN exists
       final existingPin = await FirebaseFirestore.instance
           .collection('pins')
           .where('pin', isEqualTo: pin)
@@ -82,7 +80,6 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
         return;
       }
 
-      // Save new PIN
       await FirebaseFirestore.instance.collection('pins').add({
         'pin': pin,
         'created_at': FieldValue.serverTimestamp(),
@@ -197,6 +194,22 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                                   keyboardType: TextInputType.number,
                                   maxLength: 1,
                                   obscureText: false,
+                                  // Add text input action
+                                  textInputAction: index < 2 
+                                      ? TextInputAction.next 
+                                      : TextInputAction.done,
+                                  // Handle keyboard actions
+                                  onSubmitted: (value) {
+                                    if (index < 2) {
+                                      _focusNodes[index + 1].requestFocus();
+                                    } else {
+                                      // If all fields are filled, trigger signup
+                                      if (_controllers.every((controller) => 
+                                          controller.text.isNotEmpty)) {
+                                        _signup();
+                                      }
+                                    }
+                                  },
                                   style: TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,

@@ -5,19 +5,6 @@ import 'dart:math';
 import 'package:provider/provider.dart';
 import '../../utils/util.dart';
 
-void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => GameData1()),
-      ],
-      child: MaterialApp(
-        home: HomeScreen(),
-      ),
-    ),
-  );
-}
-
 class GameData1 extends ChangeNotifier {
   int total = 0; // Initialize total
 
