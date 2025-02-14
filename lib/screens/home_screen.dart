@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart'; 
 import 'login_screen.dart';
 import '../gamescreen/mathmingle/main.dart';
 import '../gamescreen/mathequations/main.dart';
@@ -18,39 +19,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  late AnimationController _bounceController;
-  late AnimationController _floatController;
+  late final AnimationController _bounceController;
   
-  final List<Map<String, dynamic>> games = [
-    {
-      'title': '1. Math Mingle',
-      'icon': Icons.calculate_outlined,
-      'color': const Color(0xFFFF6B6B),
-      'gradient': const [Color(0xFFFF6B6B), Color(0xFFFF9999)],
-      'description': 'Fun with numbers!'
-    },
-    {
-      'title': '2. Math Equations',
-      'icon': Icons.functions_outlined,
-      'color': const Color(0xFF4ECB71),
-      'gradient': const [Color(0xFF4ECB71), Color(0xFF99FF99)],
-      'description': 'Master equations!'
-    },
-    {
-      'title': '3. Math Operators',
-      'icon': Icons.calculate_rounded,
-      'color': const Color(0xFF6C63FF),
-      'gradient': const [Color(0xFF6C63FF), Color(0xFF9999FF)],
-      'description': 'Learn new Symbols n more!'
-    },
-    {
-      'title': '4. Studio',
-      'icon': Icons.palette_outlined,
-      'color': const Color(0xFFFFB347),
-      'gradient': const [Color(0xFFFFB347), Color(0xFFFFD699)],
-      'description': 'Draw and create!'
-    },
-  ];
+  late List<Map<String, dynamic>> games;
 
   @override
   void initState() {
@@ -60,62 +31,133 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       vsync: this,
     )..repeat(reverse: true);
 
-    _floatController = AnimationController(
-      duration: const Duration(seconds: 3),
-      vsync: this,
-    )..repeat(reverse: true);
+    games = [
+      {
+        'title': '1. Math Mingle',
+        'icon': Icons.calculate_outlined,
+        'color': const Color(0xFFFF6B6B),
+        'gradient': const [Color(0xFFFF6B6B), Color(0xFFFF9999)],
+        'description': 'Fun with numbers!',
+        'progress': 0.0,
+        'key': 'math_mingle_progress',
+      },
+      {
+        'title': '2. Math Equations',
+        'icon': Icons.functions_outlined,
+        'color': const Color(0xFF4ECB71),
+        'gradient': const [Color(0xFF4ECB71), Color(0xFF99FF99)],
+        'description': 'Master equations!',
+        'progress': 0.0,
+        'key': 'math_equations_progress',
+      },
+      {
+        'title': '3. Math Operators',
+        'icon': Icons.calculate_rounded,
+        'color': const Color(0xFF6C63FF),
+        'gradient': const [Color(0xFF6C63FF), Color(0xFF9999FF)],
+        'description': 'Learn new Symbols n more!',
+        'progress': 0.0,
+        'key': 'math_operators_progress',
+      },
+      {
+        'title': '4. Studio',
+        'icon': Icons.palette_outlined,
+        'color': const Color(0xFFFFB347),
+        'gradient': const [Color(0xFFFFB347), Color(0xFFFFD699)],
+        'description': 'Draw and create!',
+        'progress': 0.0,
+        'key': 'studio_progress',
+      },
+    ];
+    
+    _loadProgress();
   }
 
   @override
   void dispose() {
     _bounceController.dispose();
-    _floatController.dispose();
     super.dispose();
   }
 
-  // Handle game card tap
-  void _handleGameTap(BuildContext context, int index) {
+  Future<void> _loadProgress() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      for (var game in games) {
+        final progress = prefs.getDouble('${widget.pin}_${game['key']}') ?? 0.0;
+        game['progress'] = progress;
+      }
+    });
+  }
+
+  Future<void> _updateProgress(int gameIndex, double progress) async {
+    final prefs = await SharedPreferences.getInstance();
+    final game = games[gameIndex];
+    await prefs.setDouble('${widget.pin}_${game['key']}', progress);
+    setState(() {
+      game['progress'] = progress;
+    });
+  }
+
+  Future<void> _handleGameCompletion(int gameIndex) async {
+    await _updateProgress(gameIndex, 1.0);
+  }
+
+  void _handleGameTap(BuildContext context, int index) async {
     HapticFeedback.lightImpact();
     
     switch (index) {
       case 0:
-        Navigator.push(
+        final result = await Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MathMingleApp()),
+          MaterialPageRoute(builder: (context) =>  MathMingleApp()),
         );
+        if (result == true) {
+          await _handleGameCompletion(index);
+        }
         break;
       case 1:
-        Navigator.push(
+        final result = await Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => MyApp(userPin: widget.pin)),
         );
+        if (result == true) {
+          await _handleGameCompletion(index);
+        }
         break;
       case 2:
-        Navigator.push(
+        final result = await Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => Operators(userPin: widget.pin)),
         );
+        if (result == true) {
+          await _handleGameCompletion(index);
+        }
         break;
       default:
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              '🎮 ${games[index]['title']} is coming soon!',
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                '🎮 ${games[index]['title']} is coming soon!',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
+              backgroundColor: games[index]['color'] as Color,
+              duration: const Duration(seconds: 2),
             ),
-            backgroundColor: games[index]['color'],
-            duration: const Duration(seconds: 2),
-          ),
-        );
+          );
+        }
     }
   }
 
-  // Build a game card
   Widget _buildGameCard(int index, Animation<double> animation) {
+    final game = games[index];
+    final Color color = game['color'] as Color;
+    final List<Color> gradientColors = game['gradient'] as List<Color>;
+    
     return AnimatedBuilder(
       animation: animation,
       builder: (context, child) {
@@ -129,12 +171,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: games[index]['gradient'],
+            colors: gradientColors,
           ),
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: games[index]['color'].withOpacity(0.4),
+              color: color.withOpacity(0.4),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
@@ -144,13 +186,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              games[index]['icon'],
+              game['icon'] as IconData,
               size: 60,
               color: Colors.white,
             ),
             const SizedBox(height: 12),
             Text(
-              games[index]['title'],
+              game['title'] as String,
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -175,12 +217,39 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
-                games[index]['description'],
+                game['description'] as String,
                 style: TextStyle(
                   fontSize: 14,
-                  color: games[index]['color'],
+                  color: color,
                   fontWeight: FontWeight.w600,
                 ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Progress: ${((game['progress'] as double) * 100).toInt()}%',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: LinearProgressIndicator(
+                      value: game['progress'] as double,
+                      backgroundColor: Colors.white.withOpacity(0.3),
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      minHeight: 8,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -192,8 +261,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-    int crossAxisCount = screenSize.width < 600 ? 2 : 
-                        screenSize.width < 900 ? 3 : 4;
+    final int crossAxisCount = screenSize.width < 600 ? 2 : 
+                             screenSize.width < 900 ? 3 : 4;
 
     return Scaffold(
       appBar: AppBar(
@@ -202,7 +271,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Color(0xFF4A4A4A)),
           onPressed: () => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => LoginScreen())
+            MaterialPageRoute(builder: (_) =>  LoginScreen()),
           ),
         ),
         actions: [
@@ -214,7 +283,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
             onPressed: () {
               Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (_) => LoginScreen())
+                MaterialPageRoute(builder: (_) =>  LoginScreen()),
               );
             },
           ),
@@ -223,7 +292,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       extendBodyBehindAppBar: true,
       body: Stack(
         children: [
-          // Background
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -239,43 +307,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
           ),
           
-          // Floating Clouds
           ...List.generate(5, (index) {
-            double startInterval = (index * 0.2).clamp(0.0, 0.8);
-            double endInterval = startInterval + 0.2;
-            
             return Positioned(
               left: (index * 80.0) % screenSize.width,
               top: (index * 60.0) % (screenSize.height * 0.5),
-              child: SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(0, 0),
-                  end: const Offset(0, 0.1),
-                ).animate(CurvedAnimation(
-                  parent: _floatController,
-                  curve: Interval(
-                    startInterval,
-                    endInterval,
-                    curve: Curves.easeInOut,
-                  ),
-                )),
-                child: Opacity(
-                  opacity: 0.4,
-                  child: Icon(
-                    Icons.cloud,
-                    size: 60 + (index * 10),
-                    color: Colors.white,
-                  ),
+              child: Opacity(
+                opacity: 0.4,
+                child: Icon(
+                  Icons.cloud,
+                  size: 60 + (index * 10),
+                  color: Colors.white,
                 ),
               ),
             );
           }),
           
-          // Main Content
           SafeArea(
             child: CustomScrollView(
               slivers: [
-                // Welcome Section
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.all(16),
@@ -294,7 +343,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ),
                       child: Column(
                         children: [
-                          // Bouncing School Icon
                           ScaleTransition(
                             scale: Tween<double>(
                               begin: 1.0,
@@ -372,7 +420,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   ),
                 ),
                 
-                // Games Grid
                 SliverPadding(
                   padding: const EdgeInsets.all(16),
                   sliver: SliverGrid(
