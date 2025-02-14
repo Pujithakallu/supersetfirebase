@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'analytics_engine.dart';
+import '../../utils/util.dart';
 
 class LinearEquationsIntroduction extends StatefulWidget {
   const LinearEquationsIntroduction({Key? key}) : super(key: key);
@@ -95,6 +96,17 @@ class _LinearEquationsIntroductionState
                   isSpanish ? 'Changed to Spanish' : 'Changed to English');
             },
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0), // Adjust horizontal padding as needed
+            child: IconButton(
+              icon: Icon(
+                Icons.logout_rounded,
+                color: Color(0xFF6C63FF),
+                size: 26,
+              ),
+              onPressed: () => logout(context),
+            ),
+        ),
         ],
       ),
       body: SingleChildScrollView(

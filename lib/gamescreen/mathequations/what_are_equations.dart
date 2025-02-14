@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'what_are_equations_detail.dart';
 import 'importance_of_equations.dart';
 import 'real_world_applications.dart';
+import '../../utils/util.dart';
 
 class WhatAreEquations extends StatelessWidget {
   const WhatAreEquations({Key? key}) : super(key: key);
@@ -11,7 +12,18 @@ class WhatAreEquations extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('What are Equations?'),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.logout_rounded,
+              color: Color(0xFF6C63FF),
+              size: 26,
+            ),
+            onPressed: () => logout(context),
+          ),
+        ],
       ),
+      extendBodyBehindAppBar: true,
       body: Stack(
         children: [
           // Background image

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'instructions_widget.dart';
 import 'score_manager.dart';
 import 'analytics_engine.dart';
+import '../../utils/util.dart';
 
 class EquationDragDrop extends StatefulWidget {
   const EquationDragDrop({Key? key}) : super(key: key);
@@ -469,7 +470,18 @@ class _EquationDragDropState extends State<EquationDragDrop> {
           title: Text(isSpanish
               ? translations['es']!['game_over']!
               : translations['en']!['game_over']!),
-        ),
+          actions: [
+          IconButton(
+            icon: Icon(
+              Icons.logout_rounded,
+              color: Color(0xFF6C63FF),
+              size: 26,
+            ),
+            onPressed: () => logout(context),
+          ),
+        ],
+         ),
+        extendBodyBehindAppBar: true,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

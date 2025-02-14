@@ -6,18 +6,20 @@ import 'menu.dart';
 import 'studymaterial.dart';
 import 'matching.dart';
 import 'memory.dart';
+import '../../utils/util.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MathMingleApp());
+  runApp(const MathMingleApp(userPin: ''));
 }
 
 // main.dart
 class MathMingleApp extends StatelessWidget {
-  const MathMingleApp({Key? key}) : super(key: key);
+  final String userPin;
+  const MathMingleApp({required this.userPin});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class MathMingleApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => const WelcomeScreen(),
+        '/': (context) =>  WelcomeScreen(userPin: userPin,),
         '/menu': (context) => const Menu(),
         '/studymaterial': (context) => const StudyMaterialScreen(),
         '/matching': (context) => const MatchGame(),
@@ -40,7 +42,7 @@ class MathMingleApp extends StatelessWidget {
           );
         default:
           return MaterialPageRoute(
-            builder: (context) => const WelcomeScreen(),
+            builder: (context) =>  WelcomeScreen(userPin: userPin),
           );
     }
 }
@@ -51,13 +53,40 @@ class MathMingleApp extends StatelessWidget {
 }
 // WelcomeScreen remains unchanged
 class WelcomeScreen extends StatelessWidget {
-  final String? userPin;
+  final String userPin;
 
-  const WelcomeScreen({Key? key, this.userPin}) : super(key: key);
+   WelcomeScreen({ required this.userPin});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Color(0xFF4A4A4A)),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+            'Hi, $userPin!',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF4A4A4A),
+            ),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.logout_rounded,
+              color: Color(0xFF6C63FF),
+              size: 26,
+            ),
+            onPressed: () => logout(context),
+          ),
+        ],
+      ),
+      extendBodyBehindAppBar: true,
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(

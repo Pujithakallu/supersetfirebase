@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'util.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import '../../utils/util.dart';
 
 class StudyMaterialScreen extends StatefulWidget {
   @override
@@ -78,7 +79,18 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
           'V O C A B U L A R Y',
           style: TextStyle(fontSize: 45),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.logout_rounded,
+              color: Color(0xFF6C63FF),
+              size: 26,
+            ),
+            onPressed: () => logout(context),
+          ),
+        ],
       ),
+      extendBodyBehindAppBar: true,
       body: Stack(
         children: [
           Image.asset(

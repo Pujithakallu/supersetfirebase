@@ -9,6 +9,7 @@ import 'package:supersetfirebase/gamescreen/mathoperations/common/comm_functions
 import 'dart:developer';
 import 'package:supersetfirebase/gamescreen/mathoperations/common/global.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/common/translate/translate.dart';
+import '../../../../utils/util.dart';
 
 class FlashCard extends StatefulWidget {
   final String opSign;
@@ -56,6 +57,20 @@ class _FlashCardState extends State<FlashCard> {
     double padding = screenWidth * 0.01; // 1% of screen width for padding
     double buttonWidth = screenWidth * 0.15; // 15% of screen width for buttons
     return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.opSign),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.logout_rounded,
+              color: Color(0xFF6C63FF),
+              size: 26,
+            ),
+            onPressed: () => logout(context),
+          ),
+        ],
+      ),
+      extendBodyBehindAppBar: true,
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(

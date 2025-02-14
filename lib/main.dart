@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Math Games',
+      debugShowCheckedModeBanner: false,  // Disables the debug banners
       theme: ThemeData(
         primarySwatch: Colors.blue,
         fontFamily: 'Roboto',

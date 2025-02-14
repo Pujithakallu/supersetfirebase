@@ -3,6 +3,7 @@ import 'login_screen.dart';
 import '../gamescreen/mathmingle/main.dart';
 import '../gamescreen/mathequations/main.dart';
 import '../gamescreen/mathoperations/main.dart';
+import '../utils/util.dart';
 
 class HomeScreen extends StatelessWidget {
   final String pin;
@@ -51,9 +52,7 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Color(0xFF4A4A4A)),
-          onPressed: () => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => LoginScreen())
-          ),
+          onPressed: () => logout(context),
         ),
         actions: [
           IconButton(
@@ -62,11 +61,7 @@ class HomeScreen extends StatelessWidget {
               color: Color(0xFF6C63FF),
               size: 26,
             ),
-            onPressed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (_) => LoginScreen())
-              );
-            },
+            onPressed: () => logout(context),
           ),
         ],
       ),
@@ -143,7 +138,7 @@ class HomeScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => MathMingleApp(),
+                                builder: (context) => MathMingleApp(userPin: pin),
                               ),
                             );
                           } else if (index == 1) { // Math Equations

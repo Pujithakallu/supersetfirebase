@@ -3,6 +3,7 @@ import 'homescreen.dart';
 import 'matching.dart';
 import 'memory.dart';
 import 'package:provider/provider.dart';
+import '../../utils/util.dart';
 
 // void main() {
 //   runApp(MaterialApp(
@@ -21,6 +22,25 @@ class Menu extends StatelessWidget {
     int? total1 = 2;
     int? GT = total + total1;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Color(0xFF4A4A4A)),
+          onPressed: () => logout(context),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.logout_rounded,
+              color: Color(0xFF6C63FF),
+              size: 26,
+            ),
+            onPressed: () => logout(context),
+          ),
+        ],
+      ),
+      extendBodyBehindAppBar: true,
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../utils/util.dart';
 
 class PlayMenu extends StatelessWidget {
   const PlayMenu({Key? key}) : super(key: key);
@@ -14,7 +15,18 @@ class PlayMenu extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.logout_rounded,
+              color: Color(0xFF6C63FF),
+              size: 26,
+            ),
+            onPressed: () => logout(context),
+          ),
+        ],
       ),
+      extendBodyBehindAppBar: true,
       body: Stack(
         children: [
           // Background image

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'instructions_widget.dart';
 import 'score_manager.dart';
+import '../../utils/util.dart';
 
 class EquationToWordsScreen extends StatefulWidget {
   const EquationToWordsScreen({Key? key}) : super(key: key);
@@ -614,6 +615,14 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
                       isSpanish ? 'Changed to Spanish' : 'Changed to English');
                 },
               ),
+              IconButton(
+            icon: Icon(
+              Icons.logout_rounded,
+              color: Color(0xFF6C63FF),
+              size: 26,
+            ),
+            onPressed: () => logout(context),
+          ),
             ],
           ),
           InstructionsWidget(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'analytics_engine.dart';
+import '../../utils/util.dart';
 
 class WhatAreEquationsDetail extends StatefulWidget {
   const WhatAreEquationsDetail({Key? key}) : super(key: key);
@@ -80,8 +81,17 @@ class _WhatAreEquationsDetailState extends State<WhatAreEquationsDetail> {
                   isSpanish ? 'Changed to Spanish' : 'Changed to English');
             },
           ),
+          IconButton(
+            icon: Icon(
+              Icons.logout_rounded,
+              color: Color(0xFF6C63FF),
+              size: 26,
+            ),
+            onPressed: () => logout(context),
+          ),
         ],
       ),
+      extendBodyBehindAppBar: true,
       body: Center(
         child: Card(
           margin: const EdgeInsets.all(16.0),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'studymaterial.dart';
 import 'matching.dart';
 import 'memory.dart';
+import '../../utils/util.dart';
 
 
 class MyHomePage extends StatefulWidget {
@@ -23,6 +24,12 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              logout(context);
+            },
+          ), // Logout button
           IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {

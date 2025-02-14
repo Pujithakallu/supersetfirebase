@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'analytics_engine.dart';
+import '../../utils/util.dart';
 
 class RealWorldApplications extends StatefulWidget {
   const RealWorldApplications({Key? key}) : super(key: key);
@@ -82,8 +83,17 @@ class _RealWorldApplicationsState extends State<RealWorldApplications> {
                   isSpanish ? 'Changed to Spanish' : 'Changed to English');
             },
           ),
+          IconButton(
+            icon: Icon(
+              Icons.logout_rounded,
+              color: Color(0xFF6C63FF),
+              size: 26,
+            ),
+            onPressed: () => logout(context),
+          ),
         ],
       ),
+      extendBodyBehindAppBar: true,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

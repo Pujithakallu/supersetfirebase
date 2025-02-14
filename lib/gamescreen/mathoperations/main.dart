@@ -9,6 +9,8 @@ import 'package:supersetfirebase/gamescreen/mathoperations/quiz_section/Play_Pag
 import 'package:supersetfirebase/gamescreen/mathoperations/common/widgets/user_card.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/common/global.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/common/api/api_util.dart';
+import '../../utils/util.dart';
+
 void main() => runApp(Operators());
 
 class Operators extends StatelessWidget {
@@ -42,7 +44,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          SystemNavigator.pop();
+          logout(context);
         },
         foregroundColor: Colors.black,
         backgroundColor: Colors.red,

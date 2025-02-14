@@ -3,6 +3,7 @@ import 'package:flip_card/flip_card.dart';
 import 'dart:async';
 import 'dart:math';
 import 'package:provider/provider.dart';
+import '../../utils/util.dart';
 
 void main() {
   runApp(
@@ -33,7 +34,24 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Memory Game Home'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Color(0xFF4A4A4A)),
+          onPressed: () => logout(context),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.logout_rounded,
+              color: Color(0xFF6C63FF),
+              size: 26,
+            ),
+            onPressed: () => logout(context),
+          ),
+        ],
       ),
+      extendBodyBehindAppBar: true,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -312,7 +330,24 @@ class _MemoryGameState extends State<MemoryGame> {
           'R E M E M B E R  &  W I N ',
           style: TextStyle(fontSize: 45),
         ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Color(0xFF4A4A4A)),
+          onPressed: () => logout(context),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.logout_rounded,
+              color: Color(0xFF6C63FF),
+              size: 26,
+            ),
+            onPressed: () => logout(context),
+          ),
+        ],
       ),
+      extendBodyBehindAppBar: true,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

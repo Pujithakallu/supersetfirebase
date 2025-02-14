@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'linear_equations_introduction.dart';
+import '../../utils/util.dart';
 
 class LearnMenu extends StatelessWidget {
   const LearnMenu({Key? key}) : super(key: key);
@@ -9,7 +10,18 @@ class LearnMenu extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Math Equations'),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.logout_rounded,
+              color: Color(0xFF6C63FF),
+              size: 26,
+            ),
+            onPressed: () => logout(context),
+          ),
+        ],
       ),
+      extendBodyBehindAppBar: true,
       body: Stack(
         children: [
           // Background image

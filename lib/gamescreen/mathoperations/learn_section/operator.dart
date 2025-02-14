@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/learn_section/flash_cards/flash_cards.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/common/image.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/learn_section/practice_section/practice_screen.dart';
-
+import '../../../utils/util.dart';
 
 class OperatorPage extends StatelessWidget {
   final Map<String, dynamic> operatorData;
@@ -14,6 +14,18 @@ class OperatorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.logout_rounded,
+              color: Color(0xFF6C63FF),
+              size: 26,
+            ),
+            onPressed: () => logout(context),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pop(context);
