@@ -3,7 +3,7 @@ import 'homescreen.dart';
 import 'matching.dart';
 import 'memory.dart';
 import 'package:provider/provider.dart';
-import '../../utils/logout_util.dart';
+import 'package:supersetfirebase/utils/logout_util.dart';
 
 // Assume GameData and GameData1 are defined and provided by the MultiProvider in MathMingleApp
 

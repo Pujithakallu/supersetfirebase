@@ -10,7 +10,8 @@ import 'package:supersetfirebase/gamescreen/mathoperations/common/widgets/user_c
 import 'package:supersetfirebase/gamescreen/mathoperations/common/global.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/common/api/api_util.dart';
 import 'package:supersetfirebase/screens/home_screen.dart';
-import '../../utils/logout_util.dart';
+import 'package:supersetfirebase/utils/logout_util.dart';
+import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
 class Operators extends StatelessWidget {
   final String userPin;
@@ -62,8 +63,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => HomeScreen(pin: widget.pin)),
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
                 );
               },
               foregroundColor: Colors.black,

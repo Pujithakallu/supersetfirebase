@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'screens/login_screen.dart';
 import 'config/firebaseconfig.dart';
 import 'package:supersetfirebase/gamescreen/mathmingle/main.dart';
+import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FirebaseConfig.initializeFirebase();
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserPinProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -15,7 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Math Games',
-      debugShowCheckedModeBanner: false,  // Disables the debug banners
+      debugShowCheckedModeBanner: false, // Disables the debug banners
       theme: ThemeData(
         primarySwatch: Colors.blue,
         fontFamily: 'Roboto',

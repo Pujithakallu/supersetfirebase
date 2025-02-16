@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'util.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import '../../utils/logout_util.dart';
+import 'package:supersetfirebase/utils/logout_util.dart';
 
 class StudyMaterialScreen extends StatefulWidget {
   @override

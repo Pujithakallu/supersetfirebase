@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/learn_section/flash_cards/flash_cards.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/common/image.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/learn_section/practice_section/practice_screen.dart';
-import '../../../utils/logout_util.dart';
+import 'package:supersetfirebase/utils/logout_util.dart';
+import 'package:provider/provider.dart';
+import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
 class OperatorPage extends StatelessWidget {
   final Map<String, dynamic> operatorData;
@@ -12,6 +14,7 @@ class OperatorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       floatingActionButton: Stack(
@@ -57,6 +60,29 @@ class OperatorPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Spacer(flex: 2),
+                  Container(
+                    margin: EdgeInsets.only(top: 80),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.9),
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 4,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      'PIN: ${userPin}',
+                      style: TextStyle(
+                        fontSize: screenWidth / 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
                   // ImageBanner('assets/Mathoperations/plus.png', 300, 250),
                   Text(
                     operatorData['op_sign'],

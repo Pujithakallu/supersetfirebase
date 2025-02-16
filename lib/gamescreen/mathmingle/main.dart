@@ -7,7 +7,7 @@ import 'menu.dart';
 import 'studymaterial.dart';
 import 'matching.dart';
 import 'memory.dart';
-import '../../utils/logout_util.dart';
+import 'package:supersetfirebase/utils/logout_util.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

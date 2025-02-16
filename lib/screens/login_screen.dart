@@ -3,23 +3,27 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'signup_screen.dart';
 import 'home_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
-  final List<TextEditingController> _controllers = List.generate(3, (_) => TextEditingController());
+class _LoginScreenState extends State<LoginScreen>
+    with TickerProviderStateMixin {
+  final List<TextEditingController> _controllers =
+      List.generate(3, (_) => TextEditingController());
   final List<FocusNode> _focusNodes = List.generate(3, (_) => FocusNode());
-  
+
   late AnimationController _bounceController;
   late Animation<double> _bounceAnimation;
   late AnimationController _characterController;
   late Animation<double> _characterAnimation;
   late AnimationController _starController;
   late Animation<double> _starScale;
-  
+
   String _errorMessage = '';
   bool _isLoading = false;
   bool _showStars = false;
@@ -38,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       duration: Duration(milliseconds: 1500),
       vsync: this,
     )..repeat(reverse: true);
-    
+
     _bounceAnimation = Tween<double>(
       begin: -10.0,
       end: 10.0,
@@ -102,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
   Future<void> _login() async {
     String pin = _controllers.map((c) => c.text).join();
-    
+
     if (pin.length != 3) {
       setState(() {
         _errorMessage = 'Please enter all 3 numbers!';
@@ -129,11 +133,11 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
         return;
       }
 
+      // Store the PIN in Provider
+      Provider.of<UserPinProvider>(context, listen: false).setPin(pin);
       if (mounted) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (_) => HomeScreen(pin: pin),
-          ),
+          MaterialPageRoute(builder: (_) => HomeScreen()),
         );
       }
     } catch (e) {
@@ -272,7 +276,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                     builder: (context, child) {
                                       return Transform.scale(
                                         scale: _starScale.value,
-                                        child: Text('✨', style: TextStyle(fontSize: 24)),
+                                        child: Text('✨',
+                                            style: TextStyle(fontSize: 24)),
                                       );
                                     },
                                   ),
@@ -298,14 +303,14 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
                                   ),
-                                  textInputAction: index < 2 
-                                      ? TextInputAction.next 
+                                  textInputAction: index < 2
+                                      ? TextInputAction.next
                                       : TextInputAction.done,
                                   onSubmitted: (value) {
                                     if (index < 2) {
                                       _focusNodes[index + 1].requestFocus();
                                     } else {
-                                      if (_controllers.every((controller) => 
+                                      if (_controllers.every((controller) =>
                                           controller.text.isNotEmpty)) {
                                         _login();
                                       }
@@ -314,7 +319,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                   decoration: InputDecoration(
                                     counterText: '',
                                     filled: true,
-                                    fillColor: _pinBoxColors[index].withOpacity(0.3),
+                                    fillColor:
+                                        _pinBoxColors[index].withOpacity(0.3),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(15),
                                       borderSide: BorderSide.none,
@@ -374,7 +380,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFF6C63FF),
                               foregroundColor: Colors.white,
-                              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 15),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),
@@ -401,9 +408,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                           SizedBox(height: 20),
                           TextButton(
                             onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => SignupScreen())
-                              );
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) => SignupScreen()));
                             },
                             child: Row(
                               mainAxisSize: MainAxisSize.min,

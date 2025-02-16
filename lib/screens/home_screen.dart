@@ -5,15 +5,12 @@ import 'login_screen.dart';
 import '../gamescreen/mathmingle/main.dart';
 import '../gamescreen/mathequations/main.dart';
 import '../gamescreen/mathoperations/main.dart';
-import '../utils/logout_util.dart';
+import 'package:supersetfirebase/utils/logout_util.dart';
+import 'package:provider/provider.dart';
+import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  final String pin;
-  
-  const HomeScreen({
-    required this.pin,
-    Key? key,
-  }) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -82,9 +79,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   Future<void> _loadProgress() async {
     final prefs = await SharedPreferences.getInstance();
+    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     setState(() {
       for (var game in games) {
-        final progress = prefs.getDouble('${widget.pin}_${game['key']}') ?? 0.0;
+        final progress = prefs.getDouble('$userPin}_${game['key']}') ?? 0.0;
         game['progress'] = progress;
       }
     });
@@ -92,8 +90,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   Future<void> _updateProgress(int gameIndex, double progress) async {
     final prefs = await SharedPreferences.getInstance();
+    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     final game = games[gameIndex];
-    await prefs.setDouble('${widget.pin}_${game['key']}', progress);
+    await prefs.setDouble('${userPin}_${game['key']}', progress);
     setState(() {
       game['progress'] = progress;
     });
@@ -105,12 +104,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   void _handleGameTap(BuildContext context, int index) async {
     HapticFeedback.lightImpact();
+    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
 
     switch (index) {
       case 0:
         final result = await Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>  MathMingleApp()),
+          MaterialPageRoute(builder: (context) => MathMingleApp()),
         );
         if (result == true) {
           await _handleGameCompletion(index);
@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       case 1:
         final result = await Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MyApp(userPin: widget.pin)),
+          MaterialPageRoute(builder: (context) => MyApp(userPin: userPin)),
         );
         if (result == true) {
           await _handleGameCompletion(index);
@@ -128,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       case 2:
         final result = await Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Operators(userPin: widget.pin)),
+          MaterialPageRoute(builder: (context) => Operators(userPin: userPin)),
         );
         if (result == true) {
           await _handleGameCompletion(index);
@@ -209,10 +209,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
             const SizedBox(height: 6),
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 4
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.9),
                 borderRadius: BorderRadius.circular(12),
@@ -261,9 +258,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    String userPin = Provider.of<UserPinProvider>(context).pin;
     final Size screenSize = MediaQuery.of(context).size;
-    final int crossAxisCount = screenSize.width < 600 ? 2 :
-                             screenSize.width < 900 ? 3 : 4;
+    final int crossAxisCount = screenSize.width < 600
+        ? 2
+        : screenSize.width < 900
+            ? 3
+            : 4;
 
     return Scaffold(
       appBar: AppBar(
@@ -272,7 +273,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Color(0xFF4A4A4A)),
           onPressed: () => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) =>  LoginScreen()),
+            MaterialPageRoute(builder: (_) => LoginScreen()),
           ),
         ),
         actions: [
@@ -303,7 +304,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
             ),
           ),
-
           ...List.generate(5, (index) {
             return Positioned(
               left: (index * 80.0) % screenSize.width,
@@ -318,7 +318,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
             );
           }),
-
           SafeArea(
             child: CustomScrollView(
               slivers: [
@@ -356,7 +355,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           ),
                           const SizedBox(height: 12),
                           Text(
-                            'Hi, ${widget.pin}!',
+                            'Hi, ${userPin}!',
                             style: const TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
@@ -384,9 +383,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           const SizedBox(height: 12),
                           Container(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8
-                            ),
+                                horizontal: 16, vertical: 8),
                             decoration: BoxDecoration(
                               color: const Color(0xFFFFD700).withOpacity(0.3),
                               borderRadius: BorderRadius.circular(20),
@@ -416,7 +413,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ),
                   ),
                 ),
-
                 SliverPadding(
                   padding: const EdgeInsets.all(16),
                   sliver: SliverGrid(

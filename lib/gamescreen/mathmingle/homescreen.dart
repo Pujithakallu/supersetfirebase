@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'studymaterial.dart';
 import 'matching.dart';
 import 'memory.dart';
-import '../../utils/logout_util.dart';
+import 'package:supersetfirebase/utils/logout_util.dart';
 
 class MyHomePage extends StatefulWidget {
   @override

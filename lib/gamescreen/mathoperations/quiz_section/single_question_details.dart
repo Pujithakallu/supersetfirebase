@@ -3,6 +3,8 @@ import 'package:supersetfirebase/gamescreen/mathoperations/common/widgets/answer
 import 'package:supersetfirebase/gamescreen/mathoperations/common/operator_data/op_data.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/learn_section/flash_cards/flash_cards.dart';
 import 'package:supersetfirebase/utils/logout_util.dart';
+import 'package:provider/provider.dart';
+import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
 class SingleQuestionPage extends StatelessWidget {
   final Map<String, dynamic> questionData;
@@ -17,37 +19,65 @@ class SingleQuestionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     int? selectedAnswerIndex = questionData['selected_ans_index'] ?? 0;
     int correctAnswerIndex = questionData['correct_ans_index'] ?? 0;
-
+    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     return Scaffold(
-      floatingActionButton: Stack(
-        children: [
-          //backbutton
-          Positioned(
-            left: 16,
-            top: 16,
-            child: FloatingActionButton(
+      floatingActionButton: Positioned(
+        top: 16,
+        left: 0,
+        right: 0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Back Button (Left)
+            FloatingActionButton(
               heroTag: "backButton",
               onPressed: () => Navigator.pop(context),
               foregroundColor: Colors.black,
               backgroundColor: Colors.lightBlue,
               shape: const CircleBorder(),
-              child: const Icon(Icons.arrow_back_ios, size: 32),
+              child: const Icon(Icons.arrow_back_ios, size: 24),
             ),
-          ),
-          // Logout button
-          Positioned(
-            right: 30,
-            top: 0,
-            child: FloatingActionButton(
-              heroTag: "logoutButton",
-              onPressed: () => logout(context),
-              foregroundColor: Colors.white,
-              backgroundColor: Colors.blue,
-              shape: const CircleBorder(),
-              child: const Icon(Icons.logout_rounded, size: 32),
+
+            // PIN Display (Center)
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 4,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Text(
+                'PIN: $userPin',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
             ),
-          ),
-        ],
+
+            // Logout Button (Right)
+            Padding(
+              padding: EdgeInsets.only(
+                  right: 30), // Moves logout button slightly left
+              child: FloatingActionButton(
+                heroTag: "logoutButton",
+                onPressed: () => logout(context),
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.blue,
+                shape: const CircleBorder(),
+                child:
+                    const Icon(Icons.logout_rounded, size: 28), // Larger icon
+              ),
+            ),
+          ],
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       body: Container(

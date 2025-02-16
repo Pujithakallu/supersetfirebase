@@ -3,7 +3,7 @@ import 'package:flip_card/flip_card.dart';
 import 'dart:async';
 import 'dart:math';
 import 'package:provider/provider.dart';
-import '../../utils/logout_util.dart';
+import 'package:supersetfirebase/utils/logout_util.dart';
 
 class GameData1 extends ChangeNotifier {
   int total = 0; // Initialize total
