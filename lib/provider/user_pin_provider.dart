@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; // Import the ChangeNotifier class
 
-class UserPinProvider with ChangeNotifier {
+class UserPinProvider {
   String _pin = '';
 
   String get pin => _pin;
 
   void setPin(String pin) {
     _pin = pin;
-    notifyListeners(); // Notify all listeners about the change
+    // notifyListeners(); // Notify all listeners about the change
   }
 }
