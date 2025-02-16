@@ -60,5 +60,9 @@ flutter:
     - assets/Mathoperations/apple.png
     - assets/Mathoperations/egg.png
     - assets/Mathoperations/child.png
+    
+    - assets/images/profile_pic.png  # Ensure this image exists inside assets/images folder
+    
+    
    
 
