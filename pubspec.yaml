@@ -61,7 +61,13 @@ flutter:
     - assets/Mathoperations/egg.png
     - assets/Mathoperations/child.png
     
-    - assets/images/profile_pic.png  # Ensure this image exists inside assets/images folder
+    - assets/images/background.png
+    - assets/images/profile_pic.png
+    - assets/images/math_mingle.png
+    - assets/images/math_equations.png
+    - assets/images/math_operators.png
+    - assets/images/background.png
+    
     
     
    
