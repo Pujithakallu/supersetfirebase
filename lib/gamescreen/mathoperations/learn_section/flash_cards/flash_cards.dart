@@ -9,7 +9,7 @@ import 'package:supersetfirebase/gamescreen/mathoperations/common/comm_functions
 import 'dart:developer';
 import 'package:supersetfirebase/gamescreen/mathoperations/common/global.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/common/translate/translate.dart';
-import 'package:op_games/analytics_engine.dart';
+import 'package:supersetfirebase/gamescreen/mathoperations/analytics_engine.dart';
 
 
 class FlashCard extends StatefulWidget {
