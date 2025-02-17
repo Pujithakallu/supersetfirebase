@@ -10,6 +10,7 @@ import 'package:supersetfirebase/gamescreen/mathoperations/common/global.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/quiz_section/result_page.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/common/level/level_info.dart';
 import 'dart:developer';
+import 'package:supersetfirebase/gamescreen/mathoperations/analytics_engine.dart';
 class McqQuiz extends StatefulWidget {
   final String opSign;
   final LevelInfo level;
@@ -22,6 +23,7 @@ class McqQuiz extends StatefulWidget {
 class _McqQuizState extends State<McqQuiz> {
   int? selectedAnswerIndex;
   int questionIndex = 0;
+  List<String> languageNames = ["English", "Spanish"];
   //late double screenWidth = MediaQuery.of(context).size.width;
   late List<McqQuestion> questions;
   FlutterTts flutterTts = FlutterTts();
@@ -56,10 +58,14 @@ class _McqQuizState extends State<McqQuiz> {
 
   }
 
-  void changeLang(){
+  void changeLang() async {
     setState(() {
       currentLanguage = currentLanguage == 0 ? 1 : 0;
     });
+    print('Button clicked');
+    String newLanguage = languageNames[currentLanguage];
+    await AnalyticsEngine.logTranslateButtonClickLearn('changed to $newLanguage');
+    print('Language changed to: $newLanguage');
   }
 
   Future<void> ReadOut(String text) async {
@@ -181,8 +187,9 @@ class _McqQuizState extends State<McqQuiz> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     InkWell(
-                      onTap: () {
+                      onTap: () async {
                         ReadOut('$quesHeading[currentLanguage], ${question.question}');
+                        await AnalyticsEngine.logAudioButtonClick(currentLanguage);
                       },
                       borderRadius: BorderRadius.circular(30),
                       child: Container(
