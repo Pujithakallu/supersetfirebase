@@ -8,7 +8,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import "package:supersetfirebase/gamescreen/mathoperations/common/translate/translate.dart";
 import 'package:supersetfirebase/gamescreen/mathoperations/common/global.dart';
 import 'dart:developer';
-import 'package:op_games/analytics_engine.dart';
+import 'package:supersetfirebase/gamescreen/mathoperations/analytics_engine.dart';
 
 class PracticeScreen extends StatefulWidget {
   final String opSign;
