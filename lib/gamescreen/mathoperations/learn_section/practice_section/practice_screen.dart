@@ -8,6 +8,8 @@ import 'package:flutter_tts/flutter_tts.dart';
 import "package:supersetfirebase/gamescreen/mathoperations/common/translate/translate.dart";
 import 'package:supersetfirebase/gamescreen/mathoperations/common/global.dart';
 import 'dart:developer';
+import 'package:op_games/analytics_engine.dart';
+
 class PracticeScreen extends StatefulWidget {
   final String opSign;
   const PracticeScreen({Key? key,required this.opSign}) : super(key: key);
@@ -23,6 +25,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
   //late double screenWidth = MediaQuery.of(context).size.width;
   late List<McqQuestion> questions;
   FlutterTts flutterTts = FlutterTts();
+  List<String> languageNames = ["English", "Spanish"];
   int currentLanguage= 0;
   late Map<String, dynamic> pageLangData;
   late List<String> quesHeading;
@@ -53,10 +56,14 @@ class _PracticeScreenState extends State<PracticeScreen> {
     setState(() {});
   }
 
-  void changeLang(){
+  void changeLang() async {
     setState(() {
       currentLanguage = currentLanguage == 0 ? 1 : 0;
     });
+    print('Button clicked');
+    String newLanguage = languageNames[currentLanguage];
+    await AnalyticsEngine.logTranslateButtonClickLearn('changed to $newLanguage');
+    print('Language changed to: $newLanguage');
   }
 
   void gotoNextQuestion(){
@@ -157,6 +164,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
                 InkWell(
                   onTap: () {
                     ReadOut('$quesHeading[currentLanguage], ${question.question}');
+                    await AnalyticsEngine.logAudioButtonClick(currentLanguage);
                   },
                   borderRadius: BorderRadius.circular(30),
                   child: Container(
