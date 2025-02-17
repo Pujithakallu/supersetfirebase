@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       case 1:
         final result = await Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MyApp(userPin: userPin)),
+          MaterialPageRoute(builder: (context) => MyApp()),
         );
         if (result == true) {
           await _handleGameCompletion(index);

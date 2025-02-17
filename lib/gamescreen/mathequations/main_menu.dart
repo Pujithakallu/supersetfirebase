@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import '../../utils/logout_util.dart';
+import 'package:provider/provider.dart';
+import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
 class MainMenu extends StatelessWidget {
   const MainMenu({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Stack(
@@ -71,8 +74,9 @@ class MainMenu extends StatelessWidget {
       ),
       floatingActionButton: Stack(
         children: [
+          // Back Button (Left)
           Positioned(
-            left: 24, // Adjusted for better positioning
+            left: 24,
             top: 16,
             child: FloatingActionButton(
               onPressed: () => Navigator.pop(context),
@@ -84,6 +88,38 @@ class MainMenu extends StatelessWidget {
               ),
             ),
           ),
+          // PIN Display (Center)
+          Positioned(
+            top: 16,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.9),
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Text(
+                  'PIN: $userPin',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          // Logout Button (Right)
           Positioned(
             right: 16,
             top: 16,

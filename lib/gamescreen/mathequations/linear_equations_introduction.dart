@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'analytics_engine.dart';
-import '../../utils/logout_util.dart';
+import 'package:supersetfirebase/utils/logout_util.dart';
+import 'package:provider/provider.dart';
+import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
 class LinearEquationsIntroduction extends StatefulWidget {
   const LinearEquationsIntroduction({Key? key}) : super(key: key);
@@ -69,7 +71,7 @@ class _LinearEquationsIntroductionState
   @override
   Widget build(BuildContext context) {
     final text = isSpanish ? spanishText : englishText;
-
+    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     return Scaffold(
       appBar: AppBar(
         title: Text(text['title']!),
@@ -96,8 +98,17 @@ class _LinearEquationsIntroductionState
                   isSpanish ? 'Changed to Spanish' : 'Changed to English');
             },
           ),
+          Text(
+            'PIN: $userPin',
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0), // Adjust horizontal padding as needed
+            padding: const EdgeInsets.symmetric(
+                horizontal: 8.0), // Adjust horizontal padding as needed
             child: IconButton(
               icon: Icon(
                 Icons.logout_rounded,
@@ -106,7 +117,7 @@ class _LinearEquationsIntroductionState
               ),
               onPressed: () => logout(context),
             ),
-        ),
+          ),
         ],
       ),
       body: SingleChildScrollView(

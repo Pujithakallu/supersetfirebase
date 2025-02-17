@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'analytics_engine.dart';
-import '../../utils/logout_util.dart';
+import 'package:supersetfirebase/utils/logout_util.dart';
+import 'package:provider/provider.dart';
+import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
 class RealWorldApplications extends StatefulWidget {
   const RealWorldApplications({Key? key}) : super(key: key);
@@ -56,7 +58,7 @@ class _RealWorldApplicationsState extends State<RealWorldApplications> {
   @override
   Widget build(BuildContext context) {
     final text = isSpanish ? spanishText : englishText;
-
+    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     return Scaffold(
       appBar: AppBar(
         title: Text(text['title']!),
@@ -82,6 +84,14 @@ class _RealWorldApplicationsState extends State<RealWorldApplications> {
               AnalyticsEngine.logTranslateButtonClickLearn(
                   isSpanish ? 'Changed to Spanish' : 'Changed to English');
             },
+          ),
+          Text(
+            'PIN: $userPin',
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
           ),
           IconButton(
             icon: Icon(

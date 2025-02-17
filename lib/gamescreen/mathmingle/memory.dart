@@ -4,6 +4,8 @@ import 'dart:async';
 import 'dart:math';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/utils/logout_util.dart';
+import 'package:provider/provider.dart';
+import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
 class GameData1 extends ChangeNotifier {
   int total = 0; // Initialize total
@@ -18,27 +20,81 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Memory Game Home'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color(0xFF4A4A4A)),
-          onPressed: () => Navigator.pop(context),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.logout_rounded,
-              color: Color(0xFF6C63FF),
-              size: 26,
+      floatingActionButton: Positioned(
+        top: 16,
+        left: 0,
+        right: 0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Back Button (Left)
+            FloatingActionButton(
+              heroTag: "backButton",
+              onPressed: () => Navigator.pop(context),
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.lightBlue,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.arrow_back_ios, size: 24),
             ),
-            onPressed: () => logout(context),
-          ),
-        ],
+
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // PIN Display with decoration
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.9),
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Text(
+                    'PIN: $userPin',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                const Text(
+                  'Memory Game Home',
+                  style: TextStyle(
+                    fontSize: 45,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+
+            // Logout Button (Right)
+            Padding(
+              padding: EdgeInsets.only(
+                  right: 30), // Moves logout button slightly left
+              child: FloatingActionButton(
+                heroTag: "logoutButton",
+                onPressed: () => logout(context),
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.blue,
+                shape: const CircleBorder(),
+                child:
+                    const Icon(Icons.logout_rounded, size: 28), // Larger icon
+              ),
+            ),
+          ],
+        ),
       ),
-      extendBodyBehindAppBar: true,
+      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -303,7 +359,7 @@ class _MemoryGameState extends State<MemoryGame> {
   @override
   Widget build(BuildContext context) {
     final int? chapter = ModalRoute.of(context)?.settings.arguments as int?;
-
+    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
     int crossAxisCount = isPortrait ? 4 : 5;
@@ -313,29 +369,79 @@ class _MemoryGameState extends State<MemoryGame> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'R E M E M B E R  &  W I N ',
-          style: TextStyle(fontSize: 45),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color(0xFF4A4A4A)),
-          onPressed: () => Navigator.pop(context),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.logout_rounded,
-              color: Color(0xFF6C63FF),
-              size: 26,
+      floatingActionButton: Positioned(
+        top: 16,
+        left: 0,
+        right: 0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Back Button (Left)
+            FloatingActionButton(
+              heroTag: "backButton",
+              onPressed: () => Navigator.pop(context),
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.lightBlue,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.arrow_back_ios, size: 24),
             ),
-            onPressed: () => logout(context),
-          ),
-        ],
+
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // PIN Display with decoration
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.9),
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Text(
+                    'PIN: $userPin',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                const Text(
+                  'R E M E M B E R  &  W I N ',
+                  style: TextStyle(
+                    fontSize: 45,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+
+            // Logout Button (Right)
+            Padding(
+              padding: EdgeInsets.only(
+                  right: 30), // Moves logout button slightly left
+              child: FloatingActionButton(
+                heroTag: "logoutButton",
+                onPressed: () => logout(context),
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.blue,
+                shape: const CircleBorder(),
+                child:
+                    const Icon(Icons.logout_rounded, size: 28), // Larger icon
+              ),
+            ),
+          ],
+        ),
       ),
-      extendBodyBehindAppBar: true,
+      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -836,18 +942,25 @@ class ClockDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     int minutes = seconds ~/ 60;
     int remainingSeconds = seconds % 60;
-    return Center(
-      child: Container(
-        padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white70.withOpacity(0.5),
-        ),
-        child: Text(
-          '$minutes:${remainingSeconds.toString().padLeft(2, '0')}',
-          style: TextStyle(
-            fontSize: 36,
-            fontWeight: FontWeight.bold,
+    return Padding(
+      padding: const EdgeInsets.only(
+          top: 40.0), // Adjust this value to move the whole circle down
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Container(
+          width: 120,
+          height: 120,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white70.withOpacity(0.5),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            '$minutes:${remainingSeconds.toString().padLeft(2, '0')}',
+            style: const TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
