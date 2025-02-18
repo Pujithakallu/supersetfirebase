@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:supersetfirebase/screens/login_screen.dart';
-import 'package:supersetfirebase/screens/home_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -107,21 +106,24 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color(0xFF4A4A4A)),
-          onPressed: () => Navigator.of(context).pop(),
+        leading: Container(
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.8),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          margin: EdgeInsets.all(8),
+          child: IconButton(
+            icon: Icon(Icons.arrow_back, color: Color.fromARGB(255, 101, 67, 33)),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
         ),
       ),
       extendBodyBehindAppBar: true,
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFFE1F6FF),
-              Color(0xFFFFECE1),
-            ],
+          image: DecorationImage(
+            image: AssetImage('assets/images/profile_pic.png'), 
+            fit: BoxFit.cover,
           ),
         ),
         child: SafeArea(
@@ -142,7 +144,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                             style: TextStyle(
                               fontSize: 32,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF4A4A4A),
+                              color: Color.fromARGB(255, 226, 246, 10),
                               shadows: [
                                 Shadow(
                                   color: Colors.white,
@@ -159,7 +161,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                     Container(
                       padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.9),
+                        color: Colors.white.withOpacity(0.0),
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
@@ -175,7 +177,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                             'Pick 3 special numbers!',
                             style: TextStyle(
                               fontSize: 24,
-                              color: Color(0xFF4A4A4A),
+                              color: Color.fromARGB(255, 234, 214, 41),
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -193,17 +195,13 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                                   textAlign: TextAlign.center,
                                   keyboardType: TextInputType.number,
                                   maxLength: 1,
-                                  obscureText: false,
-                                  // Add text input action
                                   textInputAction: index < 2 
                                       ? TextInputAction.next 
                                       : TextInputAction.done,
-                                  // Handle keyboard actions
                                   onSubmitted: (value) {
                                     if (index < 2) {
                                       _focusNodes[index + 1].requestFocus();
                                     } else {
-                                      // If all fields are filled, trigger signup
                                       if (_controllers.every((controller) => 
                                           controller.text.isNotEmpty)) {
                                         _signup();
@@ -217,7 +215,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                                   decoration: InputDecoration(
                                     counterText: '',
                                     filled: true,
-                                    fillColor: _pinBoxColors[index].withOpacity(0.3),
+                                    fillColor: _pinBoxColors[index].withOpacity(1.0),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(15),
                                       borderSide: BorderSide.none,
@@ -248,50 +246,17 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                           ),
                           SizedBox(height: 20),
                           if (_errorMessage.isNotEmpty)
-                            Container(
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: Colors.red.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(
-                                _errorMessage,
-                                style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 16,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
+                            Text(
+                              _errorMessage,
+                              style: TextStyle(color: Colors.red, fontSize: 16),
+                              textAlign: TextAlign.center,
                             ),
                           SizedBox(height: 30),
                           ElevatedButton(
                             onPressed: _isLoading ? null : _signup,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFF6C63FF),
-                              foregroundColor: Colors.white,
-                              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              elevation: 5,
-                              shadowColor: Color(0xFF6C63FF).withOpacity(0.5),
-                            ),
                             child: _isLoading
                                 ? CircularProgressIndicator(color: Colors.white)
-                                : Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        'Create My Code!',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(width: 10),
-                                      Icon(Icons.stars),
-                                    ],
-                                  ),
+                                : Text('Create My Code!', style: TextStyle(fontSize: 20)),
                           ),
                         ],
                       ),

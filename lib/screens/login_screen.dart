@@ -188,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                     decoration: InputDecoration(
                                       counterText: '',
                                       filled: true,
-                                      fillColor: _pinBoxColors[index].withOpacity(0.3),
+                                      fillColor: _pinBoxColors[index].withOpacity(1.0),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide.none,
@@ -236,7 +236,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                   borderRadius: BorderRadius.circular(30),
                                 ),
                                 elevation: 5,
-                                shadowColor: Color(0xFF6C63FF).withOpacity(0.5),
+                                shadowColor: Color(0xFF6C63FF).withOpacity(1.0),
                               ),
                               child: _isLoading
                                   ? CircularProgressIndicator(color: Colors.white)
@@ -266,7 +266,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                 'Create New Secret Code 🎯',
                                 style: TextStyle(
                                   fontSize: 16,
-                                  color: Colors.black,
+                                  color: Colors.red,
                                   decoration: TextDecoration.underline,
                                 ),
                               ),
