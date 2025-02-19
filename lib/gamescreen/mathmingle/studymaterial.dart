@@ -249,10 +249,12 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
                           EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                     ),
                     onPressed: () {
+                      
                       _pageController.nextPage(
                         duration: Duration(milliseconds: 500),
                         curve: Curves.easeInOut,
                       );
+                      
                       setState(() {
                         currentPage++;
                       });
@@ -329,9 +331,10 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
                 IconButton(
                   icon: Icon(Icons.volume_up, size: 30, color: Colors.blue),
                   onPressed: () {
+                    String fileName = english.toLowerCase().replaceAll("/", "_");
                     _audioPlayer.play(
                       AssetSource(
-                          'Mathmingle/audio/${english.toLowerCase()}.mp3'),
+                          'Mathmingle/audio/$fileName.mp3'),
                     );
                     _logAudioButtonClick(english, chapter); // Log the event
                   },
