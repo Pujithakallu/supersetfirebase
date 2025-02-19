@@ -9,10 +9,40 @@ import 'package:supersetfirebase/utils/logout_util.dart';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   final String pin;
+  
+  const HomeScreen({
+    required this.pin,
+    Key? key,
+  }) : super(key: key);
 
-  HomeScreen({required this.pin, Key? key}) : super(key: key);
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+  late String pin;
+
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    pin = widget.pin;
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 4), // Faster bounce effect
+    )..repeat(reverse: true);
+
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.1).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+  }
+
+   
 
   final List<Map<String, dynamic>> games = [
     {
@@ -82,7 +112,11 @@ class HomeScreen extends StatelessWidget {
               color: Color(0xFF6C63FF),
               size: 26,
             ),
-            onPressed: () => logout(context),
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (_) =>  LoginScreen()),
+              );
+            },
           ),
         ],
       ),
@@ -99,6 +133,8 @@ class HomeScreen extends StatelessWidget {
 
           // UI Content
           SafeArea(
+            child: Expanded(
+            child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -107,7 +143,12 @@ class HomeScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 20, bottom: 10),
                   child: Column(
                     children: [
-                      Icon(Icons.school, size: 40, color: Colors.blue),
+                      //Hat
+                      ScaleTransition(
+                      scale: _scaleAnimation,
+                      child: Icon(Icons.school, size: 40, color: Colors.blue),
+                    ),
+
                       SizedBox(height: 8),
                       Text(
                         "Hi, $pin!",
@@ -156,8 +197,9 @@ class HomeScreen extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    child: Wrap(
+                      spacing: 20, // Adjust spacing to ensure equal gaps
+                      alignment: WrapAlignment.spaceEvenly,
                       children: games.map((game) {
                         return Padding(
                           padding: EdgeInsets.symmetric(horizontal: 12),
@@ -175,24 +217,26 @@ class HomeScreen extends StatelessWidget {
                             },
                             child: Column(
                               children: [
-                                // Game Image
-                                Container(
-                                  width: 160,
-                                  height: 160,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image:
-                                          AssetImage(game['backgroundImage']),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    borderRadius: BorderRadius.circular(20),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black26,
-                                        blurRadius: 6,
-                                        offset: Offset(0, 3),
+                                //  Replace the existing Container here!
+                                ScaleTransition(
+                                  scale: _scaleAnimation, // Apply bounce effect
+                                  child: Container(
+                                    width: 160,
+                                    height: 160,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(game['backgroundImage']),
+                                        fit: BoxFit.cover,
                                       ),
-                                    ],
+                                      borderRadius: BorderRadius.circular(20),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black26,
+                                          blurRadius: 6,
+                                          offset: Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
 
@@ -231,7 +275,7 @@ class HomeScreen extends StatelessWidget {
                                   child: Text(
                                     game['description'] as String,
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 12,
                                       color: Colors.white,
                                     ),
                                     textAlign: TextAlign.center,
@@ -265,6 +309,8 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+          ),
             ),
           ),
         ],
