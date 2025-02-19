@@ -264,12 +264,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
                                 SizedBox(height: 6),
 //title
-                                // Description
+                                //Description
                                 Container(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 12, vertical: 6),
                                   decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.8),
+                                    color: Colors.black.withOpacity(0.3),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Text(
