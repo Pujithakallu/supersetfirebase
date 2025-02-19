@@ -21,14 +21,28 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   late String pin;
 
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+
   @override
-    void initState() {
-      super.initState();
-      pin = widget.pin;
-    }
+  void initState() {
+    super.initState();
+    pin = widget.pin;
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 4), // Faster bounce effect
+    )..repeat(reverse: true);
+
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.1).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+  }
+
+   
 
   final List<Map<String, dynamic>> games = [
     {
@@ -98,7 +112,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               color: Color(0xFF6C63FF),
               size: 26,
             ),
-            onPressed: () => logout(context),
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (_) =>  LoginScreen()),
+              );
+            },
           ),
         ],
       ),
@@ -123,7 +141,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   padding: const EdgeInsets.only(top: 20, bottom: 10),
                   child: Column(
                     children: [
-                      Icon(Icons.school, size: 40, color: Colors.blue),
+                      ScaleTransition(
+                      scale: _scaleAnimation,
+                      child: Icon(Icons.school, size: 40, color: Colors.blue),
+                    ),
+
                       SizedBox(height: 8),
                       Text(
                         "Hi, $pin!",
@@ -172,8 +194,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   scrollDirection: Axis.horizontal,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    child: Wrap(
+                      spacing: 20, // Adjust spacing to ensure equal gaps
+                      alignment: WrapAlignment.spaceEvenly,
                       children: games.map((game) {
                         return Padding(
                           padding: EdgeInsets.symmetric(horizontal: 12),
@@ -191,24 +214,26 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             },
                             child: Column(
                               children: [
-                                // Game Image
-                                Container(
-                                  width: 160,
-                                  height: 160,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image:
-                                          AssetImage(game['backgroundImage']),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    borderRadius: BorderRadius.circular(20),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black26,
-                                        blurRadius: 6,
-                                        offset: Offset(0, 3),
+                                //  Replace the existing Container here!
+                                ScaleTransition(
+                                  scale: _scaleAnimation, // Apply bounce effect
+                                  child: Container(
+                                    width: 160,
+                                    height: 160,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(game['backgroundImage']),
+                                        fit: BoxFit.cover,
                                       ),
-                                    ],
+                                      borderRadius: BorderRadius.circular(20),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black26,
+                                          blurRadius: 6,
+                                          offset: Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
 
@@ -247,7 +272,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   child: Text(
                                     game['description'] as String,
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 12,
                                       color: Colors.white,
                                     ),
                                     textAlign: TextAlign.center,
