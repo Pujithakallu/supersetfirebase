@@ -348,7 +348,7 @@ class _TextQuizState extends State<TextQuiz> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: selectedAnswer != null && !isAnswerSubmitted
-                            ? Colors.green
+                            ? Colors.blue
                             : Colors.grey,
                       ),
                       child: Center(
@@ -413,10 +413,14 @@ class _TextQuizState extends State<TextQuiz> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Icon(
-                            Icons.translate,
-                            size: screenWidth / 40,
-                          ),
+                          Text(
+                            currentLanguage == 0 ? 'Español' : 'English',
+                            style: TextStyle(fontSize: screenWidth / 60, color: Colors.black, fontWeight: FontWeight.bold),
+                        )
+                          // Icon(
+                          //   Icons.translate,
+                          //   size: screenWidth / 40,
+                          // ),
                         ],
                       ),
                     ),

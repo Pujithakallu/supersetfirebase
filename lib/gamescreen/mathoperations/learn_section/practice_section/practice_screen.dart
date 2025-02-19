@@ -289,10 +289,14 @@ class _PracticeScreenState extends State<PracticeScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Icon(
-                              Icons.translate,
-                              size: screenWidth / 40,
-                            ),
+                            Text(
+                            currentLanguage == 0 ? 'Español' : 'English',
+                            style: TextStyle(fontSize: screenWidth / 60, color: Colors.black, fontWeight: FontWeight.bold),
+                        )
+                            // Icon(
+                            //   Icons.translate,
+                            //   size: screenWidth / 40,
+                            // ),
                           ],
                         ),
                       ),
