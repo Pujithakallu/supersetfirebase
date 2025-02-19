@@ -47,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   final List<Map<String, dynamic>> games = [
     {
       'title': 'Math Mingle',
+
       'backgroundImage': 'assets/images/math_mingle.png',
       'icon': Icons.calculate,
       'color': Color(0xFFFF9999),
@@ -133,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
           // UI Content
           SafeArea(
-            child: Expanded(
+            
             child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -263,13 +264,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 ),
 
                                 SizedBox(height: 6),
-//title
-                                //Description
+
+                                // Description
                                 Container(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 12, vertical: 6),
                                   decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.3),
+                                    color: Colors.black.withOpacity(0.8),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Text(
@@ -312,7 +313,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             ),
           ),
             ),
-          ),
+          
         ],
       ),
     );
