@@ -11,6 +11,7 @@ import 'package:supersetfirebase/gamescreen/mathoperations/common/global.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/common/api/api_util.dart';
 import 'package:supersetfirebase/screens/home_screen.dart';
 import 'package:supersetfirebase/utils/logout_util.dart';
+import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
 class Operators extends StatelessWidget {
@@ -49,6 +50,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     GlobalVariables.setLevelData();
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -63,7 +65,8 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => HomeScreen(pin: userPin)),
                 );
               },
               foregroundColor: Colors.black,

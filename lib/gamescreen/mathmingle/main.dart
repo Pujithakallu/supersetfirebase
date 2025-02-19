@@ -87,7 +87,8 @@ class WelcomeScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => home.HomeScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => home.HomeScreen(pin: userPin)),
                 );
               },
               foregroundColor: Colors.black,

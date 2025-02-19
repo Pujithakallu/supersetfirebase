@@ -83,7 +83,8 @@ class MainMenu extends StatelessWidget {
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => HomeScreen(pin: userPin)),
                 );
               },
               backgroundColor: Colors.white,
