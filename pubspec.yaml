@@ -40,6 +40,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/Mathmingle/
+    - assets/Mathmingle/gif1.gif
     - assets/Mathmingle/audio/
     - assets/Mathmingle/homescreen/
     - assets/Mathmingle/matchGame/chapter1.json

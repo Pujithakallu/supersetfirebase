@@ -142,7 +142,7 @@ class WelcomeScreen extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('Mathmingle/gif1.gif'),
+            image: AssetImage('assets/Mathmingle/gif1.gif'),
             fit: BoxFit.cover,
           ),
           gradient: LinearGradient(
