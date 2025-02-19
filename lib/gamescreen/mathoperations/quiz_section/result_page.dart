@@ -90,7 +90,7 @@ class ResultsPage extends StatelessWidget {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
-                'assets/Mathoperations/background.png'), // Assuming you have a similar background
+                'assets/Mathoperations/background.png'),
             fit: BoxFit.cover,
           ),
         ),

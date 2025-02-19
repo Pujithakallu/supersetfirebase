@@ -84,7 +84,7 @@ class DetailsPage extends StatelessWidget {
             screenWidth * 0.05, screenWidth * 0.05, screenWidth * 0.05, 0),
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(' assets/Mathoperations/background.png'),
+            image: AssetImage('assets/Mathoperations/background.png'),
             fit: BoxFit.cover,
           ),
         ),
