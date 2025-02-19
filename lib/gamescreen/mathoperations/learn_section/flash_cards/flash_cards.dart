@@ -292,10 +292,14 @@ class _FlashCardState extends State<FlashCard> {
                       ),
                       child: Center(
                         //mainAxisAlignment: MainAxisAlignment.center,
-                        child: Icon(
-                          Icons.translate,
-                          size: (screenWidth * 0.025).clamp(25.0, 50.0),
-                        ),
+                         child: Text(
+                            currentLanguage == 0 ? 'Español' : 'English',
+                            style: TextStyle(fontSize: screenWidth / 60, color: Colors.black, fontWeight: FontWeight.bold),
+                        )
+                        // Icon(
+                        //   Icons.translate,
+                        //   size: (screenWidth * 0.025).clamp(25.0, 50.0),
+                        // ),
                       ),
                     ),
                   ),
@@ -363,10 +367,14 @@ class _FlashCardState extends State<FlashCard> {
                       ),
                       child: Center(
                         //mainAxisAlignment: MainAxisAlignment.center,
-                        child: Icon(
-                          Icons.translate,
-                          size: (screenWidth * 0.025).clamp(25.0, 50.0),
-                        ),
+                        child: Text(
+                            currentLanguage == 0 ? 'Español' : 'English',
+                            style: TextStyle(fontSize: screenWidth / 60, color: Colors.black, fontWeight: FontWeight.bold),
+                        )
+                        // Icon(
+                        //   Icons.translate,
+                        //   size: (screenWidth * 0.025).clamp(25.0, 50.0),
+                        // ),
                       ),
                     ),
                   ),
