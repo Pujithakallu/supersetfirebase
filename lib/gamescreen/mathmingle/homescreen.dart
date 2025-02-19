@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
               foregroundColor: Colors.black,
               backgroundColor: Colors.lightBlue,
               shape: const CircleBorder(),
-              child: const Icon(Icons.arrow_back_ios, size: 24),
+              child: const Icon(Icons.arrow_back_rounded, size: 24),
             ),
 
             // PIN Display (Center)

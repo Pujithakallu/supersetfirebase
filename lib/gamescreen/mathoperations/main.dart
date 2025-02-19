@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
               foregroundColor: Colors.black,
               backgroundColor: Colors.lightBlue,
               shape: const CircleBorder(),
-              child: const Icon(Icons.arrow_back_ios, size: 32),
+              child: const Icon(Icons.arrow_back_rounded, size: 32),
             ),
           ),
           // Logout button

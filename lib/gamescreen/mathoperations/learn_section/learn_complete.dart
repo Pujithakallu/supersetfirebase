@@ -24,7 +24,7 @@ class LearnComplete extends StatelessWidget {
         foregroundColor: Colors.black,
         backgroundColor: Colors.lightBlue,
         shape: CircleBorder(),
-        child: const Icon(Icons.arrow_back_ios),
+        child: const Icon(Icons.arrow_back_rounded),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       body: Container(
