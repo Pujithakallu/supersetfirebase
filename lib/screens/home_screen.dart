@@ -12,10 +12,7 @@ import 'package:supersetfirebase/provider/user_pin_provider.dart';
 class HomeScreen extends StatefulWidget {
   final String pin;
   
-  const HomeScreen({
-    required this.pin,
-    Key? key,
-  }) : super(key: key);
+  const HomeScreen({required this.pin, Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -23,7 +20,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   late String pin;
-
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
 
@@ -34,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 4), // Faster bounce effect
+      duration: const Duration(seconds: 4),
     )..repeat(reverse: true);
 
     _scaleAnimation = Tween<double>(begin: 1.0, end: 1.1).animate(
@@ -42,17 +38,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-   
-
   final List<Map<String, dynamic>> games = [
     {
       'title': 'Math Mingle',
-
       'backgroundImage': 'assets/images/math_mingle.png',
       'icon': Icons.calculate,
       'color': Color(0xFFFF9999),
       'description': 'Fun with numbers!',
-      'progress': 0,
       'route': (String pin) => MathMingleApp(),
     },
     {
@@ -61,7 +53,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       'icon': Icons.functions,
       'color': Color(0xFF99FF99),
       'description': 'Master equations!',
-      'progress': 0,
       'route': (String pin) => MyApp(),
     },
     {
@@ -70,9 +61,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       'icon': Icons.addchart,
       'color': Color(0xFF9999FF),
       'description': 'Learn new symbols & more!',
-      'progress': 0,
-      'route': (String pin) =>
-          Operators(userPin: pin), // Fix: Pass the correct pin
+      'route': (String pin) => Operators(userPin: pin),
     },
     {
       'title': 'Studio',
@@ -80,20 +69,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       'icon': Icons.palette,
       'color': Color(0xFFFFB366),
       'description': 'Draw and create!',
-      'progress': 0,
       'route': null,
     },
   ];
 
   @override
   Widget build(BuildContext context) {
-    String userPin = Provider.of<UserPinProvider>(context).pin;
     final Size screenSize = MediaQuery.of(context).size;
-    final int crossAxisCount = screenSize.width < 600
-        ? 2
-        : screenSize.width < 900
-            ? 3
-            : 4;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -115,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             ),
             onPressed: () {
               Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (_) =>  LoginScreen()),
+                MaterialPageRoute(builder: (_) => LoginScreen()),
               );
             },
           ),
@@ -124,45 +106,48 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Full-Screen Background Image
+          // Background Container with fallback color
           Positioned.fill(
-            child: Image.asset(
-              "assets/images/background.png",
-              fit: BoxFit.cover,
+            child: Container(
+              color: Colors.white,
+              child: Image.asset(
+                "assets/images/background.png",
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(color: Colors.white); // Fallback if image fails
+                },
+              ),
             ),
           ),
 
-          // UI Content
+          // Main Content
           SafeArea(
-            
             child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Title Section
-                Padding(
-                  padding: const EdgeInsets.only(top: 20, bottom: 10),
-                  child: Column(
-                    children: [
-                      //Hat
-                      ScaleTransition(
-                      scale: _scaleAnimation,
-                      child: Icon(Icons.school, size: 40, color: Colors.blue),
-                    ),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
 
-                      SizedBox(height: 8),
+                  // Title Section
+                  Column(
+                    children: [
+                      ScaleTransition(
+                        scale: _scaleAnimation,
+                        child: const Icon(Icons.school, size: 40, color: Colors.blue),
+                      ),
+                      const SizedBox(height: 8),
                       Text(
                         "Hi, $pin!",
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       GestureDetector(
                         onTap: () {},
-                        child: Text(
+                        child: const Text(
                           "Welcome to the Fun Zone!",
                           style: TextStyle(
                             fontSize: 18,
@@ -172,16 +157,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           ),
                         ),
                       ),
-                      SizedBox(height: 12),
+                      const SizedBox(height: 12),
                       ElevatedButton.icon(
                         onPressed: () {},
-                        icon: Icon(Icons.rocket_launch, color: Colors.black),
-                        label: Text("Choose your adventure!"),
+                        icon: const Icon(Icons.rocket_launch, color: Colors.black),
+                        label: const Text("Choose your adventure!"),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.amberAccent,
                           foregroundColor: Colors.black,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 12),
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25),
                           ),
@@ -189,131 +173,87 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       ),
                     ],
                   ),
-                ),
 
-                SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
-                // Game Tiles in a Row
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Wrap(
-                      spacing: 20, // Adjust spacing to ensure equal gaps
-                      alignment: WrapAlignment.spaceEvenly,
-                      children: games.map((game) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12),
-                          child: GestureDetector(
-                            onTap: () {
-                              if (game['route'] != null) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => game['route'](
-                                        pin), // Fix: Pass pin dynamically
+                  // Game Tiles
+                  Wrap(
+                    spacing: 20,
+                    runSpacing: 20,
+                    alignment: WrapAlignment.center,
+                    children: games.map((game) {
+                      return GestureDetector(
+                        onTap: () {
+                          if (game['route'] != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => game['route'](pin),
+                              ),
+                            );
+                          }
+                        },
+                        child: Column(
+                          children: [
+                            ScaleTransition(
+                              scale: _scaleAnimation,
+                              child: Container(
+                                width: 160,
+                                height: 160,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(game['backgroundImage']),
+                                    fit: BoxFit.cover,
                                   ),
-                                );
-                              }
-                            },
-                            child: Column(
-                              children: [
-                                //  Replace the existing Container here!
-                                ScaleTransition(
-                                  scale: _scaleAnimation, // Apply bounce effect
-                                  child: Container(
-                                    width: 160,
-                                    height: 160,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage(game['backgroundImage']),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      borderRadius: BorderRadius.circular(20),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black26,
-                                          blurRadius: 6,
-                                          offset: Offset(0, 3),
-                                        ),
-                                      ],
+                                  borderRadius: BorderRadius.circular(20),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black26,
+                                      blurRadius: 6,
+                                      offset: Offset(0, 3),
                                     ),
-                                  ),
-                                ),
-
-                                SizedBox(height: 10),
-
-                                // Title
-                                Text(
-                                  game['title'],
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-
-                                SizedBox(height: 6),
-
-                                // Icon
-                                Icon(
-                                  game['icon'] as IconData,
-                                  size: 30,
-                                  color: game['color'] as Color,
-                                ),
-
-                                SizedBox(height: 6),
-
-                                // Description
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12, vertical: 6),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.8),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Text(
-                                    game['description'] as String,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.white,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-
-                                SizedBox(height: 5),
-
-                                // Progress
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Progress: 0%",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.black54,
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Icon(Icons.bar_chart,
-                                        color: Colors.blue, size: 16),
                                   ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
+                            const SizedBox(height: 10),
+                            Text(
+                              game['title'],
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 6),
+                            Icon(
+                              game['icon'] as IconData,
+                              size: 30,
+                              color: game['color'] as Color,
+                            ),
+                            const SizedBox(height: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.8),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                game['description'] as String,
+                                style: const TextStyle(fontSize: 12, color: Colors.white),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-            ),
-          
         ],
       ),
     );
