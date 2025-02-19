@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../utils/logout_util.dart';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
+import 'package:supersetfirebase/screens/home_screen.dart';
 
 class MainMenu extends StatelessWidget {
   const MainMenu({Key? key}) : super(key: key);
@@ -79,7 +80,12 @@ class MainMenu extends StatelessWidget {
             left: 24,
             top: 16,
             child: FloatingActionButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                );
+              },
               backgroundColor: Colors.white,
               child: const Icon(
                 Icons.arrow_back_rounded,

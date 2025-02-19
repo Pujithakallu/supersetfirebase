@@ -10,6 +10,7 @@ import 'memory.dart';
 import 'package:supersetfirebase/utils/logout_util.dart';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
+import 'package:supersetfirebase/screens/home_screen.dart' as home;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -83,7 +84,12 @@ class WelcomeScreen extends StatelessWidget {
             // Back Button (Left)
             FloatingActionButton(
               heroTag: "backButton",
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => home.HomeScreen()),
+                );
+              },
               foregroundColor: Colors.black,
               backgroundColor: Colors.lightBlue,
               shape: const CircleBorder(),

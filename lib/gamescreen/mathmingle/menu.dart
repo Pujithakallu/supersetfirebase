@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:supersetfirebase/utils/logout_util.dart';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
+import 'package:supersetfirebase/gamescreen/mathmingle/main.dart';
 
 // Assume GameData and GameData1 are defined and provided by the MultiProvider in MathMingleApp
 
@@ -34,7 +35,12 @@ class Menu extends StatelessWidget {
             // Back Button (Left)
             FloatingActionButton(
               heroTag: "backButton",
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => WelcomeScreen()),
+                );
+              },
               foregroundColor: Colors.black,
               backgroundColor: Colors.lightBlue,
               shape: const CircleBorder(),
