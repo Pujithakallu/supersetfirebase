@@ -133,6 +133,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
           // UI Content
           SafeArea(
+            child: Expanded(
+            child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -141,6 +143,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   padding: const EdgeInsets.only(top: 20, bottom: 10),
                   child: Column(
                     children: [
+                      //Hat
                       ScaleTransition(
                       scale: _scaleAnimation,
                       child: Icon(Icons.school, size: 40, color: Colors.blue),
@@ -306,6 +309,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ),
                 ),
               ],
+            ),
+          ),
             ),
           ),
         ],
