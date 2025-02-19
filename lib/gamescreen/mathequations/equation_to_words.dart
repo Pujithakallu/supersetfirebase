@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'instructions_widget.dart';
 import 'score_manager.dart';
+import 'package:supersetfirebase/utils/logout_util.dart';
+import 'package:provider/provider.dart';
+import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
 class EquationToWordsScreen extends StatefulWidget {
   const EquationToWordsScreen({Key? key}) : super(key: key);
@@ -581,6 +584,7 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
     final words = isSpanish
         ? currentQuestion['translated']
         : currentQuestion['words'] as List<String>;
+    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
 
     return Scaffold(
       appBar: AppBar(
@@ -613,6 +617,22 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
                   AnalyticsEngine.logTranslateButtonClickETW(
                       isSpanish ? 'Changed to Spanish' : 'Changed to English');
                 },
+              ),
+              Text(
+                'PIN: $userPin',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.logout_rounded,
+                  color: Color(0xFF6C63FF),
+                  size: 26,
+                ),
+                onPressed: () => logout(context),
               ),
             ],
           ),

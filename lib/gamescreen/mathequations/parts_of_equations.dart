@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'analytics_engine.dart';
+import 'package:supersetfirebase/utils/logout_util.dart';
+import 'package:provider/provider.dart';
+import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
 class PartsOfEquations extends StatefulWidget {
   @override
@@ -53,7 +56,7 @@ class _PartsOfEquationsState extends State<PartsOfEquations> {
   @override
   Widget build(BuildContext context) {
     final text = isSpanish ? spanishText : englishText;
-
+    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     return Scaffold(
       appBar: AppBar(
         title: Text(text['title']!),
@@ -80,12 +83,33 @@ class _PartsOfEquationsState extends State<PartsOfEquations> {
                   isSpanish ? 'Changed to Spanish' : 'Changed to English');
             },
           ),
+          Text(
+            'PIN: $userPin',
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: 8.0), // Adjust horizontal padding as needed
+            child: IconButton(
+              icon: Icon(
+                Icons.logout_rounded,
+                color: Color(0xFF6C63FF),
+                size: 26,
+              ),
+              onPressed: () => logout(context),
+            ),
+          ),
         ],
       ),
+      extendBodyBehindAppBar: true,
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.fromLTRB(16.0, 80.0, 16.0, 16.0),
             child: IntrinsicWidth(
               child: Card(
                 color: Colors.blue[50],

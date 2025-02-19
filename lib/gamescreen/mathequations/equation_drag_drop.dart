@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'instructions_widget.dart';
 import 'score_manager.dart';
 import 'analytics_engine.dart';
+import 'package:supersetfirebase/utils/logout_util.dart';
+import 'package:provider/provider.dart';
+import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
 class EquationDragDrop extends StatefulWidget {
   const EquationDragDrop({Key? key}) : super(key: key);
@@ -469,7 +472,18 @@ class _EquationDragDropState extends State<EquationDragDrop> {
           title: Text(isSpanish
               ? translations['es']!['game_over']!
               : translations['en']!['game_over']!),
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.logout_rounded,
+                color: Color(0xFF6C63FF),
+                size: 26,
+              ),
+              onPressed: () => logout(context),
+            ),
+          ],
         ),
+        extendBodyBehindAppBar: true,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -522,7 +536,7 @@ class _EquationDragDropState extends State<EquationDragDrop> {
     var equation = currentQuestion['equation'];
     var draggables = currentQuestion['draggables'] as List<String>;
     var targets = currentQuestion['targets'] as Map<String, List<String>>;
-
+    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Parts of Equations'),
@@ -555,6 +569,22 @@ class _EquationDragDropState extends State<EquationDragDrop> {
                   AnalyticsEngine.logTranslateButtonClickPOE(
                       isSpanish ? 'Changed to Spanish' : 'Changed to English');
                 },
+              ),
+              Text(
+                'PIN: $userPin',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.logout_rounded,
+                  color: Color(0xFF6C63FF),
+                  size: 26,
+                ),
+                onPressed: () => logout(context),
               ),
             ],
           ),

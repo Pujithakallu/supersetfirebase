@@ -7,6 +7,10 @@ import 'menu.dart';
 import 'studymaterial.dart';
 import 'matching.dart';
 import 'memory.dart';
+import 'package:supersetfirebase/utils/logout_util.dart';
+import 'package:provider/provider.dart';
+import 'package:supersetfirebase/provider/user_pin_provider.dart';
+import 'package:supersetfirebase/screens/home_screen.dart' as home;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,7 +43,8 @@ class MathMingleApp extends StatelessWidget {
         },
         routes: {
           '/': (context) => WelcomeScreen(),
-          '/menu': (context) => Menu(), // Make sure you instantiate Menu without const.
+          '/menu': (context) =>
+              Menu(), // Make sure you instantiate Menu without const.
           '/studymaterial': (context) => StudyMaterialScreen(),
           '/matching': (context) => MatchGame(),
           '/memory': (context) => MemoryGame(),
@@ -63,13 +68,77 @@ class MathMingleApp extends StatelessWidget {
 }
 
 class WelcomeScreen extends StatelessWidget {
-  final String? userPin;
-
-  WelcomeScreen({Key? key, this.userPin}) : super(key: key);
+  WelcomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     return Scaffold(
+      floatingActionButton: Positioned(
+        top: 16,
+        left: 0,
+        right: 0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Back Button (Left)
+            FloatingActionButton(
+              heroTag: "backButton",
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => home.HomeScreen(pin: userPin)),
+                );
+              },
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.lightBlue,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.arrow_back_rounded, size: 24),
+            ),
+
+            // PIN Display (Center)
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 4,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Text(
+                'PIN: $userPin',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+            ),
+
+            // Logout Button (Right)
+            Padding(
+              padding: EdgeInsets.only(
+                  right: 30), // Moves logout button slightly left
+              child: FloatingActionButton(
+                heroTag: "logoutButton",
+                onPressed: () => logout(context),
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.blue,
+                shape: const CircleBorder(),
+                child:
+                    const Icon(Icons.logout_rounded, size: 28), // Larger icon
+              ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -101,11 +170,13 @@ class WelcomeScreen extends StatelessWidget {
                     context,
                     PageRouteBuilder(
                       pageBuilder: (context, animation1, animation2) => Menu(),
-                      transitionsBuilder: (context, animation1, animation2, child) {
+                      transitionsBuilder:
+                          (context, animation1, animation2, child) {
                         const begin = Offset(1.0, 0.0);
                         const end = Offset.zero;
                         const curve = Curves.easeInOut;
-                        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                        var tween = Tween(begin: begin, end: end)
+                            .chain(CurveTween(curve: curve));
                         var offsetAnimation = animation1.drive(tween);
                         return SlideTransition(
                           position: offsetAnimation,

@@ -3,6 +3,9 @@ import 'package:flip_card/flip_card.dart';
 import 'dart:async';
 import 'dart:math';
 import 'package:provider/provider.dart';
+import 'package:supersetfirebase/utils/logout_util.dart';
+import 'package:provider/provider.dart';
+import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
 class GameData1 extends ChangeNotifier {
   int total = 0; // Initialize total
@@ -17,10 +20,81 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Memory Game Home'),
+      floatingActionButton: Positioned(
+        top: 16,
+        left: 0,
+        right: 0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Back Button (Left)
+            FloatingActionButton(
+              heroTag: "backButton",
+              onPressed: () => Navigator.pop(context),
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.lightBlue,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.arrow_back_rounded, size: 24),
+            ),
+
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // PIN Display with decoration
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.9),
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Text(
+                    'PIN: $userPin',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                const Text(
+                  'Memory Game Home',
+                  style: TextStyle(
+                    fontSize: 45,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+
+            // Logout Button (Right)
+            Padding(
+              padding: EdgeInsets.only(
+                  right: 30), // Moves logout button slightly left
+              child: FloatingActionButton(
+                heroTag: "logoutButton",
+                onPressed: () => logout(context),
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.blue,
+                shape: const CircleBorder(),
+                child:
+                    const Icon(Icons.logout_rounded, size: 28), // Larger icon
+              ),
+            ),
+          ],
+        ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -165,7 +239,6 @@ class _MemoryGameState extends State<MemoryGame> {
     });
   }
 
-
   void showEndGameDialog(int score) {
     showDialog(
       context: context,
@@ -246,7 +319,8 @@ class _MemoryGameState extends State<MemoryGame> {
 
           if (_matchedPairs == _data.length ~/ 2) {
             _timer.cancel();
-            int score = (_seconds / 60 * 10).toInt(); // Calculate score based on time remaining
+            int score = (_seconds / 60 * 10)
+                .toInt(); // Calculate score based on time remaining
             showEndGameDialog(score);
             Future.delayed(Duration.zero, () {
               Provider.of<GameData1>(context, listen: false).setTotal(score);
@@ -257,13 +331,13 @@ class _MemoryGameState extends State<MemoryGame> {
 
           Future.delayed(
             const Duration(milliseconds: 1500),
-                () {
+            () {
               _cardStateKeys[_previousIndex]?.currentState?.toggleCard();
               _cardStateKeys[currentIndex]?.currentState?.toggleCard();
 
               Future.delayed(
                 const Duration(milliseconds: 160),
-                    () {
+                () {
                   setState(() {
                     _wait = false;
                   });
@@ -285,8 +359,9 @@ class _MemoryGameState extends State<MemoryGame> {
   @override
   Widget build(BuildContext context) {
     final int? chapter = ModalRoute.of(context)?.settings.arguments as int?;
-
-    bool isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
+    bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     int crossAxisCount = isPortrait ? 4 : 5;
 
     if (!isPortrait && MediaQuery.of(context).size.shortestSide >= 600) {
@@ -294,12 +369,79 @@ class _MemoryGameState extends State<MemoryGame> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'R E M E M B E R  &  W I N ',
-          style: TextStyle(fontSize: 45),
+      floatingActionButton: Positioned(
+        top: 16,
+        left: 0,
+        right: 0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Back Button (Left)
+            FloatingActionButton(
+              heroTag: "backButton",
+              onPressed: () => Navigator.pop(context),
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.lightBlue,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.arrow_back_rounded, size: 24),
+            ),
+
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // PIN Display with decoration
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.9),
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Text(
+                    'PIN: $userPin',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                const Text(
+                  'R E M E M B E R  &  W I N ',
+                  style: TextStyle(
+                    fontSize: 45,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+
+            // Logout Button (Right)
+            Padding(
+              padding: EdgeInsets.only(
+                  right: 30), // Moves logout button slightly left
+              child: FloatingActionButton(
+                heroTag: "logoutButton",
+                onPressed: () => logout(context),
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.blue,
+                shape: const CircleBorder(),
+                child:
+                    const Icon(Icons.logout_rounded, size: 28), // Larger icon
+              ),
+            ),
+          ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -310,7 +452,7 @@ class _MemoryGameState extends State<MemoryGame> {
         ),
         child: Column(
           children: <Widget>[
-            SizedBox(height: 20),
+            SizedBox(height: 60),
             ClockDisplay(seconds: _seconds),
             Expanded(
               child: Padding(
@@ -336,7 +478,9 @@ class _MemoryGameState extends State<MemoryGame> {
                         front: getQuestionMarkCard(),
                         back: Container(
                           decoration: BoxDecoration(
-                            color: _cardFlips[index] ? Colors.grey[100] : Colors.green,
+                            color: _cardFlips[index]
+                                ? Colors.grey[100]
+                                : Colors.green,
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black45,
@@ -385,54 +529,232 @@ class _MemoryGameState extends State<MemoryGame> {
     switch (chapter) {
       case 1:
         englishWords = [
-          'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',"Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty"
+          'one',
+          'two',
+          'three',
+          'four',
+          'five',
+          'six',
+          'seven',
+          'eight',
+          'nine',
+          'ten',
+          "Eleven",
+          "Twelve",
+          "Thirteen",
+          "Fourteen",
+          "Fifteen",
+          "Sixteen",
+          "Seventeen",
+          "Eighteen",
+          "Nineteen",
+          "Twenty"
         ];
         spanishWords = [
-          'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez',"Once","Doce", "Trece", "Catorce", "Quince", "Dieciséis", "Diecisiete", "Dieciocho", "Diecinueve", "Veinte"
+          'uno',
+          'dos',
+          'tres',
+          'cuatro',
+          'cinco',
+          'seis',
+          'siete',
+          'ocho',
+          'nueve',
+          'diez',
+          "Once",
+          "Doce",
+          "Trece",
+          "Catorce",
+          "Quince",
+          "Dieciséis",
+          "Diecisiete",
+          "Dieciocho",
+          "Diecinueve",
+          "Veinte"
         ];
         break;
       case 2:
         englishWords = [
-          'Numbers','Addition', 'Subtraction', 'Multiplication', 'Division', 'Equal',
-          'Greater than', 'Less than', 'Plus', 'Minus', 'Times','Divided by',
-          'Sum', 'Difference', 'Product', 'Quotient', 'Fraction',
-          'Decimal', 'Ratio', 'Equation'];
+          'Numbers',
+          'Addition',
+          'Subtraction',
+          'Multiplication',
+          'Division',
+          'Equal',
+          'Greater than',
+          'Less than',
+          'Plus',
+          'Minus',
+          'Times',
+          'Divided by',
+          'Sum',
+          'Difference',
+          'Product',
+          'Quotient',
+          'Fraction',
+          'Decimal',
+          'Ratio',
+          'Equation'
+        ];
         spanishWords = [
-          'Número','Adición', 'Resta', 'Multiplicación', 'División', 'Igual',
-          'Mayor que', 'Menor que', 'Más', 'Menos', 'Por','Dividido por',
-          'Suma', 'Diferencia', 'Producto', 'Cociente', 'Fracción',
-          'Decimal', 'Proporción', 'Ecuación'
+          'Número',
+          'Adición',
+          'Resta',
+          'Multiplicación',
+          'División',
+          'Igual',
+          'Mayor que',
+          'Menor que',
+          'Más',
+          'Menos',
+          'Por',
+          'Dividido por',
+          'Suma',
+          'Diferencia',
+          'Producto',
+          'Cociente',
+          'Fracción',
+          'Decimal',
+          'Proporción',
+          'Ecuación'
         ];
         break;
       case 3:
         englishWords = [
-          'Circle', 'Triangle', 'Square', 'Rectangle', 'Rhombus',
-          'Parallelogram', 'Trapezium', 'Oval', 'Ellipse', 'Sphere',
-          'Cube', 'Cylinder', 'Cone', 'Pentagonal prism', 'Hexagonal prism',
-          'Pyramid', 'Cuboid', 'Triangular prism', 'Hemisphere', 'Torus',];
+          'Circle',
+          'Triangle',
+          'Square',
+          'Rectangle',
+          'Rhombus',
+          'Parallelogram',
+          'Trapezium',
+          'Oval',
+          'Ellipse',
+          'Sphere',
+          'Cube',
+          'Cylinder',
+          'Cone',
+          'Pentagonal prism',
+          'Hexagonal prism',
+          'Pyramid',
+          'Cuboid',
+          'Triangular prism',
+          'Hemisphere',
+          'Torus',
+        ];
         spanishWords = [
-          'Círculo', 'Triángulo', 'Cuadrado', 'Rectángulo', 'Rombus',
-          'Paralelogramo', 'Trapecio', 'Óvalo', 'Elipse', 'Esfera',
-          'Cubo', 'Cilindro', 'Cono', 'Prisma pentagonal', 'Prisma hexagonal',
-          'Pirámide', 'Cuboide', 'Prisma triangular', 'Hemisferio', 'Toro',
+          'Círculo',
+          'Triángulo',
+          'Cuadrado',
+          'Rectángulo',
+          'Rombus',
+          'Paralelogramo',
+          'Trapecio',
+          'Óvalo',
+          'Elipse',
+          'Esfera',
+          'Cubo',
+          'Cilindro',
+          'Cono',
+          'Prisma pentagonal',
+          'Prisma hexagonal',
+          'Pirámide',
+          'Cuboide',
+          'Prisma triangular',
+          'Hemisferio',
+          'Toro',
         ];
         break;
       case 4:
-        englishWords = ['+', '-', '=', '>', '<', '×', '÷', '√', '/', '%', '^', '∑', '∫', 'd/dx', '∞', '≠', '≥', '≤', '≈', 'lim'];
+        englishWords = [
+          '+',
+          '-',
+          '=',
+          '>',
+          '<',
+          '×',
+          '÷',
+          '√',
+          '/',
+          '%',
+          '^',
+          '∑',
+          '∫',
+          'd/dx',
+          '∞',
+          '≠',
+          '≥',
+          '≤',
+          '≈',
+          'lim'
+        ];
         spanishWords = [
-          'Más', 'Menos', 'Igual', 'Mayor que', 'Menor que', 'Por', 'Dividido por', 'Raíz cuadrada',
-          'Fracción', 'Porcentaje', 'Exponenciación', 'Sumatoria', 'Integral', 'Derivada', 'Infinito',
-          'No igual a', 'Mayor o igual que', 'Menor o igual que', 'Aproximadamente igual a', 'Límite',
+          'Más',
+          'Menos',
+          'Igual',
+          'Mayor que',
+          'Menor que',
+          'Por',
+          'Dividido por',
+          'Raíz cuadrada',
+          'Fracción',
+          'Porcentaje',
+          'Exponenciación',
+          'Sumatoria',
+          'Integral',
+          'Derivada',
+          'Infinito',
+          'No igual a',
+          'Mayor o igual que',
+          'Menor o igual que',
+          'Aproximadamente igual a',
+          'Límite',
         ];
         break;
       case 5:
-        englishWords = ["Length", "Width", "Height", "Diameter", "Radius", "Perimeter", "Circumference",
-          "Area", "Volume", "Angle", "Slope", "Intersection", "Symmetry", "Perpendicular", "Parallel",
-          "Coordinate", "Vertex", "Axis", "Hypotenuse", "Gradient",];
-        spanishWords =[
-          "Longitud", "Ancho", "Altura", "Diámetro", "Radio", "Perímetro", "Circunferencia", "Superficie",
-          "Volumen", "Ángulo", "Pendiente", "Intersección", "Simetría", "Perpendicular",
-          "Paralelo", "Coordenada", "Vértice", "Eje", "Hipotenusa", "Gradiente",
+        englishWords = [
+          "Length",
+          "Width",
+          "Height",
+          "Diameter",
+          "Radius",
+          "Perimeter",
+          "Circumference",
+          "Area",
+          "Volume",
+          "Angle",
+          "Slope",
+          "Intersection",
+          "Symmetry",
+          "Perpendicular",
+          "Parallel",
+          "Coordinate",
+          "Vertex",
+          "Axis",
+          "Hypotenuse",
+          "Gradient",
+        ];
+        spanishWords = [
+          "Longitud",
+          "Ancho",
+          "Altura",
+          "Diámetro",
+          "Radio",
+          "Perímetro",
+          "Circunferencia",
+          "Superficie",
+          "Volumen",
+          "Ángulo",
+          "Pendiente",
+          "Intersección",
+          "Simetría",
+          "Perpendicular",
+          "Paralelo",
+          "Coordenada",
+          "Vértice",
+          "Eje",
+          "Hipotenusa",
+          "Gradiente",
         ];
         break;
       default:
@@ -504,15 +826,14 @@ class _MemoryGameState extends State<MemoryGame> {
           'ten': 'diez',
           "Eleven": "Once",
           "Twelve": "Doce",
-          "Thirteen":"Trece",
-          "Fourteen" : "Catorce",
-          "Fifteen" : "Quince",
-          "Sixteen" : "Dieciséis",
+          "Thirteen": "Trece",
+          "Fourteen": "Catorce",
+          "Fifteen": "Quince",
+          "Sixteen": "Dieciséis",
           "Seventeen": "Diecisiete",
-          "Eighteen" : "Dieciocho",
-          "Nineteen" : "Diecinueve",
-          "Twenty" : "Veinte",
-
+          "Eighteen": "Dieciocho",
+          "Nineteen": "Diecinueve",
+          "Twenty": "Veinte",
         };
       case 2:
         return {
@@ -621,18 +942,25 @@ class ClockDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     int minutes = seconds ~/ 60;
     int remainingSeconds = seconds % 60;
-    return Center(
-      child: Container(
-        padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white70.withOpacity(0.5),
-        ),
-        child: Text(
-          '$minutes:${remainingSeconds.toString().padLeft(2, '0')}',
-          style: TextStyle(
-            fontSize: 36,
-            fontWeight: FontWeight.bold,
+    return Padding(
+      padding: const EdgeInsets.only(
+          top: 40.0), // Adjust this value to move the whole circle down
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Container(
+          width: 120,
+          height: 120,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white70.withOpacity(0.5),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            '$minutes:${remainingSeconds.toString().padLeft(2, '0')}',
+            style: const TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),

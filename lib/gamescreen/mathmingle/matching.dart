@@ -3,6 +3,9 @@ import 'dart:math';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
+import 'package:supersetfirebase/utils/logout_util.dart';
+import 'package:provider/provider.dart';
+import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
 class GameData extends ChangeNotifier {
   int total = 0; // Initialize total
@@ -31,8 +34,8 @@ class _MatchGameState extends State<MatchGame> {
 
   @override
   Widget build(BuildContext context) {
-    chapter = ModalRoute.of(context)?.settings.arguments as int? ??2;
-
+    chapter = ModalRoute.of(context)?.settings.arguments as int? ?? 2;
+    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     if (chapter == null) {
       return Scaffold(
         appBar: AppBar(
@@ -47,6 +50,65 @@ class _MatchGameState extends State<MatchGame> {
     if (!isGameStarted) {
       // Display a loading indicator or a start button until the game starts
       return Scaffold(
+        floatingActionButton: Positioned(
+          top: 16,
+          left: 0,
+          right: 0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Back Button (Left)
+              FloatingActionButton(
+                heroTag: "backButton",
+                onPressed: () => Navigator.pop(context),
+                foregroundColor: Colors.black,
+                backgroundColor: Colors.lightBlue,
+                shape: const CircleBorder(),
+                child: const Icon(Icons.arrow_back_rounded, size: 24),
+              ),
+
+              // PIN Display (Center)
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.9),
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 4,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Text(
+                  'PIN: $userPin',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+              ),
+
+              // Logout Button (Right)
+              Padding(
+                padding: EdgeInsets.only(
+                    right: 30), // Moves logout button slightly left
+                child: FloatingActionButton(
+                  heroTag: "logoutButton",
+                  onPressed: () => logout(context),
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.blue,
+                  shape: const CircleBorder(),
+                  child:
+                      const Icon(Icons.logout_rounded, size: 28), // Larger icon
+                ),
+              ),
+            ],
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
         body: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
@@ -69,7 +131,8 @@ class _MatchGameState extends State<MatchGame> {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         //primary: Colors.greenAccent, // Set an inviting color
-                        padding: EdgeInsets.all(32.0), // Increase button padding
+                        padding:
+                            EdgeInsets.all(32.0), // Increase button padding
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
                         ),
@@ -89,7 +152,8 @@ class _MatchGameState extends State<MatchGame> {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         //primary: Colors.blue, // Set an inviting color
-                        padding: EdgeInsets.all(32.0), // Increase button padding
+                        padding:
+                            EdgeInsets.all(32.0), // Increase button padding
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
                         ),
@@ -121,13 +185,65 @@ class _MatchGameState extends State<MatchGame> {
       });
     }
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'J U N G L E    M A T C H I N G    S A F A R I',
-          style: TextStyle(fontSize: 45),
+      floatingActionButton: Positioned(
+        top: 16,
+        left: 0,
+        right: 0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Back Button (Left)
+            FloatingActionButton(
+              heroTag: "backButton",
+              onPressed: () => Navigator.pop(context),
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.lightBlue,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.arrow_back_rounded, size: 24),
+            ),
+
+            // PIN Display (Center)
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 4,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Text(
+                'PIN: $userPin',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+            ),
+
+            // Logout Button (Right)
+            Padding(
+              padding: EdgeInsets.only(
+                  right: 30), // Moves logout button slightly left
+              child: FloatingActionButton(
+                heroTag: "logoutButton",
+                onPressed: () => logout(context),
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.blue,
+                shape: const CircleBorder(),
+                child:
+                    const Icon(Icons.logout_rounded, size: 28), // Larger icon
+              ),
+            ),
+          ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -142,6 +258,18 @@ class _MatchGameState extends State<MatchGame> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
+                // Game Title (Now Outside AppBar)
+                Text(
+                  'J U N G L E    M A T C H I N G    S A F A R I',
+                  style: TextStyle(
+                    fontSize: 45,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white, // Adjust as needed
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 20),
+
                 Text.rich(TextSpan(children: [
                   TextSpan(
                       text: "S C O R E : ",
@@ -171,7 +299,8 @@ class _MatchGameState extends State<MatchGame> {
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10.0),
-                              border: Border.all(color: Colors.white70, width: 2.0),
+                              border:
+                                  Border.all(color: Colors.white70, width: 2.0),
                             ),
                             child: Center(
                               child: Draggable<ItemModel>(
@@ -182,7 +311,8 @@ class _MatchGameState extends State<MatchGame> {
                                   decoration: BoxDecoration(
                                     color: Colors.white70,
                                     borderRadius: BorderRadius.circular(10.0),
-                                    border: Border.all(color: Colors.white70, width: 2.0),
+                                    border: Border.all(
+                                        color: Colors.white70, width: 2.0),
                                   ),
                                   child: Text(
                                     item.value,
@@ -198,7 +328,8 @@ class _MatchGameState extends State<MatchGame> {
                                   decoration: BoxDecoration(
                                     color: Colors.white70,
                                     borderRadius: BorderRadius.circular(10.0),
-                                    border: Border.all(color: Colors.white70, width: 2.0),
+                                    border: Border.all(
+                                        color: Colors.white70, width: 2.0),
                                   ),
                                   child: Text(
                                     item.value,
@@ -226,7 +357,8 @@ class _MatchGameState extends State<MatchGame> {
                                   setState(() {
                                     items.remove(receivedItem);
                                     items2.remove(item);
-                                    score += 2; // Increase score by 2 if correct
+                                    score +=
+                                        2; // Increase score by 2 if correct
                                     item.accepting = false;
                                   });
                                 } else {
@@ -247,11 +379,15 @@ class _MatchGameState extends State<MatchGame> {
                                 });
                                 return true;
                               },
-                              builder: (context, acceptedItems, rejectedItem) => Container(
+                              builder: (context, acceptedItems, rejectedItem) =>
+                                  Container(
                                 decoration: BoxDecoration(
-                                  color: item.accepting ? Colors.red : Colors.white70,
+                                  color: item.accepting
+                                      ? Colors.red
+                                      : Colors.white70,
                                   borderRadius: BorderRadius.circular(10.0),
-                                  border: Border.all(color: Colors.white, width: 2.0),
+                                  border: Border.all(
+                                      color: Colors.white, width: 2.0),
                                 ),
                                 height: 150, // Adjusted height
                                 width: 150, // Adjusted width
@@ -284,12 +420,14 @@ class _MatchGameState extends State<MatchGame> {
                   ),
                 if (gameOver)
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Adjusted spacing
+                    mainAxisAlignment:
+                        MainAxisAlignment.spaceEvenly, // Adjusted spacing
                     children: [
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           //primary: Colors.pink,
-                          padding: EdgeInsets.all(16.0), // Increased button padding
+                          padding:
+                              EdgeInsets.all(16.0), // Increased button padding
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
@@ -309,7 +447,8 @@ class _MatchGameState extends State<MatchGame> {
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           //primary: Colors.blue,
-                          padding: EdgeInsets.all(16.0), // Increased button padding
+                          padding:
+                              EdgeInsets.all(16.0), // Increased button padding
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
@@ -352,10 +491,9 @@ class _MatchGameState extends State<MatchGame> {
     });
   }
 
-
-
   Future<Map<String, List<String>>> loadJsonData(int chapter) async {
-    String jsonString = await rootBundle.loadString('assets/Mathmingle/matchGame/chapter$chapter.json');
+    String jsonString = await rootBundle
+        .loadString('assets/Mathmingle/matchGame/chapter$chapter.json');
     Map<String, dynamic> jsonMap = json.decode(jsonString);
     List<String> spanish = List<String>.from(jsonMap['spanish']);
     List<String> english = List<String>.from(jsonMap['english']);
@@ -372,7 +510,8 @@ class _MatchGameState extends State<MatchGame> {
     setState(() {
       items = List.generate(5, (index) {
         int randomIndex = randomIndices[index];
-        return ItemModel(name: jsonData['spanish']![randomIndex],
+        return ItemModel(
+            name: jsonData['spanish']![randomIndex],
             value: jsonData['english']![randomIndex]);
       });
 

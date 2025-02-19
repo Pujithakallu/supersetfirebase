@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'analytics_engine.dart';
+import 'package:supersetfirebase/utils/logout_util.dart';
+import 'package:provider/provider.dart';
+import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
 class ImportanceOfEquations extends StatefulWidget {
   const ImportanceOfEquations({Key? key}) : super(key: key);
@@ -50,6 +53,7 @@ class _ImportanceOfEquationsState extends State<ImportanceOfEquations> {
   @override
   Widget build(BuildContext context) {
     final text = isSpanish ? spanishText : englishText;
+    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
 
     return Scaffold(
       appBar: AppBar(
@@ -76,6 +80,26 @@ class _ImportanceOfEquationsState extends State<ImportanceOfEquations> {
               AnalyticsEngine.logTranslateButtonClickLearn(
                   isSpanish ? 'Changed to Spanish' : 'Changed to English');
             },
+          ),
+          Text(
+            'PIN: $userPin',
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: 8.0), // Adjust horizontal padding as needed
+            child: IconButton(
+              icon: Icon(
+                Icons.logout_rounded,
+                color: Color(0xFF6C63FF),
+                size: 26,
+              ),
+              onPressed: () => logout(context),
+            ),
           ),
         ],
       ),

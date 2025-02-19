@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart'; 
+import 'package:shared_preferences/shared_preferences.dart';
 import 'login_screen.dart';
 import '../gamescreen/mathmingle/main.dart';
 import '../gamescreen/mathequations/main.dart';
 import '../gamescreen/mathoperations/main.dart';
+import 'package:supersetfirebase/utils/logout_util.dart';
+import 'package:provider/provider.dart';
+import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
 class HomeScreen extends StatelessWidget {
   final String pin;
@@ -19,7 +22,7 @@ class HomeScreen extends StatelessWidget {
       'color': Color(0xFFFF9999),
       'description': 'Fun with numbers!',
       'progress': 0,
-      'route': (String pin) => MathMingleApp(), 
+      'route': (String pin) => MathMingleApp(),
     },
     {
       'title': 'Math Equations',
@@ -37,7 +40,8 @@ class HomeScreen extends StatelessWidget {
       'color': Color(0xFF9999FF),
       'description': 'Learn new symbols & more!',
       'progress': 0,
-      'route': (String pin) => Operators(userPin: pin), // Fix: Pass the correct pin
+      'route': (String pin) =>
+          Operators(userPin: pin), // Fix: Pass the correct pin
     },
     {
       'title': 'Studio',
@@ -52,6 +56,14 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String userPin = Provider.of<UserPinProvider>(context).pin;
+    final Size screenSize = MediaQuery.of(context).size;
+    final int crossAxisCount = screenSize.width < 600
+        ? 2
+        : screenSize.width < 900
+            ? 3
+            : 4;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -60,7 +72,7 @@ class HomeScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Color(0xFF4A4A4A)),
           onPressed: () => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) =>  LoginScreen()),
+            MaterialPageRoute(builder: (_) => LoginScreen()),
           ),
         ),
         actions: [
@@ -70,11 +82,7 @@ class HomeScreen extends StatelessWidget {
               color: Color(0xFF6C63FF),
               size: 26,
             ),
-            onPressed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (_) =>  LoginScreen()),
-              );
-            },
+            onPressed: () => logout(context),
           ),
         ],
       ),
@@ -159,7 +167,8 @@ class HomeScreen extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => game['route'](pin), // Fix: Pass pin dynamically
+                                    builder: (context) => game['route'](
+                                        pin), // Fix: Pass pin dynamically
                                   ),
                                 );
                               }
@@ -172,7 +181,8 @@ class HomeScreen extends StatelessWidget {
                                   height: 160,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: AssetImage(game['backgroundImage']),
+                                      image:
+                                          AssetImage(game['backgroundImage']),
                                       fit: BoxFit.cover,
                                     ),
                                     borderRadius: BorderRadius.circular(20),
@@ -242,7 +252,8 @@ class HomeScreen extends StatelessWidget {
                                       ),
                                     ),
                                     SizedBox(width: 5),
-                                    Icon(Icons.bar_chart, color: Colors.blue, size: 16),
+                                    Icon(Icons.bar_chart,
+                                        color: Colors.blue, size: 16),
                                   ],
                                 ),
                               ],

@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'signup_screen.dart';
 import 'home_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -83,6 +85,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
         return;
       }
 
+      // Store the PIN in Provider
+      Provider.of<UserPinProvider>(context, listen: false).setPin(pin);
       if (mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
