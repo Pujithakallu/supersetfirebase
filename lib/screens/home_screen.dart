@@ -9,10 +9,26 @@ import 'package:supersetfirebase/utils/logout_util.dart';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   final String pin;
+  
+  const HomeScreen({
+    required this.pin,
+    Key? key,
+  }) : super(key: key);
 
-  HomeScreen({required this.pin, Key? key}) : super(key: key);
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  late String pin;
+
+  @override
+    void initState() {
+      super.initState();
+      pin = widget.pin;
+    }
 
   final List<Map<String, dynamic>> games = [
     {

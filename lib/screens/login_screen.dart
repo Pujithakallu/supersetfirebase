@@ -122,6 +122,20 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       AnimatedBuilder(
+                      animation: _bounceAnimation,
+                      builder: (context, child) {
+                        return Transform.translate(
+                          offset: Offset(0, _bounceAnimation.value),
+                          child: CircleAvatar(
+                            radius: 40, // Adjust size if needed
+                            backgroundImage: AssetImage('assets/images/spiderman.png'), // Ensure the image is in assets
+                            backgroundColor: Colors.transparent,
+                          ),
+                        );
+                      },
+                    ),
+                    SizedBox(height: 10), // Space between image and text
+                      AnimatedBuilder(
                         animation: _bounceAnimation,
                         builder: (context, child) {
                           return Transform.translate(
