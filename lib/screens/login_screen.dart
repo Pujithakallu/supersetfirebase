@@ -122,19 +122,19 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       AnimatedBuilder(
-                      animation: _bounceAnimation,
-                      builder: (context, child) {
-                        return Transform.translate(
-                          offset: Offset(0, _bounceAnimation.value),
-                          child: CircleAvatar(
-                            radius: 40, // Adjust size if needed
-                            backgroundImage: AssetImage('assets/images/spiderman.png'), // Ensure the image is in assets
-                            backgroundColor: Colors.transparent,
-                          ),
-                        );
-                      },
-                    ),
-                    SizedBox(height: 10), // Space between image and text
+                        animation: _bounceAnimation,
+                        builder: (context, child) {
+                          return Transform.translate(
+                            offset: Offset(0, _bounceAnimation.value),
+                            child: CircleAvatar(
+                              radius: 40, // Adjust size if needed
+                              backgroundImage: AssetImage('assets/images/spiderman.png'), // Ensure the image is in assets
+                              backgroundColor: Colors.transparent,
+                            ),
+                          );
+                        },
+                      ),
+                      SizedBox(height: 10), // Space between image and text
                       AnimatedBuilder(
                         animation: _bounceAnimation,
                         builder: (context, child) {
@@ -211,26 +211,17 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                         borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide.none,
                                       ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(15),
-                                        borderSide: BorderSide(
-                                          color: _pinBoxColors[index],
-                                          width: 2,
-                                        ),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(15),
-                                        borderSide: BorderSide(
-                                          color: _pinBoxColors[index],
-                                          width: 3,
-                                        ),
-                                      ),
                                     ),
                                     onChanged: (value) {
                                       if (value.length == 1 && index < 2) {
-                                        _focusNodes[index + 1].requestFocus(); // Move to next
+                                        _focusNodes[index + 1].requestFocus();
                                       } else if (value.isEmpty && index > 0) {
-                                        _focusNodes[index - 1].requestFocus(); // Move back on delete
+                                        _focusNodes[index - 1].requestFocus();
+                                      }
+                                    },
+                                    onSubmitted: (value) {
+                                      if (index == 2) {
+                                        _login(); // Trigger login when Enter is pressed
                                       }
                                     },
                                   ),
