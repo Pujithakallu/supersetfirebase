@@ -6,6 +6,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:supersetfirebase/utils/logout_util.dart';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
+import 'package:supersetfirebase/gamescreen/mathmingle/analytics_engine.dart';
 
 class StudyMaterialScreen extends StatefulWidget {
   @override
@@ -336,7 +337,7 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
                       AssetSource(
                           'Mathmingle/audio/$fileName.mp3'),
                     );
-                    _logAudioButtonClick(english, chapter); // Log the event
+                   AnalyticsEngine.logAudioButtonClick_MathMingle(english, chapter); // Log the event
                   },
                 ),
               ],
@@ -352,13 +353,5 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
     );
   }
 
-  void _logAudioButtonClick(String word, int chapter) {
-    FirebaseAnalytics.instance.logEvent(
-      name: 'audio_button_click',
-      parameters: {
-        'word': word,
-        'chapter': 'Chapter $chapter',
-      },
-    );
-  }
+ 
 }
