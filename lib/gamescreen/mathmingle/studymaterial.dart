@@ -337,7 +337,7 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
                       AssetSource(
                           'Mathmingle/audio/$fileName.mp3'),
                     );
-                   AnalyticsEngine.logAudioButtonClick_MathMingle(english, chapter); // Log the event
+                    AnalyticsEngine.logAudioButtonClick_MathMingle(english, chapter); // Log the event
                   },
                 ),
               ],
@@ -352,6 +352,4 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
       ),
     );
   }
-
- 
 }

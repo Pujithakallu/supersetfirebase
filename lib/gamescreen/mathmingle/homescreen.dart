@@ -1,17 +1,17 @@
+// homescreen.dart (assuming MyHomePage is here)
 import 'package:flutter/material.dart';
-import 'studymaterial.dart';
-import 'matching.dart';
-import 'memory.dart';
-import 'package:supersetfirebase/utils/logout_util.dart';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
+import 'package:supersetfirebase/utils/logout_util.dart';
+import 'package:supersetfirebase/gamescreen/mathmingle/matching.dart';
+import 'package:supersetfirebase/gamescreen/mathmingle/memory.dart';
+import 'score_topbar.dart';
 
 class MyHomePage extends StatefulWidget {
-  @override
   final int chapterNumber;
-
   const MyHomePage({Key? key, required this.chapterNumber}) : super(key: key);
 
+  @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
@@ -20,71 +20,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     return Scaffold(
-      floatingActionButton: Positioned(
-        top: 16,
-        left: 0,
-        right: 0,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Back Button (Left)
-            FloatingActionButton(
-              heroTag: "backButton",
-              onPressed: () => Navigator.pop(context),
-              foregroundColor: Colors.black,
-              backgroundColor: Colors.lightBlue,
-              shape: const CircleBorder(),
-              child: const Icon(Icons.arrow_back_rounded, size: 24),
-            ),
-
-            // PIN Display (Center)
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 4,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Text(
-                'PIN: $userPin',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
-            ),
-
-            // Logout Button (Right)
-            Padding(
-              padding: EdgeInsets.only(
-                  right: 30), // Moves logout button slightly left
-              child: FloatingActionButton(
-                heroTag: "logoutButton",
-                onPressed: () => logout(context),
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.blue,
-                shape: const CircleBorder(),
-                child:
-                    const Icon(Icons.logout_rounded, size: 28), // Larger icon
-              ),
-            ),
-          ],
+      // Use our top bar
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: TopBarWithScore(
+          onBack: () => Navigator.pop(context), // or whatever you want
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       body: Container(
-        width: MediaQuery.of(context).size.width, // Full screen width
-        height: MediaQuery.of(context).size.height, // Full screen height
-        decoration: BoxDecoration(
+        width: MediaQuery.of(context).size.width, 
+        height: MediaQuery.of(context).size.height,
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.lightBlue, Colors.white],
             begin: Alignment.topCenter,
@@ -93,19 +40,19 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         child: Column(
           children: [
-            // Top section with user icon and welcome text
+            // Top section
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 50.0),
               child: Column(
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 50,
                     backgroundImage: AssetImage('assets/Mathmingle/NoPic.png'),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
-                    'Welcome $userPin',
-                    style: TextStyle(
+                    'Welcome ${Provider.of<UserPinProvider>(context, listen: false).pin}',
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -114,8 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
-
-            // Cards section with horizontal scroll
+            // Horizontal Cards
             Expanded(
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -124,56 +70,60 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     buildGameCard(
                       context,
-                      'Learn\n', // Force two lines
+                      'Learn\n',
                       'assets/Mathmingle/homescreen/level_1.png',
-                      'Learn new words and numbers. Use your gained knowledge to win points in learning based games.',
+                      'Learn new words and numbers...',
                       '/studymaterial',
                       widget.chapterNumber,
-                      20, // Example points
+                      20,
                     ),
                     buildGameCard(
                       context,
-                      'Jungle Matching Safari\n', // Force two lines
+                      'Jungle Matching Safari\n',
                       'assets/Mathmingle/homescreen/level_2.png',
-                      'Match and test your memory in the wild jungle themed drag and drop game.',
+                      'Match and test your memory...',
                       '/matching',
                       widget.chapterNumber,
-                      30, // Example points
+                      30,
                     ),
                     buildGameCard(
                       context,
-                      'Remember & Win\n', // Force two lines
+                      'Remember & Win\n',
                       'assets/Mathmingle/homescreen/level_3.png',
-                      'Boost your memory with this exciting matching tile game and earn rewards.',
+                      'Boost your memory...',
                       '/memory',
                       widget.chapterNumber,
-                      40, // Example points
+                      40,
                     ),
                   ],
                 ),
               ),
             ),
-
-            // Add a SizedBox or Padding to create space between cards and bottom of the screen
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
           ],
         ),
       ),
     );
   }
 
-  Widget buildGameCard(BuildContext context, String title, String imagePath,
-      String description, String route, int chapter, int points) {
+  Widget buildGameCard(
+    BuildContext context,
+    String title,
+    String imagePath,
+    String description,
+    String route,
+    int chapter,
+    int points,
+  ) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, route, arguments: widget.chapterNumber);
+        Navigator.pushNamed(context, route, arguments: chapter);
       },
       child: Container(
-        width: 250, // Set a fixed width for each card
-        margin: EdgeInsets.symmetric(horizontal: 10.0),
+        width: 250,
+        margin: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
           elevation: 4,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -181,20 +131,18 @@ class _MyHomePageState extends State<MyHomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  // Center the heading text horizontally
                   child: Text(
                     title,
-                    maxLines: 2, // Ensure the text takes up 2 lines
-                    overflow: TextOverflow
-                        .ellipsis, // Ellipsis if content is too long
-                    textAlign: TextAlign.center, // Center the text
-                    style: TextStyle(
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Stack(
                   children: [
                     ClipRRect(
@@ -203,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         imagePath,
                         width: double.infinity,
                         height: 150,
-                        fit: BoxFit.cover, // Make the image fit completely
+                        fit: BoxFit.cover,
                       ),
                     ),
                     Positioned(
@@ -216,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       right: 40,
                       child: Text(
                         '$points pts',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -232,13 +180,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
                   description,
-                  textAlign: TextAlign.justify, // Justify the text
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
+                  textAlign: TextAlign.justify,
+                  style: const TextStyle(fontSize: 16),
                 ),
               ],
             ),
