@@ -12,6 +12,7 @@ import 'package:supersetfirebase/gamescreen/mathoperations/common/translate/tran
 import 'package:supersetfirebase/utils/logout_util.dart';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
+import 'package:supersetfirebase/gamescreen/mathoperations/analytics_engine.dart';
 
 class FlashCard extends StatefulWidget {
   final String opSign;
@@ -25,6 +26,7 @@ class _FlashCardState extends State<FlashCard> {
   FlutterTts flutterTts = FlutterTts();
   int currentCardIndex = 0;
   int currentLanguage = 0;
+  List<String> languageNames = ["English", "Spanish"];
   List<String> LangKeys = [
     getSpeakLangKey(GlobalVariables.priLang),
     getSpeakLangKey(GlobalVariables.secLang)
@@ -45,10 +47,14 @@ class _FlashCardState extends State<FlashCard> {
     log("current lang : $flashCards");
   }
 
-  void changeLang() {
+  void changeLang() async {
     setState(() {
       currentLanguage = currentLanguage == 0 ? 1 : 0;
     });
+    print('Button clicked');
+    String newLanguage = languageNames[currentLanguage];
+    await AnalyticsEngine.logTranslateButtonClickLearn(newLanguage);
+    print('Language changed to: $newLanguage');
   }
 
   @override
@@ -305,10 +311,9 @@ class _FlashCardState extends State<FlashCard> {
                   ),
                   //SizedBox(width: 200),
                   InkWell(
-                    onTap: () {
-                      ReadOut(data['op_def'][currentLanguage] +
-                          "; " +
-                          data['op_name'][currentLanguage]);
+                    onTap: () async {
+                      ReadOut(data['op_def'][currentLanguage] + "; " + data['op_name'][currentLanguage]);
+                      await AnalyticsEngine.logAudioButtonClick(currentLanguage);
                     },
                     borderRadius: BorderRadius.circular(30),
                     child: Container(
@@ -380,9 +385,9 @@ class _FlashCardState extends State<FlashCard> {
                   ),
                   //SizedBox(width: 200),
                   InkWell(
-                    onTap: () {
-                      ReadOut(
-                          '${data["fst_num"]} $signPron ${data["snd_num"]}  = ${get_op_result(data["op_sign"], data["fst_num"], data["snd_num"])} ${data["op_sign"] == "÷" ? rem : "."}');
+                    onTap: () async {
+                      ReadOut('${data["fst_num"]} $signPron ${data["snd_num"]}  = ${get_op_result(data["op_sign"], data["fst_num"], data["snd_num"])} ${data["op_sign"] == "÷" ? rem : "."}');
+                      await AnalyticsEngine.logAudioButtonClick(currentLanguage);
                     },
                     borderRadius: BorderRadius.circular(30),
                     child: Container(
