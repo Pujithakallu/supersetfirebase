@@ -4,7 +4,7 @@ class AnalyticsEngine {
   static final instance = FirebaseAnalytics.instance;
 
   static Future<void> init() async {
-    await instance.setAnalyticsCollectionEnabled(true);
+    await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true);
   }
 
   // log translate button clicks for Equation to Words
