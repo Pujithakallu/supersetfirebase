@@ -71,13 +71,13 @@ class _TextQuizState extends State<TextQuiz> {
     ];
   }
 
-  void changeLang()  {
+  void changeLang() async {
     setState(() {
       currentLanguage = currentLanguage == 0 ? 1 : 0;
     });
     print('Button clicked');
     String newLanguage = languageNames[currentLanguage];
-    AnalyticsEngine.logTranslateButtonClickLearn('changed to $newLanguage');
+    await AnalyticsEngine.logTranslateButtonClickQuiz(newLanguage);
     print('Language changed to: $newLanguage');
   }
 
@@ -318,11 +318,9 @@ class _TextQuizState extends State<TextQuiz> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   InkWell(
-                    onTap: ()  {
-                      ReadOut(
-                          '${quesHeading[currentLanguage]} ${quizquestion.question[currentLanguage]}');
-                      AnalyticsEngine.logAudioButtonClick(currentLanguage);
-
+                    onTap: ()  async {
+                      ReadOut('${quesHeading[currentLanguage]} ${quizquestion.question[currentLanguage]}');
+                      await AnalyticsEngine.logAudioButtonClick(currentLanguage);
                     },
                     borderRadius: BorderRadius.circular(30),
                     child: Container(
