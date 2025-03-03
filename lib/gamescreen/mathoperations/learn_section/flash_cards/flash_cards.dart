@@ -67,65 +67,42 @@ class _FlashCardState extends State<FlashCard> {
     double padding = screenWidth * 0.01; // 1% of screen width for padding
     double buttonWidth = screenWidth * 0.15; // 15% of screen width for buttons
     return Scaffold(
-      floatingActionButton: Positioned(
-        top: 16,
-        left: 0,
-        right: 0,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Back Button (Left)
-            FloatingActionButton(
-              heroTag: "backButton",
-              onPressed: () => Navigator.pop(context),
-              foregroundColor: Colors.black,
-              backgroundColor: Colors.lightBlue,
-              shape: const CircleBorder(),
-              child: const Icon(Icons.arrow_back_rounded, size: 24),
-            ),
-
-            // PIN Display (Center)
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 4,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Text(
-                'PIN: $userPin',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent, // Adjust color as needed
+        automaticallyImplyLeading: true, // Shows back button automatically
+        title: Center(
+          // Centers the PIN
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: Colors.white, // Solid background to prevent blurring
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 4,
+                  offset: Offset(0, 2),
                 ),
+              ],
+            ),
+            child: Text(
+              'PIN: $userPin',
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
               ),
             ),
-
-            // Logout Button (Right)
-            Padding(
-              padding: EdgeInsets.only(
-                  right: 30), // Moves logout button slightly left
-              child: FloatingActionButton(
-                heroTag: "logoutButton",
-                onPressed: () => logout(context),
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.blue,
-                shape: const CircleBorder(),
-                child:
-                    const Icon(Icons.logout_rounded, size: 28), // Larger icon
-              ),
-            ),
-          ],
+          ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout_rounded),
+            onPressed: () => logout(context),
+          ),
+        ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -137,16 +114,17 @@ class _FlashCardState extends State<FlashCard> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // Flash Card Section
               Expanded(
-                // Allow the card to take available space without overflowing
                 child: Container(
                   padding: const EdgeInsets.fromLTRB(20, 50, 20, 50),
-                  width: cardWidth,
+                  width: MediaQuery.of(context).size.width * 0.75,
                   child: _renderFlashCard(flashCards[currentCardIndex]),
                 ),
               ),
+
+              // Navigation Buttons (Back & Next)
               Padding(
-                // Add padding to ensure buttons don't overflow
                 padding: const EdgeInsets.only(bottom: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -157,8 +135,9 @@ class _FlashCardState extends State<FlashCard> {
                       },
                       borderRadius: BorderRadius.circular(30),
                       child: Container(
-                        width: buttonWidth,
-                        padding: EdgeInsets.all(padding),
+                        width: MediaQuery.of(context).size.width * 0.15,
+                        padding: EdgeInsets.all(
+                            MediaQuery.of(context).size.width * 0.01),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
                           color: Colors.lightBlue,
@@ -169,7 +148,9 @@ class _FlashCardState extends State<FlashCard> {
                             style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
-                              fontSize: (screenWidth * 0.025).clamp(16.0, 24.0),
+                              fontSize:
+                                  (MediaQuery.of(context).size.width * 0.025)
+                                      .clamp(16.0, 24.0),
                             ),
                           ),
                         ),
@@ -181,8 +162,9 @@ class _FlashCardState extends State<FlashCard> {
                       },
                       borderRadius: BorderRadius.circular(30),
                       child: Container(
-                        width: buttonWidth,
-                        padding: EdgeInsets.all(padding),
+                        width: MediaQuery.of(context).size.width * 0.15,
+                        padding: EdgeInsets.all(
+                            MediaQuery.of(context).size.width * 0.01),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
                           color: Colors.lightBlue,
@@ -193,7 +175,9 @@ class _FlashCardState extends State<FlashCard> {
                             style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
-                              fontSize: (screenWidth * 0.025).clamp(16.0, 24.0),
+                              fontSize:
+                                  (MediaQuery.of(context).size.width * 0.025)
+                                      .clamp(16.0, 24.0),
                             ),
                           ),
                         ),
@@ -297,16 +281,19 @@ class _FlashCardState extends State<FlashCard> {
                         color: Colors.lightGreen,
                       ),
                       child: Center(
-                        //mainAxisAlignment: MainAxisAlignment.center,
-                         child: Text(
-                            currentLanguage == 0 ? 'Español' : 'English',
-                            style: TextStyle(fontSize: screenWidth / 60, color: Colors.black, fontWeight: FontWeight.bold),
-                        )
-                        // Icon(
-                        //   Icons.translate,
-                        //   size: (screenWidth * 0.025).clamp(25.0, 50.0),
-                        // ),
-                      ),
+                          //mainAxisAlignment: MainAxisAlignment.center,
+                          child: Text(
+                        currentLanguage == 0 ? 'Español' : 'English',
+                        style: TextStyle(
+                            fontSize: screenWidth / 60,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      )
+                          // Icon(
+                          //   Icons.translate,
+                          //   size: (screenWidth * 0.025).clamp(25.0, 50.0),
+                          // ),
+                          ),
                     ),
                   ),
                   //SizedBox(width: 200),
@@ -371,16 +358,19 @@ class _FlashCardState extends State<FlashCard> {
                         color: Colors.lightGreen,
                       ),
                       child: Center(
-                        //mainAxisAlignment: MainAxisAlignment.center,
-                        child: Text(
-                            currentLanguage == 0 ? 'Español' : 'English',
-                            style: TextStyle(fontSize: screenWidth / 60, color: Colors.black, fontWeight: FontWeight.bold),
-                        )
-                        // Icon(
-                        //   Icons.translate,
-                        //   size: (screenWidth * 0.025).clamp(25.0, 50.0),
-                        // ),
-                      ),
+                          //mainAxisAlignment: MainAxisAlignment.center,
+                          child: Text(
+                        currentLanguage == 0 ? 'Español' : 'English',
+                        style: TextStyle(
+                            fontSize: screenWidth / 60,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      )
+                          // Icon(
+                          //   Icons.translate,
+                          //   size: (screenWidth * 0.025).clamp(25.0, 50.0),
+                          // ),
+                          ),
                     ),
                   ),
                   //SizedBox(width: 200),
