@@ -88,65 +88,87 @@ class _PracticeScreenState extends State<PracticeScreen> {
     final question = questions[questionIndex];
     bool isLastQuestion = questionIndex == questions.length - 1;
     return Scaffold(
-        floatingActionButton: Positioned(
-          top: 16,
-          left: 0,
-          right: 0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        extendBodyBehindAppBar: true,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(60), // Adjust AppBar height
+          child: Stack(
+            alignment: Alignment.center,
             children: [
-              // Back Button (Left)
-              FloatingActionButton(
-                heroTag: "backButton",
-                onPressed: () => Navigator.pop(context),
-                foregroundColor: Colors.black,
-                backgroundColor: Colors.lightBlue,
-                shape: const CircleBorder(),
-                child: const Icon(Icons.arrow_back_rounded, size: 24),
+              // Transparent AppBar Layer
+              AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                automaticallyImplyLeading:
+                    false, // Prevents default back button
               ),
 
-              // PIN Display (Center)
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.9),
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 4,
-                      offset: Offset(0, 2),
-                    ),
-                  ],
+              // Back Button (Styled as FloatingActionButton)
+              Positioned(
+                left: 16,
+                top: 12,
+                child: FloatingActionButton(
+                  heroTag: "backButton",
+                  onPressed: () => Navigator.pop(context),
+                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.lightBlue,
+                  shape: const CircleBorder(),
+                  mini: true, // Smaller button
+                  child: const Icon(Icons.arrow_back_rounded, size: 32),
                 ),
-                child: Text(
-                  'PIN: $userPin',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+              ),
+
+              // PIN Display (Smaller Width, Centered)
+              Positioned(
+                top: 12,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 12, vertical: 6), // Reduced padding
+                  constraints: const BoxConstraints(
+                    maxWidth:
+                        120, // Limits the width to prevent it from being too wide
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.circular(12), // Slightly rounded corners
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 4,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Text(
+                      'PIN: $userPin',
+                      style: const TextStyle(
+                        fontSize: 14, // Slightly smaller font for better fit
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
                   ),
                 ),
               ),
 
-              // Logout Button (Right)
-              Padding(
-                padding: EdgeInsets.only(
-                    right: 30), // Moves logout button slightly left
+              // Logout Button (Styled as FloatingActionButton)
+              Positioned(
+                right: 16,
+                top: 12,
                 child: FloatingActionButton(
                   heroTag: "logoutButton",
                   onPressed: () => logout(context),
                   foregroundColor: Colors.white,
                   backgroundColor: Colors.blue,
                   shape: const CircleBorder(),
-                  child:
-                      const Icon(Icons.logout_rounded, size: 28), // Larger icon
+                  mini: true, // Smaller button
+                  child: const Icon(Icons.logout_rounded, size: 32),
                 ),
               ),
             ],
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
         body: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
@@ -220,8 +242,10 @@ class _PracticeScreenState extends State<PracticeScreen> {
                   children: [
                     InkWell(
                       onTap: () async {
-                        ReadOut('$quesHeading[currentLanguage], ${question.question}');
-                        await AnalyticsEngine.logAudioButtonClick(currentLanguage);
+                        ReadOut(
+                            '$quesHeading[currentLanguage], ${question.question}');
+                        await AnalyticsEngine.logAudioButtonClick(
+                            currentLanguage);
                       },
                       borderRadius: BorderRadius.circular(30),
                       child: Container(
@@ -296,9 +320,12 @@ class _PracticeScreenState extends State<PracticeScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                            currentLanguage == 0 ? 'Español' : 'English',
-                            style: TextStyle(fontSize: screenWidth / 60, color: Colors.black, fontWeight: FontWeight.bold),
-                        )
+                              currentLanguage == 0 ? 'Español' : 'English',
+                              style: TextStyle(
+                                  fontSize: screenWidth / 60,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                            )
                             // Icon(
                             //   Icons.translate,
                             //   size: screenWidth / 40,

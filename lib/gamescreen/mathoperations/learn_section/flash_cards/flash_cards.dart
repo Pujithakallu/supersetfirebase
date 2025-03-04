@@ -68,40 +68,84 @@ class _FlashCardState extends State<FlashCard> {
     double buttonWidth = screenWidth * 0.15; // 15% of screen width for buttons
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent, // Adjust color as needed
-        automaticallyImplyLeading: true, // Shows back button automatically
-        title: Center(
-          // Centers the PIN
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              color: Colors.white, // Solid background to prevent blurring
-              borderRadius: BorderRadius.circular(15),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 4,
-                  offset: Offset(0, 2),
-                ),
-              ],
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60), // Adjust AppBar height
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            // Transparent AppBar Layer
+            AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              automaticallyImplyLeading: false, // Prevents default back button
             ),
-            child: Text(
-              'PIN: $userPin',
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
+
+            // Back Button (Styled as FloatingActionButton)
+            Positioned(
+              left: 16,
+              top: 12,
+              child: FloatingActionButton(
+                heroTag: "backButton",
+                onPressed: () => Navigator.pop(context),
+                foregroundColor: Colors.black,
+                backgroundColor: Colors.lightBlue,
+                shape: const CircleBorder(),
+                mini: true, // Smaller button
+                child: const Icon(Icons.arrow_back_rounded, size: 32),
               ),
             ),
-          ),
+
+            // PIN Display (Smaller Width, Centered)
+            Positioned(
+              top: 12,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 12, vertical: 6), // Reduced padding
+                constraints: const BoxConstraints(
+                  maxWidth:
+                      120, // Limits the width to prevent it from being too wide
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius:
+                      BorderRadius.circular(12), // Slightly rounded corners
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 4,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Center(
+                  child: Text(
+                    'PIN: $userPin',
+                    style: const TextStyle(
+                      fontSize: 14, // Slightly smaller font for better fit
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            // Logout Button (Styled as FloatingActionButton)
+            Positioned(
+              right: 16,
+              top: 12,
+              child: FloatingActionButton(
+                heroTag: "logoutButton",
+                onPressed: () => logout(context),
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.blue,
+                shape: const CircleBorder(),
+                mini: true, // Smaller button
+                child: const Icon(Icons.logout_rounded, size: 32),
+              ),
+            ),
+          ],
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout_rounded),
-            onPressed: () => logout(context),
-          ),
-        ],
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -299,8 +343,11 @@ class _FlashCardState extends State<FlashCard> {
                   //SizedBox(width: 200),
                   InkWell(
                     onTap: () async {
-                      ReadOut(data['op_def'][currentLanguage] + "; " + data['op_name'][currentLanguage]);
-                      await AnalyticsEngine.logAudioButtonClick(currentLanguage);
+                      ReadOut(data['op_def'][currentLanguage] +
+                          "; " +
+                          data['op_name'][currentLanguage]);
+                      await AnalyticsEngine.logAudioButtonClick(
+                          currentLanguage);
                     },
                     borderRadius: BorderRadius.circular(30),
                     child: Container(
@@ -376,8 +423,10 @@ class _FlashCardState extends State<FlashCard> {
                   //SizedBox(width: 200),
                   InkWell(
                     onTap: () async {
-                      ReadOut('${data["fst_num"]} $signPron ${data["snd_num"]}  = ${get_op_result(data["op_sign"], data["fst_num"], data["snd_num"])} ${data["op_sign"] == "÷" ? rem : "."}');
-                      await AnalyticsEngine.logAudioButtonClick(currentLanguage);
+                      ReadOut(
+                          '${data["fst_num"]} $signPron ${data["snd_num"]}  = ${get_op_result(data["op_sign"], data["fst_num"], data["snd_num"])} ${data["op_sign"] == "÷" ? rem : "."}');
+                      await AnalyticsEngine.logAudioButtonClick(
+                          currentLanguage);
                     },
                     borderRadius: BorderRadius.circular(30),
                     child: Container(
