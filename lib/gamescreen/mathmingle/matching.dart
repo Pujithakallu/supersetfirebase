@@ -184,25 +184,139 @@ class _MatchGameState extends State<MatchGame> {
                     children: <Widget>[
                       Column(
                         children: items.map((item) {
-                          return buildDraggable(item);
+                        return Container(
+                            width: 150, // Adjusted width
+                            height: 150, // Adjusted height
+                            margin: const EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10.0),
+                              border: Border.all(color: Colors.white70, width: 2.0),
+                            ),
+                            child: Center(
+                                //changed here from
+                              child: MouseRegion(
+                              cursor: SystemMouseCursors.click, // Changes cursor to pointer over entire area
+                                child: Draggable<ItemModel>(  
+                                  data: item,
+                                  // Ensure the entire area is used when dragging by filling the parent's dimensions:
+                                   childWhenDragging: Container(
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                   ),
+                                   feedback: Material(
+                                      color: Colors.transparent,
+                                      child: Container(
+                                         width: 150,
+                                         height: 150,
+                                         padding: EdgeInsets.all(8.0),
+                                         decoration: BoxDecoration(
+                                          color: Colors.white70,
+                                          borderRadius: BorderRadius.circular(10.0),
+                                          border: Border.all(color: Colors.white70, width: 2.0),
+                                         ),
+                                        child: Center(
+                                          child: Text(
+                                            item.value,
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20.0,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    child: Container(
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      padding: EdgeInsets.all(8.0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white70,
+                                        borderRadius: BorderRadius.circular(10.0),
+                                        border: Border.all(color: Colors.white70, width: 2.0),
+                                       ),
+                                        child: Center(
+                                          child: Text(
+                                            item.value,
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20.0,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                   ),
+                                ),
+                              ),
+                           ),
+                          );
                         }).toList(),
-                      ),
-                      const Spacer(),
+                        
+                       ),
+                      Spacer(),
                       Column(
                         children: items2.map((item) {
-                          return buildDragTarget(item);
+                          return Container(
+                            width: 150, // Adjusted width
+                            height: 150, // Adjusted height
+                              //changed here from
+                            child: MouseRegion(
+                              cursor: SystemMouseCursors.click, // Changes cursor to pointer when over drop target
+                              child: DragTarget<ItemModel>(
+                                onAccept: (receivedItem) {
+                                  if (item.value == receivedItem.value) {
+                                    setState(() {
+                                      items.remove(receivedItem);
+                                      items2.remove(item);
+                                      score += 2; // Increase score by 2 if correct
+                                      item.accepting = false;
+                                    });
+                                    } else {
+                                      setState(() {
+                                        score -= 1; // Reduce score by 1 if wrong
+                                        item.accepting = false;
+                                      });
+                                    }
+                                  },
+                                  onLeave: (receivedItem) {
+                                    setState(() {
+                                      item.accepting = false;
+                                    });
+                                  },
+                                  onWillAccept: (receivedItem) {
+                                    setState(() {
+                                      item.accepting = true;
+                                    });
+                                    return true;
+                                  },
+                                  builder: (context, acceptedItems, rejectedItem) => Container(
+                                    decoration: BoxDecoration(
+                                      color: item.accepting ? Colors.red : Colors.white70,
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      border: Border.all(color: Colors.white, width: 2.0),
+                                    ),
+                                    height: 150,
+                                    width: 150,
+                                    alignment: Alignment.center,
+                                    margin: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      item.name,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18.0,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                              ),
+  
+                          );
                         }).toList(),
                       ),
                     ],
-                  ),
-                if (gameOver)
-                  const Text(
-                    "G a m e  O v e r",
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24.0,
-                    ),
                   ),
                 if (gameOver)
                   Row(
