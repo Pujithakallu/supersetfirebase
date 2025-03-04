@@ -139,7 +139,16 @@ class _MemoryGameState extends State<MemoryGame> {
         ),
         child: Column(
           children: <Widget>[
-            const SizedBox(height: 60),
+             const Text(
+              'R E M E M B E R  &  W I N',
+              style: TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 2.0,
+              ),
+              textAlign: TextAlign.center,
+             ),
+            const SizedBox(height: 20),
             // Show the countdown clock
             ClockDisplay(seconds: _seconds),
             // The grid of flip cards
@@ -154,39 +163,35 @@ class _MemoryGameState extends State<MemoryGame> {
                     crossAxisSpacing: 8.0,
                   ),
                   itemCount: _data.length,
-                  itemBuilder: (context, index) {
-                    return FlipCard(
-                      key: _cardStateKeys[index],
-                      onFlip: () {
-                        if (!_wait) {
-                          checkMatch(index);
-                        }
-                      },
-                      flipOnTouch: !_wait && _cardFlips[index],
-                      direction: FlipDirection.HORIZONTAL,
-                      front: getQuestionMarkCard(),
-                      back: Container(
-                        decoration: BoxDecoration(
-                          color: _cardFlips[index] ? Colors.grey[100] : Colors.green,
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black45,
-                              blurRadius: 3,
-                              spreadRadius: 0.8,
-                              offset: Offset(2.0, 1),
+                itemBuilder: (context, index) {
+                  return MouseRegion(
+                    cursor: SystemMouseCursors.click, // Ensures cursor changes only when over the card
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0), // Keeps proper spacing while preventing excess hover area
+                      child: SizedBox(
+                        width: 70, // Ensures the card fits within its allocated space
+                        height: 80,
+                        child: FlipCard(
+                          key: _cardStateKeys[index],
+                          onFlip: () {
+                            if (!_wait) {
+                              checkMatch(index);
+                            }
+                          },
+                          flipOnTouch: !_wait && _cardFlips[index],
+                          direction: FlipDirection.HORIZONTAL,
+                          front: getQuestionMarkCard(),
+                          back: Container(
+                            decoration: BoxDecoration(
+                              color: _cardFlips[index] ? Colors.grey[100] : Colors.green,
+                              borderRadius: BorderRadius.circular(5),
                             ),
-                          ],
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 20),
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(8.0), // Ensures text is properly aligned
+                            alignment: Alignment.center,
                             child: Text(
                               _data[index],
                               style: TextStyle(
-                                fontSize: isPortrait ? 30 : 24,
+                                fontSize: MediaQuery.of(context).orientation == Orientation.portrait ? 30 : 24,
                                 fontWeight: FontWeight.bold,
                               ),
                               textAlign: TextAlign.center,
@@ -194,9 +199,10 @@ class _MemoryGameState extends State<MemoryGame> {
                           ),
                         ),
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                }
+               ),
               ),
             ),
           ],
@@ -339,7 +345,7 @@ class _MemoryGameState extends State<MemoryGame> {
           ),
         ],
       ),
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Image.asset("assets/Mathmingle/question_mark.png"),
