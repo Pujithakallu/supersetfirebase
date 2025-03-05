@@ -78,79 +78,104 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
     }
 
     return Scaffold(
-      floatingActionButton: Positioned(
-        top: 16,
-        left: 0,
-        right: 0,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      extendBodyBehindAppBar: true,
+      appBar: PreferredSize(
+        preferredSize:
+            const Size.fromHeight(80), // Increased height for VOCABULARY text
+        child: Stack(
+          alignment: Alignment.center,
           children: [
-            // Back Button (Left)
-            FloatingActionButton(
-              heroTag: "backButton",
-              onPressed: () => Navigator.pop(context),
-              foregroundColor: Colors.black,
-              backgroundColor: Colors.lightBlue,
-              shape: const CircleBorder(),
-              child: const Icon(Icons.arrow_back_rounded, size: 24),
+            // Transparent AppBar Layer
+            AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              automaticallyImplyLeading: false, // Prevents default back button
             ),
 
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // PIN Display with decoration
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
+            // Back Button (Styled as FloatingActionButton)
+            Positioned(
+              left: 16,
+              top: 12,
+              child: FloatingActionButton(
+                heroTag: "backButton",
+                onPressed: () => Navigator.pop(context),
+                foregroundColor: Colors.black,
+                backgroundColor: Colors.lightBlue,
+                shape: const CircleBorder(),
+                mini: true, // Smaller button
+                child: const Icon(Icons.arrow_back_rounded, size: 32),
+              ),
+            ),
+
+            // Column for PIN and VOCABULARY
+            Positioned(
+              top: 12,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // PIN Display (Smaller Width, Centered)
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    constraints: const BoxConstraints(
+                      maxWidth: 120, // Prevents it from being too wide
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 4,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: Text(
+                        'PIN: $userPin',
+                        style: const TextStyle(
+                          fontSize: 14, // Slightly smaller font for better fit
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
                       ),
-                    ],
-                  ),
-                  child: Text(
-                    'PIN: $userPin',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
                     ),
                   ),
-                ),
-                const SizedBox(height: 4), // Small gap between PIN and VOCAB
-                // VOCABULARY Display (plain text)
-                const Text(
-                  'V O C A B U L A R Y',
-                  style: TextStyle(
-                    fontSize: 45,
-                    color: Colors.black,
+
+                  const SizedBox(
+                      height: 4), // Small gap between PIN and VOCABULARY
+
+                  // VOCABULARY Text (Adjusted to fit better)
+                  const Text(
+                    'V O C A B U L A R Y',
+                    style: TextStyle(
+                      fontSize: 30, // Reduced font size to fit properly
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
 
-            Padding(
-              padding: EdgeInsets.only(
-                  right: 30), // Moves logout button slightly left
+            // Logout Button (Styled as FloatingActionButton)
+            Positioned(
+              right: 16,
+              top: 12,
               child: FloatingActionButton(
                 heroTag: "logoutButton",
                 onPressed: () => logout(context),
                 foregroundColor: Colors.white,
                 backgroundColor: Colors.blue,
                 shape: const CircleBorder(),
-                child:
-                    const Icon(Icons.logout_rounded, size: 28), // Larger icon
+                mini: true, // Smaller button
+                child: const Icon(Icons.logout_rounded, size: 32),
               ),
             ),
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       body: Stack(
         children: [
           Image.asset(
@@ -250,12 +275,11 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
                           EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                     ),
                     onPressed: () {
-                      
                       _pageController.nextPage(
                         duration: Duration(milliseconds: 500),
                         curve: Curves.easeInOut,
                       );
-                      
+
                       setState(() {
                         currentPage++;
                       });
@@ -332,12 +356,13 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
                 IconButton(
                   icon: Icon(Icons.volume_up, size: 30, color: Colors.blue),
                   onPressed: () {
-                    String fileName = english.toLowerCase().replaceAll("/", "_");
+                    String fileName =
+                        english.toLowerCase().replaceAll("/", "_");
                     _audioPlayer.play(
-                      AssetSource(
-                          'Mathmingle/audio/$fileName.mp3'),
+                      AssetSource('Mathmingle/audio/$fileName.mp3'),
                     );
-                    AnalyticsEngine.logAudioButtonClick_MathMingle(english, chapter); // Log the event
+                    AnalyticsEngine.logAudioButtonClick_MathMingle(
+                        english, chapter); // Log the event
                   },
                 ),
               ],
