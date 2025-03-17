@@ -102,7 +102,7 @@ class _TextQuizState extends State<TextQuiz> {
       setState(() {
         isCorrect = true;
         isAnswerSubmitted = true; // Set answer submitted status to true
-        score += 2;
+        score += 10;
         correctAnswersCount++;
       });
     } else {

@@ -99,7 +99,7 @@ class _McqQuizState extends State<McqQuiz> {
       "sign": question.sign
     };
     if (selectedAnswerIndex == question.correctAnswerIndex) {
-      score += 2;
+      score += 10;
       correctAnswersCount++;
     }
     setState(() {});
