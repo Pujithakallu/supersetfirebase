@@ -69,14 +69,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       'title': 'Math Equations',
       'backgroundImage': 'assets/images/math_equations.png',
       'description': 'Master equations!',
-      'icon': Icons.functions,   
+      'icon': Icons.functions,
       'route': (String pin) => MyApp(),
     },
     {
       'title': 'Math Operators',
       'backgroundImage': 'assets/images/math_operators.png',
       'description': 'Learn new symbols & more!',
-      'icon': Icons.show_chart,  
+      'icon': Icons.show_chart,
       'route': (String pin) => Operators(userPin: pin),
     },
   ];
@@ -163,87 +163,97 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 4,
-                      childAspectRatio: 0.9, 
+                      childAspectRatio: 0.9,
                       crossAxisSpacing: 30,
                       mainAxisSpacing: 30,
                     ),
                     itemCount: games.length,
                     itemBuilder: (context, index) {
                       final game = games[index];
-                      return GestureDetector(
-                        onTap: () {
-                          if (game['route'] != null) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => game['route'](pin),
-                              ),
-                            );
-                          }
+                      return MouseRegion(
+                        onEnter: (_) {
+                          // Change cursor to hand when hovered
+                          SystemMouseCursors.click;
                         },
-                        child: Column(
-                          children: [
-                            // Game Image
-                            Expanded(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  image: DecorationImage(
-                                    image: AssetImage(game['backgroundImage']),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black26,
-                                      blurRadius: 4,
-                                      offset: Offset(0, 2),
+                        onExit: (_) {
+                          // Revert cursor back to default arrow
+                          SystemMouseCursors.basic;
+                        },
+                        child: GestureDetector(
+                          onTap: () {
+                            if (game['route'] != null) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => game['route'](pin),
+                                ),
+                              );
+                            }
+                          },
+                          child: Column(
+                            children: [
+                              // Game Image
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    image: DecorationImage(
+                                      image: AssetImage(game['backgroundImage']),
+                                      fit: BoxFit.cover,
                                     ),
-                                  ],
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 4,
+                                        offset: Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 8),
+                              const SizedBox(height: 8),
 
-                            // Game Title
-                            Text(
-                              game['title'],
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-
-                            // Symbol Below the Title
-                            Icon(
-                              game['icon'],
-                              size: 30,
-                              color: Colors.blueAccent,
-                            ),
-
-                            // Description with Black Background
-                            const SizedBox(height: 6),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                game['description'],
+                              // Game Title
+                              Text(
+                                game['title'],
                                 style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
-                            ),
-                          ],
+
+                              // Symbol Below the Title
+                              Icon(
+                                game['icon'],
+                                size: 30,
+                                color: Colors.blueAccent,
+                              ),
+
+                              // Description with Black Background
+                              const SizedBox(height: 6),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 6,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  game['description'],
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },
