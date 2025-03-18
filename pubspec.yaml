@@ -61,6 +61,7 @@ flutter:
     - assets/Mathoperations/apple.png
     - assets/Mathoperations/egg.png
     - assets/Mathoperations/child.png
+    - assets/Mathoperations/BackGround_1.png
     
     - assets/images/background.png
     - assets/images/profile_pic.png

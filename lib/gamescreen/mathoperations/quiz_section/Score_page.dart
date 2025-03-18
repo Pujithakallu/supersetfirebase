@@ -26,7 +26,7 @@ class _ScorePageState extends State<ScorePage> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/Mathoperations/home_screen.png'),
+            image: AssetImage('assets/Mathoperations/BackGround_1.png'),
             fit: BoxFit.cover,
           ),
         ),
