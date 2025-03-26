@@ -1,4 +1,4 @@
-// homescreen.dart (assuming MyHomePage is here)
+// lib/gamescreen/mathmingle/homescreen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
@@ -22,20 +22,25 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Use our top bar
+      extendBodyBehindAppBar: true, // AppBar overlays background
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: TopBarWithScore(
-          onBack: () => Navigator.pop(context), // or whatever you want
+          onBack: () => Navigator.pop(context),
         ),
       ),
-
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => logout(context),
+        backgroundColor: Colors.blue,
+        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.white),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/Mathmingle/homescreen/Learn_page.png",),
+            image: AssetImage("assets/Mathmingle/homescreen/Learn_page.png"),
             fit: BoxFit.scaleDown,
           ),
           gradient: LinearGradient(
@@ -46,19 +51,17 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start, // Control vertical spacing manually
             children: [
+              SizedBox(height: 120), // Extra top spacing so content doesn't interfere with the TopBar
               Text(
                 'Math Mingle',
                 style: TextStyle(fontSize: 44, fontWeight: FontWeight.bold),
               ),
-
               SizedBox(height: 20),
-
               // Learn Button
               ElevatedButton(
                 onPressed: () {
-                  // Navigate to the Learn page (showing the Learn game)
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -73,11 +76,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 child: Text('Learn'),
               ),
-
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  // Navigate to the Play page (showing Matching and Memory games)
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -100,8 +101,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-
- // Learn page: Shows only the Learn game card
 class MathMingleLearnPage extends StatelessWidget {
   final int chapterNumber;
   const MathMingleLearnPage({Key? key, required this.chapterNumber}) : super(key: key);
@@ -111,21 +110,26 @@ class MathMingleLearnPage extends StatelessWidget {
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
 
     return Scaffold(
-          appBar: AppBar(
-            //title: Text("Math Mingle"),
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back), // Back button icon
-              onPressed: () {
-                Navigator.pop(context); // Navigate back to the previous screen
-              },
-            ),
-          ),
+      extendBodyBehindAppBar: true, // AppBar overlays background
+      appBar: AppBar(
+        backgroundColor: Colors.transparent, // Transparent AppBar
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => logout(context),
+        backgroundColor: Colors.blue,
+        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.white),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const SizedBox(height: 40), // Add space from top
-          
-          // PIN Display at the top center
+          SizedBox(height: 40),
+          // Display the PIN in a centered container
           Center(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -136,7 +140,7 @@ class MathMingleLearnPage extends StatelessWidget {
                   BoxShadow(
                     color: Colors.black.withOpacity(0.1),
                     blurRadius: 4,
-                    offset: const Offset(0, 2),
+                    offset: Offset(0, 2),
                   ),
                 ],
               ),
@@ -150,24 +154,14 @@ class MathMingleLearnPage extends StatelessWidget {
               ),
             ),
           ),
-
-           const SizedBox(height: 20), // Space between PIN and title
-
-          // "Math Mingle" Title (Now displayed below the PIN)
+          SizedBox(height: 20),
           Center(
             child: Text(
               "Math Mingle",
-              style: TextStyle(
-                fontSize: 28, // Bigger and bold text
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black87),
             ),
           ),
-
-          const SizedBox(height: 30), // Space between title and Learn card
-
-          // Centered game card
+          SizedBox(height: 30),
           Expanded(
             child: Center(
               child: buildGameCard(
@@ -175,7 +169,7 @@ class MathMingleLearnPage extends StatelessWidget {
                 'Learn\n',
                 'assets/Mathmingle/homescreen/level_1.png',
                 'Learn new words and numbers. Use your gained knowledge to win points in learning-based games.',
-                '/studymaterial', // Route for study material
+                '/studymaterial',
                 chapterNumber,
                 20,
                 cardHeight: 400,
@@ -189,7 +183,6 @@ class MathMingleLearnPage extends StatelessWidget {
   }
 }
 
-// Play page: Shows the Matching and Memory game cards side by side
 class MathMinglePlayPage extends StatelessWidget {
   final int chapterNumber;
   const MathMinglePlayPage({Key? key, required this.chapterNumber}) : super(key: key);
@@ -197,38 +190,36 @@ class MathMinglePlayPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true, // AppBar overlays background
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: TopBarWithScore(
-          onBack: () => Navigator.pop(context), // Back navigation
+          onBack: () => Navigator.pop(context),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => logout(context),
+        backgroundColor: Colors.blue,
+        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.white),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const SizedBox(height: 20), // Space below the app bar
-
-          // "Math Mingle" Title (Displayed below the App Bar)
+          SizedBox(height: 20),
           Center(
             child: Text(
               "Math Mingle",
-              style: TextStyle(
-                fontSize: 28, // Bigger and bold text
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black87),
             ),
           ),
-
-          const SizedBox(height: 30), // Space between title and game cards
-
-          // Game Cards Section (Scrollable Row)
+          SizedBox(height: 30),
           Expanded(
             child: LayoutBuilder(
               builder: (context, constraints) {
                 return Container(
                   width: constraints.maxWidth,
-                  height: constraints.maxHeight, // Fill available height
+                  height: constraints.maxHeight,
                   alignment: Alignment.center,
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -240,7 +231,7 @@ class MathMinglePlayPage extends StatelessWidget {
                           'Jungle Matching Safari\n',
                           'assets/Mathmingle/homescreen/level_2.png',
                           'Match and test your memory in the wild jungle-themed drag-and-drop game.',
-                          '/matching', // Route for matching game
+                          '/matching',
                           chapterNumber,
                           30,
                           cardHeight: 400,
@@ -251,7 +242,7 @@ class MathMinglePlayPage extends StatelessWidget {
                           'Remember & Win\n',
                           'assets/Mathmingle/homescreen/level_3.png',
                           'Boost your memory with this exciting matching tile game and earn rewards.',
-                          '/memory', // Route for memory game
+                          '/memory',
                           chapterNumber,
                           40,
                           cardHeight: 400,
@@ -269,41 +260,39 @@ class MathMinglePlayPage extends StatelessWidget {
     );
   }
 }
-//end
 
-
-// Reusable function to build a game card widget.
-  Widget buildGameCard(
-    BuildContext context,
-    String title,
-    String imagePath,
-    String description,
-    String route,
-    int chapter,
-    int points,
-    {double cardWidth = 250, double cardHeight = 350,})
-  {
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, route, arguments: chapter);
-      },
-      child: Container(
-       //width: 250,
-       width: cardWidth, // Fixed width for the card
-       height: cardHeight,// Use the cardHeight parameter here
-        margin: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(15.0),
-          onTap: () {
-            Navigator.pushNamed(context, route, arguments: chapter);
-          },
-
-          child: Card(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)
+// Top-level function to build a game card widget.
+Widget buildGameCard(
+  BuildContext context,
+  String title,
+  String imagePath,
+  String description,
+  String route,
+  int chapter,
+  int points, {
+  double cardWidth = 250,
+  double cardHeight = 350,
+}) {
+  return GestureDetector(
+    onTap: () {
+      Navigator.pushNamed(context, route, arguments: chapter);
+    },
+    child: Container(
+      width: cardWidth,
+      height: cardHeight,
+      margin: EdgeInsets.symmetric(horizontal: 10.0),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(15.0),
+        onTap: () {
+          Navigator.pushNamed(context, route, arguments: chapter);
+        },
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0)
           ),
           elevation: 4,
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -313,13 +302,13 @@ class MathMinglePlayPage extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 Stack(
                   children: [
                     ClipRRect(
@@ -341,7 +330,7 @@ class MathMinglePlayPage extends StatelessWidget {
                       right: 40,
                       child: Text(
                         '$points pts',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -357,18 +346,17 @@ class MathMinglePlayPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 Text(
                   description,
                   textAlign: TextAlign.justify,
-                  style: const TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 16),
                 ),
               ],
             ),
           ),
         ),
       ),
-     )
-    );
-  }
-
+    ),
+  );
+}

@@ -133,67 +133,73 @@ class WelcomeScreen extends StatelessWidget {
             ),
           ),
 
-          // Floating Buttons (Top Positioned)
+          // Back button & PIN centered row at the top
           Positioned(
             top: 16,
-            left: 16,
-            right: 16,
+            left: 0,
+            right: 0,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Back Button
-                FloatingActionButton(
-                  heroTag: "backButton",
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => home.HomeScreen(pin: userPin)),
-                    );
-                  },
-                  foregroundColor: Colors.black,
-                  backgroundColor: Colors.lightBlue,
-                  shape: const CircleBorder(),
-                  child: const Icon(Icons.arrow_back_rounded, size: 24),
+                // Back Button (top left)
+                Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: FloatingActionButton(
+                    heroTag: "backButton",
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => home.HomeScreen(pin: userPin)),
+                      );
+                    },
+                    foregroundColor: Colors.black,
+                    backgroundColor: Colors.lightBlue,
+                    shape: const CircleBorder(),
+                    mini: true,
+                    child: const Icon(Icons.arrow_back_rounded, size: 24),
+                  ),
                 ),
 
-                // PIN Display (Center)
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 4,
-                        offset: Offset(0, 2),
+                // Center PIN (expanded center)
+                Expanded(
+                  child: Center(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.9),
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  child: Text(
-                    'PIN: $userPin',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      child: Text(
+                        'PIN: $userPin',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-
-                // Logout Button
-                FloatingActionButton(
-                  heroTag: "logoutButton",
-                  onPressed: () => logout(context),
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.blue,
-                  shape: const CircleBorder(),
-                  child: const Icon(Icons.logout_rounded, size: 28),
                 ),
               ],
             ),
           ),
         ],
       ),
+      // Logout FAB at bottom right
+      floatingActionButton: FloatingActionButton(
+        heroTag: "logoutButton",
+        onPressed: () => logout(context),
+        backgroundColor: Colors.blue,
+        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.white),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
