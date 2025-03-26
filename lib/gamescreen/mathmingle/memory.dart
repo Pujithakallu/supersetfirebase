@@ -1,16 +1,13 @@
-// memory.dart
-
+// lib/gamescreen/mathmingle/memory.dart
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
 import 'dart:async';
 import 'dart:math';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
-import 'package:supersetfirebase/gamescreen/mathmingle/matching.dart'; 
-  // Just in case you reference GameData
-import 'score_topbar.dart'; // Make sure this file exists for TopBarWithScore
+import 'score_topbar.dart';
+import 'package:supersetfirebase/utils/logout_util.dart';
 
-/// A ChangeNotifier that tracks the MemoryGame’s total score separately
 class GameData1 extends ChangeNotifier {
   int total = 0;
   void setTotal(int value) {
@@ -27,45 +24,38 @@ class MemoryGame extends StatefulWidget {
 }
 
 class _MemoryGameState extends State<MemoryGame> {
-  // State fields for the memory game
   int _previousIndex = -1;
   bool _flip = false;
   bool _wait = false;
-
-  List<String> _data = [];  // All the "words" used in this game (English + Spanish)
-  List<bool> _cardFlips = []; 
+  List<String> _data = [];
+  List<bool> _cardFlips = [];
   List<GlobalKey<FlipCardState>> _cardStateKeys = [];
-  Map<String, String> _translations = {}; // Mapping from English <-> Spanish
-
+  Map<String, String> _translations = {};
   int _matchedPairs = 0;
-
-  int? chapter;           // Chapter # passed in via route arguments
-  late Timer _timer;      // Timer for the countdown
-  int _seconds = 60;      // 60-second countdown
+  int? chapter;
+  late Timer _timer;
+  int _seconds = 60;
 
   @override
   void initState() {
     super.initState();
     _initializeTimer();
-
-    // Wait until the first frame is rendered to grab arguments
     WidgetsBinding.instance.addPostFrameCallback((_) {
       chapter = ModalRoute.of(context)?.settings.arguments as int? ?? 1;
       _translations = getTranslations(chapter!);
-      restart(); // Generate the data arrays, etc.
+      restart();
     });
   }
 
   @override
   void dispose() {
-    _timer.cancel(); // Stop the timer so we don't get setState() after dispose
+    _timer.cancel();
     super.dispose();
   }
 
-  // Start the periodic timer
   void _initializeTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (!mounted) return; 
+      if (!mounted) return;
       setState(() {
         if (_seconds > 0) {
           _seconds--;
@@ -77,25 +67,21 @@ class _MemoryGameState extends State<MemoryGame> {
     });
   }
 
-  // If time runs out, show a dialog
   void _handleTimeUp() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text(
-            "Times up! Try again.",
-            style: TextStyle(fontSize: 25),
-          ),
+          title: const Text("Times up! Try again.", style: TextStyle(fontSize: 25)),
           actions: <Widget>[
             TextButton(
               child: const Text('Restart Game'),
               onPressed: () {
-                Navigator.pop(context); // close dialog
+                Navigator.pop(context);
                 restart();
                 setState(() {
-                  _seconds = 60; 
-                  _initializeTimer(); 
+                  _seconds = 60;
+                  _initializeTimer();
                 });
               },
             ),
@@ -105,16 +91,11 @@ class _MemoryGameState extends State<MemoryGame> {
     );
   }
 
-  // Re-initialize the grid for a new game
   void restart() {
     setState(() {
-      // get the random pairs for the memory game
       _data = getSourceArray(chapter!);
-      // set them initially all "flippable"
       _cardFlips = List<bool>.filled(_data.length, true);
-      // create flip card keys
       _cardStateKeys = List.generate(_data.length, (_) => GlobalKey<FlipCardState>());
-      // reset matched pairs, etc.
       _matchedPairs = 0;
       _flip = false;
       _wait = false;
@@ -127,8 +108,16 @@ class _MemoryGameState extends State<MemoryGame> {
     int crossAxisCount = isPortrait ? 4 : 5;
 
     return Scaffold(
-      // Use TopBarWithScore (score_topbar.dart) to show overall score
-      appBar: const TopBarWithScore(),
+      extendBodyBehindAppBar: true,
+      appBar: TopBarWithScore(
+        onBack: () => Navigator.pop(context),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => logout(context),
+        backgroundColor: Colors.blue,
+        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.white),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -139,19 +128,13 @@ class _MemoryGameState extends State<MemoryGame> {
         ),
         child: Column(
           children: <Widget>[
-             const Text(
+            const Text(
               'R E M E M B E R  &  W I N',
-              style: TextStyle(
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 2.0,
-              ),
+              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, letterSpacing: 2.0),
               textAlign: TextAlign.center,
-             ),
+            ),
             const SizedBox(height: 20),
-            // Show the countdown clock
             ClockDisplay(seconds: _seconds),
-            // The grid of flip cards
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
@@ -163,46 +146,46 @@ class _MemoryGameState extends State<MemoryGame> {
                     crossAxisSpacing: 8.0,
                   ),
                   itemCount: _data.length,
-                itemBuilder: (context, index) {
-                  return MouseRegion(
-                    cursor: SystemMouseCursors.click, // Ensures cursor changes only when over the card
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0), // Keeps proper spacing while preventing excess hover area
-                      child: SizedBox(
-                        width: 70, // Ensures the card fits within its allocated space
-                        height: 80,
-                        child: FlipCard(
-                          key: _cardStateKeys[index],
-                          onFlip: () {
-                            if (!_wait) {
-                              checkMatch(index);
-                            }
-                          },
-                          flipOnTouch: !_wait && _cardFlips[index],
-                          direction: FlipDirection.HORIZONTAL,
-                          front: getQuestionMarkCard(),
-                          back: Container(
-                            decoration: BoxDecoration(
-                              color: _cardFlips[index] ? Colors.grey[100] : Colors.green,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            padding: const EdgeInsets.all(8.0), // Ensures text is properly aligned
-                            alignment: Alignment.center,
-                            child: Text(
-                              _data[index],
-                              style: TextStyle(
-                                fontSize: MediaQuery.of(context).orientation == Orientation.portrait ? 30 : 24,
-                                fontWeight: FontWeight.bold,
+                  itemBuilder: (context, index) {
+                    return MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: 70,
+                          height: 80,
+                          child: FlipCard(
+                            key: _cardStateKeys[index],
+                            onFlip: () {
+                              if (!_wait) {
+                                checkMatch(index);
+                              }
+                            },
+                            flipOnTouch: !_wait && _cardFlips[index],
+                            direction: FlipDirection.HORIZONTAL,
+                            front: getQuestionMarkCard(),
+                            back: Container(
+                              decoration: BoxDecoration(
+                                color: _cardFlips[index] ? Colors.grey[100] : Colors.green,
+                                borderRadius: BorderRadius.circular(5),
                               ),
-                              textAlign: TextAlign.center,
+                              padding: const EdgeInsets.all(8.0),
+                              alignment: Alignment.center,
+                              child: Text(
+                                _data[index],
+                                style: TextStyle(
+                                  fontSize: MediaQuery.of(context).orientation == Orientation.portrait ? 30 : 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                }
-               ),
+                    );
+                  }
+                ),
               ),
             ),
           ],
@@ -211,48 +194,35 @@ class _MemoryGameState extends State<MemoryGame> {
     );
   }
 
-  // Called when you flip the second card
   void checkMatch(int currentIndex) {
     if (!_flip) {
-      // first flip
       _flip = true;
       _previousIndex = currentIndex;
     } else {
-      // second flip
       _flip = false;
       if (_previousIndex != currentIndex) {
         String text1 = _data[_previousIndex];
         String text2 = _data[currentIndex];
-
         if (isMatch(text1, text2)) {
-          // It's a match -> disable flips
           setState(() {
             _cardFlips[_previousIndex] = false;
             _cardFlips[currentIndex] = false;
             _matchedPairs++;
           });
-
-          // If we matched all pairs
           if (_matchedPairs == _data.length ~/ 2) {
-            _timer.cancel(); // stop the countdown
+            _timer.cancel();
             int score = ((_seconds / 60) * 10).toInt();
             showEndGameDialog(score);
-
-            // Add the new score to global memory data
             Future.delayed(Duration.zero, () {
-              if (mounted) {
-                Provider.of<GameData1>(context, listen: false).setTotal(score);
-              }
+              Provider.of<GameData1>(context, listen: false).setTotal(score);
             });
           }
         } else {
-          // Not a match -> flip them back after a delay
           _wait = true;
           Future.delayed(const Duration(milliseconds: 1500), () {
             if (!mounted) return;
             _cardStateKeys[_previousIndex].currentState?.toggleCard();
             _cardStateKeys[currentIndex].currentState?.toggleCard();
-
             Future.delayed(const Duration(milliseconds: 160), () {
               if (!mounted) return;
               setState(() {
@@ -265,54 +235,37 @@ class _MemoryGameState extends State<MemoryGame> {
     }
   }
 
-  // Show final dialog after all matched
   void showEndGameDialog(int score) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text(
-            "C O N G R A T U L A T I O N S ! ! !",
-            style: TextStyle(fontSize: 33),
-          ),
+          title: const Text("C O N G R A T U L A T I O N S ! ! !", style: TextStyle(fontSize: 33)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
-                "You've Matched All Cards!",
-                style: TextStyle(fontSize: 29),
-                textAlign: TextAlign.center,
-              ),
+              const Text("You've Matched All Cards!", style: TextStyle(fontSize: 29), textAlign: TextAlign.center),
               const SizedBox(height: 20),
-              Text(
-                "Score: $score/10",
-                style: const TextStyle(fontSize: 25),
-              ),
+              Text("Score: $score/10", style: const TextStyle(fontSize: 25)),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
-                    child: const Text(
-                      "N E W  G A M E",
-                      style: TextStyle(fontSize: 25),
-                    ),
+                    child: const Text("N E W  G A M E", style: TextStyle(fontSize: 25)),
                     onPressed: () {
                       Navigator.pop(context);
                       restart();
                       setState(() {
-                        _seconds = 60; // reset timer
-                        _initializeTimer(); // start again
+                        _seconds = 60;
+                        _initializeTimer();
                       });
                     },
                   ),
                   TextButton(
-                    child: const Text(
-                      "E X I T",
-                      style: TextStyle(fontSize: 25),
-                    ),
+                    child: const Text("E X I T", style: TextStyle(fontSize: 25)),
                     onPressed: () {
-                      Navigator.pop(context); 
+                      Navigator.pop(context);
                       Navigator.pop(context);
                     },
                   ),
@@ -326,7 +279,6 @@ class _MemoryGameState extends State<MemoryGame> {
     );
   }
 
-  // Are the two strings a match (English <-> Spanish)?
   bool isMatch(String t1, String t2) {
     return _translations[t1] == t2 || _translations[t2] == t1;
   }
@@ -345,7 +297,6 @@ class _MemoryGameState extends State<MemoryGame> {
           ),
         ],
       ),
-      
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Image.asset("assets/Mathmingle/question_mark.png"),
@@ -353,11 +304,8 @@ class _MemoryGameState extends State<MemoryGame> {
     );
   }
 
-  // Actually gather the random pairs for the memory game
   List<String> getSourceArray(int chapter) {
     List<List<String>> sourceArrays = fillSourceArray(chapter);
-
-    // pick 5 random indices from 0..19
     List<int> uniqueRandomIndices = [];
     while (uniqueRandomIndices.length < 5) {
       int r = Random().nextInt(20);
@@ -365,11 +313,9 @@ class _MemoryGameState extends State<MemoryGame> {
         uniqueRandomIndices.add(r);
       }
     }
-
     List<String> levelAndKindList = [];
     for (int i = 0; i < 5; i++) {
       int index = uniqueRandomIndices[i];
-      // sourceArrays[0] => english, sourceArrays[1] => spanish
       levelAndKindList.add(sourceArrays[0][index]);
       levelAndKindList.add(sourceArrays[1][index]);
     }
@@ -377,11 +323,9 @@ class _MemoryGameState extends State<MemoryGame> {
     return levelAndKindList;
   }
 
-  // Provide English + Spanish lists for each chapter
   List<List<String>> fillSourceArray(int chapter) {
     List<String> englishWords = [];
     List<String> spanishWords = [];
-
     switch (chapter) {
       case 1:
         englishWords = [
@@ -448,7 +392,6 @@ class _MemoryGameState extends State<MemoryGame> {
     return [englishWords, spanishWords];
   }
 
-  // Return a map from English->Spanish for quick matching checks
   Map<String, String> getTranslations(int chapter) {
     switch (chapter) {
       case 1:
@@ -497,7 +440,6 @@ class _MemoryGameState extends State<MemoryGame> {
   }
 }
 
-// Simple clock display at the top of the memory game
 class ClockDisplay extends StatelessWidget {
   final int seconds;
   const ClockDisplay({Key? key, required this.seconds}) : super(key: key);
@@ -520,10 +462,7 @@ class ClockDisplay extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             '$minutes:${remainingSeconds.toString().padLeft(2, '0')}',
-            style: const TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),
       ),
