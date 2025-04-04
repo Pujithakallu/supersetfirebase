@@ -52,7 +52,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       final mathEquationsScore = docSnapshot['MathEquations'] ?? 0;
       final mathOperatorsScore = docSnapshot['MathOperators'] ?? 0;
 
-      return mathMingleScore + mathEquationsScore + mathOperatorsScore;
+      final totalBestScore = mathMingleScore + mathEquationsScore + mathOperatorsScore;
+
+      // ✅ Store total score in Firestore
+      await docRef.update({'TotalBestScore': totalBestScore});
+
+      return totalBestScore;
     }
     return 0;
   }
@@ -172,11 +177,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       final game = games[index];
                       return MouseRegion(
                         onEnter: (_) {
-                          // Change cursor to hand when hovered
+                          // Change cursor to hand on hover
                           SystemMouseCursors.click;
                         },
                         onExit: (_) {
-                          // Revert cursor back to default arrow
+                          // Reset cursor to default
                           SystemMouseCursors.basic;
                         },
                         child: GestureDetector(
