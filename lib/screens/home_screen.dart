@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
       final totalBestScore = mathMingleScore + mathEquationsScore + mathOperatorsScore;
 
-      // ✅ Store total score in Firestore
+      //  Store total score in Firestore
       await docRef.update({'TotalBestScore': totalBestScore});
 
       return totalBestScore;
