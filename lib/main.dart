@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'screens/login_screen.dart';
+import 'screens/responsive_login_wrapper.dart'; // Import the responsive wrapper
 import 'config/firebaseconfig.dart';
 import 'package:supersetfirebase/gamescreen/mathmingle/main.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
@@ -33,7 +34,10 @@ class MyApp extends StatelessWidget {
           primary: Color(0xFF6C63FF),
         ),
       ),
-      home: LoginScreen(),
+       home: LoginScreen(),
+      // Use ResponsiveLoginWrapper as the home screen instead of LoginScreen
+      // home: const ResponsiveLoginWrapper(),
     );
   }
 }
+
