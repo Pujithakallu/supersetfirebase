@@ -91,18 +91,6 @@ class _PartsOfEquationsState extends State<PartsOfEquations> {
               color: Colors.black87,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 8.0), // Adjust horizontal padding as needed
-            child: IconButton(
-              icon: Icon(
-                Icons.logout_rounded,
-                color: Color(0xFF6C63FF),
-                size: 26,
-              ),
-              onPressed: () => logout(context),
-            ),
-          ),
         ],
       ),
       extendBodyBehindAppBar: true,
@@ -226,6 +214,16 @@ class _PartsOfEquationsState extends State<PartsOfEquations> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => logout(context),
+        backgroundColor: Colors.white,
+        child: const Icon(
+          Icons.logout_rounded,
+          color: Color(0xFF6C63FF),
+          size: 26,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

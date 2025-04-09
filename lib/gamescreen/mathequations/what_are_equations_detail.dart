@@ -92,14 +92,6 @@ class _WhatAreEquationsDetailState extends State<WhatAreEquationsDetail> {
               color: Colors.black87,
             ),
           ),
-          IconButton(
-            icon: Icon(
-              Icons.logout_rounded,
-              color: Color(0xFF6C63FF),
-              size: 26,
-            ),
-            onPressed: () => logout(context),
-          ),
         ],
       ),
       extendBodyBehindAppBar: true,
@@ -192,6 +184,16 @@ class _WhatAreEquationsDetailState extends State<WhatAreEquationsDetail> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => logout(context),
+        backgroundColor: Colors.white,
+        child: const Icon(
+          Icons.logout_rounded,
+          color: Color(0xFF6C63FF),
+          size: 26,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

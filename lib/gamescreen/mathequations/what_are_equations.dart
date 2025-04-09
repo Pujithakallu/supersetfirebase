@@ -125,8 +125,8 @@ class WhatAreEquations extends StatelessWidget {
           ),
           // Logout Button (Right)
           Positioned(
+            bottom: 16,
             right: 16,
-            top: 16,
             child: FloatingActionButton(
               onPressed: () => logout(context),
               backgroundColor: Colors.white,

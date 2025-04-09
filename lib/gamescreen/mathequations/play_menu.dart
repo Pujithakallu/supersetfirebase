@@ -20,7 +20,7 @@ class PlayMenu extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          // Content
+          // Center Content
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -61,11 +61,7 @@ class PlayMenu extends StatelessWidget {
               ],
             ),
           ),
-        ],
-      ),
-      floatingActionButton: Stack(
-        children: [
-          // Back Button (Left)
+          // Back Button
           Positioned(
             left: 24,
             top: 16,
@@ -79,7 +75,7 @@ class PlayMenu extends StatelessWidget {
               ),
             ),
           ),
-          // PIN Display (Center)
+          // PIN Display
           Positioned(
             top: 16,
             left: 0,
@@ -110,10 +106,10 @@ class PlayMenu extends StatelessWidget {
               ),
             ),
           ),
-          // Logout Button (Right)
+          // Logout Button at Bottom Right
           Positioned(
+            bottom: 16,
             right: 16,
-            top: 16,
             child: FloatingActionButton(
               onPressed: () => logout(context),
               backgroundColor: Colors.white,

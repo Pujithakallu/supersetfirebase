@@ -14,6 +14,7 @@ class MainMenu extends StatelessWidget {
       extendBodyBehindAppBar: true,
       body: Stack(
         children: [
+          // Background image
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
@@ -22,6 +23,8 @@ class MainMenu extends StatelessWidget {
               ),
             ),
           ),
+
+          // Main content
           Column(
             children: [
               const SizedBox(height: 60),
@@ -71,11 +74,8 @@ class MainMenu extends StatelessWidget {
               ),
             ],
           ),
-        ],
-      ),
-      floatingActionButton: Stack(
-        children: [
-          // Back Button (Left)
+
+          // Back button (Top left)
           Positioned(
             left: 24,
             top: 16,
@@ -88,6 +88,7 @@ class MainMenu extends StatelessWidget {
                 );
               },
               backgroundColor: Colors.white,
+              mini: true,
               child: const Icon(
                 Icons.arrow_back_rounded,
                 color: Color(0xFF4A4A4A),
@@ -95,7 +96,8 @@ class MainMenu extends StatelessWidget {
               ),
             ),
           ),
-          // PIN Display (Center)
+
+          // PIN Display (Top center)
           Positioned(
             top: 16,
             left: 0,
@@ -126,22 +128,20 @@ class MainMenu extends StatelessWidget {
               ),
             ),
           ),
-          // Logout Button (Right)
-          Positioned(
-            right: 16,
-            top: 16,
-            child: FloatingActionButton(
-              onPressed: () => logout(context),
-              backgroundColor: Colors.white,
-              child: const Icon(
-                Icons.logout_rounded,
-                color: Color(0xFF6C63FF),
-                size: 26,
-              ),
-            ),
-          ),
         ],
       ),
+
+      // Logout button (Bottom right)
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => logout(context),
+        backgroundColor: Colors.white,
+        child: const Icon(
+          Icons.logout_rounded,
+          color: Color(0xFF6C63FF),
+          size: 26,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

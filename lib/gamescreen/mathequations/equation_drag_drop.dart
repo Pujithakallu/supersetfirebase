@@ -472,16 +472,7 @@ class _EquationDragDropState extends State<EquationDragDrop> {
           title: Text(isSpanish
               ? translations['es']!['game_over']!
               : translations['en']!['game_over']!),
-          actions: [
-            IconButton(
-              icon: Icon(
-                Icons.logout_rounded,
-                color: Color(0xFF6C63FF),
-                size: 26,
-              ),
-              onPressed: () => logout(context),
-            ),
-          ],
+          actions: [],
         ),
         extendBodyBehindAppBar: true,
         body: Center(
@@ -529,6 +520,16 @@ class _EquationDragDropState extends State<EquationDragDrop> {
             ],
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => logout(context),
+          backgroundColor: Colors.white,
+          child: const Icon(
+            Icons.logout_rounded,
+            color: Color(0xFF6C63FF),
+            size: 26,
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       );
     }
 
@@ -577,14 +578,6 @@ class _EquationDragDropState extends State<EquationDragDrop> {
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
                 ),
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.logout_rounded,
-                  color: Color(0xFF6C63FF),
-                  size: 26,
-                ),
-                onPressed: () => logout(context),
               ),
             ],
           ),
@@ -796,6 +789,16 @@ class _EquationDragDropState extends State<EquationDragDrop> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => logout(context),
+        backgroundColor: Colors.white,
+        child: const Icon(
+          Icons.logout_rounded,
+          color: Color(0xFF6C63FF),
+          size: 26,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
