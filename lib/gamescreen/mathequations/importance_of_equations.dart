@@ -81,24 +81,17 @@ class _ImportanceOfEquationsState extends State<ImportanceOfEquations> {
                   isSpanish ? 'Changed to Spanish' : 'Changed to English');
             },
           ),
-          Text(
-            'PIN: $userPin',
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-          ),
           Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 8.0), // Adjust horizontal padding as needed
-            child: IconButton(
-              icon: Icon(
-                Icons.logout_rounded,
-                color: Color(0xFF6C63FF),
-                size: 26,
+            padding: const EdgeInsets.only(right: 16.0),
+            child: Center(
+              child: Text(
+                'PIN: $userPin',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
               ),
-              onPressed: () => logout(context),
             ),
           ),
         ],
@@ -165,6 +158,18 @@ class _ImportanceOfEquationsState extends State<ImportanceOfEquations> {
           ),
         ),
       ),
+
+      // Logout button (bottom right)
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => logout(context),
+        backgroundColor: Colors.white,
+        child: const Icon(
+          Icons.logout_rounded,
+          color: Color(0xFF6C63FF),
+          size: 26,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

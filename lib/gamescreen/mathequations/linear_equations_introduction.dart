@@ -106,18 +106,6 @@ class _LinearEquationsIntroductionState
               color: Colors.black87,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 8.0), // Adjust horizontal padding as needed
-            child: IconButton(
-              icon: Icon(
-                Icons.logout_rounded,
-                color: Color(0xFF6C63FF),
-                size: 26,
-              ),
-              onPressed: () => logout(context),
-            ),
-          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -241,6 +229,16 @@ class _LinearEquationsIntroductionState
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => logout(context),
+        backgroundColor: Colors.white,
+        child: const Icon(
+          Icons.logout_rounded,
+          color: Color(0xFF6C63FF),
+          size: 26,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

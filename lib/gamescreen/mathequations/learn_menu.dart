@@ -97,11 +97,8 @@ class LearnMenu extends StatelessWidget {
               ),
             ],
           ),
-        ],
-      ),
-      floatingActionButton: Stack(
-        children: [
-          // Back Button (Left)
+
+          // Back button (Top left)
           Positioned(
             left: 24,
             top: 16,
@@ -115,7 +112,7 @@ class LearnMenu extends StatelessWidget {
               ),
             ),
           ),
-          // PIN Display (Center)
+// PIN Display (Center)
           Positioned(
             top: 16,
             left: 0,
@@ -146,22 +143,20 @@ class LearnMenu extends StatelessWidget {
               ),
             ),
           ),
-          // Logout Button (Right)
-          Positioned(
-            right: 16,
-            top: 16,
-            child: FloatingActionButton(
-              onPressed: () => logout(context),
-              backgroundColor: Colors.white,
-              child: const Icon(
-                Icons.logout_rounded,
-                color: Color(0xFF6C63FF),
-                size: 26,
-              ),
-            ),
-          ),
         ],
       ),
+
+      // Logout button (Bottom right)
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => logout(context),
+        backgroundColor: Colors.white,
+        child: const Icon(
+          Icons.logout_rounded,
+          color: Color(0xFF6C63FF),
+          size: 26,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

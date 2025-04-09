@@ -626,14 +626,6 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
                   color: Colors.black87,
                 ),
               ),
-              IconButton(
-                icon: Icon(
-                  Icons.logout_rounded,
-                  color: Color(0xFF6C63FF),
-                  size: 26,
-                ),
-                onPressed: () => logout(context),
-              ),
             ],
           ),
           InstructionsWidget(
@@ -785,6 +777,16 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => logout(context),
+        backgroundColor: Colors.white,
+        child: const Icon(
+          Icons.logout_rounded,
+          color: Color(0xFF6C63FF),
+          size: 26,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
