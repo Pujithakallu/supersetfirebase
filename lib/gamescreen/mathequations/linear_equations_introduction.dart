@@ -234,7 +234,7 @@ class _LinearEquationsIntroductionState
         backgroundColor: Colors.white,
         child: const Icon(
           Icons.logout_rounded,
-          color: Color(0xFF6C63FF),
+          color: Colors.black,
           size: 26,
         ),
       ),

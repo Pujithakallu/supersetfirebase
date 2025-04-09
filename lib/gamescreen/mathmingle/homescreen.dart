@@ -31,8 +31,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => logout(context),
-        backgroundColor: Colors.blue,
-        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.white),
+        backgroundColor: Colors.white,
+        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.black),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Container(
@@ -51,9 +51,12 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start, // Control vertical spacing manually
+            mainAxisAlignment:
+                MainAxisAlignment.start, // Control vertical spacing manually
             children: [
-              SizedBox(height: 120), // Extra top spacing so content doesn't interfere with the TopBar
+              SizedBox(
+                  height:
+                      120), // Extra top spacing so content doesn't interfere with the TopBar
               Text(
                 'Math Mingle',
                 style: TextStyle(fontSize: 44, fontWeight: FontWeight.bold),
@@ -65,7 +68,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MathMingleLearnPage(chapterNumber: widget.chapterNumber),
+                      builder: (context) => MathMingleLearnPage(
+                          chapterNumber: widget.chapterNumber),
                     ),
                   );
                 },
@@ -82,7 +86,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MathMinglePlayPage(chapterNumber: widget.chapterNumber),
+                      builder: (context) => MathMinglePlayPage(
+                          chapterNumber: widget.chapterNumber),
                     ),
                   );
                 },
@@ -103,7 +108,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class MathMingleLearnPage extends StatelessWidget {
   final int chapterNumber;
-  const MathMingleLearnPage({Key? key, required this.chapterNumber}) : super(key: key);
+  const MathMingleLearnPage({Key? key, required this.chapterNumber})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -121,8 +127,8 @@ class MathMingleLearnPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => logout(context),
-        backgroundColor: Colors.blue,
-        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.white),
+        backgroundColor: Colors.white,
+        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.black),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Column(
@@ -158,7 +164,10 @@ class MathMingleLearnPage extends StatelessWidget {
           Center(
             child: Text(
               "Math Mingle",
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black87),
+              style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87),
             ),
           ),
           SizedBox(height: 30),
@@ -185,7 +194,8 @@ class MathMingleLearnPage extends StatelessWidget {
 
 class MathMinglePlayPage extends StatelessWidget {
   final int chapterNumber;
-  const MathMinglePlayPage({Key? key, required this.chapterNumber}) : super(key: key);
+  const MathMinglePlayPage({Key? key, required this.chapterNumber})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -199,8 +209,8 @@ class MathMinglePlayPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => logout(context),
-        backgroundColor: Colors.blue,
-        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.white),
+        backgroundColor: Colors.white,
+        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.black),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Column(
@@ -210,7 +220,10 @@ class MathMinglePlayPage extends StatelessWidget {
           Center(
             child: Text(
               "Math Mingle",
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black87),
+              style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87),
             ),
           ),
           SizedBox(height: 30),
@@ -287,9 +300,8 @@ Widget buildGameCard(
           Navigator.pushNamed(context, route, arguments: chapter);
         },
         child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0)
-          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
           elevation: 4,
           child: Padding(
             padding: EdgeInsets.all(16.0),

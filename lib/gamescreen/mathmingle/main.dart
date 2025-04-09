@@ -99,8 +99,10 @@ class WelcomeScreen extends StatelessWidget {
                       Navigator.pushReplacement(
                         context,
                         PageRouteBuilder(
-                          pageBuilder: (context, animation1, animation2) => Menu(),
-                          transitionsBuilder: (context, animation1, animation2, child) {
+                          pageBuilder: (context, animation1, animation2) =>
+                              Menu(),
+                          transitionsBuilder:
+                              (context, animation1, animation2, child) {
                             const begin = Offset(1.0, 0.0);
                             const end = Offset.zero;
                             const curve = Curves.easeInOut;
@@ -149,14 +151,17 @@ class WelcomeScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => home.HomeScreen(pin: userPin)),
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                home.HomeScreen(pin: userPin)),
                       );
                     },
                     foregroundColor: Colors.black,
-                    backgroundColor: Colors.lightBlue,
+                    backgroundColor: Colors.white,
                     shape: const CircleBorder(),
                     mini: true,
-                    child: const Icon(Icons.arrow_back_rounded, size: 24),
+                    child: const Icon(Icons.arrow_back_rounded,
+                        size: 24, color: Colors.black),
                   ),
                 ),
 
@@ -164,7 +169,8 @@ class WelcomeScreen extends StatelessWidget {
                 Expanded(
                   child: Center(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.9),
                         borderRadius: BorderRadius.circular(15),
@@ -196,8 +202,8 @@ class WelcomeScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         heroTag: "logoutButton",
         onPressed: () => logout(context),
-        backgroundColor: Colors.blue,
-        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.white),
+        backgroundColor: Colors.white,
+        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.black),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
