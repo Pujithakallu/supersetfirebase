@@ -61,8 +61,9 @@ class _MatchGameState extends State<MatchGame> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () => logout(context),
-          backgroundColor: Colors.blue,
-          child: const Icon(Icons.logout_rounded, size: 28, color: Colors.white),
+          backgroundColor: Colors.white,
+          child:
+              const Icon(Icons.logout_rounded, size: 28, color: Colors.black),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         body: Container(
@@ -96,7 +97,8 @@ class _MatchGameState extends State<MatchGame> {
                       },
                       child: const Text(
                         'Start Game',
-                        style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 24.0, fontWeight: FontWeight.bold),
                       ),
                     ),
                     const SizedBox(width: 20),
@@ -112,7 +114,8 @@ class _MatchGameState extends State<MatchGame> {
                       },
                       child: const Text(
                         'Exit',
-                        style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 24.0, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],
@@ -141,8 +144,8 @@ class _MatchGameState extends State<MatchGame> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => logout(context),
-        backgroundColor: Colors.blue,
-        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.white),
+        backgroundColor: Colors.white,
+        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.black),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Container(
@@ -200,7 +203,8 @@ class _MatchGameState extends State<MatchGame> {
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10.0),
-                              border: Border.all(color: Colors.white70, width: 2.0),
+                              border:
+                                  Border.all(color: Colors.white70, width: 2.0),
                             ),
                             child: Center(
                               child: MouseRegion(
@@ -219,8 +223,10 @@ class _MatchGameState extends State<MatchGame> {
                                       padding: const EdgeInsets.all(8.0),
                                       decoration: BoxDecoration(
                                         color: Colors.white70,
-                                        borderRadius: BorderRadius.circular(10.0),
-                                        border: Border.all(color: Colors.white70, width: 2.0),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        border: Border.all(
+                                            color: Colors.white70, width: 2.0),
                                       ),
                                       child: Center(
                                         child: Text(
@@ -241,7 +247,8 @@ class _MatchGameState extends State<MatchGame> {
                                     decoration: BoxDecoration(
                                       color: Colors.white70,
                                       borderRadius: BorderRadius.circular(10.0),
-                                      border: Border.all(color: Colors.white70, width: 2.0),
+                                      border: Border.all(
+                                          color: Colors.white70, width: 2.0),
                                     ),
                                     child: Center(
                                       child: Text(
@@ -274,7 +281,8 @@ class _MatchGameState extends State<MatchGame> {
                                     setState(() {
                                       items.remove(receivedItem);
                                       items2.remove(item);
-                                      score += 2; // Add points for a correct match.
+                                      score +=
+                                          2; // Add points for a correct match.
                                       item.accepting = false;
                                     });
                                   } else {
@@ -294,11 +302,16 @@ class _MatchGameState extends State<MatchGame> {
                                   });
                                   return true;
                                 },
-                                builder: (context, acceptedItems, rejectedItem) => Container(
+                                builder:
+                                    (context, acceptedItems, rejectedItem) =>
+                                        Container(
                                   decoration: BoxDecoration(
-                                    color: item.accepting ? Colors.red : Colors.white70,
+                                    color: item.accepting
+                                        ? Colors.red
+                                        : Colors.white70,
                                     borderRadius: BorderRadius.circular(10.0),
-                                    border: Border.all(color: Colors.white, width: 2.0),
+                                    border: Border.all(
+                                        color: Colors.white, width: 2.0),
                                   ),
                                   height: 150,
                                   width: 150,
@@ -436,7 +449,8 @@ class _MatchGameState extends State<MatchGame> {
   }
 
   Future<Map<String, List<String>>> loadJsonData(int chapter) async {
-    String jsonString = await rootBundle.loadString('assets/Mathmingle/matchGame/chapter$chapter.json');
+    String jsonString = await rootBundle
+        .loadString('assets/Mathmingle/matchGame/chapter$chapter.json');
     Map<String, dynamic> jsonMap = json.decode(jsonString);
     List<String> spanish = List<String>.from(jsonMap['spanish']);
     List<String> english = List<String>.from(jsonMap['english']);

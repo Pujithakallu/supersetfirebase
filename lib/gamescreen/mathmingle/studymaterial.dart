@@ -100,10 +100,14 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
                 heroTag: "backButton",
                 onPressed: () => Navigator.pop(context),
                 foregroundColor: Colors.black,
-                backgroundColor: Colors.lightBlue,
+                backgroundColor: Colors.white,
                 shape: const CircleBorder(),
                 mini: true, // Smaller button
-                child: const Icon(Icons.arrow_back_rounded, size: 32),
+                child: const Icon(
+                  Icons.arrow_back_rounded,
+                  size: 32,
+                  color: Colors.black,
+                ),
               ),
             ),
 
@@ -160,19 +164,6 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
             ),
 
             // Logout Button (Styled as FloatingActionButton)
-            Positioned(
-              right: 16,
-              top: 12,
-              child: FloatingActionButton(
-                heroTag: "logoutButton",
-                onPressed: () => logout(context),
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.blue,
-                shape: const CircleBorder(),
-                mini: true, // Smaller button
-                child: const Icon(Icons.logout_rounded, size: 32),
-              ),
-            ),
           ],
         ),
       ),
@@ -311,6 +302,13 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
           ),
         ],
       ),
+      // Floating logout button at bottom right.
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => logout(context),
+        backgroundColor: Colors.white,
+        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.black),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 

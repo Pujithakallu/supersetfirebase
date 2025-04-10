@@ -56,20 +56,25 @@ class Menu extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    buildChapterButton(context, 'C H A P T E R   1', 1, 'Numbers'),
+                    buildChapterButton(
+                        context, 'C H A P T E R   1', 1, 'Numbers'),
                     SizedBox(width: buttonSpacing),
-                    buildChapterButton(context, 'C H A P T E R   2', 2, 'Foundations'),
+                    buildChapterButton(
+                        context, 'C H A P T E R   2', 2, 'Foundations'),
                     SizedBox(width: buttonSpacing),
-                    buildChapterButton(context, 'C H A P T E R   3', 3, 'Shapes'),
+                    buildChapterButton(
+                        context, 'C H A P T E R   3', 3, 'Shapes'),
                   ],
                 ),
                 SizedBox(height: buttonSpacing),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    buildChapterButton(context, 'C H A P T E R   4', 4, 'Symbols'),
+                    buildChapterButton(
+                        context, 'C H A P T E R   4', 4, 'Symbols'),
                     SizedBox(width: buttonSpacing),
-                    buildChapterButton(context, 'C H A P T E R   5', 5, 'Geometry'),
+                    buildChapterButton(
+                        context, 'C H A P T E R   5', 5, 'Geometry'),
                   ],
                 ),
               ],
@@ -80,8 +85,8 @@ class Menu extends StatelessWidget {
       // Floating logout button at bottom right.
       floatingActionButton: FloatingActionButton(
         onPressed: () => logout(context),
-        backgroundColor: Colors.blue,
-        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.white),
+        backgroundColor: Colors.white,
+        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.black),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
@@ -108,8 +113,10 @@ class Menu extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(title, style: const TextStyle(fontSize: 27, color: Colors.black)),
-              Text(chapterName, style: const TextStyle(fontSize: 20, color: Colors.black)),
+              Text(title,
+                  style: const TextStyle(fontSize: 27, color: Colors.black)),
+              Text(chapterName,
+                  style: const TextStyle(fontSize: 20, color: Colors.black)),
             ],
           ),
         ),

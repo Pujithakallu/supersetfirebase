@@ -72,7 +72,8 @@ class _MemoryGameState extends State<MemoryGame> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Times up! Try again.", style: TextStyle(fontSize: 25)),
+          title: const Text("Times up! Try again.",
+              style: TextStyle(fontSize: 25)),
           actions: <Widget>[
             TextButton(
               child: const Text('Restart Game'),
@@ -95,7 +96,8 @@ class _MemoryGameState extends State<MemoryGame> {
     setState(() {
       _data = getSourceArray(chapter!);
       _cardFlips = List<bool>.filled(_data.length, true);
-      _cardStateKeys = List.generate(_data.length, (_) => GlobalKey<FlipCardState>());
+      _cardStateKeys =
+          List.generate(_data.length, (_) => GlobalKey<FlipCardState>());
       _matchedPairs = 0;
       _flip = false;
       _wait = false;
@@ -104,7 +106,8 @@ class _MemoryGameState extends State<MemoryGame> {
 
   @override
   Widget build(BuildContext context) {
-    bool isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     int crossAxisCount = isPortrait ? 4 : 5;
 
     return Scaffold(
@@ -114,8 +117,8 @@ class _MemoryGameState extends State<MemoryGame> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => logout(context),
-        backgroundColor: Colors.blue,
-        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.white),
+        backgroundColor: Colors.white,
+        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.black),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Container(
@@ -130,7 +133,10 @@ class _MemoryGameState extends State<MemoryGame> {
           children: <Widget>[
             const Text(
               'R E M E M B E R  &  W I N',
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, letterSpacing: 2.0),
+              style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2.0),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
@@ -139,53 +145,58 @@ class _MemoryGameState extends State<MemoryGame> {
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: crossAxisCount,
-                    mainAxisSpacing: 8.0,
-                    crossAxisSpacing: 8.0,
-                  ),
-                  itemCount: _data.length,
-                  itemBuilder: (context, index) {
-                    return MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          width: 70,
-                          height: 80,
-                          child: FlipCard(
-                            key: _cardStateKeys[index],
-                            onFlip: () {
-                              if (!_wait) {
-                                checkMatch(index);
-                              }
-                            },
-                            flipOnTouch: !_wait && _cardFlips[index],
-                            direction: FlipDirection.HORIZONTAL,
-                            front: getQuestionMarkCard(),
-                            back: Container(
-                              decoration: BoxDecoration(
-                                color: _cardFlips[index] ? Colors.grey[100] : Colors.green,
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              padding: const EdgeInsets.all(8.0),
-                              alignment: Alignment.center,
-                              child: Text(
-                                _data[index],
-                                style: TextStyle(
-                                  fontSize: MediaQuery.of(context).orientation == Orientation.portrait ? 30 : 24,
-                                  fontWeight: FontWeight.bold,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      mainAxisSpacing: 8.0,
+                      crossAxisSpacing: 8.0,
+                    ),
+                    itemCount: _data.length,
+                    itemBuilder: (context, index) {
+                      return MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            width: 70,
+                            height: 80,
+                            child: FlipCard(
+                              key: _cardStateKeys[index],
+                              onFlip: () {
+                                if (!_wait) {
+                                  checkMatch(index);
+                                }
+                              },
+                              flipOnTouch: !_wait && _cardFlips[index],
+                              direction: FlipDirection.HORIZONTAL,
+                              front: getQuestionMarkCard(),
+                              back: Container(
+                                decoration: BoxDecoration(
+                                  color: _cardFlips[index]
+                                      ? Colors.grey[100]
+                                      : Colors.green,
+                                  borderRadius: BorderRadius.circular(5),
                                 ),
-                                textAlign: TextAlign.center,
+                                padding: const EdgeInsets.all(8.0),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  _data[index],
+                                  style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).orientation ==
+                                                Orientation.portrait
+                                            ? 30
+                                            : 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  }
-                ),
+                      );
+                    }),
               ),
             ),
           ],
@@ -240,11 +251,13 @@ class _MemoryGameState extends State<MemoryGame> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("C O N G R A T U L A T I O N S ! ! !", style: TextStyle(fontSize: 33)),
+          title: const Text("C O N G R A T U L A T I O N S ! ! !",
+              style: TextStyle(fontSize: 33)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text("You've Matched All Cards!", style: TextStyle(fontSize: 29), textAlign: TextAlign.center),
+              const Text("You've Matched All Cards!",
+                  style: TextStyle(fontSize: 29), textAlign: TextAlign.center),
               const SizedBox(height: 20),
               Text("Score: $score/10", style: const TextStyle(fontSize: 25)),
               const SizedBox(height: 20),
@@ -252,7 +265,8 @@ class _MemoryGameState extends State<MemoryGame> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
-                    child: const Text("N E W  G A M E", style: TextStyle(fontSize: 25)),
+                    child: const Text("N E W  G A M E",
+                        style: TextStyle(fontSize: 25)),
                     onPressed: () {
                       Navigator.pop(context);
                       restart();
@@ -263,7 +277,8 @@ class _MemoryGameState extends State<MemoryGame> {
                     },
                   ),
                   TextButton(
-                    child: const Text("E X I T", style: TextStyle(fontSize: 25)),
+                    child:
+                        const Text("E X I T", style: TextStyle(fontSize: 25)),
                     onPressed: () {
                       Navigator.pop(context);
                       Navigator.pop(context);
@@ -329,65 +344,237 @@ class _MemoryGameState extends State<MemoryGame> {
     switch (chapter) {
       case 1:
         englishWords = [
-          'one','two','three','four','five','six','seven','eight','nine','ten',
-          "Eleven","Twelve","Thirteen","Fourteen","Fifteen",
-          "Sixteen","Seventeen","Eighteen","Nineteen","Twenty"
+          'one',
+          'two',
+          'three',
+          'four',
+          'five',
+          'six',
+          'seven',
+          'eight',
+          'nine',
+          'ten',
+          "Eleven",
+          "Twelve",
+          "Thirteen",
+          "Fourteen",
+          "Fifteen",
+          "Sixteen",
+          "Seventeen",
+          "Eighteen",
+          "Nineteen",
+          "Twenty"
         ];
         spanishWords = [
-          'uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve','diez',
-          "Once","Doce","Trece","Catorce","Quince","Dieciséis","Diecisiete",
-          "Dieciocho","Diecinueve","Veinte"
+          'uno',
+          'dos',
+          'tres',
+          'cuatro',
+          'cinco',
+          'seis',
+          'siete',
+          'ocho',
+          'nueve',
+          'diez',
+          "Once",
+          "Doce",
+          "Trece",
+          "Catorce",
+          "Quince",
+          "Dieciséis",
+          "Diecisiete",
+          "Dieciocho",
+          "Diecinueve",
+          "Veinte"
         ];
         break;
       case 2:
         englishWords = [
-          'Numbers','Addition','Subtraction','Multiplication','Division','Equal','Greater than',
-          'Less than','Plus','Minus','Times','Divided by','Sum','Difference','Product',
-          'Quotient','Fraction','Decimal','Ratio','Equation'
+          'Numbers',
+          'Addition',
+          'Subtraction',
+          'Multiplication',
+          'Division',
+          'Equal',
+          'Greater than',
+          'Less than',
+          'Plus',
+          'Minus',
+          'Times',
+          'Divided by',
+          'Sum',
+          'Difference',
+          'Product',
+          'Quotient',
+          'Fraction',
+          'Decimal',
+          'Ratio',
+          'Equation'
         ];
         spanishWords = [
-          'Número','Adición','Resta','Multiplicación','División','Igual','Mayor que','Menor que',
-          'Más','Menos','Por','Dividido por','Suma','Diferencia','Producto','Cociente','Fracción',
-          'Decimal','Proporción','Ecuación'
+          'Número',
+          'Adición',
+          'Resta',
+          'Multiplicación',
+          'División',
+          'Igual',
+          'Mayor que',
+          'Menor que',
+          'Más',
+          'Menos',
+          'Por',
+          'Dividido por',
+          'Suma',
+          'Diferencia',
+          'Producto',
+          'Cociente',
+          'Fracción',
+          'Decimal',
+          'Proporción',
+          'Ecuación'
         ];
         break;
       case 3:
         englishWords = [
-          'Circle','Triangle','Square','Rectangle','Rhombus','Parallelogram','Trapezium','Oval',
-          'Ellipse','Sphere','Cube','Cylinder','Cone','Pentagonal prism','Hexagonal prism',
-          'Pyramid','Cuboid','Triangular prism','Hemisphere','Torus'
+          'Circle',
+          'Triangle',
+          'Square',
+          'Rectangle',
+          'Rhombus',
+          'Parallelogram',
+          'Trapezium',
+          'Oval',
+          'Ellipse',
+          'Sphere',
+          'Cube',
+          'Cylinder',
+          'Cone',
+          'Pentagonal prism',
+          'Hexagonal prism',
+          'Pyramid',
+          'Cuboid',
+          'Triangular prism',
+          'Hemisphere',
+          'Torus'
         ];
         spanishWords = [
-          'Círculo','Triángulo','Cuadrado','Rectángulo','Rombus','Paralelogramo','Trapecio','Óvalo',
-          'Elipse','Esfera','Cubo','Cilindro','Cono','Prisma pentagonal','Prisma hexagonal','Pirámide',
-          'Cuboide','Prisma triangular','Hemisferio','Toro'
+          'Círculo',
+          'Triángulo',
+          'Cuadrado',
+          'Rectángulo',
+          'Rombus',
+          'Paralelogramo',
+          'Trapecio',
+          'Óvalo',
+          'Elipse',
+          'Esfera',
+          'Cubo',
+          'Cilindro',
+          'Cono',
+          'Prisma pentagonal',
+          'Prisma hexagonal',
+          'Pirámide',
+          'Cuboide',
+          'Prisma triangular',
+          'Hemisferio',
+          'Toro'
         ];
         break;
       case 4:
         englishWords = [
-          '+','-','=','>','<','×','÷','√','/','%','^','∑','∫','d/dx','∞','≠','≥','≤','≈','lim'
+          '+',
+          '-',
+          '=',
+          '>',
+          '<',
+          '×',
+          '÷',
+          '√',
+          '/',
+          '%',
+          '^',
+          '∑',
+          '∫',
+          'd/dx',
+          '∞',
+          '≠',
+          '≥',
+          '≤',
+          '≈',
+          'lim'
         ];
         spanishWords = [
-          'Más','Menos','Igual','Mayor que','Menor que','Por','Dividido por','Raíz cuadrada','Fracción',
-          'Porcentaje','Exponenciación','Sumatoria','Integral','Derivada','Infinito','No igual a',
-          'Mayor o igual que','Menor o igual que','Aproximadamente igual a','Límite'
+          'Más',
+          'Menos',
+          'Igual',
+          'Mayor que',
+          'Menor que',
+          'Por',
+          'Dividido por',
+          'Raíz cuadrada',
+          'Fracción',
+          'Porcentaje',
+          'Exponenciación',
+          'Sumatoria',
+          'Integral',
+          'Derivada',
+          'Infinito',
+          'No igual a',
+          'Mayor o igual que',
+          'Menor o igual que',
+          'Aproximadamente igual a',
+          'Límite'
         ];
         break;
       case 5:
         englishWords = [
-          "Length","Width","Height","Diameter","Radius","Perimeter","Circumference","Area","Volume","Angle",
-          "Slope","Intersection","Symmetry","Perpendicular","Parallel","Coordinate","Vertex","Axis","Hypotenuse",
+          "Length",
+          "Width",
+          "Height",
+          "Diameter",
+          "Radius",
+          "Perimeter",
+          "Circumference",
+          "Area",
+          "Volume",
+          "Angle",
+          "Slope",
+          "Intersection",
+          "Symmetry",
+          "Perpendicular",
+          "Parallel",
+          "Coordinate",
+          "Vertex",
+          "Axis",
+          "Hypotenuse",
           "Gradient"
         ];
         spanishWords = [
-          "Longitud","Ancho","Altura","Diámetro","Radio","Perímetro","Circunferencia","Superficie","Volumen","Ángulo",
-          "Pendiente","Intersección","Simetría","Perpendicular","Paralelo","Coordenada","Vértice","Eje","Hipotenusa",
+          "Longitud",
+          "Ancho",
+          "Altura",
+          "Diámetro",
+          "Radio",
+          "Perímetro",
+          "Circunferencia",
+          "Superficie",
+          "Volumen",
+          "Ángulo",
+          "Pendiente",
+          "Intersección",
+          "Simetría",
+          "Perpendicular",
+          "Paralelo",
+          "Coordenada",
+          "Vértice",
+          "Eje",
+          "Hipotenusa",
           "Gradiente"
         ];
         break;
       default:
-        englishWords = ['one','two'];
-        spanishWords = ['uno','dos'];
+        englishWords = ['one', 'two'];
+        spanishWords = ['uno', 'dos'];
     }
     return [englishWords, spanishWords];
   }
@@ -396,46 +583,121 @@ class _MemoryGameState extends State<MemoryGame> {
     switch (chapter) {
       case 1:
         return {
-          'one': 'uno','two': 'dos','three': 'tres','four': 'cuatro','five': 'cinco','six': 'seis',
-          'seven': 'siete','eight': 'ocho','nine': 'nueve','ten': 'diez','Eleven': 'Once','Twelve': 'Doce',
-          'Thirteen': 'Trece','Fourteen': 'Catorce','Fifteen': 'Quince','Sixteen': 'Dieciséis',
-          'Seventeen': 'Diecisiete','Eighteen': 'Dieciocho','Nineteen': 'Diecinueve','Twenty': 'Veinte'
+          'one': 'uno',
+          'two': 'dos',
+          'three': 'tres',
+          'four': 'cuatro',
+          'five': 'cinco',
+          'six': 'seis',
+          'seven': 'siete',
+          'eight': 'ocho',
+          'nine': 'nueve',
+          'ten': 'diez',
+          'Eleven': 'Once',
+          'Twelve': 'Doce',
+          'Thirteen': 'Trece',
+          'Fourteen': 'Catorce',
+          'Fifteen': 'Quince',
+          'Sixteen': 'Dieciséis',
+          'Seventeen': 'Diecisiete',
+          'Eighteen': 'Dieciocho',
+          'Nineteen': 'Diecinueve',
+          'Twenty': 'Veinte'
         };
       case 2:
         return {
-          'Numbers': 'Número','Addition': 'Adición','Subtraction': 'Resta','Multiplication': 'Multiplicación',
-          'Division': 'División','Equal': 'Igual','Greater than': 'Mayor que','Less than': 'Menor que',
-          'Plus': 'Más','Minus': 'Menos','Times': 'Por','Divided by': 'Dividido por','Sum': 'Suma',
-          'Difference': 'Diferencia','Product': 'Producto','Quotient': 'Cociente','Fraction': 'Fracción',
-          'Decimal': 'Decimal','Ratio': 'Proporción','Equation': 'Ecuación'
+          'Numbers': 'Número',
+          'Addition': 'Adición',
+          'Subtraction': 'Resta',
+          'Multiplication': 'Multiplicación',
+          'Division': 'División',
+          'Equal': 'Igual',
+          'Greater than': 'Mayor que',
+          'Less than': 'Menor que',
+          'Plus': 'Más',
+          'Minus': 'Menos',
+          'Times': 'Por',
+          'Divided by': 'Dividido por',
+          'Sum': 'Suma',
+          'Difference': 'Diferencia',
+          'Product': 'Producto',
+          'Quotient': 'Cociente',
+          'Fraction': 'Fracción',
+          'Decimal': 'Decimal',
+          'Ratio': 'Proporción',
+          'Equation': 'Ecuación'
         };
       case 3:
         return {
-          'Circle': 'Círculo','Triangle': 'Triángulo','Square': 'Cuadrado','Rectangle': 'Rectángulo',
-          'Rhombus': 'Rombus','Parallelogram': 'Paralelogramo','Trapezium': 'Trapecio','Oval': 'Óvalo',
-          'Ellipse': 'Elipse','Sphere': 'Esfera','Cube': 'Cubo','Cylinder': 'Cilindro','Cone': 'Cono',
-          'Pentagonal prism': 'Prisma pentagonal','Hexagonal prism': 'Prisma hexagonal','Pyramid': 'Pirámide',
-          'Cuboid': 'Cuboide','Triangular prism': 'Prisma triangular','Hemisphere': 'Hemisferio','Torus': 'Toro'
+          'Circle': 'Círculo',
+          'Triangle': 'Triángulo',
+          'Square': 'Cuadrado',
+          'Rectangle': 'Rectángulo',
+          'Rhombus': 'Rombus',
+          'Parallelogram': 'Paralelogramo',
+          'Trapezium': 'Trapecio',
+          'Oval': 'Óvalo',
+          'Ellipse': 'Elipse',
+          'Sphere': 'Esfera',
+          'Cube': 'Cubo',
+          'Cylinder': 'Cilindro',
+          'Cone': 'Cono',
+          'Pentagonal prism': 'Prisma pentagonal',
+          'Hexagonal prism': 'Prisma hexagonal',
+          'Pyramid': 'Pirámide',
+          'Cuboid': 'Cuboide',
+          'Triangular prism': 'Prisma triangular',
+          'Hemisphere': 'Hemisferio',
+          'Torus': 'Toro'
         };
       case 4:
         return {
-          '+': 'Más','-': 'Menos','=': 'Igual','>': 'Mayor que','<': 'Menor que','×': 'Por','÷': 'Dividido por',
-          '√': 'Raíz cuadrada','/': 'Fracción','%': 'Porcentaje','^': 'Exponenciación','∑': 'Sumatoria',
-          '∫': 'Integral','d/dx': 'Derivada','∞': 'Infinito','≠': 'No igual a','≥': 'Mayor o igual que',
-          '≤': 'Menor o igual que','≈': 'Aproximadamente igual a','lim': 'Límite'
+          '+': 'Más',
+          '-': 'Menos',
+          '=': 'Igual',
+          '>': 'Mayor que',
+          '<': 'Menor que',
+          '×': 'Por',
+          '÷': 'Dividido por',
+          '√': 'Raíz cuadrada',
+          '/': 'Fracción',
+          '%': 'Porcentaje',
+          '^': 'Exponenciación',
+          '∑': 'Sumatoria',
+          '∫': 'Integral',
+          'd/dx': 'Derivada',
+          '∞': 'Infinito',
+          '≠': 'No igual a',
+          '≥': 'Mayor o igual que',
+          '≤': 'Menor o igual que',
+          '≈': 'Aproximadamente igual a',
+          'lim': 'Límite'
         };
       case 5:
         return {
-          "Length": "Longitud","Width": "Ancho","Height": "Altura","Diameter": "Diámetro","Radius": "Radio",
-          "Perimeter": "Perímetro","Circumference": "Circunferencia","Area": "Superficie","Volume": "Volumen",
-          "Angle": "Ángulo","Slope": "Pendiente","Intersection": "Intersección","Symmetry": "Simetría",
-          "Perpendicular": "Perpendicular","Parallel": "Paralelo","Coordinate": "Coordenada","Vertex": "Vértice",
-          "Axis": "Eje","Hypotenuse": "Hipotenusa","Gradient": "Gradiente"
+          "Length": "Longitud",
+          "Width": "Ancho",
+          "Height": "Altura",
+          "Diameter": "Diámetro",
+          "Radius": "Radio",
+          "Perimeter": "Perímetro",
+          "Circumference": "Circunferencia",
+          "Area": "Superficie",
+          "Volume": "Volumen",
+          "Angle": "Ángulo",
+          "Slope": "Pendiente",
+          "Intersection": "Intersección",
+          "Symmetry": "Simetría",
+          "Perpendicular": "Perpendicular",
+          "Parallel": "Paralelo",
+          "Coordinate": "Coordenada",
+          "Vertex": "Vértice",
+          "Axis": "Eje",
+          "Hypotenuse": "Hipotenusa",
+          "Gradient": "Gradiente"
         };
       default:
-        return {
-          'one': 'uno','two': 'dos'
-        };
+        return {'one': 'uno', 'two': 'dos'};
     }
   }
 }
