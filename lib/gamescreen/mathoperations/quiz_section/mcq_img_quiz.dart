@@ -144,10 +144,11 @@ class _McqImgQuizState extends State<McqImgQuiz> {
                   heroTag: "backButton",
                   onPressed: () => Navigator.pop(context),
                   foregroundColor: Colors.black,
-                  backgroundColor: Colors.lightBlue,
+                  backgroundColor: Colors.white,
                   shape: const CircleBorder(),
                   mini: true, // Smaller button
-                  child: const Icon(Icons.arrow_back_rounded, size: 32),
+                  child: const Icon(Icons.arrow_back_rounded,
+                      size: 32, color: Colors.black),
                 ),
               ),
 
@@ -185,209 +186,213 @@ class _McqImgQuizState extends State<McqImgQuiz> {
                   ),
                 ),
               ),
-
-              // Logout Button (Styled as FloatingActionButton)
-              Positioned(
-                right: 16,
-                top: 12,
-                child: FloatingActionButton(
-                  heroTag: "logoutButton",
-                  onPressed: () => logout(context),
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.blue,
-                  shape: const CircleBorder(),
-                  mini: true, // Smaller button
-                  child: const Icon(Icons.logout_rounded, size: 32),
-                ),
-              ),
             ],
           ),
         ),
-        body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/Mathoperations/background.png'),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(screenWidth / 10, screenWidth / 20,
-                screenWidth / 10, screenWidth / 40),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
-                    //height: (screenWidth / 8).clamp(120.0, 150.0),
-                    width: screenWidth,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Colors.white54,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          quesHeading[currentLanguage],
-                          style: TextStyle(
-                            // backgroundColor: Colors.grey,
-                            fontSize: (screenWidth / 25).clamp(16.0, 28.0),
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        OrangesDisplay(
-                          firstSetOfOranges: question.firstNum,
-                          secondSetOfOranges: question.secNum,
-                          sign: question.sign,
-                        ),
-                        // Text(
-                        //   question.question[currentLanguage],
-                        //   style: const TextStyle(
-                        //     // backgroundColor: Colors.grey,
-                        //     fontSize: 40,
-                        //     fontWeight: FontWeight.bold,
-                        //   ),
-                        //   textAlign: TextAlign.center,
-                        // ),
-                      ],
-                    )),
-
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: question.options.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: selectedAnswerIndex == null
-                          ? () => pickAnswer(index)
-                          : null,
-                      child: AnswerCard(
-                        currentIndex: index,
-                        question: question.options[index][currentLanguage],
-                        isSelected: selectedAnswerIndex == index,
-                        selectedAnswerIndex: selectedAnswerIndex,
-                        correctAnswerIndex: question.correctAnswerIndex,
-                      ),
-                    );
-                  },
+        body: Stack(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/Mathoperations/background.png'),
+                  fit: BoxFit.cover,
                 ),
-                // Next button
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
+              ),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(screenWidth / 10, screenWidth / 20,
+                    screenWidth / 10, screenWidth / 40),
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    InkWell(
-                      onTap: () async {
-                        ReadOut(
-                            '${quesHeading[currentLanguage]}, ${question.firstNum} ${imgName[currentLanguage]} ${question.sign} '
-                            '${question.secNum} ${imgName[currentLanguage]}');
-                        await AnalyticsEngine.logAudioButtonClick(
-                            currentLanguage);
-                      },
-                      borderRadius: BorderRadius.circular(30),
-                      child: Container(
-                        width: screenWidth / 10,
-                        padding: const EdgeInsets.all(10),
+                    Container(
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        //height: (screenWidth / 8).clamp(120.0, 150.0),
+                        width: screenWidth,
+                        alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.lightGreen,
+                          color: Colors.white54,
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.volume_up,
-                              size: screenWidth / 40,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    // SizedBox(width: screenWidth/5,),
-                    Spacer(flex: 1),
-                    InkWell(
-                      onTap: () {
-                        //print("..Current Question Index: $questionIndex");
-                        //print("..Total Questions: ${questions.length}");
-                        if (questionIndex == questions.length - 1 &&
-                            selectedAnswerIndex != null) {
-                          // print("..Navigating to results page.");
-                          widget.level.updateScore(score);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ResultsPage(
-                                        correctAnswersCount:
-                                            correctAnswersCount,
-                                        totalQuestions: questions.length,
-                                        score: score,
-                                        questionResults: questionResults,
-                                        questionType: "mcq_img",
-                                      )));
-                        } else if (selectedAnswerIndex != null) {
-                          gotoNextQuestion();
-                        }
-                      },
-                      borderRadius: BorderRadius.circular(30),
-                      child: Container(
-                        width: screenWidth / 4,
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: selectedAnswerIndex != null
-                              ? Colors.lightBlue
-                              : Colors.grey,
-                        ),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              'Next',
+                              quesHeading[currentLanguage],
                               style: TextStyle(
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30),
+                                // backgroundColor: Colors.grey,
+                                fontSize: (screenWidth / 25).clamp(16.0, 28.0),
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            OrangesDisplay(
+                              firstSetOfOranges: question.firstNum,
+                              secondSetOfOranges: question.secNum,
+                              sign: question.sign,
+                            ),
+                            // Text(
+                            //   question.question[currentLanguage],
+                            //   style: const TextStyle(
+                            //     // backgroundColor: Colors.grey,
+                            //     fontSize: 40,
+                            //     fontWeight: FontWeight.bold,
+                            //   ),
+                            //   textAlign: TextAlign.center,
+                            // ),
                           ],
-                        ),
-                      ),
-                    ),
-                    // SizedBox(width: screenWidth/5,),
-                    Spacer(flex: 1),
-                    InkWell(
-                      onTap: () {
-                        changeLang();
+                        )),
+
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: question.options.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: selectedAnswerIndex == null
+                              ? () => pickAnswer(index)
+                              : null,
+                          child: AnswerCard(
+                            currentIndex: index,
+                            question: question.options[index][currentLanguage],
+                            isSelected: selectedAnswerIndex == index,
+                            selectedAnswerIndex: selectedAnswerIndex,
+                            correctAnswerIndex: question.correctAnswerIndex,
+                          ),
+                        );
                       },
-                      borderRadius: BorderRadius.circular(30),
-                      child: Container(
-                        width: screenWidth / 10,
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
+                    ),
+                    // Next button
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        InkWell(
+                          onTap: () async {
+                            ReadOut(
+                                '${quesHeading[currentLanguage]}, ${question.firstNum} ${imgName[currentLanguage]} ${question.sign} '
+                                '${question.secNum} ${imgName[currentLanguage]}');
+                            await AnalyticsEngine.logAudioButtonClick(
+                                currentLanguage);
+                          },
                           borderRadius: BorderRadius.circular(30),
-                          color: Colors.lightGreen,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.translate,
-                              size: screenWidth / 40,
+                          child: Container(
+                            width: screenWidth / 10,
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Colors.lightGreen,
                             ),
-                          ],
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.volume_up,
+                                  size: screenWidth / 40,
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
+                        // SizedBox(width: screenWidth/5,),
+                        Spacer(flex: 1),
+                        InkWell(
+                          onTap: () {
+                            //print("..Current Question Index: $questionIndex");
+                            //print("..Total Questions: ${questions.length}");
+                            if (questionIndex == questions.length - 1 &&
+                                selectedAnswerIndex != null) {
+                              // print("..Navigating to results page.");
+                              widget.level.updateScore(score);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ResultsPage(
+                                            correctAnswersCount:
+                                                correctAnswersCount,
+                                            totalQuestions: questions.length,
+                                            score: score,
+                                            questionResults: questionResults,
+                                            questionType: "mcq_img",
+                                          )));
+                            } else if (selectedAnswerIndex != null) {
+                              gotoNextQuestion();
+                            }
+                          },
+                          borderRadius: BorderRadius.circular(30),
+                          child: Container(
+                            width: screenWidth / 4,
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: selectedAnswerIndex != null
+                                  ? Colors.lightBlue
+                                  : Colors.grey,
+                            ),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  'Next',
+                                  style: TextStyle(
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 30),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // SizedBox(width: screenWidth/5,),
+                        Spacer(flex: 1),
+                        InkWell(
+                          onTap: () {
+                            changeLang();
+                          },
+                          borderRadius: BorderRadius.circular(30),
+                          child: Container(
+                            width: screenWidth / 10,
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Colors.lightGreen,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.translate,
+                                  size: screenWidth / 40,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
-          ),
+            // Logout Button (Styled as FloatingActionButton)
+            Positioned(
+              bottom: 16,
+              right: 12,
+              child: FloatingActionButton(
+                heroTag: "logoutButton",
+                onPressed: () => logout(context),
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.white,
+                shape: const CircleBorder(),
+                mini: true, // Smaller button
+                child: const Icon(Icons.logout_rounded,
+                    size: 32, color: Colors.black),
+              ),
+            ),
+          ],
         ));
   }
 }
