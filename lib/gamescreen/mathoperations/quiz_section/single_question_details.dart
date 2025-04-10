@@ -42,10 +42,11 @@ class SingleQuestionPage extends StatelessWidget {
                 heroTag: "backButton",
                 onPressed: () => Navigator.pop(context),
                 foregroundColor: Colors.black,
-                backgroundColor: Colors.lightBlue,
+                backgroundColor: Colors.white,
                 shape: const CircleBorder(),
                 mini: true, // Smaller button
-                child: const Icon(Icons.arrow_back_rounded, size: 32),
+                child: const Icon(Icons.arrow_back_rounded,
+                    size: 32, color: Colors.black),
               ),
             ),
 
@@ -83,120 +84,124 @@ class SingleQuestionPage extends StatelessWidget {
                 ),
               ),
             ),
-
-            // Logout Button (Styled as FloatingActionButton)
-            Positioned(
-              right: 16,
-              top: 12,
-              child: FloatingActionButton(
-                heroTag: "logoutButton",
-                onPressed: () => logout(context),
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.blue,
-                shape: const CircleBorder(),
-                mini: true, // Smaller button
-                child: const Icon(Icons.logout_rounded, size: 32),
-              ),
-            ),
           ],
         ),
       ),
-      body: Container(
-        padding: const EdgeInsets.fromLTRB(50, 70, 50, 10),
-        child: Column(
-          children: [
-            Row(
+      body: Stack(
+        children: [
+          Container(
+            padding: const EdgeInsets.fromLTRB(50, 70, 50, 10),
+            child: Column(
               children: [
-                Expanded(
-                    child: Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  // margin: EdgeInsets.fromLTRB(50, 10, 50, 10),
-                  padding: EdgeInsets.all(10),
-                  child: Text(questionData['question'],
-                      style:
-                          TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
-                ))
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            (questionType == 'mcq') || (questionType == 'mcq_img')
-                ? Expanded(
-                    child: ListView.builder(
-                      itemCount: questionData['options'].length,
-                      itemBuilder: (context, index) {
-                        return AnswerCard(
-                          question: questionData['options'][index][0],
-                          isSelected: selectedAnswerIndex == index,
-                          currentIndex: index,
-                          correctAnswerIndex: correctAnswerIndex,
-                          selectedAnswerIndex: selectedAnswerIndex,
-                        );
-                      },
-                    ),
-                  )
-                : Expanded(
-                    child: Column(children: [
-                      AnswerCard(
-                        question:
-                            "Correct Answer:    ${questionData['correctAnswer']}",
-                        isSelected: true,
-                        currentIndex: 0,
-                        correctAnswerIndex: 0,
-                        selectedAnswerIndex: 0,
+                Row(
+                  children: [
+                    Expanded(
+                        child: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      AnswerCard(
-                        question:
-                            "Your Response:     ${questionData['enteredAnswer']}",
-                        isSelected: true,
-                        currentIndex: 0,
-                        correctAnswerIndex: questionData['enteredAnswer'] ==
-                                questionData['correctAnswer']
-                            ? 0
-                            : 1, // if the correct ans and selected ans is same then green else red
-                        selectedAnswerIndex: 0,
-                      ),
-                    ]),
-                  ),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => FlashCard(
-                              opSign: questionData["sign"],
-                            )));
-              },
-              borderRadius: BorderRadius.circular(30),
-              child: Container(
-                width: 200,
-                // height: 100,
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Colors.lightBlue,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Text(
-                      'Learn  ' + questionData["sign"] + '',
-                      style: TextStyle(
-                          color: Colors.black87,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20),
-                    ),
+                      // margin: EdgeInsets.fromLTRB(50, 10, 50, 10),
+                      padding: EdgeInsets.all(10),
+                      child: Text(questionData['question'],
+                          style: TextStyle(
+                              fontSize: 40, fontWeight: FontWeight.bold)),
+                    ))
                   ],
                 ),
-              ),
+                SizedBox(
+                  height: 20,
+                ),
+                (questionType == 'mcq') || (questionType == 'mcq_img')
+                    ? Expanded(
+                        child: ListView.builder(
+                          itemCount: questionData['options'].length,
+                          itemBuilder: (context, index) {
+                            return AnswerCard(
+                              question: questionData['options'][index][0],
+                              isSelected: selectedAnswerIndex == index,
+                              currentIndex: index,
+                              correctAnswerIndex: correctAnswerIndex,
+                              selectedAnswerIndex: selectedAnswerIndex,
+                            );
+                          },
+                        ),
+                      )
+                    : Expanded(
+                        child: Column(children: [
+                          AnswerCard(
+                            question:
+                                "Correct Answer:    ${questionData['correctAnswer']}",
+                            isSelected: true,
+                            currentIndex: 0,
+                            correctAnswerIndex: 0,
+                            selectedAnswerIndex: 0,
+                          ),
+                          AnswerCard(
+                            question:
+                                "Your Response:     ${questionData['enteredAnswer']}",
+                            isSelected: true,
+                            currentIndex: 0,
+                            correctAnswerIndex: questionData['enteredAnswer'] ==
+                                    questionData['correctAnswer']
+                                ? 0
+                                : 1, // if the correct ans and selected ans is same then green else red
+                            selectedAnswerIndex: 0,
+                          ),
+                        ]),
+                      ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => FlashCard(
+                                  opSign: questionData["sign"],
+                                )));
+                  },
+                  borderRadius: BorderRadius.circular(30),
+                  child: Container(
+                    width: 200,
+                    // height: 100,
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Colors.lightBlue,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Text(
+                          'Learn  ' + questionData["sign"] + '',
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          // Logout Button (Styled as FloatingActionButton)
+          Positioned(
+            bottom: 16,
+            right: 12,
+            child: FloatingActionButton(
+              heroTag: "logoutButton",
+              onPressed: () => logout(context),
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.white,
+              shape: const CircleBorder(),
+              mini: true, // Smaller button
+              child: const Icon(Icons.logout_rounded,
+                  size: 32, color: Colors.black),
+            ),
+          ),
+        ],
       ),
     );
   }

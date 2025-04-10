@@ -22,9 +22,9 @@ class LearnComplete extends StatelessWidget {
           Navigator.pop(context);
         },
         foregroundColor: Colors.black,
-        backgroundColor: Colors.lightBlue,
+        backgroundColor: Colors.white,
         shape: CircleBorder(),
-        child: const Icon(Icons.arrow_back_rounded),
+        child: const Icon(Icons.arrow_back_rounded, color: Colors.black),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       body: Container(

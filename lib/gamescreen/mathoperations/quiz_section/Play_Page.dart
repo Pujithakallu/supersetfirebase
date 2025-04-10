@@ -89,185 +89,193 @@ class PlayPage extends StatelessWidget {
     }
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60), // Adjust AppBar height
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            // Transparent AppBar Layer
-            AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              automaticallyImplyLeading: false, // Prevents default back button
-            ),
-
-            // Back Button (Styled as FloatingActionButton)
-            Positioned(
-              left: 16,
-              top: 12,
-              child: FloatingActionButton(
-                heroTag: "backButton",
-                onPressed: () => Navigator.pop(context),
-                foregroundColor: Colors.black,
-                backgroundColor: Colors.lightBlue,
-                shape: const CircleBorder(),
-                mini: true, // Smaller button
-                child: const Icon(Icons.arrow_back_rounded, size: 32),
+        extendBodyBehindAppBar: true,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(60), // Adjust AppBar height
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              // Transparent AppBar Layer
+              AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                automaticallyImplyLeading:
+                    false, // Prevents default back button
               ),
-            ),
 
-            // PIN Display (Smaller Width, Centered)
-            Positioned(
-              top: 12,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 12, vertical: 6), // Reduced padding
-                constraints: const BoxConstraints(
-                  maxWidth:
-                      120, // Limits the width to prevent it from being too wide
+              // Back Button (Styled as FloatingActionButton)
+              Positioned(
+                left: 16,
+                top: 12,
+                child: FloatingActionButton(
+                  heroTag: "backButton",
+                  onPressed: () => Navigator.pop(context),
+                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.white,
+                  shape: const CircleBorder(),
+                  mini: true, // Smaller button
+                  child: const Icon(Icons.arrow_back_rounded,
+                      size: 32, color: Colors.black),
                 ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius:
-                      BorderRadius.circular(12), // Slightly rounded corners
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 4,
-                      offset: Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Center(
-                  child: Text(
-                    'PIN: $userPin',
-                    style: const TextStyle(
-                      fontSize: 14, // Slightly smaller font for better fit
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+              ),
+
+              // PIN Display (Smaller Width, Centered)
+              Positioned(
+                top: 12,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 12, vertical: 6), // Reduced padding
+                  constraints: const BoxConstraints(
+                    maxWidth:
+                        120, // Limits the width to prevent it from being too wide
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.circular(12), // Slightly rounded corners
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 4,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Text(
+                      'PIN: $userPin',
+                      style: const TextStyle(
+                        fontSize: 14, // Slightly smaller font for better fit
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-
-            // Logout Button (Styled as FloatingActionButton)
-            Positioned(
-              right: 16,
-              top: 12,
-              child: FloatingActionButton(
-                heroTag: "logoutButton",
-                onPressed: () => logout(context),
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.blue,
-                shape: const CircleBorder(),
-                mini: true, // Smaller button
-                child: const Icon(Icons.logout_rounded, size: 32),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/Mathoperations/background.png'),
-              fit: BoxFit.cover,
+        body: Stack(children: [
+          Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/Mathoperations/background.png'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Spacer(flex: 1),
+                  Stack(
+                    children: <Widget>[
+                      // Stroked text as border.
+                      Text(
+                        'LEVELS',
+                        style: TextStyle(
+                          fontSize: screenWidth / 30,
+                          fontWeight: FontWeight.bold,
+                          foreground: Paint()
+                            ..style = PaintingStyle.stroke
+                            ..strokeWidth = 6
+                            ..color = Colors.blue[700]!,
+                        ),
+                      ),
+                      // Solid text as fill.
+                      Text(
+                        'LEVELS',
+                        style: TextStyle(
+                          fontSize: screenWidth / 30,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Spacer(flex: 1),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        //LevelSelectionContainer(levelNum: 0, nextPage: OperatorsMatchingGamePage()),
+
+                        //LevelSelectionContainer(levelNum: 1,
+                        //nextPage: McqImgQuiz(opSign:'+', level: GlobalVariables.levels[1])),
+
+                        LevelSelectionContainer(
+                            levelNum: 1,
+                            nextPage: McqQuiz(
+                              opSign: 'mix',
+                              level: GlobalVariables.levels[1],
+                            )),
+
+                        LevelSelectionContainer(
+                            levelNum: 2,
+                            nextPage: TextQuiz(
+                                opSign: 'mix',
+                                level: GlobalVariables.levels[2])),
+
+                        LevelSelectionContainer(
+                            levelNum: 3,
+                            nextPage: McqQuiz(
+                                opSign: 'mix',
+                                level: GlobalVariables.levels[3])),
+
+                        LevelSelectionContainer(
+                            levelNum: 4,
+                            nextPage: McqQuiz(
+                              opSign: 'mix',
+                              level: GlobalVariables.levels[4],
+                            )),
+
+                        LevelSelectionContainer(
+                            levelNum: 5,
+                            nextPage: TextQuiz(
+                                opSign: 'mix',
+                                level: GlobalVariables.levels[5])),
+                      ]),
+                  // Spacer(flex: 1),
+                  // Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //     children :[
+
+                  //       LevelSelectionContainer(levelNum: 7,
+                  //           nextPage: McqQuiz(opSign: 'x', level: GlobalVariables.levels[7],)),
+
+                  //       LevelSelectionContainer(levelNum: 8, nextPage: TextQuiz(opSign: 'x', level: GlobalVariables.levels[8])),
+
+                  //       LevelSelectionContainer(levelNum: 9, nextPage: McqQuiz(opSign: '÷', level: GlobalVariables.levels[9],)),
+
+                  //       LevelSelectionContainer(levelNum: 10, nextPage: TextQuiz(opSign: '÷', level: GlobalVariables.levels[10])),
+
+                  //       LevelSelectionContainer(levelNum: 11, nextPage: McqQuiz(opSign: 'mix', level: GlobalVariables.levels[11],)),
+
+                  //       LevelSelectionContainer(levelNum: 12, nextPage: TextQuiz(opSign: 'mix', level: GlobalVariables.levels[12])),
+
+                  //       LevelSelectionContainer(levelNum: 13, nextPage: TextQuiz(opSign: 'mix', level: GlobalVariables.levels[13])),
+
+                  //     ]
+                  // ),
+                  Spacer(flex: 2),
+                ],
+              ))),
+          // Logout Button (Styled as FloatingActionButton)
+          Positioned(
+            bottom: 16,
+            right: 16,
+            child: FloatingActionButton(
+              heroTag: "logoutButton",
+              onPressed: () => logout(context),
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.white,
+              shape: const CircleBorder(),
+              mini: true, // Smaller button
+              child: const Icon(Icons.logout_rounded,
+                  size: 32, color: Colors.black),
             ),
           ),
-          child: Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Spacer(flex: 1),
-              Stack(
-                children: <Widget>[
-                  // Stroked text as border.
-                  Text(
-                    'LEVELS',
-                    style: TextStyle(
-                      fontSize: screenWidth / 30,
-                      fontWeight: FontWeight.bold,
-                      foreground: Paint()
-                        ..style = PaintingStyle.stroke
-                        ..strokeWidth = 6
-                        ..color = Colors.blue[700]!,
-                    ),
-                  ),
-                  // Solid text as fill.
-                  Text(
-                    'LEVELS',
-                    style: TextStyle(
-                      fontSize: screenWidth / 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                ],
-              ),
-              Spacer(flex: 1),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                //LevelSelectionContainer(levelNum: 0, nextPage: OperatorsMatchingGamePage()),
-
-                //LevelSelectionContainer(levelNum: 1,
-                //nextPage: McqImgQuiz(opSign:'+', level: GlobalVariables.levels[1])),
-
-                LevelSelectionContainer(
-                    levelNum: 1,
-                    nextPage: McqQuiz(
-                      opSign: 'mix',
-                      level: GlobalVariables.levels[1],
-                    )),
-
-                LevelSelectionContainer(
-                    levelNum: 2,
-                    nextPage: TextQuiz(
-                        opSign: 'mix', level: GlobalVariables.levels[2])),
-
-                LevelSelectionContainer(
-                    levelNum: 3,
-                    nextPage: McqQuiz(
-                        opSign: 'mix', level: GlobalVariables.levels[3])),
-
-                LevelSelectionContainer(
-                    levelNum: 4,
-                    nextPage: McqQuiz(
-                      opSign: 'mix',
-                      level: GlobalVariables.levels[4],
-                    )),
-
-                LevelSelectionContainer(
-                    levelNum: 5,
-                    nextPage: TextQuiz(
-                        opSign: 'mix', level: GlobalVariables.levels[5])),
-              ]),
-              // Spacer(flex: 1),
-              // Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //     children :[
-
-              //       LevelSelectionContainer(levelNum: 7,
-              //           nextPage: McqQuiz(opSign: 'x', level: GlobalVariables.levels[7],)),
-
-              //       LevelSelectionContainer(levelNum: 8, nextPage: TextQuiz(opSign: 'x', level: GlobalVariables.levels[8])),
-
-              //       LevelSelectionContainer(levelNum: 9, nextPage: McqQuiz(opSign: '÷', level: GlobalVariables.levels[9],)),
-
-              //       LevelSelectionContainer(levelNum: 10, nextPage: TextQuiz(opSign: '÷', level: GlobalVariables.levels[10])),
-
-              //       LevelSelectionContainer(levelNum: 11, nextPage: McqQuiz(opSign: 'mix', level: GlobalVariables.levels[11],)),
-
-              //       LevelSelectionContainer(levelNum: 12, nextPage: TextQuiz(opSign: 'mix', level: GlobalVariables.levels[12])),
-
-              //       LevelSelectionContainer(levelNum: 13, nextPage: TextQuiz(opSign: 'mix', level: GlobalVariables.levels[13])),
-
-              //     ]
-              // ),
-              Spacer(flex: 2),
-            ],
-          ))),
-    );
+        ]));
   }
 
   Widget levelCard(

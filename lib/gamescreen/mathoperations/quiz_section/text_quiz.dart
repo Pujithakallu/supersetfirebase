@@ -197,10 +197,11 @@ class _TextQuizState extends State<TextQuiz> {
                 heroTag: "backButton",
                 onPressed: () => Navigator.pop(context),
                 foregroundColor: Colors.black,
-                backgroundColor: Colors.lightBlue,
+                backgroundColor: Colors.white,
                 shape: const CircleBorder(),
                 mini: true, // Smaller button
-                child: const Icon(Icons.arrow_back_rounded, size: 32),
+                child: const Icon(Icons.arrow_back_rounded,
+                    size: 32, color: Colors.black),
               ),
             ),
 
@@ -238,222 +239,228 @@ class _TextQuizState extends State<TextQuiz> {
                 ),
               ),
             ),
-
-            // Logout Button (Styled as FloatingActionButton)
-            Positioned(
-              right: 16,
-              top: 12,
-              child: FloatingActionButton(
-                heroTag: "logoutButton",
-                onPressed: () => logout(context),
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.blue,
-                shape: const CircleBorder(),
-                mini: true, // Smaller button
-                child: const Icon(Icons.logout_rounded, size: 32),
-              ),
-            ),
           ],
         ),
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/Mathoperations/background.png'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(screenWidth / 10, screenWidth / 20,
-              screenWidth / 10, screenWidth / 40),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                height: (screenWidth / 8).clamp(120.0, 120.0),
-                width: screenWidth,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Colors.white54,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      quesHeading[currentLanguage],
-                      style: TextStyle(
-                        fontSize: (screenWidth / 25).clamp(16.0, 30.0),
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      quizquestion.question[currentLanguage],
-                      style: TextStyle(
-                        fontSize: (screenWidth / 25).clamp(16.0, 30.0),
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
+      body: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/Mathoperations/background.png'),
+                fit: BoxFit.cover,
               ),
-              TextField(
-                controller: textEditingController,
-                onChanged: (value) {
-                  pickAnswer(value);
-                },
-                style: TextStyle(
-                  fontSize: screenWidth / 50, // Adjust the font size as needed
-                  fontWeight: FontWeight.bold, // Make the text bold
-                ),
-                decoration: InputDecoration(
-                  hintText: hintText[
-                      currentLanguage], // need to change the hintText according to the user selected language,
-                  border: OutlineInputBorder(),
-                  filled: true, // Enable filling of the background
-                  fillColor: isCorrect == null
-                      ? Colors.white54
-                      : isCorrect == true
-                          ? Colors.green
-                          : Colors
-                              .red, // Set background color based on correctness
-                  errorBorder: OutlineInputBorder(
-                    // Border color when there is an error
-                    borderSide: BorderSide(color: Colors.red),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    // Border color when there is an error and the field is focused
-                    borderSide: BorderSide(color: Colors.red),
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+            ),
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(screenWidth / 10, screenWidth / 20,
+                  screenWidth / 10, screenWidth / 40),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  InkWell(
-                    onTap: () {
-                      ReadOut(
-                          '${quesHeading[currentLanguage]} ${quizquestion.question[currentLanguage]}');
-                    },
-                    borderRadius: BorderRadius.circular(30),
-                    child: Container(
-                      width: screenWidth / 10,
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.lightGreen,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                            Icons.volume_up,
-                            size: screenWidth / 40,
+                  Container(
+                    height: (screenWidth / 8).clamp(120.0, 120.0),
+                    width: screenWidth,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.white54,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          quesHeading[currentLanguage],
+                          style: TextStyle(
+                            fontSize: (screenWidth / 25).clamp(16.0, 30.0),
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
+                          textAlign: TextAlign.center,
+                        ),
+                        Text(
+                          quizquestion.question[currentLanguage],
+                          style: TextStyle(
+                            fontSize: (screenWidth / 25).clamp(16.0, 30.0),
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                  TextField(
+                    controller: textEditingController,
+                    onChanged: (value) {
+                      pickAnswer(value);
+                    },
+                    style: TextStyle(
+                      fontSize:
+                          screenWidth / 50, // Adjust the font size as needed
+                      fontWeight: FontWeight.bold, // Make the text bold
+                    ),
+                    decoration: InputDecoration(
+                      hintText: hintText[
+                          currentLanguage], // need to change the hintText according to the user selected language,
+                      border: OutlineInputBorder(),
+                      filled: true, // Enable filling of the background
+                      fillColor: isCorrect == null
+                          ? Colors.white54
+                          : isCorrect == true
+                              ? Colors.green
+                              : Colors
+                                  .red, // Set background color based on correctness
+                      errorBorder: OutlineInputBorder(
+                        // Border color when there is an error
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        // Border color when there is an error and the field is focused
+                        borderSide: BorderSide(color: Colors.red),
                       ),
                     ),
                   ),
-                  //SizedBox(width: 170),
-                  Spacer(flex: 1),
-                  InkWell(
-                    onTap: selectedAnswer != null && !isAnswerSubmitted
-                        ? submitAnswer
-                        : null,
-                    borderRadius: BorderRadius.circular(30),
-                    child: Container(
-                      width: screenWidth / 4,
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          ReadOut(
+                              '${quesHeading[currentLanguage]} ${quizquestion.question[currentLanguage]}');
+                        },
                         borderRadius: BorderRadius.circular(30),
-                        color: selectedAnswer != null && !isAnswerSubmitted
-                            ? Colors.blue
-                            : Colors.grey,
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Submit',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30,
+                        child: Container(
+                          width: screenWidth / 10,
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.lightGreen,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.volume_up,
+                                size: screenWidth / 40,
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  //SizedBox(width: 180),
-                  Spacer(flex: 1),
-                  InkWell(
-                    onTap: () {
-                      if (!isLastQuestion ||
-                          isAnswerSubmitted ||
-                          selectedAnswer != null) {
-                        gotoNextQuestion();
-                      } else {
-                        Navigator.pop(context);
-                      }
-                    },
-                    borderRadius: BorderRadius.circular(30),
-                    child: Container(
-                      width: screenWidth / 4,
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
+                      //SizedBox(width: 170),
+                      Spacer(flex: 1),
+                      InkWell(
+                        onTap: selectedAnswer != null && !isAnswerSubmitted
+                            ? submitAnswer
+                            : null,
                         borderRadius: BorderRadius.circular(30),
-                        color:
-                            isAnswerSubmitted ? Colors.lightBlue : Colors.grey,
-                      ),
-                      child: Center(
-                        child: Text(
-                          isLastQuestion ? 'Finish' : 'Next',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30,
+                        child: Container(
+                          width: screenWidth / 4,
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: selectedAnswer != null && !isAnswerSubmitted
+                                ? Colors.blue
+                                : Colors.grey,
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Submit',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  //SizedBox(width: 180),
-                  Spacer(flex: 1),
-                  InkWell(
-                    onTap: () {
-                      changeLang();
-                    },
-                    borderRadius: BorderRadius.circular(30),
-                    child: Container(
-                      width: screenWidth / 10,
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
+                      //SizedBox(width: 180),
+                      Spacer(flex: 1),
+                      InkWell(
+                        onTap: () {
+                          if (!isLastQuestion ||
+                              isAnswerSubmitted ||
+                              selectedAnswer != null) {
+                            gotoNextQuestion();
+                          } else {
+                            Navigator.pop(context);
+                          }
+                        },
                         borderRadius: BorderRadius.circular(30),
-                        color: Colors.lightGreen,
+                        child: Container(
+                          width: screenWidth / 4,
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: isAnswerSubmitted
+                                ? Colors.lightBlue
+                                : Colors.grey,
+                          ),
+                          child: Center(
+                            child: Text(
+                              isLastQuestion ? 'Finish' : 'Next',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            currentLanguage == 0 ? 'Español' : 'English',
-                            style: TextStyle(
-                                fontSize: screenWidth / 60,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
-                          )
-                          // Icon(
-                          //   Icons.translate,
-                          //   size: screenWidth / 40,
-                          // ),
-                        ],
+                      //SizedBox(width: 180),
+                      Spacer(flex: 1),
+                      InkWell(
+                        onTap: () {
+                          changeLang();
+                        },
+                        borderRadius: BorderRadius.circular(30),
+                        child: Container(
+                          width: screenWidth / 10,
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.lightGreen,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                currentLanguage == 0 ? 'Español' : 'English',
+                                style: TextStyle(
+                                    fontSize: screenWidth / 60,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              )
+                              // Icon(
+                              //   Icons.translate,
+                              //   size: screenWidth / 40,
+                              // ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
+          // Logout Button (Styled as FloatingActionButton)
+          Positioned(
+            bottom: 16,
+            right: 12,
+            child: FloatingActionButton(
+              heroTag: "logoutButton",
+              onPressed: () => logout(context),
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.white,
+              shape: const CircleBorder(),
+              mini: true, // Smaller button
+              child: const Icon(Icons.logout_rounded,
+                  size: 32, color: Colors.black),
+            ),
+          ),
+        ],
       ),
     );
   }

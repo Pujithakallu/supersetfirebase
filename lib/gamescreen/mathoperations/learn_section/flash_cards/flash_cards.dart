@@ -88,10 +88,11 @@ class _FlashCardState extends State<FlashCard> {
                 heroTag: "backButton",
                 onPressed: () => Navigator.pop(context),
                 foregroundColor: Colors.black,
-                backgroundColor: Colors.lightBlue,
+                backgroundColor: Colors.white,
                 shape: const CircleBorder(),
                 mini: true, // Smaller button
-                child: const Icon(Icons.arrow_back_rounded, size: 32),
+                child: const Icon(Icons.arrow_back_rounded,
+                    size: 32, color: Colors.black),
               ),
             ),
 
@@ -129,110 +130,114 @@ class _FlashCardState extends State<FlashCard> {
                 ),
               ),
             ),
-
-            // Logout Button (Styled as FloatingActionButton)
-            Positioned(
-              right: 16,
-              top: 12,
-              child: FloatingActionButton(
-                heroTag: "logoutButton",
-                onPressed: () => logout(context),
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.blue,
-                shape: const CircleBorder(),
-                mini: true, // Smaller button
-                child: const Icon(Icons.logout_rounded, size: 32),
-              ),
-            ),
           ],
         ),
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/Mathoperations/background.png'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Flash Card Section
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(20, 50, 20, 50),
-                  width: MediaQuery.of(context).size.width * 0.75,
-                  child: _renderFlashCard(flashCards[currentCardIndex]),
-                ),
+      body: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/Mathoperations/background.png'),
+                fit: BoxFit.cover,
               ),
+            ),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Flash Card Section
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.fromLTRB(20, 50, 20, 50),
+                      width: MediaQuery.of(context).size.width * 0.75,
+                      child: _renderFlashCard(flashCards[currentCardIndex]),
+                    ),
+                  ),
 
-              // Navigation Buttons (Back & Next)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        _navigateToCard(-1);
-                      },
-                      borderRadius: BorderRadius.circular(30),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.15,
-                        padding: EdgeInsets.all(
-                            MediaQuery.of(context).size.width * 0.01),
-                        decoration: BoxDecoration(
+                  // Navigation Buttons (Back & Next)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            _navigateToCard(-1);
+                          },
                           borderRadius: BorderRadius.circular(30),
-                          color: Colors.lightBlue,
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Back",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize:
-                                  (MediaQuery.of(context).size.width * 0.025)
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.15,
+                            padding: EdgeInsets.all(
+                                MediaQuery.of(context).size.width * 0.01),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Colors.lightBlue,
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Back",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: (MediaQuery.of(context).size.width *
+                                          0.025)
                                       .clamp(16.0, 24.0),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        _navigateToCard(1);
-                      },
-                      borderRadius: BorderRadius.circular(30),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.15,
-                        padding: EdgeInsets.all(
-                            MediaQuery.of(context).size.width * 0.01),
-                        decoration: BoxDecoration(
+                        InkWell(
+                          onTap: () {
+                            _navigateToCard(1);
+                          },
                           borderRadius: BorderRadius.circular(30),
-                          color: Colors.lightBlue,
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Next",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize:
-                                  (MediaQuery.of(context).size.width * 0.025)
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.15,
+                            padding: EdgeInsets.all(
+                                MediaQuery.of(context).size.width * 0.01),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Colors.lightBlue,
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Next",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: (MediaQuery.of(context).size.width *
+                                          0.025)
                                       .clamp(16.0, 24.0),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+          // Logout Button (Styled as FloatingActionButton)
+          Positioned(
+            bottom: 16,
+            right: 12,
+            child: FloatingActionButton(
+              heroTag: "logoutButton",
+              onPressed: () => logout(context),
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.white,
+              shape: const CircleBorder(),
+              mini: true, // Smaller button
+              child: const Icon(Icons.logout_rounded,
+                  size: 32, color: Colors.black),
+            ),
+          ),
+        ],
       ),
     );
   }
