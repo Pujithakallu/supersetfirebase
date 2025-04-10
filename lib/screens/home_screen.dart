@@ -136,136 +136,145 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
           // Content
           SafeArea(
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
 
-                // Title Section
-                Column(
-                  children: [
-                    ScaleTransition(
-                      scale: _scaleAnimation,
-                      child: const Icon(Icons.school, size: 40, color: Colors.blue),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      "Hi, $pin!",
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                  // Title Section
+                  Column(
+                    children: [
+                      ScaleTransition(
+                        scale: _scaleAnimation,
+                        child: const Icon(Icons.school, size: 40, color: Colors.blue),
                       ),
-                    ),
-                    const SizedBox(height: 12),
-                  ],
-                ),
-
-                const SizedBox(height: 20),
-
-                // Game Tiles with Description and Icons at Bottom
-                Expanded(
-                  child: GridView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 25),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
-                      childAspectRatio: 0.9,
-                      crossAxisSpacing: 30,
-                      mainAxisSpacing: 30,
-                    ),
-                    itemCount: games.length,
-                    itemBuilder: (context, index) {
-                      final game = games[index];
-                      return MouseRegion(
-                        onEnter: (_) {
-                          // Change cursor to hand on hover
-                          SystemMouseCursors.click;
-                        },
-                        onExit: (_) {
-                          // Reset cursor to default
-                          SystemMouseCursors.basic;
-                        },
-                        child: GestureDetector(
-                          onTap: () {
-                            if (game['route'] != null) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => game['route'](pin),
-                                ),
-                              );
-                            }
-                          },
-                          child: Column(
-                            children: [
-                              // Game Image
-                              Expanded(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    image: DecorationImage(
-                                      image: AssetImage(game['backgroundImage']),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black26,
-                                        blurRadius: 4,
-                                        offset: Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-
-                              // Game Title
-                              Text(
-                                game['title'],
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-
-                              // Symbol Below the Title
-                              Icon(
-                                game['icon'],
-                                size: 30,
-                                color: Colors.blueAccent,
-                              ),
-
-                              // Description with Black Background
-                              const SizedBox(height: 6),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 6,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  game['description'],
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
-                          ),
+                      const SizedBox(height: 8),
+                      Text(
+                        "Hi, $pin!",
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
                         ),
+                      ),
+                      const SizedBox(height: 12),
+                    ],
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // Game Tiles with Description and Icons at Bottom
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      double maxWidth = constraints.maxWidth;
+                      // dynamic tileSize ensures tiles automatically resize and adjust their count per row based on screen width.
+                      double tileSize = maxWidth > 1000
+                          ? maxWidth / 4 - 20
+                          : maxWidth > 800
+                              ? maxWidth / 3 - 20
+                              : maxWidth > 500
+                                  ? maxWidth / 2 - 20
+                                  : maxWidth - 40;
+
+                      return Wrap(
+                        spacing: 20,
+                        runSpacing: 20,
+                        alignment: WrapAlignment.center,
+                        children: games.map((game) {
+                          return MouseRegion(
+                            cursor: game['route'] != null
+                                ? SystemMouseCursors.click
+                                : SystemMouseCursors.basic,
+                            child: GestureDetector(
+                              onTap: () {
+                                if (game['route'] != null) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => game['route'](pin),
+                                    ),
+                                  );
+                                }
+                              },
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    width: tileSize,
+                                    height: tileSize,
+                                    alignment: Alignment.center,
+                                    child: ScaleTransition(
+                                      scale: _scaleAnimation,
+                                      child: Container(
+                                        width: tileSize * 0.9,
+                                        height: tileSize * 0.9,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: AssetImage(game['backgroundImage']),
+                                            fit: BoxFit.cover,
+                                          ),
+                                          borderRadius: BorderRadius.circular(20),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black26,
+                                              blurRadius: 6,
+                                              offset: Offset(0, 3),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  // Game Title
+                                  Text(
+                                    game['title'],
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 6),
+                                  // Symbol Below the Title
+                                  Icon(
+                                    game['icon'] as IconData,
+                                    size: 30,
+                                    color: Colors.blueAccent,
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                       vertical: 6
+                                       ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.8),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Text(
+                                      game['description'] as String,
+                                      style: const TextStyle(
+                                        fontSize: 14, 
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                        ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }).toList(),
                       );
                     },
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+            )
           ),
 
           // Logout Icon at Bottom Right
