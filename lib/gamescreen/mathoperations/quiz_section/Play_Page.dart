@@ -29,7 +29,10 @@ class LevelSelectionContainer extends StatelessWidget {
     final LevelInfo currLevel = GlobalVariables.levels[levelNum];
     final String levelText = currLevel.levelNumber.toString();
     final bool isUnlocked = currLevel.isUnlocked;
+    final double progress =
+        currLevel.completionPercentage; // Add progress percentage
     double screenWidth = MediaQuery.of(context).size.width;
+
     var heading = isUnlocked
         ? Text(
             levelText,
@@ -43,18 +46,20 @@ class LevelSelectionContainer extends StatelessWidget {
             size: screenWidth / 20,
             color: Colors.black38,
           );
+
     return InkWell(
       onTap: () {
         if (isUnlocked) {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => nextPage));
-        } else
+        } else {
           () => {};
+        }
       },
       borderRadius: BorderRadius.circular(30),
       child: Container(
         width: screenWidth / 12,
-        height: screenWidth / 12,
+        height: screenWidth / 8, // Adjust height to accommodate progress bar
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
@@ -66,10 +71,17 @@ class LevelSelectionContainer extends StatelessWidget {
             end: Alignment.bottomRight,
           ),
         ),
-        child: Row(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            heading,
+            heading, // Level text or lock icon
+            SizedBox(height: 8), // Space between text and progress bar
+            LinearProgressIndicator(
+              value: progress, // Progress value (0.0 to 1.0)
+              backgroundColor: Colors.grey[300],
+              color: Colors.green,
+              minHeight: 5, // Adjust thickness of the progress bar
+            ),
           ],
         ),
       ),

@@ -1,30 +1,32 @@
 import 'package:supersetfirebase/gamescreen/mathoperations/common/global.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/common/util/log.dart';
 
-class LevelInfo{
-  bool completeStatus ;
+class LevelInfo {
+  bool completeStatus;
+  double completionPercentage;
   final String levelName;
   final int levelNumber;
   final int maxScore;
   int userScore;
   final String sign;
-  bool isUnlocked ;
+  bool isUnlocked;
 
   LevelInfo({
     required this.completeStatus,
+    required this.completionPercentage,
     required this.levelName,
     required this.levelNumber,
     required this.maxScore,
     required this.userScore,
     required this.sign,
     required this.isUnlocked,
-
   });
 
   @override
   String toString() {
     return 'LevelInfo('
         'completeStatus: $completeStatus, '
+        'completetionPercentage: $completionPercentage, '
         'levelName: $levelName, '
         'levelNumber: $levelNumber, '
         'maxScore: $maxScore, '
@@ -35,21 +37,24 @@ class LevelInfo{
   }
 
   void updateScore(int currScore) {
-    String info = 'Current Score: $currScore,\nMax Score: $userScore\nOld Global Score: ${GlobalVariables.totalScore.value}';
+    String info =
+        'Current Score: $currScore,\nMax Score: $userScore\nOld Global Score: ${GlobalVariables.totalScore.value}';
 
     if (currScore > userScore) {
       int difference = currScore - userScore;
       userScore = currScore;
       GlobalVariables.totalScore.value += difference;
-      printInBox('$info\nNew Global Score: ${GlobalVariables.totalScore.value}');
+      completionPercentage = userScore / maxScore;
+      printInBox(
+          '$info\nNew Global Score: ${GlobalVariables.totalScore.value}');
       unlockNextLevel();
     }
   }
 
-  void unlockNextLevel(){
-    LevelInfo nextLevel = GlobalVariables.levels[levelNumber+1];
-    printInBox('score ratio: ${userScore/maxScore} ');
-    if (userScore/maxScore >= 0.8){
+  void unlockNextLevel() {
+    LevelInfo nextLevel = GlobalVariables.levels[levelNumber + 1];
+    printInBox('score ratio: ${userScore / maxScore} ');
+    if (userScore / maxScore >= 0.8) {
       nextLevel.isUnlocked = true;
       printInBox('Level : ${nextLevel.levelNumber} Unlocked');
     }
@@ -72,6 +77,7 @@ class LevelInfo{
   factory LevelInfo.fromMap(Map<String, dynamic> input) {
     return LevelInfo(
       completeStatus: input['completeStatus'],
+      completionPercentage: input['completetionPercentage'] ?? 0.0,
       levelName: input['levelName'],
       levelNumber: input['levelNumber'],
       maxScore: input['maxScore'],
@@ -80,22 +86,23 @@ class LevelInfo{
       isUnlocked: input['isUnlocked'],
     );
   }
-
 }
 
 List<LevelInfo> initLevelData() {
   List<LevelInfo> levels = [];
-  List<String> signs = [ "TEMP",
-    'mix','mix','mix', // For levels 1, 2, 3,
+  List<String> signs = [
+    "TEMP",
+    'mix', 'mix', 'mix', // For levels 1, 2, 3,
     '-', '-', '-', // For levels 4, 5, 6
-    'x','x', // For levels 7, 8,
-    '÷','÷', // For levels 9, 10
-    'mix','mix','mix', // For levels 11, 12
+    'x', 'x', // For levels 7, 8,
+    '÷', '÷', // For levels 9, 10
+    'mix', 'mix', 'mix', // For levels 11, 12
   ];
   // Generate sample data for levels
   for (int i = 0; i <= 13; i++) {
     LevelInfo level = LevelInfo(
       completeStatus: false, // Random complete status
+      completionPercentage: 0.0,
       levelName: 'Level $i',
       levelNumber: i,
       maxScore: 10,
@@ -112,17 +119,19 @@ List<LevelInfo> initLevelData() {
 
 List<LevelInfo> testLevelData() {
   List<LevelInfo> levels = [];
-  List<String> signs = [ "TEMP",
-    '+','+','+', // For levels 1, 2, 3,
+  List<String> signs = [
+    "TEMP",
+    '+', '+', '+', // For levels 1, 2, 3,
     '-', '-', '-', // For levels 4, 5, 6
-    'x','x', // For levels 7, 8,
-    '÷','÷', // For levels 9, 10
-    'mix','mix','mix', // For levels 11, 12
+    'x', 'x', // For levels 7, 8,
+    '÷', '÷', // For levels 9, 10
+    'mix', 'mix', 'mix', // For levels 11, 12
   ];
   // Generate sample data for levels
   for (int i = 0; i <= 13; i++) {
     LevelInfo level = LevelInfo(
       completeStatus: false, // Random complete status
+      completionPercentage: 0.0,
       levelName: 'Level $i',
       levelNumber: i,
       maxScore: 10,
