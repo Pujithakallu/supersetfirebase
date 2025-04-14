@@ -59,10 +59,20 @@ class _MatchGameState extends State<MatchGame> {
             onBack: () => Navigator.pop(context),
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => logout(context),
-          backgroundColor: Colors.blue,
-          child: const Icon(Icons.logout_rounded, size: 28, color: Colors.white),
+
+          floatingActionButton: SizedBox(
+          width: MediaQuery.of(context).size.height > 700 ? 56 : 40,
+          height: MediaQuery.of(context).size.height > 700 ? 56 : 40,
+          child: FloatingActionButton(
+            heroTag: "logoutButton",
+            onPressed: () => logout(context),
+            backgroundColor: Colors.blue,
+            child: Icon(
+              Icons.logout_rounded,
+              size: MediaQuery.of(context).size.height > 700 ? 28 : 20,
+              color: Colors.white,
+            ),
+          ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         body: Container(
@@ -76,9 +86,14 @@ class _MatchGameState extends State<MatchGame> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                const Text(
+                Text(
                   'J U N G L E    M A T C H I N G    S A F A R I',
-                  style: TextStyle(fontSize: 45, color: Colors.white),
+                  style: TextStyle(
+                  //fontSize: 45, 
+                  fontSize: MediaQuery.of(context).size.width > 900 
+                  ? 45 // Set max font size for larger windows
+                  : MediaQuery.of(context).size.width / 20, // Dynamically scale for smaller windows
+                  color: Colors.white),
                 ),
                 const SizedBox(height: 20),
                 Row(
@@ -139,11 +154,21 @@ class _MatchGameState extends State<MatchGame> {
           onBack: () => Navigator.pop(context),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => logout(context),
-        backgroundColor: Colors.blue,
-        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.white),
-      ),
+      // Logout FAB at bottom right
+          floatingActionButton: SizedBox(
+          width: MediaQuery.of(context).size.height > 700 ? 56 : 27,
+          height: MediaQuery.of(context).size.height > 700 ? 56 : 27,
+          child: FloatingActionButton(
+            heroTag: "logoutButton",
+            onPressed: () => logout(context),
+            backgroundColor: Colors.blue,
+            child: Icon(
+              Icons.logout_rounded,
+              size: MediaQuery.of(context).size.height > 700 ? 28 : 20,
+              color: Colors.white,
+            ),
+          ),
+        ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Container(
         decoration: const BoxDecoration(
@@ -157,16 +182,18 @@ class _MatchGameState extends State<MatchGame> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: <Widget>[
-                const Text(
+                const SizedBox(height: 20),
+                Text(
                   'J U N G L E    M A T C H I N G    S A F A R I',
                   style: TextStyle(
-                    fontSize: 45,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                  //fontSize: 45, 
+                  fontSize: MediaQuery.of(context).size.width > 900 
+                  ? 40 // Set max font size for larger windows
+                  : MediaQuery.of(context).size.width / 23, // Dynamically scale for smaller windows
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 20),
                 Text.rich(
                   TextSpan(children: [
                     const TextSpan(
@@ -174,153 +201,171 @@ class _MatchGameState extends State<MatchGame> {
                       style: TextStyle(
                           color: Colors.yellowAccent,
                           fontWeight: FontWeight.bold,
-                          fontSize: 30),
+                          fontSize: 20),
                     ),
                     TextSpan(
                       text: "$score",
                       style: const TextStyle(
                         color: Colors.yellowAccent,
                         fontWeight: FontWeight.bold,
-                        fontSize: 30.0,
+                        fontSize: 20.0,
                       ),
                     )
                   ]),
                 ),
-                const SizedBox(height: 20),
+
                 if (!gameOver)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Column(
-                        children: items.map((item) {
-                          return Container(
-                            width: 150,
-                            height: 150,
-                            margin: const EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10.0),
-                              border: Border.all(color: Colors.white70, width: 2.0),
-                            ),
-                            child: Center(
-                              child: MouseRegion(
-                                cursor: SystemMouseCursors.click,
-                                child: Draggable<ItemModel>(
-                                  data: item,
-                                  childWhenDragging: Container(
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                  ),
-                                  feedback: Material(
-                                    color: Colors.transparent,
-                                    child: Container(
-                                      width: 150,
-                                      height: 150,
-                                      padding: const EdgeInsets.all(8.0),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white70,
-                                        borderRadius: BorderRadius.circular(10.0),
-                                        border: Border.all(color: Colors.white70, width: 2.0),
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      double baseWidth = 1200;
+                      double scale = constraints.maxWidth / baseWidth;
+                      if (scale > 1.0) scale = 1.0;
+
+                        // Flip the logic: use 220 for smaller screens, 170 for larger
+                      double itemWidth = (scale < 1.0)
+                          ? 220 * scale
+                          : 170 * scale;
+                      double itemHeight = (scale < 1.0)
+                          ? 95 * scale
+                          : 120 * scale;
+
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Column(
+                            children: items.map((item) {
+                              return Container(
+                                width: itemWidth,
+                                height: itemHeight,
+                                margin: const EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  border: Border.all(color: Colors.white70, width: 2.0),
+                                ),
+                                child: Center(
+                                  child: MouseRegion(
+                                    cursor: SystemMouseCursors.click,
+                                    child: Draggable<ItemModel>(
+                                      data: item,
+                                      childWhenDragging: Container(
+                                        width: double.infinity,
+                                        height: double.infinity,
                                       ),
-                                      child: Center(
-                                        child: Text(
-                                          item.value,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 20.0,
+                                      feedback: Material(
+                                        color: Colors.transparent,
+                                        child: Container(
+                                          width: itemWidth,
+                                          height: itemHeight,
+                                          padding: const EdgeInsets.all(8.0),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white70,
+                                            borderRadius: BorderRadius.circular(10.0),
+                                            border: Border.all(color: Colors.white70, width: 2.0),
                                           ),
-                                          textAlign: TextAlign.center,
+                                          child: Center(
+                                            child: Text(
+                                              item.value,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 20.0 * scale,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                        padding: const EdgeInsets.all(8.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white70,
+                                          borderRadius: BorderRadius.circular(10.0),
+                                          border: Border.all(color: Colors.white70, width: 2.0),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            item.value,
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20.0 * scale,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                    padding: const EdgeInsets.all(8.0),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white70,
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      border: Border.all(color: Colors.white70, width: 2.0),
-                                    ),
-                                    child: Center(
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                          const Spacer(),
+                          Column(
+                            children: items2.map((item) {
+                              return Container(
+                                width: itemWidth,
+                                height: itemHeight,
+                                child: MouseRegion(
+                                  cursor: SystemMouseCursors.click,
+                                  child: DragTarget<ItemModel>(
+                                    onAccept: (receivedItem) {
+                                      if (item.value == receivedItem.value) {
+                                        setState(() {
+                                          items.remove(receivedItem);
+                                          items2.remove(item);
+                                          score += 2;
+                                          item.accepting = false;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          item.accepting = false;
+                                        });
+                                      }
+                                    },
+                                    onLeave: (receivedItem) {
+                                      setState(() {
+                                        item.accepting = false;
+                                      });
+                                    },
+                                    onWillAccept: (receivedItem) {
+                                      setState(() {
+                                        item.accepting = true;
+                                      });
+                                      return true;
+                                    },
+                                    builder: (context, acceptedItems, rejectedItem) => Container(
+                                      decoration: BoxDecoration(
+                                        color: item.accepting ? Colors.red : Colors.white70,
+                                        borderRadius: BorderRadius.circular(10.0),
+                                        border: Border.all(color: Colors.white, width: 2.0),
+                                      ),
+                                      height: itemHeight,
+                                      width: itemWidth,
+                                      alignment: Alignment.center,
+                                      margin: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        item.value,
-                                        style: const TextStyle(
+                                        item.name,
+                                        style: TextStyle(
                                           color: Colors.black,
-                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18.0 * scale,
                                         ),
                                         textAlign: TextAlign.center,
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                      const Spacer(),
-                      Column(
-                        children: items2.map((item) {
-                          return Container(
-                            width: 150,
-                            height: 150,
-                            child: MouseRegion(
-                              cursor: SystemMouseCursors.click,
-                              child: DragTarget<ItemModel>(
-                                onAccept: (receivedItem) {
-                                  if (item.value == receivedItem.value) {
-                                    setState(() {
-                                      items.remove(receivedItem);
-                                      items2.remove(item);
-                                      score += 2; // Add points for a correct match.
-                                      item.accepting = false;
-                                    });
-                                  } else {
-                                    setState(() {
-                                      item.accepting = false;
-                                    });
-                                  }
-                                },
-                                onLeave: (receivedItem) {
-                                  setState(() {
-                                    item.accepting = false;
-                                  });
-                                },
-                                onWillAccept: (receivedItem) {
-                                  setState(() {
-                                    item.accepting = true;
-                                  });
-                                  return true;
-                                },
-                                builder: (context, acceptedItems, rejectedItem) => Container(
-                                  decoration: BoxDecoration(
-                                    color: item.accepting ? Colors.red : Colors.white70,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    border: Border.all(color: Colors.white, width: 2.0),
-                                  ),
-                                  height: 150,
-                                  width: 150,
-                                  alignment: Alignment.center,
-                                  margin: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    item.name,
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18.0,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                    ],
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                      );
+                    },
                   ),
+
+
                 if (gameOver)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -375,8 +420,8 @@ class _MatchGameState extends State<MatchGame> {
 
   Widget buildDragTarget(ItemModel item) {
     return Container(
-      width: 150,
-      height: 150,
+      width: 170,
+      height: 120,
       margin: const EdgeInsets.all(8.0),
       child: DragTarget<ItemModel>(
         onAccept: (receivedItem) {
@@ -408,8 +453,8 @@ class _MatchGameState extends State<MatchGame> {
             borderRadius: BorderRadius.circular(10.0),
             border: Border.all(color: Colors.white, width: 2.0),
           ),
-          height: 150,
-          width: 150,
+          height: 170,
+          width: 120,
           alignment: Alignment.center,
           margin: const EdgeInsets.all(8.0),
           child: Text(

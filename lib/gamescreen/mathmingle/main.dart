@@ -85,15 +85,20 @@ class WelcomeScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                  
+                  Text(
                     'W E L C O M E',
                     style: TextStyle(
-                      fontSize: 140,
+                      fontSize: (MediaQuery.of(context).size.width * 0.1).clamp(50.0, 140.0), // Scales within a range
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
-                  const SizedBox(height: 300),
+                  SizedBox(
+                    height: (MediaQuery.of(context).size.height * 
+                            (MediaQuery.of(context).size.height > 700 ? 0.3 : 0.1))
+                        .clamp(10.0, 300.0),
+                  ),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pushReplacement(
@@ -117,15 +122,20 @@ class WelcomeScreen extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(600, 100),
+                      minimumSize: Size(
+                        MediaQuery.of(context).size.width * 0.8, // Dynamically adjusts based on screen width
+                        MediaQuery.of(context).size.height * 0.08, // Dynamically adjusts based on screen height
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                         side: const BorderSide(color: Colors.white, width: 2),
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       'LET\'S DIVE IN !!!!!!',
-                      style: TextStyle(fontSize: 35),
+                      style: TextStyle(
+                        fontSize: (MediaQuery.of(context).size.width * 0.05).clamp(5.0, 35.0), // Scales font size within a range
+                      ),
                     ),
                   ),
                 ],
@@ -193,12 +203,20 @@ class WelcomeScreen extends StatelessWidget {
         ],
       ),
       // Logout FAB at bottom right
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: SizedBox(
+      width: MediaQuery.of(context).size.height > 700 ? 56 : 40,
+      height: MediaQuery.of(context).size.height > 700 ? 56 : 40,
+      child: FloatingActionButton(
         heroTag: "logoutButton",
         onPressed: () => logout(context),
         backgroundColor: Colors.blue,
-        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.white),
+        child: Icon(
+          Icons.logout_rounded,
+          size: MediaQuery.of(context).size.height > 700 ? 28 : 20,
+          color: Colors.white,
+        ),
       ),
+    ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
