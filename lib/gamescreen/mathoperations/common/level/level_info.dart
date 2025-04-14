@@ -44,7 +44,7 @@ class LevelInfo {
       int difference = currScore - userScore;
       userScore = currScore;
       GlobalVariables.totalScore.value += difference;
-      completionPercentage = userScore / maxScore;
+      completionPercentage = userScore.toDouble() / maxScore.toDouble();
       printInBox(
           '$info\nNew Global Score: ${GlobalVariables.totalScore.value}');
       unlockNextLevel();
@@ -105,7 +105,7 @@ List<LevelInfo> initLevelData() {
       completionPercentage: 0.0,
       levelName: 'Level $i',
       levelNumber: i,
-      maxScore: 10,
+      maxScore: 100,
       userScore: 0,
       sign: signs[i],
       isUnlocked: i == 0 || i == 1, // Unlock first levels
@@ -134,7 +134,7 @@ List<LevelInfo> testLevelData() {
       completionPercentage: 0.0,
       levelName: 'Level $i',
       levelNumber: i,
-      maxScore: 10,
+      maxScore: 100,
       userScore: 0,
       sign: signs[i],
       isUnlocked: true, // Unlock first levels
