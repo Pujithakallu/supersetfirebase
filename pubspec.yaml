@@ -16,6 +16,7 @@ dependencies:
   cloud_firestore: ^5.5.1
   provider: ^6.1.2
 
+
   http: ^1.2.2
   audioplayers: ^6.0.1
   firebase_analytics: ^11.3.0 
@@ -41,6 +42,7 @@ flutter:
   assets:
     - assets/Mathmingle/
     - assets/Mathmingle/gif1.gif
+    - assets/Mathmingle/Memory_game_background.png
     - assets/Mathmingle/audio/
     - assets/Mathmingle/homescreen/
     - assets/Mathmingle/matchGame/chapter1.json
