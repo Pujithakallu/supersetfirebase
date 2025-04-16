@@ -189,6 +189,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             child: GestureDetector(
                               onTap: () {
                                 if (game['route'] != null) {
+                                  if (game['title'] == 'Math Operators') {
+                                      AnalyticsService.logMathOperatorsClick(pin); // Logging the click
+                                  }
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

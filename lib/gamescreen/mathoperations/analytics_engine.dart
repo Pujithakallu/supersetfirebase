@@ -30,6 +30,18 @@ class AnalyticsEngine {
       },
     );
   }
+  
+  static Future<void> logGameClick(String gameName, String userPin) async {
+  print('$gameName button clicked by user: $userPin');
+  await instance.logEvent(
+    name: 'game_tile_click',
+    parameters: <String, Object>{
+      'game_name': gameName,
+      'user_pin': userPin,
+      'timestamp': DateTime.now().toIso8601String(),
+      },
+    );
+  }
 
   // log audio button clicks
   static Future<void> logAudioButtonClick(int currentLanguage) async {
