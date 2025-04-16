@@ -4,6 +4,8 @@ import 'login_screen.dart';
 import '../gamescreen/mathmingle/main.dart';
 import '../gamescreen/mathequations/main.dart';
 import '../gamescreen/mathoperations/main.dart';
+import 'package:supersetfirebase/gamescreen/mathoperations/analytics_engine.dart';
+
 
 class HomeScreen extends StatefulWidget {
   final String pin;
@@ -155,7 +157,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: Colors.red,
                         ),
                       ),
                       const SizedBox(height: 12),
