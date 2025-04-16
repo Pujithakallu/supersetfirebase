@@ -4,6 +4,7 @@ import 'login_screen.dart';
 import '../gamescreen/mathmingle/main.dart';
 import '../gamescreen/mathequations/main.dart';
 import '../gamescreen/mathoperations/main.dart';
+import '../gamescreen/mathoperations/analytics_engine.dart';
 
 class HomeScreen extends StatefulWidget {
   final String pin;
