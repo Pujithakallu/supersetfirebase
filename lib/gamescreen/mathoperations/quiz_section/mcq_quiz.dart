@@ -128,62 +128,74 @@ class _McqQuizState extends State<McqQuiz> {
             children: [
               // Transparent AppBar Layer
               AppBar(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                automaticallyImplyLeading:
-                    false, // Prevents default back button
-              ),
-
-              // Back Button (Styled as FloatingActionButton)
-              Positioned(
-                left: 16,
-                top: 12,
-                child: FloatingActionButton(
-                  heroTag: "backButton",
+        backgroundColor: Color.fromARGB(255, 95, 177, 179), // Light sky blue
+        elevation: 4,
+        automaticallyImplyLeading: false,
+        toolbarHeight: 70,
+        flexibleSpace: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              children: [
+                // 🔙 Back Button
+                IconButton(
+                  icon: Icon(Icons.arrow_back, color: const Color.fromARGB(255, 1, 2, 3), size: 28),
                   onPressed: () => Navigator.pop(context),
-                  foregroundColor: Colors.black,
-                  backgroundColor: Colors.white,
-                  shape: const CircleBorder(),
-                  mini: true, // Smaller button
-                  child: const Icon(Icons.arrow_back_rounded,
-                      size: 32, color: Colors.black),
                 ),
-              ),
 
-              // PIN Display (Smaller Width, Centered)
-              Positioned(
-                top: 12,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 12, vertical: 6), // Reduced padding
-                  constraints: const BoxConstraints(
-                    maxWidth:
-                        120, // Limits the width to prevent it from being too wide
+                // 🧩 Level & Score (Centered)
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Level ${widget.level.levelNumber}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: const Color.fromARGB(255, 229, 232, 238),
+                        ),
+                      ),
+                      Text(
+                        'Score: $score',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: const Color.fromARGB(221, 246, 246, 246),
+                        ),
+                      ),
+                    ],
                   ),
+                ),
+
+                // 🔐 PIN Display (Styled)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius:
-                        BorderRadius.circular(12), // Slightly rounded corners
+                    borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black12,
                         blurRadius: 4,
                         offset: Offset(0, 2),
                       ),
                     ],
                   ),
-                  child: Center(
-                    child: Text(
-                      'PIN: $userPin',
-                      style: const TextStyle(
-                        fontSize: 14, // Slightly smaller font for better fit
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
+                  child: Text(
+                    'PIN: $userPin',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue.shade900,
                     ),
                   ),
                 ),
-              ),
+              ],
+            ),
+          ),
+        ),
+      ),
+
             ],
           ),
         ),
