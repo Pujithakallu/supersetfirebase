@@ -1,12 +1,13 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/scheduler.dart';
 import 'login_screen.dart';
+
 import '../gamescreen/mathmingle/main.dart';
 import '../gamescreen/mathequations/main.dart';
 import '../gamescreen/mathoperations/main.dart';
-import 'package:supersetfirebase/gamescreen/mathoperations/analytics_engine.dart';
-
-
+import 'package:supersetfirebase/services/firestore_score.dart';
+// import 'package:supersetfirebase/services/test_score.dart';
 class HomeScreen extends StatefulWidget {
   final String pin;
 
@@ -17,16 +18,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
-  late String pin;
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
 
   int totalScore = 0;
+  final FirestoreService _scoreService = FirestoreService();
+  Timer? scoreUpdateTimer;
 
   @override
   void initState() {
     super.initState();
-    pin = widget.pin;
 
     _animationController = AnimationController(
       vsync: this,
@@ -37,31 +38,34 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
 
-    // Fetch total score when app loads
-    getTotalBestScore(pin).then((score) {
-      setState(() {
-        totalScore = score;
-      });
+    refreshTotalScore();
+
+    // Automatically update score every minute
+    scoreUpdateTimer = Timer.periodic(const Duration(minutes: 1), (timer) {
+      refreshTotalScore();
     });
   }
 
-  Future<int> getTotalBestScore(String userPin) async {
-    final docRef = FirebaseFirestore.instance.collection('users').doc(userPin);
-    final docSnapshot = await docRef.get();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      refreshTotalScore();
+    });
+  }
 
-    if (docSnapshot.exists) {
-      final mathMingleScore = docSnapshot['MathMingle'] ?? 0;
-      final mathEquationsScore = docSnapshot['MathEquations'] ?? 0;
-      final mathOperatorsScore = docSnapshot['MathOperators'] ?? 0;
+  @override
+  void dispose() {
+    _animationController.dispose();
+    scoreUpdateTimer?.cancel();
+    super.dispose();
+  }
 
-      final totalBestScore = mathMingleScore + mathEquationsScore + mathOperatorsScore;
-
-      //  Store total score in Firestore
-      await docRef.update({'TotalBestScore': totalBestScore});
-
-      return totalBestScore;
-    }
-    return 0;
+  void refreshTotalScore() async {
+    final scores = await _scoreService.getUserScores(widget.pin);
+    setState(() {
+      totalScore = scores['TotalBestScore'] ?? 0;
+    });
   }
 
   final List<Map<String, dynamic>> games = [
@@ -102,8 +106,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           ),
         ),
         actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: refreshTotalScore,
+            tooltip: "Refresh Scores",
+          ),
           Padding(
-            padding: const EdgeInsets.only(right: 16.0),
+            padding: const EdgeInsets.only(right: 12.0),
             child: Row(
               children: [
                 const Icon(Icons.star, color: Colors.orange, size: 28),
@@ -123,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       ),
       body: Stack(
         children: [
-          // Background
+          // Your background and overlay
           Positioned.fill(
             child: Image.asset(
               "assets/images/background.png",
@@ -132,19 +141,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               height: double.infinity,
             ),
           ),
-          Container(
-            color: Colors.white.withOpacity(0.6), // Light overlay
-          ),
-
-          // Content
+          Container(color: Colors.white.withOpacity(0.6)),
           SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
                   const SizedBox(height: 20),
-
-                  // Title Section
                   Column(
                     children: [
                       ScaleTransition(
@@ -153,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        "Hi, $pin!",
+                        "Hi, ${widget.pin}!",
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -163,14 +166,25 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       const SizedBox(height: 12),
                     ],
                   ),
-
                   const SizedBox(height: 20),
-
-                  // Game Tiles with Description and Icons at Bottom
+                  // Test scores button
+                  // ElevatedButton.icon(
+                  //   onPressed: () async {
+                  //     await Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (_) => TestScoreScreen(pin: widget.pin),
+                  //       ),
+                  //     );
+                  //     refreshTotalScore(); 
+                  //   },
+                  //    icon: Icon(Icons.bug_report),
+                  //    label: Text("Test/Set Dummy Scores"),
+                  // ),
+                  const SizedBox(height: 20),
                   LayoutBuilder(
                     builder: (context, constraints) {
                       double maxWidth = constraints.maxWidth;
-                      // dynamic tileSize ensures tiles automatically resize and adjust their count per row based on screen width.
                       double tileSize = maxWidth > 1000
                           ? maxWidth / 4 - 20
                           : maxWidth > 800
@@ -189,14 +203,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 ? SystemMouseCursors.click
                                 : SystemMouseCursors.basic,
                             child: GestureDetector(
-                              onTap: () {
+                              onTap: () async {
                                 if (game['route'] != null) {
-                                  Navigator.push(
+                                  await Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => game['route'](pin),
+                                      builder: (context) => game['route'](widget.pin),
                                     ),
                                   );
+                                  refreshTotalScore();
                                 }
                               },
                               child: Column(
@@ -229,7 +244,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                     ),
                                   ),
                                   const SizedBox(height: 10),
-                                  // Game Title
                                   Text(
                                     game['title'],
                                     style: const TextStyle(
@@ -240,7 +254,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                     textAlign: TextAlign.center,
                                   ),
                                   const SizedBox(height: 6),
-                                  // Symbol Below the Title
                                   Icon(
                                     game['icon'] as IconData,
                                     size: 30,
@@ -248,10 +261,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   ),
                                   const SizedBox(height: 6),
                                   Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                       vertical: 6
-                                       ),
+                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                                     decoration: BoxDecoration(
                                       color: Colors.black.withOpacity(0.8),
                                       borderRadius: BorderRadius.circular(12),
@@ -259,10 +269,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                     child: Text(
                                       game['description'] as String,
                                       style: const TextStyle(
-                                        fontSize: 14, 
+                                        fontSize: 14,
                                         color: Colors.white,
                                         fontWeight: FontWeight.w500,
-                                        ),
+                                      ),
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
@@ -276,10 +286,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ),
                 ],
               ),
-            )
+            ),
           ),
-
-          // Logout Icon at Bottom Right
           Positioned(
             bottom: 20,
             right: 20,
