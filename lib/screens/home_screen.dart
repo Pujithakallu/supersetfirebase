@@ -167,6 +167,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     ],
                   ),
                   const SizedBox(height: 20),
+
+             
+
                   // Test scores button
                   // ElevatedButton.icon(
                   //   onPressed: () async {
@@ -193,11 +196,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   ? maxWidth / 2 - 20
                                   : maxWidth - 40;
 
-                      return Wrap(
-                        spacing: 20,
-                        runSpacing: 20,
-                        alignment: WrapAlignment.center,
-                        children: games.map((game) {
+                          return Center(
+                          child: Wrap(
+                            spacing: 20,
+                            runSpacing: 20,
+                            alignment: WrapAlignment.center,
+                            children: games.map((game) {
+
                           return MouseRegion(
                             cursor: game['route'] != null
                                 ? SystemMouseCursors.click
@@ -281,7 +286,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             ),
                           );
                         }).toList(),
-                      );
+                      ),
+                     );
                     },
                   ),
                 ],
