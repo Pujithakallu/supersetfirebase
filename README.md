@@ -42,7 +42,7 @@ To work with this project, ensure you have the following:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/smadduri9/supersetfirebase.git
+git clone https://github.com/Pujithakallu/supersetfirebase.git
 cd supersetfirebase
 ```
 
@@ -205,4 +205,4 @@ For any inquiries or contributions, reach out to maddurisriram09@gmail.com.
 
 ## Author
 
-**Sriram Madduri**
+
