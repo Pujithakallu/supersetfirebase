@@ -49,4 +49,15 @@ class FirestoreService {
       'TotalBestScore': data['TotalBestScore'] ?? 0,
     };
   }
+  
+  // To get user score in each game separately using user pin and gameKey
+  Future<int> getUserScoresForGame(String pin, String gameKey) async {
+    final doc = await users.doc(pin).get();
+    if (!doc.exists) {
+      print('No scores found for $pin');
+      return 0;
+    }
+    final data = doc.data() as Map<String, dynamic>;
+    return data[gameKey];
+  }
 }

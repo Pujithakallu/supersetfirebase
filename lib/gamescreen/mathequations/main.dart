@@ -12,6 +12,9 @@ import 'real_world_applications.dart';
 import 'analytics_engine.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:provider/provider.dart';
+import 'language_provider.dart';
+import 'total_xp_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,35 +22,46 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await AnalyticsEngine.init();
-  runApp(const MyApp());
+  runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => LanguageProvider()),
+        ChangeNotifierProvider(create: (context) => TotalXpProvider()),
+      ],
+      child: const MathEquationsApp(),
+    )
+  );
 }
 
-class MyApp extends StatelessWidget {
-  
-  const MyApp({
-    Key? key,
-  }) : super(key: key);
+class MathEquationsApp extends StatelessWidget {
+  const MathEquationsApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Math Equations',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LanguageProvider()),
+        ChangeNotifierProvider(create: (_) => TotalXpProvider()),
+      ],
+      child: MaterialApp(
+        title: 'Math Equations',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        debugShowCheckedModeBanner: false,
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const MainMenu(),
+          '/learn': (context) => const LearnMenu(),
+          '/play': (context) => const PlayMenu(),
+          '/partsOfEquation': (context) => const EquationDragDrop(),
+          '/equationToWords': (context) => const EquationToWordsScreen(),
+          '/whatAreEquations': (context) => const WhatAreEquations(),
+          '/partsOfEquations': (context) => PartsOfEquations(),
+          '/whatAreEquationsDetail': (context) => const WhatAreEquationsDetail(),
+          '/importanceOfEquations': (context) => const ImportanceOfEquations(),
+          '/realWorldApplications': (context) => const RealWorldApplications(),
+        },
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const MainMenu(),
-        '/learn': (context) => const LearnMenu(),
-        '/play': (context) => const PlayMenu(),
-        '/partsOfEquation': (context) => const EquationDragDrop(),
-        '/equationToWords': (context) => const EquationToWordsScreen(),
-        '/whatAreEquations': (context) => const WhatAreEquations(),
-        '/partsOfEquations': (context) => PartsOfEquations(),
-        '/whatAreEquationsDetail': (context) => const WhatAreEquationsDetail(),
-        '/importanceOfEquations': (context) => const ImportanceOfEquations(),
-        '/realWorldApplications': (context) => const RealWorldApplications(),
-      },
     );
   }
 }

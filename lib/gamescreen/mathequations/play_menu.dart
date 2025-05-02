@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:supersetfirebase/utils/logout_util.dart';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
+import 'total_xp_display.dart';
+import 'total_xp_provider.dart';
 
 class PlayMenu extends StatelessWidget {
   const PlayMenu({Key? key}) : super(key: key);
@@ -9,8 +11,18 @@ class PlayMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
+    final totalXp = Provider.of<TotalXpProvider>(context).score;
     return Scaffold(
       extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TotalXpDisplay(totalXp: totalXp),
+          )
+        ],
+      ),
       body: Stack(
         children: [
           // Background image
@@ -59,20 +71,6 @@ class PlayMenu extends StatelessWidget {
                   child: const Text('Equation to words'),
                 ),
               ],
-            ),
-          ),
-          // Back Button
-          Positioned(
-            left: 24,
-            top: 16,
-            child: FloatingActionButton(
-              onPressed: () => Navigator.pop(context),
-              backgroundColor: Colors.white,
-              child: const Icon(
-                Icons.arrow_back_rounded,
-                color: Color(0xFF4A4A4A),
-                size: 26,
-              ),
             ),
           ),
           // PIN Display
