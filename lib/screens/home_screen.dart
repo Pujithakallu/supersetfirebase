@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       'backgroundImage': 'assets/images/math_equations.png',
       'description': 'Master equations!',
       'icon': Icons.functions,
-      'route': (String pin) => MyApp(),
+      'route': (String pin) => MathEquationsApp(),
     },
     {
       'title': 'Math Operators',
