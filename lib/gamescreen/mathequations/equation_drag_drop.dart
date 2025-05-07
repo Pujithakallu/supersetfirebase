@@ -596,14 +596,6 @@ class _EquationDragDropState extends State<EquationDragDrop> {
                   newIsSpanish ? 'Changed to Spanish' : 'Changed to English');
             },
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ScoreDisplay(score: _scoreManager.score),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TotalXpDisplay(totalXp: totalXp),
-          ),
           InstructionsWidget(
               instructions: isSpanish
                   ? translations['es']!['instructions']!
@@ -635,7 +627,8 @@ class _EquationDragDropState extends State<EquationDragDrop> {
               ),
             ),
           ),
-          Column(
+          Center(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Padding(
@@ -657,8 +650,10 @@ class _EquationDragDropState extends State<EquationDragDrop> {
                     .toList(),
               ),
               const SizedBox(height: 40),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              Wrap(
+                alignment: WrapAlignment.center, // Align children in the center horizontally
+                spacing: 20.0, // Horizontal spacing between children
+                runSpacing: 20.0, // Vertical spacing between rows
                 children: [
                   DropTarget(
                     key: _dropTargetKeys[0],
@@ -671,19 +666,17 @@ class _EquationDragDropState extends State<EquationDragDrop> {
                     onAcceptedLabelsChanged: (labels) {
                       setState(() {
                         _acceptedLabels[0] = labels;
-                        _draggables
-                            .removeWhere((item) => labels.contains(item));
+                        _draggables.removeWhere((item) => labels.contains(item));
                       });
                     },
                     onItemRemoved: (label) {
                       setState(() {
-                        if (!_acceptedLabels
-                            .any((list) => list.contains(label))) {
+                        if (!_acceptedLabels.any((list) => list.contains(label))) {
                           _draggables.add(label);
                         }
                       });
                     },
-                    onCorrectAnswer: _checkAnswers, // Pass the callback
+                    onCorrectAnswer: _checkAnswers,
                     isSpanish: isSpanish,
                   ),
                   DropTarget(
@@ -697,19 +690,17 @@ class _EquationDragDropState extends State<EquationDragDrop> {
                     onAcceptedLabelsChanged: (labels) {
                       setState(() {
                         _acceptedLabels[1] = labels;
-                        _draggables
-                            .removeWhere((item) => labels.contains(item));
+                        _draggables.removeWhere((item) => labels.contains(item));
                       });
                     },
                     onItemRemoved: (label) {
                       setState(() {
-                        if (!_acceptedLabels
-                            .any((list) => list.contains(label))) {
+                        if (!_acceptedLabels.any((list) => list.contains(label))) {
                           _draggables.add(label);
                         }
                       });
                     },
-                    onCorrectAnswer: _checkAnswers, // Pass the callback
+                    onCorrectAnswer: _checkAnswers,
                     isSpanish: isSpanish,
                   ),
                   DropTarget(
@@ -723,19 +714,17 @@ class _EquationDragDropState extends State<EquationDragDrop> {
                     onAcceptedLabelsChanged: (labels) {
                       setState(() {
                         _acceptedLabels[2] = labels;
-                        _draggables
-                            .removeWhere((item) => labels.contains(item));
+                        _draggables.removeWhere((item) => labels.contains(item));
                       });
                     },
                     onItemRemoved: (label) {
                       setState(() {
-                        if (!_acceptedLabels
-                            .any((list) => list.contains(label))) {
+                        if (!_acceptedLabels.any((list) => list.contains(label))) {
                           _draggables.add(label);
                         }
                       });
                     },
-                    onCorrectAnswer: _checkAnswers, // Pass the callback
+                    onCorrectAnswer: _checkAnswers,
                     isSpanish: isSpanish,
                   ),
                   DropTarget(
@@ -749,19 +738,17 @@ class _EquationDragDropState extends State<EquationDragDrop> {
                     onAcceptedLabelsChanged: (labels) {
                       setState(() {
                         _acceptedLabels[3] = labels;
-                        _draggables
-                            .removeWhere((item) => labels.contains(item));
+                        _draggables.removeWhere((item) => labels.contains(item));
                       });
                     },
                     onItemRemoved: (label) {
                       setState(() {
-                        if (!_acceptedLabels
-                            .any((list) => list.contains(label))) {
+                        if (!_acceptedLabels.any((list) => list.contains(label))) {
                           _draggables.add(label);
                         }
                       });
                     },
-                    onCorrectAnswer: _checkAnswers, // Pass the callback
+                    onCorrectAnswer: _checkAnswers,
                     isSpanish: isSpanish,
                   ),
                 ],
@@ -847,6 +834,7 @@ class _EquationDragDropState extends State<EquationDragDrop> {
               ),
             ],
           ),
+          ),
           ConfettiWidget(
             confettiController: _confettiController,
             blastDirectionality: BlastDirectionality.explosive,
@@ -858,6 +846,23 @@ class _EquationDragDropState extends State<EquationDragDrop> {
               Colors.yellow
             ],
             child: Container(), // Placeholder widget
+          ),
+          Positioned(
+            top: kToolbarHeight + 2, // Position below the app bar
+            right: 4, // Align to the right
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ScoreDisplay(score: _scoreManager.score),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TotalXpDisplay(totalXp: totalXp),
+                ),
+              ],
+            ),
           ),
         ],
       ),
