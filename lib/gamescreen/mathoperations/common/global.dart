@@ -8,7 +8,7 @@ class GlobalVariables {
   static String userName = "User XYZ"; // Private static variable
   static String userID = "12121"; // Private static variable
   static ValueNotifier<int> totalScore = ValueNotifier<int>(0);
-  static int lastPlayedLevel = 0;
+  static int highestPlayedLevel = 0;
   static List<LevelInfo> levels = initLevelData();
 
   static void setUserData() {

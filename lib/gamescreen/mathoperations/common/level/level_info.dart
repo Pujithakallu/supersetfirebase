@@ -38,7 +38,10 @@ class LevelInfo {
 
   void updateScore(
       int currScore, int correctAnswerCount, int totalQuestionCount) {
-    GlobalVariables.lastPlayedLevel = levelNumber;
+    if (levelNumber > GlobalVariables.highestPlayedLevel) {
+      GlobalVariables.highestPlayedLevel = levelNumber;
+    }
+
     String info =
         'Current Score: $currScore,\nMax Score: $userScore\nOld Global Score: ${GlobalVariables.totalScore.value}';
 

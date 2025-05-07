@@ -100,10 +100,10 @@ class PlayPage extends StatelessWidget {
     }
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
 
-    int lastPlayedLevel = GlobalVariables.lastPlayedLevel;
+    int highestPlayedLevel = GlobalVariables.highestPlayedLevel;
     int totalLevels =
         5; // TODO : set it to GlobalVariables.levels.length after proper unlocking of levels is implemented
-    double progress = lastPlayedLevel / totalLevels;
+    double progress = highestPlayedLevel / totalLevels;
 
     return Scaffold(
         extendBodyBehindAppBar: true,
