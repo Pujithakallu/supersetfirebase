@@ -291,7 +291,7 @@ class _MemoryGameState extends State<MemoryGame> {
   void showEndGameDialog(int score) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: const Text("C O N G R A T U L A T I O N S ! ! !", style: TextStyle(fontSize: 33)),
           content: Column(
@@ -299,7 +299,7 @@ class _MemoryGameState extends State<MemoryGame> {
             children: [
               const Text("You've Matched All Cards!", style: TextStyle(fontSize: 29), textAlign: TextAlign.center),
               const SizedBox(height: 20),
-              Text("Score: $score/10", style: const TextStyle(fontSize: 25)),
+              Text("Score: \$score/10", style: const TextStyle(fontSize: 25)),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -307,7 +307,7 @@ class _MemoryGameState extends State<MemoryGame> {
                   TextButton(
                     child: const Text("N E W  G A M E", style: TextStyle(fontSize: 25)),
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.of(dialogContext).pop();
                       restart();
                       setState(() {
                         _seconds = 60;
@@ -318,8 +318,8 @@ class _MemoryGameState extends State<MemoryGame> {
                   TextButton(
                     child: const Text("E X I T", style: TextStyle(fontSize: 25)),
                     onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.pop(context);
+                      Navigator.of(dialogContext).pop();
+                      Navigator.of(context).pop();
                     },
                   ),
                 ],
