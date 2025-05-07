@@ -26,8 +26,9 @@ class ResultsPage extends StatelessWidget {
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+    double baseScale = (screenWidth < screenHeight ? screenWidth : screenHeight) / 100;
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      //extendBodyBehindAppBar: true,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60), // Adjust AppBar height
         child: Stack(
@@ -103,17 +104,19 @@ class ResultsPage extends StatelessWidget {
             ),
             child: Center(
               child: Padding(
-                  padding: const EdgeInsets.all(70.0),
+                  padding:  EdgeInsets.all((baseScale * 6).clamp(18.0, 70.0)),
+                   child: SingleChildScrollView( 
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
                         'Result',
                         style: TextStyle(
-                            fontSize: (screenWidth / 10).clamp(16.0, 40.0),
+                            fontSize: (baseScale * 4).clamp(14.0, 40.0),
                             fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
-                        height: 50,
+                        height: (baseScale * 5).clamp(4.0, 80.0),
                       ),
                       Card(
                         elevation: 5, // Adding some elevation for shadow
@@ -123,30 +126,27 @@ class ResultsPage extends StatelessWidget {
                         color: Colors
                             .white70, // Taken from the FlashCard back card
                         child: Padding(
-                          padding: const EdgeInsets.all(
-                              70.0), // From FlashCard back padding
+                          padding:  EdgeInsets.all(
+                              (baseScale * 6).clamp(18.0, 70.0)), // From FlashCard back padding
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text("Total Questions: $totalQuestions",
                                   style: TextStyle(
-                                      fontSize:
-                                          (screenWidth / 25).clamp(16.0, 30.0),
+                                      fontSize: (baseScale * 2).clamp(16.0, 30.0),
                                       color: Colors.black87)),
                               SizedBox(height: 5),
                               Text("Correct Answers: $correctAnswersCount",
                                   style: TextStyle(
-                                      fontSize:
-                                          (screenWidth / 25).clamp(16.0, 30.0),
+                                      fontSize:(baseScale * 2).clamp(16.0, 30.0),
                                       color: Colors.black87)),
                               SizedBox(height: 5),
                               Text("Your Score: $score",
                                   style: TextStyle(
-                                      fontSize:
-                                          (screenWidth / 20).clamp(16.0, 40.0),
+                                      fontSize:(baseScale * 2).clamp(16.0, 30.0),
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black)),
-                              SizedBox(height: 10),
+                              SizedBox(height: (baseScale * 1).clamp(8.0, 16.0)),
                               InkWell(
                                 // onTap: () => Navigator.popUntil(context, ModalRoute.withName('/level')),
 
@@ -158,13 +158,13 @@ class ResultsPage extends StatelessWidget {
 
                                 borderRadius: BorderRadius.circular(30),
                                 child: Container(
-                                  width: 200,
-                                  padding: const EdgeInsets.all(10),
+                                  width: (baseScale * 20).clamp(140.0, 240.0),
+                                  padding:  EdgeInsets.all((baseScale * 1.5).clamp(8.0, 16.0)),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(30),
                                     color: Colors.lightBlue,
                                   ),
-                                  child: const Row(
+                                  child:  Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: <Widget>[
@@ -173,13 +173,13 @@ class ResultsPage extends StatelessWidget {
                                         style: TextStyle(
                                             color: Colors.black87,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 25),
+                                            fontSize: (baseScale * 2).clamp(13.0, 30.0),),
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 20),
+                              SizedBox(height: (baseScale * 2).clamp(10.0, 24.0)),
                               InkWell(
                                 onTap: () {
                                   Navigator.push(
@@ -194,13 +194,13 @@ class ResultsPage extends StatelessWidget {
                                 },
                                 borderRadius: BorderRadius.circular(30),
                                 child: Container(
-                                  width: 200,
-                                  padding: const EdgeInsets.all(10),
+                                  width: (baseScale * 20).clamp(140.0, 240.0),
+                                  padding:  EdgeInsets.all((baseScale * 1.5).clamp(8.0, 16.0)),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(30),
                                     color: Colors.green,
                                   ),
-                                  child: const Row(
+                                  child:  Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: <Widget>[
@@ -209,7 +209,7 @@ class ResultsPage extends StatelessWidget {
                                         style: TextStyle(
                                             color: Colors.black87,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 25),
+                                            fontSize: (baseScale * 2).clamp(13.0, 30.0),),
                                       ),
                                     ],
                                   ),
@@ -243,7 +243,7 @@ class ResultsPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ],
+                    ],),
                   )),
             ),
           ),

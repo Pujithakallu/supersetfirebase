@@ -13,8 +13,10 @@ class LearnPage extends StatelessWidget {
   Widget build(BuildContext context) {
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    double baseScale = (screenWidth + screenHeight) / 2 / 100;
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      //extendBodyBehindAppBar: true,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60), // Adjust AppBar height
         child: Stack(
@@ -38,8 +40,8 @@ class LearnPage extends StatelessWidget {
                 backgroundColor: Colors.white,
                 shape: const CircleBorder(),
                 mini: true, // Smaller button
-                child: const Icon(Icons.arrow_back_rounded,
-                    size: 32, color: Colors.black),
+                child:  Icon(Icons.arrow_back_rounded,
+                    size: baseScale * 3.2, color: Colors.black),
               ),
             ),
 
@@ -68,8 +70,8 @@ class LearnPage extends StatelessWidget {
                 child: Center(
                   child: Text(
                     'PIN: $userPin',
-                    style: const TextStyle(
-                      fontSize: 14, // Slightly smaller font for better fit
+                    style:  TextStyle(
+                      fontSize: baseScale * 1.4, // Slightly smaller font for better fit
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
                     ),
@@ -94,35 +96,35 @@ class LearnPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Spacer(flex: 1),
-                  Container(
-                    margin: EdgeInsets.only(top: 80),
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.9),
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 4,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Text(
-                      'PIN: ${userPin}',
-                      style: TextStyle(
-                        fontSize: screenWidth / 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   margin: EdgeInsets.only(top: 80),
+                  //   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.white.withOpacity(0.9),
+                  //     borderRadius: BorderRadius.circular(15),
+                  //     boxShadow: [
+                  //       BoxShadow(
+                  //         color: Colors.black.withOpacity(0.1),
+                  //         blurRadius: 4,
+                  //         offset: Offset(0, 2),
+                  //       ),
+                  //     ],
+                  //   ),
+                  //   child: Text(
+                  //     'PIN: ${userPin}',
+                  //     style: TextStyle(
+                  //       fontSize: screenWidth / 30,
+                  //       fontWeight: FontWeight.bold,
+                  //       color: Colors.black87,
+                  //     ),
+                  //   ),
+                  // ),
                   Text(
                     'Operator List',
                     style: TextStyle(
                         color: Colors.black87,
                         fontWeight: FontWeight.bold,
-                        fontSize: screenWidth / 15),
+                        fontSize:  baseScale * 2.4),
                   ),
                   Spacer(flex: 1),
                   Row(
@@ -140,8 +142,8 @@ class LearnPage extends StatelessWidget {
                           },
                           borderRadius: BorderRadius.circular(30),
                           child: Container(
-                            width: screenWidth / 7,
-                            height: screenWidth / 7,
+                            width: (screenWidth / 7).clamp(60.0, 100.0),
+                            height: (screenWidth / 7).clamp(60.0, 100.0),
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
@@ -155,7 +157,7 @@ class LearnPage extends StatelessWidget {
                                   style: TextStyle(
                                       color: Colors.green,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: screenWidth / 10),
+                                      fontSize: baseScale * 3.7),
                                 ),
                               ],
                             ),
@@ -173,8 +175,8 @@ class LearnPage extends StatelessWidget {
                           },
                           borderRadius: BorderRadius.circular(30),
                           child: Container(
-                            width: screenWidth / 7,
-                            height: screenWidth / 7,
+                            width: (screenWidth / 7).clamp(60.0, 100.0),
+                            height: (screenWidth / 7).clamp(60.0, 100.0),
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
@@ -188,7 +190,7 @@ class LearnPage extends StatelessWidget {
                                   style: TextStyle(
                                       color: Colors.red,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: screenWidth / 10),
+                                      fontSize: baseScale * 3.7),
                                 ),
                               ],
                             ),
@@ -206,8 +208,8 @@ class LearnPage extends StatelessWidget {
                           },
                           borderRadius: BorderRadius.circular(30),
                           child: Container(
-                            width: screenWidth / 7,
-                            height: screenWidth / 7,
+                            width: (screenWidth / 7).clamp(60.0, 100.0),
+                            height: (screenWidth / 7).clamp(60.0, 100.0),
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
@@ -221,7 +223,7 @@ class LearnPage extends StatelessWidget {
                                   style: TextStyle(
                                       color: Colors.blueAccent,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: screenWidth / 13),
+                                      fontSize: baseScale * 4.2),
                                 ),
                               ],
                             ),
@@ -239,8 +241,8 @@ class LearnPage extends StatelessWidget {
                           },
                           borderRadius: BorderRadius.circular(30),
                           child: Container(
-                            width: screenWidth / 7,
-                            height: screenWidth / 7,
+                            width: (screenWidth / 7).clamp(60.0, 100.0),
+                            height: (screenWidth / 7).clamp(60.0, 100.0),
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
@@ -254,7 +256,7 @@ class LearnPage extends StatelessWidget {
                                   style: TextStyle(
                                       color: Colors.yellow,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: screenWidth / 10),
+                                      fontSize: baseScale * 4.2),
                                 ),
                               ],
                             ),

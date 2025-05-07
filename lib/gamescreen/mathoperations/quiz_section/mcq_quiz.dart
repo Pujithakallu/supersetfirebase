@@ -117,10 +117,13 @@ class _McqQuizState extends State<McqQuiz> {
   Widget build(BuildContext context) {
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    double baseScale = (screenWidth < screenHeight ? screenWidth : screenHeight) / 100;
+
     final question = questions[questionIndex];
     bool isLastQuestion = questionIndex == questions.length - 1;
     return Scaffold(
-        extendBodyBehindAppBar: true,
+        //extendBodyBehindAppBar: true,
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60), // Adjust AppBar height
           child: Stack(
@@ -209,13 +212,12 @@ class _McqQuizState extends State<McqQuiz> {
                 ),
               ),
               child: Padding(
-                padding: EdgeInsets.fromLTRB(screenWidth / 10, screenWidth / 20,
-                    screenWidth / 10, screenWidth / 40),
+                padding: EdgeInsets.fromLTRB( (baseScale * 10).clamp(8.0, 24.0),(baseScale * 3).clamp(6.0, 20.0),(baseScale * 10).clamp(8.0, 24.0),  (baseScale * 1).clamp(4.0, 16.0), ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                        height: (screenWidth / 8).clamp(120.0, 120.0),
+                        height: (baseScale * 8).clamp(80.0, 120.0),
                         width: screenWidth,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
@@ -228,7 +230,7 @@ class _McqQuizState extends State<McqQuiz> {
                             Text(
                               quesHeading[currentLanguage],
                               style: TextStyle(
-                                fontSize: (screenWidth / 25).clamp(16.0, 28.0),
+                                fontSize: (baseScale * 2.5).clamp(14.0, 28.0),
                                 fontWeight: FontWeight.bold,
                               ),
                               textAlign: TextAlign.center,
@@ -236,15 +238,15 @@ class _McqQuizState extends State<McqQuiz> {
                             Text(
                               question.question[currentLanguage],
                               style: TextStyle(
-                                fontSize: (screenWidth / 25).clamp(16.0, 28.0),
+                                fontSize: (baseScale * 2.5).clamp(14.0, 28.0),
                                 fontWeight: FontWeight.bold,
                               ),
                               textAlign: TextAlign.center,
                             ),
                           ],
                         )),
-
-                    ListView.builder(
+                   Expanded(
+                    child:ListView.builder(
                       shrinkWrap: true,
                       itemCount: question.options.length,
                       itemBuilder: (context, index) {
@@ -262,9 +264,10 @@ class _McqQuizState extends State<McqQuiz> {
                         );
                       },
                     ),
+                   ),
                     // Next button
                     SizedBox(
-                      height: 10,
+                      height: baseScale * 1,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -279,7 +282,7 @@ class _McqQuizState extends State<McqQuiz> {
                           borderRadius: BorderRadius.circular(30),
                           child: Container(
                             width: screenWidth / 10,
-                            padding: const EdgeInsets.all(10),
+                            padding:  EdgeInsets.all(baseScale * 1),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
                               color: Colors.lightGreen,
@@ -328,7 +331,7 @@ class _McqQuizState extends State<McqQuiz> {
                           borderRadius: BorderRadius.circular(30),
                           child: Container(
                             width: screenWidth / 4,
-                            padding: const EdgeInsets.all(10),
+                            padding:  EdgeInsets.all(baseScale * 1),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
                               color: selectedAnswerIndex != null
@@ -344,7 +347,7 @@ class _McqQuizState extends State<McqQuiz> {
                                       color: Colors.black87,
                                       fontWeight: FontWeight.bold,
                                       fontSize:
-                                          (screenWidth / 30).clamp(16.0, 30.0)),
+                                          (baseScale * 2.5).clamp(14.0, 28.0)),
                                 ),
                               ],
                             ),
@@ -359,7 +362,7 @@ class _McqQuizState extends State<McqQuiz> {
                           borderRadius: BorderRadius.circular(30),
                           child: Container(
                             width: screenWidth / 10,
-                            padding: const EdgeInsets.all(10),
+                            padding:  EdgeInsets.all(baseScale * 1),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
                               color: Colors.lightGreen,
@@ -370,7 +373,7 @@ class _McqQuizState extends State<McqQuiz> {
                                 Text(
                                   currentLanguage == 0 ? 'Español' : 'English',
                                   style: TextStyle(
-                                      fontSize: screenWidth / 60,
+                                      fontSize:  screenWidth/60,
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold),
                                 )

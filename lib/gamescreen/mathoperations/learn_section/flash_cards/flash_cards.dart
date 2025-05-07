@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flip_card/flip_card.dart';
@@ -6,7 +8,7 @@ import 'package:supersetfirebase/gamescreen/mathoperations/learn_section/learn_c
 import 'flash_card_info.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/common/operator_data/op_data.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/common/comm_functions.dart';
-import 'dart:developer';
+import 'dart:developer' as dev;
 import 'package:supersetfirebase/gamescreen/mathoperations/common/global.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/common/translate/translate.dart';
 import 'package:supersetfirebase/utils/logout_util.dart';
@@ -35,7 +37,7 @@ class _FlashCardState extends State<FlashCard> {
 
   Future<void> ReadOut(String text) async {
     dynamic languages = await flutterTts.getLanguages;
-    await flutterTts.setLanguage(LangKeys[currentLanguage]); // : 'es-ES'
+    await flutterTts.setLanguage(LangKeys[currentLanguage]);
     await flutterTts.setSpeechRate(0.5);
     await flutterTts.speak(text);
   }
@@ -44,43 +46,39 @@ class _FlashCardState extends State<FlashCard> {
   void initState() {
     super.initState();
     flashCards = get_op_data(widget.opSign);
-    log("current lang : $flashCards");
+    dev.log("current lang : \$flashCards");
   }
 
   void changeLang() async {
     setState(() {
       currentLanguage = currentLanguage == 0 ? 1 : 0;
     });
-    print('Button clicked');
     String newLanguage = languageNames[currentLanguage];
     await AnalyticsEngine.logTranslateButtonClickLearn(newLanguage);
-    print('Language changed to: $newLanguage');
   }
 
   @override
   Widget build(BuildContext context) {
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     double screenWidth = MediaQuery.of(context).size.width;
-    double cardWidth = screenWidth * 0.75; // 75% of screen width
-    double cardHeight =
-        MediaQuery.of(context).size.height * 0.6; // 60% of screen height
-    double padding = screenWidth * 0.01; // 1% of screen width for padding
-    double buttonWidth = screenWidth * 0.15; // 15% of screen width for buttons
+    double baseScale = (MediaQuery.of(context).size.shortestSide) / 100;
+
+    double cardWidth = screenWidth * 0.75;
+    double cardHeight = MediaQuery.of(context).size.height * 0.6;
+    double padding = baseScale * 2;
+    double buttonWidth = screenWidth * 0.15;
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      //extendBodyBehindAppBar: true,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60), // Adjust AppBar height
+        preferredSize: const Size.fromHeight(60),
         child: Stack(
           alignment: Alignment.center,
           children: [
-            // Transparent AppBar Layer
             AppBar(
               backgroundColor: Colors.transparent,
               elevation: 0,
-              automaticallyImplyLeading: false, // Prevents default back button
+              automaticallyImplyLeading: false,
             ),
-
-            // Back Button (Styled as FloatingActionButton)
             Positioned(
               left: 16,
               top: 12,
@@ -90,26 +88,18 @@ class _FlashCardState extends State<FlashCard> {
                 foregroundColor: Colors.black,
                 backgroundColor: Colors.white,
                 shape: const CircleBorder(),
-                mini: true, // Smaller button
-                child: const Icon(Icons.arrow_back_rounded,
-                    size: 32, color: Colors.black),
+                mini: true,
+                child: const Icon(Icons.arrow_back_rounded, size: 32, color: Colors.black),
               ),
             ),
-
-            // PIN Display (Smaller Width, Centered)
             Positioned(
               top: 12,
               child: Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 12, vertical: 6), // Reduced padding
-                constraints: const BoxConstraints(
-                  maxWidth:
-                      120, // Limits the width to prevent it from being too wide
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                constraints: const BoxConstraints(maxWidth: 120),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius:
-                      BorderRadius.circular(12), // Slightly rounded corners
+                  borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.1),
@@ -120,9 +110,9 @@ class _FlashCardState extends State<FlashCard> {
                 ),
                 child: Center(
                   child: Text(
-                    'PIN: $userPin',
+                    'PIN: ${userPin}',
                     style: const TextStyle(
-                      fontSize: 14, // Slightly smaller font for better fit
+                      fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
                     ),
@@ -146,75 +136,20 @@ class _FlashCardState extends State<FlashCard> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Flash Card Section
                   Expanded(
                     child: Container(
-                      padding: const EdgeInsets.fromLTRB(20, 50, 20, 50),
+                      padding:  EdgeInsets.fromLTRB((baseScale * 2).clamp(12.0, 24.0), (MediaQuery.of(context).padding.top + baseScale * 0.8).clamp(8.0, 40.0),(baseScale * 2).clamp(12.0, 24.0), (baseScale * 5).clamp(30.0, 60.0),),
                       width: MediaQuery.of(context).size.width * 0.75,
                       child: _renderFlashCard(flashCards[currentCardIndex]),
                     ),
                   ),
-
-                  // Navigation Buttons (Back & Next)
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
+                    padding: EdgeInsets.only(top: (baseScale * 1.5).clamp(6.0, 16.0),bottom: (baseScale * 2).clamp(10.0, 30.0),),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        InkWell(
-                          onTap: () {
-                            _navigateToCard(-1);
-                          },
-                          borderRadius: BorderRadius.circular(30),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.15,
-                            padding: EdgeInsets.all(
-                                MediaQuery.of(context).size.width * 0.01),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: Colors.lightBlue,
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Back",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: (MediaQuery.of(context).size.width *
-                                          0.025)
-                                      .clamp(16.0, 24.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            _navigateToCard(1);
-                          },
-                          borderRadius: BorderRadius.circular(30),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.15,
-                            padding: EdgeInsets.all(
-                                MediaQuery.of(context).size.width * 0.01),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: Colors.lightBlue,
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Next",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: (MediaQuery.of(context).size.width *
-                                          0.025)
-                                      .clamp(16.0, 24.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                        _navigationButton("Back", -1),
+                        _navigationButton("Next", 1),
                       ],
                     ),
                   ),
@@ -222,7 +157,6 @@ class _FlashCardState extends State<FlashCard> {
               ),
             ),
           ),
-          // Logout Button (Styled as FloatingActionButton)
           Positioned(
             bottom: 16,
             right: 12,
@@ -232,9 +166,8 @@ class _FlashCardState extends State<FlashCard> {
               foregroundColor: Colors.white,
               backgroundColor: Colors.white,
               shape: const CircleBorder(),
-              mini: true, // Smaller button
-              child: const Icon(Icons.logout_rounded,
-                  size: 32, color: Colors.black),
+              mini: true,
+              child: const Icon(Icons.logout_rounded, size: 32, color: Colors.black),
             ),
           ),
         ],
@@ -242,13 +175,37 @@ class _FlashCardState extends State<FlashCard> {
     );
   }
 
+  Widget _navigationButton(String label, int direction) {
+    double baseScale = MediaQuery.of(context).size.shortestSide / 100;
+    return InkWell(
+      onTap: () => _navigateToCard(direction),
+      borderRadius: BorderRadius.circular(30),
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.15,
+        padding: EdgeInsets.all((baseScale * 1.5).clamp(6.0, 16.0)),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          color: Colors.lightBlue,
+        ),
+        child: Center(
+          child: Text(
+            label,
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: ((baseScale * 2.2).clamp(14.0, 24.0)),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _renderFlashCard(data) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double cardWidth = screenWidth * 0.75; // 75% of screen width
-    double cardHeight =
-        MediaQuery.of(context).size.height * 0.6; // 60% of screen height
-    double padding = screenWidth * 0.01; // 1% of screen width for padding
-    double buttonWidth = screenWidth * 0.15; // 15% of screen width for buttons
+    double screenHeight = MediaQuery.of(context).size.height;
+    double baseScale = min(screenWidth, screenHeight);
+    double padding = screenWidth * 0.01;
     String rem = 'and remainder = ';
     if (data["op_sign"] == '÷') {
       rem += '${data['fst_num'] % data['snd_num']}.';
@@ -264,12 +221,7 @@ class _FlashCardState extends State<FlashCard> {
 
     return Card(
       elevation: 0.0,
-      margin: const EdgeInsets.only(
-        left: 32.0,
-        right: 32.0,
-        top: 20.0,
-        bottom: 0.0,
-      ),
+      margin: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 20.0),
       color: const Color(0x00000000),
       child: FlipCard(
         direction: FlipDirection.HORIZONTAL,
@@ -284,175 +236,175 @@ class _FlashCardState extends State<FlashCard> {
             color: Colors.white60,
             borderRadius: BorderRadius.all(Radius.circular(8.0)),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                data["op_sign"],
-                style: TextStyle(
-                  color: Colors.green,
-                  fontWeight: FontWeight.bold,
-                  fontSize: screenWidth * 0.1,
-                  height: 0.8,
-                ),
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height * 0.6,
               ),
-              Text(
-                data["op_name"][currentLanguage],
-                style: TextStyle(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.bold,
-                  fontSize: screenWidth * 0.05,
-                ),
-              ),
-              Text(
-                data["op_def"][currentLanguage],
-                style: TextStyle(
-                  color: Colors.black45,
-                  fontWeight: FontWeight.bold,
-                  fontSize: (screenWidth * 0.04).clamp(10.0, 30.0),
-                ),
-              ),
-              const SizedBox(height: 80),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  //SizedBox(width: 350),
-                  InkWell(
-                    onTap: () {
-                      changeLang();
-                    },
-                    borderRadius: BorderRadius.circular(30),
-                    child: Container(
-                      width: (screenWidth / 8).clamp(50.0, 100.0),
-                      padding: EdgeInsets.all(padding),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.lightGreen,
+              child: IntrinsicHeight(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      data["op_sign"],
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                        fontSize: (baseScale * 0.1).clamp(20.0, 60.0),
+                        height: 0.8,
                       ),
-                      child: Center(
-                          //mainAxisAlignment: MainAxisAlignment.center,
-                          child: Text(
-                        currentLanguage == 0 ? 'Español' : 'English',
-                        style: TextStyle(
-                            fontSize: screenWidth / 60,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold),
-                      )
-                          // Icon(
-                          //   Icons.translate,
-                          //   size: (screenWidth * 0.025).clamp(25.0, 50.0),
-                          // ),
+                    ),
+                    Text(
+                      data["op_name"][currentLanguage],
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontWeight: FontWeight.bold,
+                        fontSize: (baseScale * 0.05).clamp(12.0, 32.0),
+                      ),
+                    ),
+                    Text(
+                      data["op_def"][currentLanguage],
+                      style: TextStyle(
+                        color: Colors.black45,
+                        fontWeight: FontWeight.bold,
+                        fontSize: (baseScale * 0.04).clamp(10.0, 30.0),
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.05),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            changeLang();
+                          },
+                          borderRadius: BorderRadius.circular(30),
+                          child: Container(
+                            width: (screenWidth / 8).clamp(100.0, 150.0),
+                            padding: EdgeInsets.all(padding),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Colors.lightGreen,
+                            ),
+                            child: Center(
+                              child: Text(
+                                currentLanguage == 0 ? 'Español' : 'English',
+                                style: TextStyle(
+                                  fontSize: (baseScale * 0.02).clamp(16.0, 28.0),
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ),
-                    ),
-                  ),
-                  //SizedBox(width: 200),
-                  InkWell(
-                    onTap: () async {
-                      ReadOut(data['op_def'][currentLanguage] +
-                          "; " +
-                          data['op_name'][currentLanguage]);
-                      await AnalyticsEngine.logAudioButtonClick(
-                          currentLanguage);
-                    },
-                    borderRadius: BorderRadius.circular(30),
-                    child: Container(
-                      width: (screenWidth / 8).clamp(50.0, 100.0),
-                      padding: EdgeInsets.all(padding),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.lightGreen,
-                      ),
-                      child: Center(
-                        //mainAxisAlignment: MainAxisAlignment.center,
-                        child: Icon(
-                          Icons.volume_up,
-                          size: (screenWidth * 0.025).clamp(25.0, 50.0),
                         ),
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            ],
+                        InkWell(
+                          onTap: () async {
+                            ReadOut(data['op_def'][currentLanguage] + "; " + data['op_name'][currentLanguage]);
+                            await AnalyticsEngine.logAudioButtonClick(currentLanguage);
+                          },
+                          borderRadius: BorderRadius.circular(30),
+                          child: Container(
+                            width: (screenWidth / 8).clamp(100.0, 150.0),
+                            padding: EdgeInsets.all(padding),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Colors.lightGreen,
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.volume_up,
+                                size: (baseScale * 0.015).clamp(25.0, 50.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
         back: Container(
-          //padding: EdgeInsets.all(50),
           decoration: const BoxDecoration(
             color: Colors.white70,
             borderRadius: BorderRadius.all(Radius.circular(8.0)),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              FlashCardInfo(
-                data["op_sign"],
-                data['fst_num'],
-                data['snd_num'],
-                currentLanguage,
-                fontSize: MediaQuery.of(context).size.width * 0.15,
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height * 0.6,
               ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  //SizedBox(width: 350),
-                  InkWell(
-                    onTap: () {
-                      changeLang(); // Navigator.push(context, MaterialPageRoute(builder: (context) => LearnPage()));
-                    },
-                    borderRadius: BorderRadius.circular(30),
-                    child: Container(
-                      width: (screenWidth / 8).clamp(50.0, 100.0),
-                      padding: EdgeInsets.all(padding),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.lightGreen,
-                      ),
-                      child: Center(
-                          //mainAxisAlignment: MainAxisAlignment.center,
-                          child: Text(
-                        currentLanguage == 0 ? 'Español' : 'English',
-                        style: TextStyle(
-                            fontSize: screenWidth / 60,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold),
-                      )
-                          // Icon(
-                          //   Icons.translate,
-                          //   size: (screenWidth * 0.025).clamp(25.0, 50.0),
-                          // ),
+              child: IntrinsicHeight(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    FlashCardInfo(
+                      data["op_sign"],
+                      data['fst_num'],
+                      data['snd_num'],
+                      currentLanguage,
+                      fontSize: MediaQuery.of(context).size.width * 0.15,
+                    ),
+                    SizedBox(height: screenHeight * 0.05),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            changeLang();
+                          },
+                          borderRadius: BorderRadius.circular(30),
+                          child: Container(
+                            width: (screenWidth / 8).clamp(100.0, 150.0),
+                            padding: EdgeInsets.all(padding),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Colors.lightGreen,
+                            ),
+                            child: Center(
+                              child: Text(
+                                currentLanguage == 0 ? 'Español' : 'English',
+                                style: TextStyle(
+                                  fontSize: (baseScale * 0.02).clamp(16.0, 28.0),
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ),
-                    ),
-                  ),
-                  //SizedBox(width: 200),
-                  InkWell(
-                    onTap: () async {
-                      ReadOut(
-                          '${data["fst_num"]} $signPron ${data["snd_num"]}  = ${get_op_result(data["op_sign"], data["fst_num"], data["snd_num"])} ${data["op_sign"] == "÷" ? rem : "."}');
-                      await AnalyticsEngine.logAudioButtonClick(
-                          currentLanguage);
-                    },
-                    borderRadius: BorderRadius.circular(30),
-                    child: Container(
-                      width: (screenWidth / 8).clamp(50.0, 100.0),
-                      padding: EdgeInsets.all(padding),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.lightGreen,
-                      ),
-                      child: Center(
-                        //mainAxisAlignment: MainAxisAlignment.center,
-                        child: Icon(
-                          Icons.volume_up,
-                          size: (screenWidth * 0.025).clamp(25.0, 50.0),
                         ),
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            ],
+                        InkWell(
+                          onTap: () async {
+                            ReadOut('${data["fst_num"]} \$signPron ${data["snd_num"]} = \${get_op_result(data["op_sign"], data["fst_num"], data["snd_num"])} \${data["op_sign"] == "÷" ? rem : "."}');
+                            await AnalyticsEngine.logAudioButtonClick(currentLanguage);
+                          },
+                          borderRadius: BorderRadius.circular(30),
+                          child: Container(
+                            width: (screenWidth / 8).clamp(100.0, 150.0),
+                            padding: EdgeInsets.all(padding),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Colors.lightGreen,
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.volume_up,
+                                size: (baseScale * 0.015).clamp(25.0, 50.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
       ),
@@ -468,8 +420,8 @@ class _FlashCardState extends State<FlashCard> {
     } else if (newIndex < 0) {
       Navigator.pop(context);
     } else {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const LearnComplete()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const LearnComplete()));
     }
   }
 }
+
