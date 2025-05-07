@@ -304,7 +304,8 @@ class _McqQuizState extends State<McqQuiz> {
                         if (questionIndex == questions.length - 1 &&
                             selectedAnswerIndex != null) {
                           // print("..Navigating to results page.");
-                          widget.level.updateScore(score);
+                          widget.level.updateScore(
+                              score, correctAnswersCount, questions.length);
                           log("global score: " +
                               GlobalVariables.totalScore.toString());
                           log(GlobalVariables.levels[widget.level.levelNumber]

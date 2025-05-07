@@ -3,7 +3,7 @@ import 'package:supersetfirebase/gamescreen/mathoperations/common/util/log.dart'
 
 class LevelInfo {
   bool completeStatus;
-  double completionPercentage;
+  double perLevelCompletionPercentage;
   final String levelName;
   final int levelNumber;
   final int maxScore;
@@ -13,7 +13,7 @@ class LevelInfo {
 
   LevelInfo({
     required this.completeStatus,
-    required this.completionPercentage,
+    required this.perLevelCompletionPercentage,
     required this.levelName,
     required this.levelNumber,
     required this.maxScore,
@@ -26,7 +26,7 @@ class LevelInfo {
   String toString() {
     return 'LevelInfo('
         'completeStatus: $completeStatus, '
-        'completetionPercentage: $completionPercentage, '
+        'perLevelCompletionPercentage: $perLevelCompletionPercentage, '
         'levelName: $levelName, '
         'levelNumber: $levelNumber, '
         'maxScore: $maxScore, '
@@ -36,7 +36,9 @@ class LevelInfo {
         ')';
   }
 
-  void updateScore(int currScore) {
+  void updateScore(
+      int currScore, int correctAnswerCount, int totalQuestionCount) {
+    GlobalVariables.lastPlayedLevel = levelNumber;
     String info =
         'Current Score: $currScore,\nMax Score: $userScore\nOld Global Score: ${GlobalVariables.totalScore.value}';
 
@@ -44,7 +46,8 @@ class LevelInfo {
       int difference = currScore - userScore;
       userScore = currScore;
       GlobalVariables.totalScore.value += difference;
-      completionPercentage = userScore.toDouble() / maxScore.toDouble();
+      perLevelCompletionPercentage = correctAnswerCount / totalQuestionCount;
+
       printInBox(
           '$info\nNew Global Score: ${GlobalVariables.totalScore.value}');
       unlockNextLevel();
@@ -77,7 +80,8 @@ class LevelInfo {
   factory LevelInfo.fromMap(Map<String, dynamic> input) {
     return LevelInfo(
       completeStatus: input['completeStatus'],
-      completionPercentage: input['completetionPercentage'] ?? 0.0,
+      perLevelCompletionPercentage:
+          input['perLevelCompletionPercentage'] ?? 0.0,
       levelName: input['levelName'],
       levelNumber: input['levelNumber'],
       maxScore: input['maxScore'],
@@ -102,7 +106,7 @@ List<LevelInfo> initLevelData() {
   for (int i = 0; i <= 13; i++) {
     LevelInfo level = LevelInfo(
       completeStatus: false, // Random complete status
-      completionPercentage: 0.0,
+      perLevelCompletionPercentage: 0.0,
       levelName: 'Level $i',
       levelNumber: i,
       maxScore: 100,
@@ -131,7 +135,7 @@ List<LevelInfo> testLevelData() {
   for (int i = 0; i <= 13; i++) {
     LevelInfo level = LevelInfo(
       completeStatus: false, // Random complete status
-      completionPercentage: 0.0,
+      perLevelCompletionPercentage: 0.0,
       levelName: 'Level $i',
       levelNumber: i,
       maxScore: 100,

@@ -318,7 +318,8 @@ class _McqImgQuizState extends State<McqImgQuiz> {
                         if (questionIndex == questions.length - 1 &&
                             selectedAnswerIndex != null) {
                           // print("..Navigating to results page.");
-                          widget.level.updateScore(score);
+                          widget.level.updateScore(
+                              score, correctAnswersCount, questions.length);
                           Navigator.push(
                               context,
                               MaterialPageRoute(

@@ -29,8 +29,7 @@ class LevelSelectionContainer extends StatelessWidget {
     final LevelInfo currLevel = GlobalVariables.levels[levelNum];
     final String levelText = currLevel.levelNumber.toString();
     final bool isUnlocked = currLevel.isUnlocked;
-    final double progress =
-        currLevel.completionPercentage; // Add progress percentage
+    final double progress = currLevel.perLevelCompletionPercentage;
     double screenWidth = MediaQuery.of(context).size.width;
 
     var heading = isUnlocked
@@ -59,7 +58,7 @@ class LevelSelectionContainer extends StatelessWidget {
       borderRadius: BorderRadius.circular(30),
       child: Container(
         width: screenWidth / 12,
-        height: screenWidth / 8, // Adjust height to accommodate progress bar
+        height: screenWidth / 8,
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
@@ -75,12 +74,12 @@ class LevelSelectionContainer extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             heading, // Level text or lock icon
-            SizedBox(height: 8), // Space between text and progress bar
+            SizedBox(height: 8),
             LinearProgressIndicator(
-              value: progress, // Progress value (0.0 to 1.0)
+              value: progress,
               backgroundColor: Colors.grey[300],
               color: Colors.green,
-              minHeight: 5, // Adjust thickness of the progress bar
+              minHeight: 5,
             ),
           ],
         ),
@@ -100,6 +99,12 @@ class PlayPage extends StatelessWidget {
       isUnlockedList.add(GlobalVariables.levels[i].isUnlocked);
     }
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
+
+    int lastPlayedLevel = GlobalVariables.lastPlayedLevel;
+    int totalLevels =
+        5; // TODO : set it to GlobalVariables.levels.length after proper unlocking of levels is implemented
+    double progress = lastPlayedLevel / totalLevels;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: PreferredSize(
@@ -276,6 +281,19 @@ class PlayPage extends StatelessWidget {
 
               //     ]
               // ),
+              Spacer(flex: 1),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 100),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: LinearProgressIndicator(
+                    value: progress,
+                    backgroundColor: Colors.grey[300],
+                    color: Colors.green,
+                    minHeight: 15,
+                  ),
+                ),
+              ),
               Spacer(flex: 2),
             ],
           ))),

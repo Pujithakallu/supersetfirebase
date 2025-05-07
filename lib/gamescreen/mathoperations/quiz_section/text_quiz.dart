@@ -141,7 +141,8 @@ class _TextQuizState extends State<TextQuiz> {
       isAnswerSubmitted = false; // Reset answer submitted status
       textEditingController.clear(); // Clear text field
     } else {
-      widget.level.updateScore(score);
+      widget.level.updateScore(score, correctAnswersCount,
+          questions.length); // Update the level score
       Navigator.push(
           context,
           MaterialPageRoute(
