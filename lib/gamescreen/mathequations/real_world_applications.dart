@@ -91,12 +91,12 @@ class _RealWorldApplicationsState extends State<RealWorldApplications> {
           ),
         ],
       ),
-      extendBodyBehindAppBar: true,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: IntrinsicWidth(
-            child: IntrinsicHeight(
+      // extendBodyBehindAppBar: true,
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: IntrinsicWidth(
               child: Card(
                 elevation: 8,
                 color: const Color(0xFFFFEFD2),

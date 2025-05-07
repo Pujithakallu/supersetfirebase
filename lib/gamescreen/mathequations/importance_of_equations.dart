@@ -54,7 +54,7 @@ class _ImportanceOfEquationsState extends State<ImportanceOfEquations> {
   };
 
   @override
-  Widget build(BuildContext context) {    
+  Widget build(BuildContext context) {
     final isSpanish = Provider.of<LanguageProvider>(context).isSpanish;
     final totalXp = Provider.of<TotalXpProvider>(context).score;
     final text = isSpanish ? spanishText : englishText;
@@ -92,67 +92,42 @@ class _ImportanceOfEquationsState extends State<ImportanceOfEquations> {
           ),
         ],
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Container(
-            width: MediaQuery.of(context).size.width *
-                0.8, // Set the width to 80% of the screen width
-            child: IntrinsicHeight(
-              child: Card(
-                color: Colors.blue[50],
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        text['title']!,
-                        style: const TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWideScreen = constraints.maxWidth > 600; // Check if the screen is wide
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Container(
+                width: isWideScreen
+                    ? constraints.maxWidth * 0.7 // Use 60% width for wide screens
+                    : constraints.maxWidth * 0.8, // Use 80% width for smaller screens
+                child: SingleChildScrollView( // Added to prevent overflow
+                  child: IntrinsicHeight(
+                    child: Card(
+                      color: Colors.blue[50],
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              text['title']!,
+                              style: const TextStyle(
+                                  fontSize: 24, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 8),
+                            ..._buildTextSections(text),
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 8),
-                      Text(
-                        text['foundation']!,
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        text['problemSolving']!,
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        text['realWorld']!,
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        text['logicalThinking']!,
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        text['predictivePower']!,
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        text['higherEducation']!,
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        text['confidence']!,
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
 
       // Logout button (bottom right)
@@ -167,5 +142,18 @@ class _ImportanceOfEquationsState extends State<ImportanceOfEquations> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
+  }
+
+  List<Widget> _buildTextSections(Map<String, String> text) {
+    return text.entries
+        .where((entry) => entry.key != 'title') // Exclude the title
+        .map((entry) => Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Text(
+                entry.value,
+                style: const TextStyle(fontSize: 18),
+              ),
+            ))
+        .toList();
   }
 }

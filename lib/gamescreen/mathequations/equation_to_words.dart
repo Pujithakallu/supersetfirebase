@@ -606,194 +606,192 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Equations to words - Level $currentLevel'),
-        actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+  appBar: AppBar(
+    title: Text('Equations to Words - Level $currentLevel'),
+    actions: [
+      LanguageSwitcher(
+        isSpanish: isSpanish,
+        onLanguageChanged: (bool newIsSpanish) {
+          Provider.of<LanguageProvider>(context, listen: false)
+              .setLanguage(newIsSpanish);
+          AnalyticsEngine.logTranslateButtonClickETW(
+              newIsSpanish ? 'Changed to Spanish' : 'Changed to English');
+        },
+      ),
+      const SizedBox(width: 16),
+      Text(
+        'PIN: $userPin',
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Colors.black87,
+        ),
+      ),
+      InstructionsWidget(
+        instructions: isSpanish
+            ? translations['es']!['instructions']!
+            : translations['en']!['instructions']!,
+      ),
+    ],
+  ),
+  body: Stack(
+    children: [
+      Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/Mathequations/Background.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+          child: Center(
+          child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              LanguageSwitcher(
-                isSpanish: isSpanish,
-                onLanguageChanged: (bool newIsSpanish) {
-                  Provider.of<LanguageProvider>(context, listen: false)
-                      .setLanguage(newIsSpanish);
-                  AnalyticsEngine.logTranslateButtonClickETW(newIsSpanish
-                      ? 'Changed to Spanish'
-                      : 'Changed to English');
-                },
+              Text(
+                equation,
+                style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 30),
+
+              // Drop Targets
+              Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 10.0,
+                runSpacing: 10.0,
+                children: List.generate(userAnswer.length, (index) {
+                  return DropTarget(
+                    index: index,
+                    label: isSpanish
+                        ? (userAnswer[index]['spanish']?.isNotEmpty ?? false)
+                            ? userAnswer[index]['spanish']!
+                            : translations['es']!['drop_items']!
+                        : (userAnswer[index]['english']?.isNotEmpty ?? false)
+                            ? userAnswer[index]['english']!
+                            : translations['en']!['drop_items']!,
+                    onAccept: (receivedItem) {
+                      setState(() {
+                        int wordIndex = words.indexOf(receivedItem);
+                        userAnswer[index] = {
+                          'english': currentQuestion['words'][wordIndex],
+                          'spanish': currentQuestion['translated'][wordIndex],
+                        };
+                      });
+                    },
+                  );
+                }),
+              ),
+
+              const SizedBox(height: 40),
+
+              // Draggable Items (Styled like POE)
+              Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 10.0,
+                  runSpacing: 10.0,
+                  children: words.map<Widget>((word) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: DraggableItem(
+                        label: word,
+                        data: word,
+                      ),
+                    );
+                  }).toList(),
+                ),
+
+              const SizedBox(height: 40),
+
+              // Buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: _checkAnswer,
+                    icon: const Icon(Icons.check, color: Colors.white),
+                    label: Text(
+                      isSpanish
+                          ? translations['es']!['check_answers']!
+                          : translations['en']!['check_answers']!,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  ElevatedButton.icon(
+                    onPressed: _isQuestionAnsweredCorrectly
+                        ? _onNextQuestionButtonClicked
+                        : null,
+                    icon: const Icon(Icons.arrow_forward, color: Colors.white),
+                    label: Text(
+                      isSpanish
+                          ? translations['es']!['next_question']!
+                          : translations['en']!['next_question']!,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ScoreDisplay(score: _scoreManager.score),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TotalXpDisplay(totalXp: totalXp),
-          ),
-          Text(
-            'PIN: $userPin',
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-          ),
-          InstructionsWidget(
-              instructions: isSpanish
-                  ? translations['es']!['instructions']!
-                  : translations['en']!['instructions']!),
-        ],
-      ),
-      body: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/Mathequations/Background.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Text(equation,
-                      style: const TextStyle(
-                          fontSize: 24, fontWeight: FontWeight.bold)),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(userAnswer.length, (index) {
-                    return DropTarget(
-                      index: index,
-                      label: isSpanish
-                          ? (userAnswer[index]['spanish']?.isNotEmpty ?? false)
-                              ? userAnswer[index]['spanish']!
-                              : translations['es']!['drop_items']!
-                          : (userAnswer[index]['english']?.isNotEmpty ?? false)
-                              ? userAnswer[index]['english']!
-                              : translations['en']!['drop_items']!,
-                      onAccept: (receivedItem) {
-                        setState(() {
-                          int wordIndex = words.indexOf(receivedItem);
-                          userAnswer[index] = {
-                            'english': currentQuestion['words'][wordIndex],
-                            'spanish': currentQuestion['translated'][wordIndex],
-                          };
-                        });
-                      },
-                    );
-                  }),
-                ),
-                const SizedBox(height: 40),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: words.map<Widget>((word) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10), // Adjust spacing here
-                        child: DraggableItem(
-                          label: word,
-                          data: word,
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-                const SizedBox(height: 40),
-                ElevatedButton(
-                  onPressed: _checkAnswer,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        Colors.green, // Set the background color to green
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.check,
-                          color: Colors
-                              .white), // Add the check icon with white color
-                      SizedBox(
-                          width:
-                              8), // Add some space between the icon and the text
-                      Text(
-                        isSpanish
-                            ? translations['es']!['check_answers']!
-                            : translations['en']!['check_answers']!,
-                        style: TextStyle(
-                            color: Colors.white), // Set the text color to white
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _isQuestionAnsweredCorrectly
-                      ? _onNextQuestionButtonClicked
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        Colors.orange, // Set the background color to orange
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.arrow_forward,
-                          color: Colors
-                              .white), // Add the arrow forward icon with white color
-                      SizedBox(
-                          width:
-                              8), // Add some space between the icon and the text
-                      Text(
-                        isSpanish
-                            ? translations['es']!['next_question']!
-                            : translations['en']!['next_question']!,
-                        style: TextStyle(
-                            color: Colors.white), // Set the text color to white
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 20),
-              ],
-            ),
-          ),
-          // Confetti widget to celebrate correct answers
-          Align(
-            alignment: Alignment.center,
-            child: ConfettiWidget(
-              confettiController: _confettiController,
-              blastDirectionality: BlastDirectionality.explosive,
-              shouldLoop: false,
-              colors: const [
-                Colors.green,
-                Colors.blue,
-                Colors.pink,
-                Colors.yellow
-              ],
-              numberOfParticles: 10,
-              emissionFrequency: 0.1,
-              gravity: 0.1,
-            ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => logout(context),
-        backgroundColor: Colors.white,
-        child: const Icon(
-          Icons.logout_rounded,
-          color: Colors.black,
-          size: 26,
+        ),
+      )
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-    );
+      Positioned(
+        top: kToolbarHeight + 2, // Position below the app bar
+        right: 4, // Align to the right
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ScoreDisplay(score: _scoreManager.score),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TotalXpDisplay(totalXp: totalXp),
+            ),
+          ],
+        ),
+      ),
+
+
+      // Confetti Effect
+      Align(
+        alignment: Alignment.center,
+        child: ConfettiWidget(
+          confettiController: _confettiController,
+          blastDirectionality: BlastDirectionality.explosive,
+          shouldLoop: false,
+          colors: const [Colors.green, Colors.blue, Colors.pink, Colors.yellow],
+          numberOfParticles: 10,
+          emissionFrequency: 0.1,
+          gravity: 0.1,
+        ),
+      ),
+    ],
+  ),
+  floatingActionButton: FloatingActionButton(
+    onPressed: () => logout(context),
+    backgroundColor: Colors.white,
+    child: const Icon(
+      Icons.logout_rounded,
+      color: Colors.black,
+      size: 26,
+    ),
+  ),
+  floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+);
+
   }
 }
 
