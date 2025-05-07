@@ -34,6 +34,9 @@ class AnswerCard extends StatelessWidget {
     bool isCorrectAnswer = currentIndex == correctAnswerIndex;
     bool isWrongAnswer = !isCorrectAnswer && isSelected;
     double screenWidth = MediaQuery.of(context).size.width;
+double screenHeight = MediaQuery.of(context).size.height;
+double baseScale = (screenWidth < screenHeight ? screenWidth : screenHeight) / 100;
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 10.0,
@@ -61,8 +64,8 @@ class AnswerCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       question,
-                      style: const TextStyle(
-                        fontSize: 30,
+                      style:  TextStyle(
+                        fontSize: (baseScale * 2.0).clamp(16.0, 32.0),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -95,8 +98,8 @@ class AnswerCard extends StatelessWidget {
                       Text(
                       question,
                       // textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 30,
+                      style:  TextStyle(
+                        fontSize: (baseScale * 2.0).clamp(16.0, 32.0),
 
                         fontWeight: FontWeight.bold,
                       ),

@@ -16,8 +16,11 @@ class OperatorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    double baseScale = (screenWidth + screenHeight) / 2;
+
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      //extendBodyBehindAppBar: true,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60), // Adjust AppBar height
         child: Stack(
@@ -50,16 +53,12 @@ class OperatorPage extends StatelessWidget {
             Positioned(
               top: 12,
               child: Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 12, vertical: 6), // Reduced padding
-                constraints: const BoxConstraints(
-                  maxWidth:
-                      120, // Limits the width to prevent it from being too wide
+                padding: const EdgeInsets.symmetric( horizontal: 12, vertical: 6), // Reduced padding
+                constraints: const BoxConstraints(maxWidth:120, // Limits the width to prevent it from being too wide
                 ),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius:
-                      BorderRadius.circular(12), // Slightly rounded corners
+                  borderRadius: BorderRadius.circular(12), // Slightly rounded corners
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.1),
@@ -71,8 +70,8 @@ class OperatorPage extends StatelessWidget {
                 child: Center(
                   child: Text(
                     'PIN: $userPin',
-                    style: const TextStyle(
-                      fontSize: 14, // Slightly smaller font for better fit
+                    style:  TextStyle(
+                      fontSize: (baseScale * 0.014).clamp(10.0, 20.0), // Slightly smaller font for better fit
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
                     ),
@@ -97,37 +96,13 @@ class OperatorPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Spacer(flex: 2),
-                      Container(
-                        margin: EdgeInsets.only(top: 80),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.9),
-                          borderRadius: BorderRadius.circular(15),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 4,
-                              offset: Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: Text(
-                          'PIN: ${userPin}',
-                          style: TextStyle(
-                            fontSize: screenWidth / 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
-                          ),
-                        ),
-                      ),
                       // ImageBanner('assets/Mathoperations/plus.png', 300, 250),
                       Text(
                         operatorData['op_sign'],
                         style: TextStyle(
                           color: Colors.green,
                           fontWeight: FontWeight.bold,
-                          fontSize: screenWidth / 10,
+                          fontSize: (baseScale * 0.1).clamp(24.0, 80.0),
                           height: 0.8,
                         ),
                       ),
@@ -136,10 +111,10 @@ class OperatorPage extends StatelessWidget {
                         style: TextStyle(
                           color: Colors.black87,
                           fontWeight: FontWeight.w900,
-                          fontSize: screenWidth / 15,
+                          fontSize: (baseScale * 0.06).clamp(20.0, 80.0),
                         ),
                       ),
-                      Spacer(flex: 1),
+                      //Spacer(flex: 1),
                       // Row(
                       //   children: [
                       //     SizedBox(width: 35),
@@ -165,7 +140,7 @@ class OperatorPage extends StatelessWidget {
                               },
                               borderRadius: BorderRadius.circular(30),
                               child: Container(
-                                width: screenWidth / 5,
+                                width: (baseScale * 0.12).clamp(100.0, 160.0),
                                 // height: screenWidth/15,
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
@@ -180,7 +155,7 @@ class OperatorPage extends StatelessWidget {
                                       style: TextStyle(
                                           color: Colors.black87,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: screenWidth / 30),
+                                          fontSize: (baseScale * 0.025).clamp(14.0, 22.0)),
                                     ),
                                   ],
                                 ),
@@ -198,7 +173,7 @@ class OperatorPage extends StatelessWidget {
                               },
                               borderRadius: BorderRadius.circular(30),
                               child: Container(
-                                width: screenWidth / 5,
+                                width:(baseScale * 0.12).clamp(100.0, 160.0),
                                 // height: screenWidth/15,
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
@@ -213,7 +188,7 @@ class OperatorPage extends StatelessWidget {
                                       style: TextStyle(
                                           color: Colors.black87,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: screenWidth / 30),
+                                          fontSize: (baseScale * 0.025).clamp(14.0, 22.0)),
                                     ),
                                   ],
                                 ),

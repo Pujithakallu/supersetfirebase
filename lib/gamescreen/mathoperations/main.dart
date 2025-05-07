@@ -53,6 +53,8 @@ class _HomePageState extends State<HomePage> {
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     GlobalVariables.setLevelData();
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    double baseScale = (screenWidth + screenHeight) / 2;
     return Scaffold(
       floatingActionButton: Stack(
         children: [
@@ -114,7 +116,7 @@ class _HomePageState extends State<HomePage> {
                     'Score: $score',
                     style: TextStyle(
                       fontSize:
-                          screenWidth / 50, // Adjusted font size for visibility
+                          baseScale * 0.02, // Adjusted font size for visibility
                       fontWeight: FontWeight.bold,
                       color: const Color.fromARGB(255, 33, 140, 101),
                     ),
@@ -155,16 +157,18 @@ class _HomePageState extends State<HomePage> {
               child: Text(
                 'PIN: ${widget.pin}',
                 style: TextStyle(
-                  fontSize: screenWidth / 50,
+                  fontSize:  baseScale * 0.02,
                   fontWeight: FontWeight.bold,
                   color: const Color.fromARGB(255, 33, 140, 101),
                 ),
               ),
             ),
-            SizedBox(height: 120),
+            SizedBox(height: (screenHeight * 0.07).clamp(20.0, 80.0)),
             // OPERATORS text inside a styled box
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              // width: MediaQuery.of(context).size.width * 0.8,
+              padding: EdgeInsets.symmetric( horizontal: (baseScale * 0.04).clamp(12.0, 24.0),
+    vertical: (baseScale * 0.015).clamp(6.0, 16.0),),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(15),
@@ -180,7 +184,7 @@ class _HomePageState extends State<HomePage> {
               child: Text(
                 "OPERATORS",
                 style: TextStyle(
-                  fontSize: screenWidth / 15,
+                  fontSize:(baseScale * 0.066).clamp(22.0, 34.0),
                   fontWeight: FontWeight.bold,
                   color: const Color.fromARGB(
                       255, 33, 140, 101), // Text color inside the white box
@@ -246,7 +250,7 @@ class _HomePageState extends State<HomePage> {
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: screenWidth / 40),
+                                      fontSize:  baseScale * 0.025),
                                 ),
                               ],
                             ),
@@ -289,7 +293,7 @@ class _HomePageState extends State<HomePage> {
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: screenWidth / 40),
+                                      fontSize: baseScale * 0.025),
                                 ),
                               ],
                             ),
@@ -309,3 +313,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+

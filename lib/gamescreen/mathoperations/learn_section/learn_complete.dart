@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
@@ -8,111 +7,123 @@ class LearnComplete extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
-    double screenWidth = MediaQuery.of(context).size.width;
-    double cardWidth = screenWidth * 0.75; // 75% of screen width
-    double cardHeight =
-        MediaQuery.of(context).size.height * 0.6; // 60% of screen height
-    double padding = screenWidth * 0.01; // 1% of screen width for padding
-    double buttonWidth = screenWidth * 0.20; // 15% of screen width for buttons
-    double screenHeight = MediaQuery.of(context).size.height;
+    final userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    // Dynamic sizing
+    final pinFontSize = screenWidth * 0.04;
+    final messageFontSize = screenWidth * 0.045;
+    final buttonFontSize = screenWidth * 0.04;
+    final buttonWidth = screenWidth * 0.25;
+    final iconSize = screenHeight * 0.08;
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
+        onPressed: () => Navigator.pop(context),
         foregroundColor: Colors.black,
         backgroundColor: Colors.white,
-        shape: CircleBorder(),
+        shape: const CircleBorder(),
         child: const Icon(Icons.arrow_back_rounded, color: Colors.black),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/Mathoperations/background.png'),
-              fit: BoxFit.cover,
-            ),
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/Mathoperations/background.png'),
+            fit: BoxFit.cover,
           ),
-          child: Container(
-            margin: EdgeInsets.all(120),
-            padding: EdgeInsets.all(30),
-            height: 700,
-            width: 1800,
-            decoration: BoxDecoration(
-              color: Colors.white70,
-              borderRadius: BorderRadius.all(Radius.circular(8.0)),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(
-                  Icons.emoji_events,
-                  size: screenHeight * 0.1,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 80),
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 4,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Text(
-                    'PIN: ${userPin}',
-                    style: TextStyle(
-                      fontSize: screenWidth / 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: screenHeight * 0.15),
+
+              // PIN display outside the card
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
                     ),
-                  ),
+                  ],
                 ),
-                SizedBox(height: 20),
-                Text(
-                  'Congratulations !!! You have completed this lesson.',
+                child: Text(
+                  'PIN: $userPin',
                   style: TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.bold,
-                      fontSize: (screenWidth * 0.025).clamp(25.0, 40.0)),
-                ),
-                SizedBox(height: 50),
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                  },
-                  borderRadius: BorderRadius.circular(30),
-                  child: Container(
-                    width: buttonWidth,
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Colors.lightBlue,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Text(
-                          'Done',
-                          style: TextStyle(
-                              color: Colors.black87,
-                              fontWeight: FontWeight.bold,
-                              fontSize:
-                                  (screenWidth * 0.025).clamp(25.0, 40.0)),
-                        ),
-                      ],
-                    ),
+                    fontSize: pinFontSize.clamp(20.0, 32.0),
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
                   ),
                 ),
-              ],
-            ),
-          )),
+              ),
+
+              const SizedBox(height: 30),
+
+              // Main white card
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
+                padding: EdgeInsets.all(screenWidth * 0.05),
+                decoration: BoxDecoration(
+                  color: Colors.white70,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.emoji_events, size: iconSize, color: Colors.black),
+                    const SizedBox(height: 20),
+                    Text(
+                      'Congratulations !!! You have completed this lesson.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: messageFontSize.clamp(24.0, 36.0),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
+                      borderRadius: BorderRadius.circular(30),
+                      child: Container(
+                        width: buttonWidth.clamp(150.0, 250.0),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Colors.lightBlue,
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Done',
+                            style: TextStyle(
+                              fontSize: buttonFontSize.clamp(20.0, 32.0),
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(height: screenHeight * 0.1),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
