@@ -197,7 +197,7 @@ class _MatchGameState extends State<MatchGame> {
                 Text.rich(
                   TextSpan(children: [
                     const TextSpan(
-                      text: "S C O R E : ",
+                      text: "G A M E    S C O R E : ",
                       style: TextStyle(
                           color: Colors.yellowAccent,
                           fontWeight: FontWeight.bold,
