@@ -5,6 +5,8 @@ import 'real_world_applications.dart';
 import 'package:supersetfirebase/utils/logout_util.dart';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
+import 'total_xp_display.dart';
+import 'total_xp_provider.dart';
 
 class WhatAreEquations extends StatelessWidget {
   const WhatAreEquations({Key? key}) : super(key: key);
@@ -12,8 +14,31 @@ class WhatAreEquations extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
+    final totalXp = Provider.of<TotalXpProvider>(context).score;
     return Scaffold(
       extendBodyBehindAppBar: true,
+      appBar: AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: FloatingActionButton(
+            onPressed: () => Navigator.pop(context),
+            backgroundColor: Colors.white,
+            child: const Icon(
+              Icons.arrow_back_rounded,
+              color: Color(0xFF4A4A4A),
+              size: 26,
+            ),
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TotalXpDisplay(totalXp: totalXp),
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           // Background image
@@ -78,20 +103,6 @@ class WhatAreEquations extends StatelessWidget {
       ),
       floatingActionButton: Stack(
         children: [
-          // Back Button (Left)
-          Positioned(
-            left: 24,
-            top: 16,
-            child: FloatingActionButton(
-              onPressed: () => Navigator.pop(context),
-              backgroundColor: Colors.white,
-              child: const Icon(
-                Icons.arrow_back_rounded,
-                color: Color(0xFF4A4A4A),
-                size: 26,
-              ),
-            ),
-          ),
           // PIN Display (Center)
           Positioned(
             top: 16,
@@ -125,14 +136,14 @@ class WhatAreEquations extends StatelessWidget {
           ),
           // Logout Button (Right)
           Positioned(
+            bottom: 16,
             right: 16,
-            top: 16,
             child: FloatingActionButton(
               onPressed: () => logout(context),
               backgroundColor: Colors.white,
               child: const Icon(
                 Icons.logout_rounded,
-                color: Color(0xFF6C63FF),
+                color: Colors.black,
                 size: 26,
               ),
             ),

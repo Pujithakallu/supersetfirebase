@@ -189,10 +189,11 @@ class _QuizPageState extends State<QuizPage> {
                 heroTag: "backButton",
                 onPressed: () => Navigator.pop(context),
                 foregroundColor: Colors.black,
-                backgroundColor: Colors.lightBlue,
+                backgroundColor: Colors.white,
                 shape: const CircleBorder(),
                 mini: true, // Smaller button
-                child: const Icon(Icons.arrow_back_rounded, size: 32),
+                child: const Icon(Icons.arrow_back_rounded,
+                    size: 32, color: Colors.black),
               ),
             ),
 
@@ -230,138 +231,145 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
             ),
-
-            // Logout Button (Styled as FloatingActionButton)
-            Positioned(
-              right: 16,
-              top: 12,
-              child: FloatingActionButton(
-                heroTag: "logoutButton",
-                onPressed: () => logout(context),
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.blue,
-                shape: const CircleBorder(),
-                mini: true, // Smaller button
-                child: const Icon(Icons.logout_rounded, size: 32),
-              ),
-            ),
           ],
         ),
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            // colors: [Color(0xffee9ca7), Color(0xffffdde1)],
-            colors: [Colors.white54, Colors.black54],
-          ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              OrangesDisplay(
-                firstSetOfOranges: currentQuestion.orangeSets[0],
-                secondSetOfOranges: currentQuestion.orangeSets[1],
-                operation: currentQuestion.operation,
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                // colors: [Color(0xffee9ca7), Color(0xffffdde1)],
+                colors: [Colors.white54, Colors.black54],
               ),
-              SizedBox(height: 20),
-              Text(
-                getQuestionText(),
-                style: TextStyle(
-                    color: Colors.black87,
-                    fontSize: 36,
-                    fontWeight: FontWeight.w900),
-              ),
-              SizedBox(height: 20),
-              Column(
-                children: questions[currentQuestionIndex].options.map((option) {
-                  return Container(
-                    width:
-                        buttonWidth, // Consider using MediaQuery to adjust for screen width.
-                    margin: EdgeInsets.only(
-                        bottom: 8), // Add some spacing between buttons
-                    child: ElevatedButton(
-                      onPressed:
-                          !questionAnswered ? () => checkAnswer(option) : null,
-                      child: Text(
-                        getOptionText(
-                            option), // This method should handle the conversion or fetching of the option text.
-                        style: TextStyle(
-                          color: Colors.black87,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color>(
-                          (states) {
-                            // Change the color based on the answer status
-                            if (!questionAnswered)
-                              return Colors
-                                  .white54; // Default color before selection
-                            if (option == selectedOption &&
-                                option !=
-                                    questions[currentQuestionIndex]
-                                        .correctAnswer)
-                              return Colors.redAccent; // Wrong answer
-                            if (option ==
-                                questions[currentQuestionIndex].correctAnswer)
-                              return Colors.greenAccent; // Correct answer
-                            return Colors
-                                .white54; // Default color for unselected options
-                          },
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-              if (isLastQuestion && questionAnswered)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  PlayPage())); // Use pushReplacement to prevent going back to the quiz
-                    },
-                    child:
-                        Text('Back to Levels', style: TextStyle(fontSize: 20)),
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        foregroundColor: Colors.white),
-                  ),
-                ),
-              SizedBox(height: 30),
-              Text('Score: $score',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold)),
-              Row(
+            ),
+            child: Center(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  FloatingActionButton(
-                    onPressed: () => speakQuestion(getQuestionText()),
-                    child: Icon(Icons.volume_up, size: 40),
-                    backgroundColor: Colors.white38,
+                  OrangesDisplay(
+                    firstSetOfOranges: currentQuestion.orangeSets[0],
+                    secondSetOfOranges: currentQuestion.orangeSets[1],
+                    operation: currentQuestion.operation,
                   ),
-                  SizedBox(width: 20),
-                  FloatingActionButton(
-                    onPressed: toggleLanguage,
-                    child: Icon(Icons.g_translate, size: 40),
-                    backgroundColor: Colors.white38,
+                  SizedBox(height: 20),
+                  Text(
+                    getQuestionText(),
+                    style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 36,
+                        fontWeight: FontWeight.w900),
+                  ),
+                  SizedBox(height: 20),
+                  Column(
+                    children:
+                        questions[currentQuestionIndex].options.map((option) {
+                      return Container(
+                        width:
+                            buttonWidth, // Consider using MediaQuery to adjust for screen width.
+                        margin: EdgeInsets.only(
+                            bottom: 8), // Add some spacing between buttons
+                        child: ElevatedButton(
+                          onPressed: !questionAnswered
+                              ? () => checkAnswer(option)
+                              : null,
+                          child: Text(
+                            getOptionText(
+                                option), // This method should handle the conversion or fetching of the option text.
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.resolveWith<Color>(
+                              (states) {
+                                // Change the color based on the answer status
+                                if (!questionAnswered)
+                                  return Colors
+                                      .white54; // Default color before selection
+                                if (option == selectedOption &&
+                                    option !=
+                                        questions[currentQuestionIndex]
+                                            .correctAnswer)
+                                  return Colors.redAccent; // Wrong answer
+                                if (option ==
+                                    questions[currentQuestionIndex]
+                                        .correctAnswer)
+                                  return Colors.greenAccent; // Correct answer
+                                return Colors
+                                    .white54; // Default color for unselected options
+                              },
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  if (isLastQuestion && questionAnswered)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      PlayPage())); // Use pushReplacement to prevent going back to the quiz
+                        },
+                        child: Text('Back to Levels',
+                            style: TextStyle(fontSize: 20)),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            foregroundColor: Colors.white),
+                      ),
+                    ),
+                  SizedBox(height: 30),
+                  Text('Score: $score',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FloatingActionButton(
+                        onPressed: () => speakQuestion(getQuestionText()),
+                        child: Icon(Icons.volume_up, size: 40),
+                        backgroundColor: Colors.white38,
+                      ),
+                      SizedBox(width: 20),
+                      FloatingActionButton(
+                        onPressed: toggleLanguage,
+                        child: Icon(Icons.g_translate, size: 40),
+                        backgroundColor: Colors.white38,
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
+          // Logout Button (Styled as FloatingActionButton)
+          Positioned(
+            bottom: 16,
+            right: 12,
+            child: FloatingActionButton(
+              heroTag: "logoutButton",
+              onPressed: () => logout(context),
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.white,
+              shape: const CircleBorder(),
+              mini: true, // Smaller button
+              child: const Icon(Icons.logout_rounded,
+                  size: 32, color: Colors.black),
+            ),
+          ),
+        ],
       ),
     );
   }

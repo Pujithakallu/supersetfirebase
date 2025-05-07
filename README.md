@@ -42,7 +42,7 @@ To work with this project, ensure you have the following:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/smadduri9/supersetfirebase.git
+git clone https://github.com/Pujithakallu/supersetfirebase.git
 cd supersetfirebase
 ```
 
@@ -199,10 +199,10 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ## Contact
 
-For any inquiries or contributions, reach out to maddurisriram09@gmail.com.
+For any inquiries or contributions, reach out to pujithakallu.21@gmial.com maddurisriram09@gmail.com.
 
 ---
 
 ## Author
+Pujitha Kallu, Sriram Madduri
 
-**Sriram Madduri**

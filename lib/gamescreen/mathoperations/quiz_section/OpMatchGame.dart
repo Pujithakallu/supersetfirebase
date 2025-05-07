@@ -207,10 +207,11 @@ class _OperatorsMatchingGamePageState extends State<OperatorsMatchingGamePage> {
                 heroTag: "backButton",
                 onPressed: () => Navigator.pop(context),
                 foregroundColor: Colors.black,
-                backgroundColor: Colors.lightBlue,
+                backgroundColor: Colors.white,
                 shape: const CircleBorder(),
                 mini: true, // Smaller button
-                child: const Icon(Icons.arrow_back_rounded, size: 32),
+                child: const Icon(Icons.arrow_back_rounded,
+                    size: 32, color: Colors.black),
               ),
             ),
 
@@ -248,112 +249,115 @@ class _OperatorsMatchingGamePageState extends State<OperatorsMatchingGamePage> {
                 ),
               ),
             ),
-
-            // Logout Button (Styled as FloatingActionButton)
-            Positioned(
-              right: 16,
-              top: 12,
-              child: FloatingActionButton(
-                heroTag: "logoutButton",
-                onPressed: () => logout(context),
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.blue,
-                shape: const CircleBorder(),
-                mini: true, // Smaller button
-                child: const Icon(Icons.logout_rounded, size: 32),
-              ),
-            ),
           ],
         ),
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/Mathoperations/home_screen.png"),
-            fit: BoxFit.cover,
+      body: Stack(children: [
+        Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/Mathoperations/home_screen.png"),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            // Add padding around the content
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center, // Center vertically
-              children: [
-                SizedBox(height: 20),
-                Text(
-                  'Operator Matching',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 50),
-                ),
-                SizedBox(height: 80),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    // Center horizontally
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: shuffledNames.length,
-                          itemBuilder: (context, index) {
-                            var item = shuffledNames[index];
-                            return Card(
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 30, horizontal: 100),
-                              // Adjust card spacing
-                              color:
-                                  itemColors[item['name']] ?? defaultNameColor,
-                              child: ListTile(
-                                title: Text(
-                                  item['name']!,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 26),
-                                ),
-                                onTap: () => _handleItemTap(
-                                    item['name']!, item['symbol']!, true),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: shuffledSymbols.length,
-                          itemBuilder: (context, index) {
-                            var item = shuffledSymbols[index];
-                            return Card(
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 30, horizontal: 100),
-                              // Adjust card spacing
-                              color: itemColors[item['symbol']] ??
-                                  defaultSymbolColor,
-                              child: ListTile(
-                                title: Text(
-                                  item['symbol']!,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w900,
-                                      fontSize: 26),
-                                ),
-                                onTap: () => _handleItemTap(
-                                    item['name']!, item['symbol']!, false),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              // Add padding around the content
+              child: Column(
+                mainAxisAlignment:
+                    MainAxisAlignment.center, // Center vertically
+                children: [
+                  SizedBox(height: 20),
+                  Text(
+                    'Operator Matching',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 50),
                   ),
-                ),
-              ],
+                  SizedBox(height: 80),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      // Center horizontally
+                      children: [
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: shuffledNames.length,
+                            itemBuilder: (context, index) {
+                              var item = shuffledNames[index];
+                              return Card(
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 30, horizontal: 100),
+                                // Adjust card spacing
+                                color: itemColors[item['name']] ??
+                                    defaultNameColor,
+                                child: ListTile(
+                                  title: Text(
+                                    item['name']!,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 26),
+                                  ),
+                                  onTap: () => _handleItemTap(
+                                      item['name']!, item['symbol']!, true),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: shuffledSymbols.length,
+                            itemBuilder: (context, index) {
+                              var item = shuffledSymbols[index];
+                              return Card(
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 30, horizontal: 100),
+                                // Adjust card spacing
+                                color: itemColors[item['symbol']] ??
+                                    defaultSymbolColor,
+                                child: ListTile(
+                                  title: Text(
+                                    item['symbol']!,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 26),
+                                  ),
+                                  onTap: () => _handleItemTap(
+                                      item['name']!, item['symbol']!, false),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
+        // Logout Button (Styled as FloatingActionButton)
+        Positioned(
+          bottom: 16,
+          right: 12,
+          child: FloatingActionButton(
+            heroTag: "logoutButton",
+            onPressed: () => logout(context),
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.white,
+            shape: const CircleBorder(),
+            mini: true, // Smaller button
+            child:
+                const Icon(Icons.logout_rounded, size: 32, color: Colors.black),
+          ),
+        ),
+      ]),
     );
   }
 }

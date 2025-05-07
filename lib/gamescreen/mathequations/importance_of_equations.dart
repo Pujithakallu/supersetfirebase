@@ -3,6 +3,10 @@ import 'analytics_engine.dart';
 import 'package:supersetfirebase/utils/logout_util.dart';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
+import 'language_switcher.dart';
+import 'language_provider.dart';
+import 'total_xp_display.dart';
+import 'total_xp_provider.dart';
 
 class ImportanceOfEquations extends StatefulWidget {
   const ImportanceOfEquations({Key? key}) : super(key: key);
@@ -12,7 +16,6 @@ class ImportanceOfEquations extends StatefulWidget {
 }
 
 class _ImportanceOfEquationsState extends State<ImportanceOfEquations> {
-  bool isSpanish = false;
 
   final Map<String, String> englishText = {
     'title': 'Importance of Equations',
@@ -52,6 +55,8 @@ class _ImportanceOfEquationsState extends State<ImportanceOfEquations> {
 
   @override
   Widget build(BuildContext context) {
+    final isSpanish = Provider.of<LanguageProvider>(context).isSpanish;
+    final totalXp = Provider.of<TotalXpProvider>(context).score;
     final text = isSpanish ? spanishText : englishText;
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
 
@@ -59,112 +64,96 @@ class _ImportanceOfEquationsState extends State<ImportanceOfEquations> {
       appBar: AppBar(
         title: Text(text['title']!),
         actions: [
-          TextButton.icon(
-            icon: Icon(
-              IconData(0xe67b,
-                  fontFamily: 'MaterialIcons'), // Custom icon for translation
-              color: isSpanish
-                  ? Colors.blue
-                  : Colors.red, // Change icon color based on language
-            ),
-            label: Text(
-              isSpanish ? 'Español' : 'English',
-              style: TextStyle(
-                color: isSpanish ? Colors.blue : Colors.red,
-              ),
-            ),
-            onPressed: () {
-              setState(() {
-                isSpanish = !isSpanish;
-              });
+          LanguageSwitcher(
+            isSpanish: isSpanish,
+            onLanguageChanged: (bool newIsSpanish) {
+              Provider.of<LanguageProvider>(context, listen: false)
+                  .setLanguage(newIsSpanish);
               AnalyticsEngine.logTranslateButtonClickLearn(
-                  isSpanish ? 'Changed to Spanish' : 'Changed to English');
+                  newIsSpanish ? 'Changed to Spanish' : 'Changed to English');
             },
           ),
-          Text(
-            'PIN: $userPin',
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TotalXpDisplay(totalXp: totalXp),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 8.0), // Adjust horizontal padding as needed
-            child: IconButton(
-              icon: Icon(
-                Icons.logout_rounded,
-                color: Color(0xFF6C63FF),
-                size: 26,
-              ),
-              onPressed: () => logout(context),
-            ),
-          ),
-        ],
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Container(
-            width: MediaQuery.of(context).size.width *
-                0.8, // Set the width to 80% of the screen width
-            child: IntrinsicHeight(
-              child: Card(
-                color: Colors.blue[50],
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        text['title']!,
-                        style: const TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        text['foundation']!,
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        text['problemSolving']!,
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        text['realWorld']!,
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        text['logicalThinking']!,
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        text['predictivePower']!,
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        text['higherEducation']!,
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        text['confidence']!,
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                    ],
-                  ),
+            padding: const EdgeInsets.only(right: 16.0),
+            child: Center(
+              child: Text(
+                'PIN: $userPin',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
                 ),
               ),
             ),
           ),
+        ],
+      ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWideScreen = constraints.maxWidth > 600; // Check if the screen is wide
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Container(
+                width: isWideScreen
+                    ? constraints.maxWidth * 0.7 // Use 60% width for wide screens
+                    : constraints.maxWidth * 0.8, // Use 80% width for smaller screens
+                child: SingleChildScrollView( // Added to prevent overflow
+                  child: IntrinsicHeight(
+                    child: Card(
+                      color: Colors.blue[50],
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              text['title']!,
+                              style: const TextStyle(
+                                  fontSize: 24, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 8),
+                            ..._buildTextSections(text),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+
+      // Logout button (bottom right)
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => logout(context),
+        backgroundColor: Colors.white,
+        child: const Icon(
+          Icons.logout_rounded,
+          color: Colors.black,
+          size: 26,
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
+  }
+
+  List<Widget> _buildTextSections(Map<String, String> text) {
+    return text.entries
+        .where((entry) => entry.key != 'title') // Exclude the title
+        .map((entry) => Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Text(
+                entry.value,
+                style: const TextStyle(fontSize: 18),
+              ),
+            ))
+        .toList();
   }
 }

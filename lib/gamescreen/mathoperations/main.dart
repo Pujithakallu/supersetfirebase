@@ -70,57 +70,61 @@ class _HomePageState extends State<HomePage> {
                 );
               },
               foregroundColor: Colors.white,
-              backgroundColor: Colors.lightBlue,            
+              backgroundColor: Colors.white,
               shape: const CircleBorder(),
-              child: const Icon(Icons.arrow_back_rounded, size: 32),
+              child: const Icon(Icons.arrow_back_rounded,
+                  size: 32, color: Colors.black),
             ),
           ),
           // Logout button
           Positioned(
-            right: 0,
-            top: 16,
+            bottom: 16,
+            right: 16,
             child: FloatingActionButton(
               heroTag: "logoutButton",
               onPressed: () => logout(context),
               foregroundColor: Colors.white,
-              backgroundColor: Colors.blue,
+              backgroundColor: Colors.white,
               shape: const CircleBorder(),
-              child: const Icon(Icons.logout_rounded, size: 32),
+              child: const Icon(Icons.logout_rounded,
+                  size: 32, color: Colors.black),
             ),
           ),
           Positioned(
-          right: 0,
-          top: 90,  // Adjust this value as needed to position below the logout button
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black,
-                  blurRadius: 4,
-                  offset: Offset(0, 2),
-                ),
-              ],
-            ),
-            child: ValueListenableBuilder<int>(
-              valueListenable: GlobalVariables.totalScore,
-              builder: (context, int score, child) {
-                return Text(
-                  'Score: $score',
-                  style: TextStyle(
-                    fontSize: screenWidth / 50,  // Adjusted font size for visibility
-                    fontWeight: FontWeight.bold,
-                    color: const Color.fromARGB(255, 33, 140, 101),
+            right: 0,
+            top:
+                90, // Adjust this value as needed to position below the logout button
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black,
+                    blurRadius: 4,
+                    offset: Offset(0, 2),
                   ),
-                );
-              },
+                ],
+              ),
+              child: ValueListenableBuilder<int>(
+                valueListenable: GlobalVariables.totalScore,
+                builder: (context, int score, child) {
+                  return Text(
+                    'Score: $score',
+                    style: TextStyle(
+                      fontSize:
+                          screenWidth / 50, // Adjusted font size for visibility
+                      fontWeight: FontWeight.bold,
+                      color: const Color.fromARGB(255, 33, 140, 101),
+                    ),
+                  );
+                },
+              ),
             ),
           ),
-        ),
-      ],
-    ),
+        ],
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -157,30 +161,32 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-             SizedBox(height: 120),
+            SizedBox(height: 120),
             // OPERATORS text inside a styled box
             Container(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                color: Colors.white, 
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color.fromARGB(255, 0, 0, 0), // Shadow for depth
+                    color:
+                        const Color.fromARGB(255, 0, 0, 0), // Shadow for depth
                     blurRadius: 4,
                     offset: Offset(0, 2),
                   ),
-               ],
-             ),
-             child: Text(
-               "OPERATORS",
+                ],
+              ),
+              child: Text(
+                "OPERATORS",
                 style: TextStyle(
                   fontSize: screenWidth / 15,
                   fontWeight: FontWeight.bold,
-                  color: const Color.fromARGB(255, 33, 140, 101), // Text color inside the white box
+                  color: const Color.fromARGB(
+                      255, 33, 140, 101), // Text color inside the white box
                 ),
-             ),
-           ),
+              ),
+            ),
             Expanded(
               child: Center(
                 child: Column(
@@ -213,19 +219,23 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(15),
                           child: Container(
                             width: screenWidth / 7,
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
                             decoration: BoxDecoration(
                               color: const Color.fromARGB(255, 239, 80, 91),
                               borderRadius: BorderRadius.circular(15),
-                              border: Border.all(color: const Color.fromARGB(255, 239, 80, 91)),
+                              border: Border.all(
+                                  color:
+                                      const Color.fromARGB(255, 239, 80, 91)),
                               boxShadow: [
-                                   BoxShadow(
-                                      color: Colors.black.withAlpha(128),  // Shadow color
-                                      spreadRadius: 1,
-                                      blurRadius: 5,
-                                      offset: Offset(0, 2),  // Shadow position
-                                    ),
-                               ],
+                                BoxShadow(
+                                  color: Colors.black
+                                      .withAlpha(128), // Shadow color
+                                  spreadRadius: 1,
+                                  blurRadius: 5,
+                                  offset: Offset(0, 2), // Shadow position
+                                ),
+                              ],
                               // color: Colors.lightGreen,
                             ),
                             child: Row(
@@ -253,19 +263,23 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(15),
                           child: Container(
                             width: screenWidth / 7,
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
                             decoration: BoxDecoration(
                               color: const Color.fromARGB(255, 237, 214, 111),
                               borderRadius: BorderRadius.circular(15),
-                              border: Border.all(color: const Color.fromARGB(255, 237, 214, 111)),
+                              border: Border.all(
+                                  color:
+                                      const Color.fromARGB(255, 237, 214, 111)),
                               boxShadow: [
-                                   BoxShadow(
-                                      color: Colors.black.withAlpha(128),  // Shadow color
-                                      spreadRadius: 1,
-                                      blurRadius: 5,
-                                      offset: Offset(0, 2),  // Shadow position
-                                    ),
-                               ],
+                                BoxShadow(
+                                  color: Colors.black
+                                      .withAlpha(128), // Shadow color
+                                  spreadRadius: 1,
+                                  blurRadius: 5,
+                                  offset: Offset(0, 2), // Shadow position
+                                ),
+                              ],
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

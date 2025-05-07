@@ -7,6 +7,10 @@ import 'score_manager.dart';
 import 'package:supersetfirebase/utils/logout_util.dart';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
+import 'total_xp_display.dart';
+import 'total_xp_provider.dart';
+import 'language_switcher.dart';
+import 'language_provider.dart';
 
 class EquationToWordsScreen extends StatefulWidget {
   const EquationToWordsScreen({Key? key}) : super(key: key);
@@ -417,7 +421,7 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
     },
   ];
 
-  bool isSpanish = false; // Track the current language
+  bool _isQuestionAnsweredCorrectly = false;
   int currentQuestionIndex = 0;
   List<Map<String, String>> userAnswer = [];
   final ScoreManager _scoreManager = ScoreManager();
@@ -430,6 +434,8 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
   final FlutterTts _flutterTts = FlutterTts();
   Future<void> _speak(String text) async {
     // Initialize TTS
+    final isSpanish =
+        Provider.of<LanguageProvider>(context, listen: false).isSpanish;
     String language = isSpanish ? "es-ES" : "en-US";
     await _flutterTts.setLanguage(language);
     await _flutterTts.setPitch(1.0);
@@ -465,6 +471,8 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
   }
 
   void _checkAnswer() {
+    final isSpanish =
+        Provider.of<LanguageProvider>(context, listen: false).isSpanish;
     final answer = currentLevelQuestions[currentQuestionIndex]
         [isSpanish ? 'translatedAnswer' : 'answer'] as List<String>;
 
@@ -484,13 +492,10 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
     if (result == answer.join(' ')) {
       setState(() {
         _scoreManager.incrementScore(10); // Increment score by 10
+        // final xpProvider = Provider.of<TotalXpProvider>(context, listen: false);
         _confettiController.play(); // Play confetti on correct answer
         totalQuestionsAnswered++;
-        if (totalQuestionsAnswered % currentLevelQuestions.length == 0) {
-          _showLevelCompleteDialog(); // Show level complete dialog
-        } else {
-          _loadRandomQuestion(); // Load next question
-        }
+        _isQuestionAnsweredCorrectly = true;        
       });
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
@@ -512,6 +517,18 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
         ),
       );
     }
+  }
+
+  void _onNextQuestionButtonClicked() {
+    if (totalQuestionsAnswered % currentLevelQuestions.length == 0) {
+      _showLevelCompleteDialog(); // Show level complete dialog
+    } else {
+      _loadRandomQuestion(); // Load the next random question
+    }
+    setState(() {
+      _isQuestionAnsweredCorrectly =
+          false; // Reset the flag for the next question
+    });
   }
 
   void _showLevelCompleteDialog() {
@@ -581,211 +598,200 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
   Widget build(BuildContext context) {
     final currentQuestion = currentLevelQuestions[currentQuestionIndex];
     final equation = currentQuestion['equation'] as String;
+    final isSpanish = Provider.of<LanguageProvider>(context).isSpanish;
+    final totalXp = Provider.of<TotalXpProvider>(context).score;
     final words = isSpanish
         ? currentQuestion['translated']
         : currentQuestion['words'] as List<String>;
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Equations to words - Level $currentLevel'),
-        actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+  appBar: AppBar(
+    title: Text('Equations to Words - Level $currentLevel'),
+    actions: [
+      LanguageSwitcher(
+        isSpanish: isSpanish,
+        onLanguageChanged: (bool newIsSpanish) {
+          Provider.of<LanguageProvider>(context, listen: false)
+              .setLanguage(newIsSpanish);
+          AnalyticsEngine.logTranslateButtonClickETW(
+              newIsSpanish ? 'Changed to Spanish' : 'Changed to English');
+        },
+      ),
+      const SizedBox(width: 16),
+      Text(
+        'PIN: $userPin',
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Colors.black87,
+        ),
+      ),
+      InstructionsWidget(
+        instructions: isSpanish
+            ? translations['es']!['instructions']!
+            : translations['en']!['instructions']!,
+      ),
+    ],
+  ),
+  body: Stack(
+    children: [
+      Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/Mathequations/Background.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+          child: Center(
+          child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              TextButton.icon(
-                icon: Icon(
-                  IconData(0xe67b,
-                      fontFamily:
-                          'MaterialIcons'), // Custom icon for translation
-                  color: isSpanish
-                      ? Colors.blue
-                      : Colors.red, // Change icon color based on language
-                ),
-                label: Text(
-                  isSpanish ? 'Español' : 'English',
-                  style: TextStyle(
-                    color: isSpanish
-                        ? Colors.blue
-                        : Colors.red, // Change text color based on language
-                  ),
-                ),
-                onPressed: () {
-                  setState(() {
-                    isSpanish = !isSpanish; // Toggle language
-                  });
-                  AnalyticsEngine.logTranslateButtonClickETW(
-                      isSpanish ? 'Changed to Spanish' : 'Changed to English');
-                },
-              ),
               Text(
-                'PIN: $userPin',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
+                equation,
+                style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
               ),
-              IconButton(
-                icon: Icon(
-                  Icons.logout_rounded,
-                  color: Color(0xFF6C63FF),
-                  size: 26,
+              const SizedBox(height: 30),
+
+              // Drop Targets
+              Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 10.0,
+                runSpacing: 10.0,
+                children: List.generate(userAnswer.length, (index) {
+                  return DropTarget(
+                    index: index,
+                    label: isSpanish
+                        ? (userAnswer[index]['spanish']?.isNotEmpty ?? false)
+                            ? userAnswer[index]['spanish']!
+                            : translations['es']!['drop_items']!
+                        : (userAnswer[index]['english']?.isNotEmpty ?? false)
+                            ? userAnswer[index]['english']!
+                            : translations['en']!['drop_items']!,
+                    onAccept: (receivedItem) {
+                      setState(() {
+                        int wordIndex = words.indexOf(receivedItem);
+                        userAnswer[index] = {
+                          'english': currentQuestion['words'][wordIndex],
+                          'spanish': currentQuestion['translated'][wordIndex],
+                        };
+                      });
+                    },
+                  );
+                }),
+              ),
+
+              const SizedBox(height: 40),
+
+              // Draggable Items (Styled like POE)
+              Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 10.0,
+                  runSpacing: 10.0,
+                  children: words.map<Widget>((word) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: DraggableItem(
+                        label: word,
+                        data: word,
+                      ),
+                    );
+                  }).toList(),
                 ),
-                onPressed: () => logout(context),
+
+              const SizedBox(height: 40),
+
+              // Buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: _checkAnswer,
+                    icon: const Icon(Icons.check, color: Colors.white),
+                    label: Text(
+                      isSpanish
+                          ? translations['es']!['check_answers']!
+                          : translations['en']!['check_answers']!,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  ElevatedButton.icon(
+                    onPressed: _isQuestionAnsweredCorrectly
+                        ? _onNextQuestionButtonClicked
+                        : null,
+                    icon: const Icon(Icons.arrow_forward, color: Colors.white),
+                    label: Text(
+                      isSpanish
+                          ? translations['es']!['next_question']!
+                          : translations['en']!['next_question']!,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-          InstructionsWidget(
-              instructions: isSpanish
-                  ? translations['es']!['instructions']!
-                  : translations['en']!['instructions']!),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ScoreDisplay(score: _scoreManager.score),
-          ),
-        ],
+        ),
+      )
+        ),
       ),
-      body: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/Mathequations/Background.png"),
-                fit: BoxFit.cover,
-              ),
+      Positioned(
+        top: kToolbarHeight + 2, // Position below the app bar
+        right: 4, // Align to the right
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ScoreDisplay(score: _scoreManager.score),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Text(equation,
-                      style: const TextStyle(
-                          fontSize: 24, fontWeight: FontWeight.bold)),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(userAnswer.length, (index) {
-                    return DropTarget(
-                      index: index,
-                      label: isSpanish
-                          ? (userAnswer[index]['spanish']?.isNotEmpty ?? false)
-                              ? userAnswer[index]['spanish']!
-                              : translations['es']!['drop_items']!
-                          : (userAnswer[index]['english']?.isNotEmpty ?? false)
-                              ? userAnswer[index]['english']!
-                              : translations['en']!['drop_items']!,
-                      onAccept: (receivedItem) {
-                        setState(() {
-                          int wordIndex = words.indexOf(receivedItem);
-                          userAnswer[index] = {
-                            'english': currentQuestion['words'][wordIndex],
-                            'spanish': currentQuestion['translated'][wordIndex],
-                          };
-                        });
-                      },
-                    );
-                  }),
-                ),
-                const SizedBox(height: 40),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: words.map<Widget>((word) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10), // Adjust spacing here
-                        child: DraggableItem(
-                          label: word,
-                          data: word,
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-                const SizedBox(height: 40),
-                ElevatedButton(
-                  onPressed: _checkAnswer,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        Colors.green, // Set the background color to green
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.check,
-                          color: Colors
-                              .white), // Add the check icon with white color
-                      SizedBox(
-                          width:
-                              8), // Add some space between the icon and the text
-                      Text(
-                        isSpanish
-                            ? translations['es']!['check_answers']!
-                            : translations['en']!['check_answers']!,
-                        style: TextStyle(
-                            color: Colors.white), // Set the text color to white
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      _loadRandomQuestion();
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        Colors.orange, // Set the background color to orange
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.arrow_forward,
-                          color: Colors
-                              .white), // Add the arrow forward icon with white color
-                      SizedBox(
-                          width:
-                              8), // Add some space between the icon and the text
-                      Text(
-                        isSpanish
-                            ? translations['es']!['next_question']!
-                            : translations['en']!['next_question']!,
-                        style: TextStyle(
-                            color: Colors.white), // Set the text color to white
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 20),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TotalXpDisplay(totalXp: totalXp),
             ),
-          ),
-          // Confetti widget to celebrate correct answers
-          Align(
-            alignment: Alignment.center,
-            child: ConfettiWidget(
-              confettiController: _confettiController,
-              blastDirectionality: BlastDirectionality.explosive,
-              shouldLoop: false,
-              colors: const [
-                Colors.green,
-                Colors.blue,
-                Colors.pink,
-                Colors.yellow
-              ],
-              numberOfParticles: 10,
-              emissionFrequency: 0.1,
-              gravity: 0.1,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
-    );
+
+
+      // Confetti Effect
+      Align(
+        alignment: Alignment.center,
+        child: ConfettiWidget(
+          confettiController: _confettiController,
+          blastDirectionality: BlastDirectionality.explosive,
+          shouldLoop: false,
+          colors: const [Colors.green, Colors.blue, Colors.pink, Colors.yellow],
+          numberOfParticles: 10,
+          emissionFrequency: 0.1,
+          gravity: 0.1,
+        ),
+      ),
+    ],
+  ),
+  floatingActionButton: FloatingActionButton(
+    onPressed: () => logout(context),
+    backgroundColor: Colors.white,
+    child: const Icon(
+      Icons.logout_rounded,
+      color: Colors.black,
+      size: 26,
+    ),
+  ),
+  floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+);
+
   }
 }
 
@@ -839,7 +845,9 @@ class DraggableItem extends StatelessWidget {
                   .findAncestorStateOfType<_EquationToWordsScreenState>();
               parentState?._speak(label);
               AnalyticsEngine.logAudioButtonClick(
-                  parentState?.isSpanish ?? false, 'Equations To Words');
+                  Provider.of<LanguageProvider>(context, listen: false)
+                      .isSpanish,
+                  'Equations To Words');
             },
             child: Container(
               padding: EdgeInsets.all(4),
@@ -916,7 +924,7 @@ class ScoreDisplay extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.orangeAccent,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -927,13 +935,22 @@ class ScoreDisplay extends StatelessWidget {
           ),
         ],
       ),
-      child: Text(
-        'Score: $score',
-        style: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
+      child: Row(
+        children: [
+          const Icon(
+            Icons.rocket_launch,
+            color: Colors.black,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            'Current Score: $score',
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+        ],
       ),
     );
   }

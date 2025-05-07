@@ -3,6 +3,10 @@ import 'analytics_engine.dart';
 import 'package:supersetfirebase/utils/logout_util.dart';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
+import 'language_switcher.dart';
+import 'language_provider.dart';
+import 'total_xp_display.dart';
+import 'total_xp_provider.dart';
 
 class RealWorldApplications extends StatefulWidget {
   const RealWorldApplications({Key? key}) : super(key: key);
@@ -12,7 +16,6 @@ class RealWorldApplications extends StatefulWidget {
 }
 
 class _RealWorldApplicationsState extends State<RealWorldApplications> {
-  bool isSpanish = false;
 
   final Map<String, String> englishText = {
     'title': 'Real-world Applications of Equations',
@@ -57,33 +60,26 @@ class _RealWorldApplicationsState extends State<RealWorldApplications> {
 
   @override
   Widget build(BuildContext context) {
+    final isSpanish = Provider.of<LanguageProvider>(context).isSpanish;
     final text = isSpanish ? spanishText : englishText;
+    final totalXp = Provider.of<TotalXpProvider>(context).score;
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     return Scaffold(
       appBar: AppBar(
         title: Text(text['title']!),
         actions: [
-          TextButton.icon(
-            icon: Icon(
-              IconData(0xe67b,
-                  fontFamily: 'MaterialIcons'), // Custom icon for translation
-              color: isSpanish
-                  ? Colors.blue
-                  : Colors.red, // Change icon color based on language
-            ),
-            label: Text(
-              isSpanish ? 'Español' : 'English',
-              style: TextStyle(
-                color: isSpanish ? Colors.blue : Colors.red,
-              ),
-            ),
-            onPressed: () {
-              setState(() {
-                isSpanish = !isSpanish;
-              });
+          LanguageSwitcher(
+            isSpanish: isSpanish,
+            onLanguageChanged: (bool newIsSpanish) {
+              Provider.of<LanguageProvider>(context, listen: false)
+                  .setLanguage(newIsSpanish);
               AnalyticsEngine.logTranslateButtonClickLearn(
-                  isSpanish ? 'Changed to Spanish' : 'Changed to English');
+                  newIsSpanish ? 'Changed to Spanish' : 'Changed to English');
             },
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TotalXpDisplay(totalXp: totalXp),
           ),
           Text(
             'PIN: $userPin',
@@ -93,22 +89,14 @@ class _RealWorldApplicationsState extends State<RealWorldApplications> {
               color: Colors.black87,
             ),
           ),
-          IconButton(
-            icon: Icon(
-              Icons.logout_rounded,
-              color: Color(0xFF6C63FF),
-              size: 26,
-            ),
-            onPressed: () => logout(context),
-          ),
         ],
       ),
-      extendBodyBehindAppBar: true,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: IntrinsicWidth(
-            child: IntrinsicHeight(
+      // extendBodyBehindAppBar: true,
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: IntrinsicWidth(
               child: Card(
                 elevation: 8,
                 color: const Color(0xFFFFEFD2),
@@ -173,6 +161,16 @@ class _RealWorldApplicationsState extends State<RealWorldApplications> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => logout(context),
+        backgroundColor: Colors.white,
+        child: const Icon(
+          Icons.logout_rounded,
+          color: Colors.black,
+          size: 26,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

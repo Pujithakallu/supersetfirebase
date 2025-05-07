@@ -41,10 +41,11 @@ class DetailsPage extends StatelessWidget {
                 heroTag: "backButton",
                 onPressed: () => Navigator.pop(context),
                 foregroundColor: Colors.black,
-                backgroundColor: Colors.lightBlue,
+                backgroundColor: Colors.white,
                 shape: const CircleBorder(),
                 mini: true, // Smaller button
-                child: const Icon(Icons.arrow_back_rounded, size: 32),
+                child: const Icon(Icons.arrow_back_rounded,
+                    size: 32, color: Colors.black),
               ),
             ),
 
@@ -82,109 +83,115 @@ class DetailsPage extends StatelessWidget {
                 ),
               ),
             ),
-
-            // Logout Button (Styled as FloatingActionButton)
-            Positioned(
-              right: 16,
-              top: 12,
-              child: FloatingActionButton(
-                heroTag: "logoutButton",
-                onPressed: () => logout(context),
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.blue,
-                shape: const CircleBorder(),
-                mini: true, // Smaller button
-                child: const Icon(Icons.logout_rounded, size: 32),
-              ),
-            ),
           ],
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.fromLTRB(
-            screenWidth * 0.05, screenWidth * 0.05, screenWidth * 0.05, 0),
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/Mathoperations/background.png'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Center(
-          // padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 160.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: screenHeight * 0.05),
-              Text(
-                'Details',
-                style: TextStyle(
-                    fontSize: (screenWidth / 20).clamp(16.0, 40.0),
-                    fontWeight: FontWeight.bold),
+      body: Stack(
+        children: [
+          Container(
+            padding: EdgeInsets.fromLTRB(
+                screenWidth * 0.05, screenWidth * 0.05, screenWidth * 0.05, 0),
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/Mathoperations/background.png'),
+                fit: BoxFit.cover,
               ),
-              SizedBox(height: screenHeight * 0.03),
-              Expanded(
-                // Makes the ListView take all the space minus AppBar and padding
-                child: ListView.builder(
-                  itemCount: questionResults.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    Map<String, dynamic> question = questionResults[index];
-                    return Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: screenHeight * 0.02),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext dialogContext) {
-                              return Dialog(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        40.0)), // Rounded corners
-                                child: Container(
-                                  constraints: BoxConstraints(
-                                      maxHeight: screenHeight *
-                                          0.8), // Ensures the dialog doesn't take full height
-                                  child: SingleQuestionPage(
-                                    questionData: question,
-                                    questionType: questionType,
-                                  ),
-                                ),
+            ),
+            child: Center(
+              // padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 160.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: screenHeight * 0.05),
+                  Text(
+                    'Details',
+                    style: TextStyle(
+                        fontSize: (screenWidth / 20).clamp(16.0, 40.0),
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: screenHeight * 0.03),
+                  Expanded(
+                    // Makes the ListView take all the space minus AppBar and padding
+                    child: ListView.builder(
+                      itemCount: questionResults.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        Map<String, dynamic> question = questionResults[index];
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: screenHeight * 0.02),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext dialogContext) {
+                                  return Dialog(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            40.0)), // Rounded corners
+                                    child: Container(
+                                      constraints: BoxConstraints(
+                                          maxHeight: screenHeight *
+                                              0.8), // Ensures the dialog doesn't take full height
+                                      child: SingleQuestionPage(
+                                        questionData: question,
+                                        questionType: questionType,
+                                      ),
+                                    ),
+                                  );
+                                },
                               );
                             },
-                          );
-                        },
-                        //onPressed: () {
-                        // Navigator.of(context).push(MaterialPageRoute(
-                        // builder: (context) => SingleQuestionPage(questionData: question),
-                        //  ));
-                        //},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              question['is_right'] ? Colors.green : Colors.red,
-                          minimumSize: Size(
-                              double.infinity,
-                              (screenHeight * 0.08).clamp(16.0,
-                                  50.0)), // Ensures the button stretches to fill the width
-                          padding: EdgeInsets.symmetric(
-                              vertical: (screenHeight *
-                                  0.02)), // Increases button height
-                        ),
-                        child: Text(
-                          'Question ${index + 1}',
-                          style: TextStyle(
-                              fontSize: (screenWidth / 20).clamp(16.0, 40.0),
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                            //onPressed: () {
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            // builder: (context) => SingleQuestionPage(questionData: question),
+                            //  ));
+                            //},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: question['is_right']
+                                  ? Colors.green
+                                  : Colors.red,
+                              minimumSize: Size(
+                                  double.infinity,
+                                  (screenHeight * 0.08).clamp(16.0,
+                                      50.0)), // Ensures the button stretches to fill the width
+                              padding: EdgeInsets.symmetric(
+                                  vertical: (screenHeight *
+                                      0.02)), // Increases button height
+                            ),
+                            child: Text(
+                              'Question ${index + 1}',
+                              style: TextStyle(
+                                  fontSize:
+                                      (screenWidth / 20).clamp(16.0, 40.0),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+          // Logout Button (Styled as FloatingActionButton)
+          Positioned(
+            bottom: 16,
+            right: 12,
+            child: FloatingActionButton(
+              heroTag: "logoutButton",
+              onPressed: () => logout(context),
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.white,
+              shape: const CircleBorder(),
+              mini: true, // Smaller button
+              child: const Icon(Icons.logout_rounded,
+                  size: 32, color: Colors.black),
+            ),
+          ),
+        ],
       ),
     );
   }

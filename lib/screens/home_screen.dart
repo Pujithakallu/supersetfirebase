@@ -1,10 +1,13 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/scheduler.dart';
 import 'login_screen.dart';
+
 import '../gamescreen/mathmingle/main.dart';
 import '../gamescreen/mathequations/main.dart';
 import '../gamescreen/mathoperations/main.dart';
-
+import 'package:supersetfirebase/services/firestore_score.dart';
+// import 'package:supersetfirebase/services/test_score.dart';
 class HomeScreen extends StatefulWidget {
   final String pin;
 
@@ -15,16 +18,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
-  late String pin;
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
 
   int totalScore = 0;
+  final FirestoreService _scoreService = FirestoreService();
+  Timer? scoreUpdateTimer;
 
   @override
   void initState() {
     super.initState();
-    pin = widget.pin;
 
     _animationController = AnimationController(
       vsync: this,
@@ -35,31 +38,34 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
 
-    // Fetch total score when app loads
-    getTotalBestScore(pin).then((score) {
-      setState(() {
-        totalScore = score;
-      });
+    refreshTotalScore();
+
+    // Automatically update score every minute
+    scoreUpdateTimer = Timer.periodic(const Duration(minutes: 1), (timer) {
+      refreshTotalScore();
     });
   }
 
-  Future<int> getTotalBestScore(String userPin) async {
-    final docRef = FirebaseFirestore.instance.collection('users').doc(userPin);
-    final docSnapshot = await docRef.get();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      refreshTotalScore();
+    });
+  }
 
-    if (docSnapshot.exists) {
-      final mathMingleScore = docSnapshot['MathMingle'] ?? 0;
-      final mathEquationsScore = docSnapshot['MathEquations'] ?? 0;
-      final mathOperatorsScore = docSnapshot['MathOperators'] ?? 0;
+  @override
+  void dispose() {
+    _animationController.dispose();
+    scoreUpdateTimer?.cancel();
+    super.dispose();
+  }
 
-      final totalBestScore = mathMingleScore + mathEquationsScore + mathOperatorsScore;
-
-      //  Store total score in Firestore
-      await docRef.update({'TotalBestScore': totalBestScore});
-
-      return totalBestScore;
-    }
-    return 0;
+  void refreshTotalScore() async {
+    final scores = await _scoreService.getUserScores(widget.pin);
+    setState(() {
+      totalScore = scores['TotalBestScore'] ?? 0;
+    });
   }
 
   final List<Map<String, dynamic>> games = [
@@ -75,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       'backgroundImage': 'assets/images/math_equations.png',
       'description': 'Master equations!',
       'icon': Icons.functions,
-      'route': (String pin) => MyApp(),
+      'route': (String pin) => MathEquationsApp(),
     },
     {
       'title': 'Math Operators',
@@ -100,8 +106,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           ),
         ),
         actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: refreshTotalScore,
+            tooltip: "Refresh Scores",
+          ),
           Padding(
-            padding: const EdgeInsets.only(right: 16.0),
+            padding: const EdgeInsets.only(right: 12.0),
             child: Row(
               children: [
                 const Icon(Icons.star, color: Colors.orange, size: 28),
@@ -121,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       ),
       body: Stack(
         children: [
-          // Background
+          // Your background and overlay
           Positioned.fill(
             child: Image.asset(
               "assets/images/background.png",
@@ -130,145 +141,159 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               height: double.infinity,
             ),
           ),
-          Container(
-            color: Colors.white.withOpacity(0.6), // Light overlay
-          ),
-
-          // Content
+          Container(color: Colors.white.withOpacity(0.6)),
           SafeArea(
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-
-                // Title Section
-                Column(
-                  children: [
-                    ScaleTransition(
-                      scale: _scaleAnimation,
-                      child: const Icon(Icons.school, size: 40, color: Colors.blue),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      "Hi, $pin!",
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  Column(
+                    children: [
+                      ScaleTransition(
+                        scale: _scaleAnimation,
+                        child: const Icon(Icons.school, size: 40, color: Colors.blue),
                       ),
-                    ),
-                    const SizedBox(height: 12),
-                  ],
-                ),
-
-                const SizedBox(height: 20),
-
-                // Game Tiles with Description and Icons at Bottom
-                Expanded(
-                  child: GridView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 25),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
-                      childAspectRatio: 0.9,
-                      crossAxisSpacing: 30,
-                      mainAxisSpacing: 30,
-                    ),
-                    itemCount: games.length,
-                    itemBuilder: (context, index) {
-                      final game = games[index];
-                      return MouseRegion(
-                        onEnter: (_) {
-                          // Change cursor to hand on hover
-                          SystemMouseCursors.click;
-                        },
-                        onExit: (_) {
-                          // Reset cursor to default
-                          SystemMouseCursors.basic;
-                        },
-                        child: GestureDetector(
-                          onTap: () {
-                            if (game['route'] != null) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => game['route'](pin),
-                                ),
-                              );
-                            }
-                          },
-                          child: Column(
-                            children: [
-                              // Game Image
-                              Expanded(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    image: DecorationImage(
-                                      image: AssetImage(game['backgroundImage']),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black26,
-                                        blurRadius: 4,
-                                        offset: Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-
-                              // Game Title
-                              Text(
-                                game['title'],
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-
-                              // Symbol Below the Title
-                              Icon(
-                                game['icon'],
-                                size: 30,
-                                color: Colors.blueAccent,
-                              ),
-
-                              // Description with Black Background
-                              const SizedBox(height: 6),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 6,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  game['description'],
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
-                          ),
+                      const SizedBox(height: 8),
+                      Text(
+                        "Hi, ${widget.pin}!",
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red,
                         ),
-                      );
+                      ),
+                      const SizedBox(height: 12),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+
+             
+
+                  // Test scores button
+                  // ElevatedButton.icon(
+                  //   onPressed: () async {
+                  //     await Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (_) => TestScoreScreen(pin: widget.pin),
+                  //       ),
+                  //     );
+                  //     refreshTotalScore(); 
+                  //   },
+                  //    icon: Icon(Icons.bug_report),
+                  //    label: Text("Test/Set Dummy Scores"),
+                  // ),
+                  const SizedBox(height: 20),
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      double maxWidth = constraints.maxWidth;
+                      double tileSize = maxWidth > 1000
+                          ? maxWidth / 4 - 20
+                          : maxWidth > 800
+                              ? maxWidth / 3 - 20
+                              : maxWidth > 500
+                                  ? maxWidth / 2 - 20
+                                  : maxWidth - 40;
+
+                          return Center(
+                          child: Wrap(
+                            spacing: 20,
+                            runSpacing: 20,
+                            alignment: WrapAlignment.center,
+                            children: games.map((game) {
+
+                          return MouseRegion(
+                            cursor: game['route'] != null
+                                ? SystemMouseCursors.click
+                                : SystemMouseCursors.basic,
+                            child: GestureDetector(
+                              onTap: () async {
+                                if (game['route'] != null) {
+                                  await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => game['route'](widget.pin),
+                                    ),
+                                  );
+                                  refreshTotalScore();
+                                }
+                              },
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    width: tileSize,
+                                    height: tileSize,
+                                    alignment: Alignment.center,
+                                    child: ScaleTransition(
+                                      scale: _scaleAnimation,
+                                      child: Container(
+                                        width: tileSize * 0.9,
+                                        height: tileSize * 0.9,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: AssetImage(game['backgroundImage']),
+                                            fit: BoxFit.cover,
+                                          ),
+                                          borderRadius: BorderRadius.circular(20),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black26,
+                                              blurRadius: 6,
+                                              offset: Offset(0, 3),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    game['title'],
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Icon(
+                                    game['icon'] as IconData,
+                                    size: 30,
+                                    color: Colors.blueAccent,
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.8),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Text(
+                                      game['description'] as String,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                     );
                     },
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-
-          // Logout Icon at Bottom Right
           Positioned(
             bottom: 20,
             right: 20,

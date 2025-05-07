@@ -2,8 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
-import 'package:supersetfirebase/gamescreen/mathmingle/matching.dart' show GameData;
-import 'package:supersetfirebase/gamescreen/mathmingle/memory.dart' show GameData1;
+import 'package:supersetfirebase/gamescreen/mathmingle/matching.dart'
+    show GameData;
+import 'package:supersetfirebase/gamescreen/mathmingle/memory.dart'
+    show GameData1;
 
 class TopBarWithScore extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onBack;
@@ -15,7 +17,7 @@ class TopBarWithScore extends StatelessWidget implements PreferredSizeWidget {
     final matchingScore = Provider.of<GameData>(context).total;
     final memoryScore = Provider.of<GameData1>(context).total;
     final totalScore = matchingScore + memoryScore;
-    
+
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,

@@ -107,35 +107,83 @@ class _MemoryGameState extends State<MemoryGame> {
     bool isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     int crossAxisCount = isPortrait ? 4 : 5;
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: TopBarWithScore(
-        onBack: () => Navigator.pop(context),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => logout(context),
-        backgroundColor: Colors.blue,
-        child: const Icon(Icons.logout_rounded, size: 28, color: Colors.white),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.lightBlue, Colors.white],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+    
+   return Scaffold(
+  extendBodyBehindAppBar: true,
+  appBar: TopBarWithScore(
+    onBack: () => Navigator.pop(context),
+  ),
+          floatingActionButton: SizedBox(
+          width: MediaQuery.of(context).size.height > 700 ? 56 : 27,
+          height: MediaQuery.of(context).size.height > 700 ? 56 : 27,
+          child: FloatingActionButton(
+            heroTag: "logoutButton",
+            onPressed: () => logout(context),
+            backgroundColor: Colors.blue,
+            child: Icon(
+              Icons.logout_rounded,
+              size: MediaQuery.of(context).size.height > 700 ? 28 : 20,
+              color: Colors.white,
+            ),
           ),
         ),
+  floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+  body: Container(
+    decoration: const BoxDecoration(
+      gradient: LinearGradient(
+        colors: [Colors.lightBlue, Colors.white],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+      ),
+    ),
+    child: SafeArea( // Prevents UI elements from going behind status bar
+      child: SingleChildScrollView( // Prevents bottom overflow
         child: Column(
           children: <Widget>[
-            const Text(
+            const SizedBox(height: 10), 
+
+            // Title & Timer
+            Text(
               'R E M E M B E R  &  W I N',
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, letterSpacing: 2.0),
+              style: TextStyle(
+              //fontSize: 50, 
+              fontSize: MediaQuery.of(context).size.width > 600 
+              ? 50 // Set max font size for larger windows
+              : MediaQuery.of(context).size.width / 14, // Dynamically scale for smaller windows
+              fontWeight: FontWeight.bold, 
+              letterSpacing: 2.0
+              ),
               textAlign: TextAlign.center,
+              strutStyle: StrutStyle(height: 1.0), 
             ),
-            const SizedBox(height: 20),
-            ClockDisplay(seconds: _seconds),
-            Expanded(
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    double screenWidth = constraints.maxWidth;
+
+                    // Check if the screen width is large enough to maintain the 350px width
+                    double imageWidth = screenWidth > 600 ? 350 : screenWidth * 0.50;
+
+                    return Image.asset(
+                      "assets/Mathmingle/Memory_game_background.png",
+                      width: imageWidth,
+                      fit: BoxFit.cover, // Ensures the image scales correctly
+                    );
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 70),
+                  child: ClockDisplay(seconds: _seconds),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 25),
+            // Game Grid
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.6, // Limits grid height to prevent overflow
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: GridView.builder(
@@ -144,55 +192,60 @@ class _MemoryGameState extends State<MemoryGame> {
                     crossAxisCount: crossAxisCount,
                     mainAxisSpacing: 8.0,
                     crossAxisSpacing: 8.0,
+                    childAspectRatio: 1.5,
                   ),
                   itemCount: _data.length,
                   itemBuilder: (context, index) {
                     return MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          width: 70,
-                          height: 80,
-                          child: FlipCard(
-                            key: _cardStateKeys[index],
-                            onFlip: () {
-                              if (!_wait) {
-                                checkMatch(index);
-                              }
-                            },
-                            flipOnTouch: !_wait && _cardFlips[index],
-                            direction: FlipDirection.HORIZONTAL,
-                            front: getQuestionMarkCard(),
-                            back: Container(
+                    cursor: SystemMouseCursors.click,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FlipCard(
+                        key: _cardStateKeys[index],
+                        onFlip: () {
+                          if (!_wait) checkMatch(index);
+                        },
+                        flipOnTouch: !_wait && _cardFlips[index],
+                        direction: FlipDirection.HORIZONTAL,
+                        front: getQuestionMarkCard(),
+                        back: LayoutBuilder(
+                          builder: (context, constraints) {
+                            return Container(
                               decoration: BoxDecoration(
                                 color: _cardFlips[index] ? Colors.grey[100] : Colors.green,
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               padding: const EdgeInsets.all(8.0),
                               alignment: Alignment.center,
-                              child: Text(
-                                _data[index],
-                                style: TextStyle(
-                                  fontSize: MediaQuery.of(context).orientation == Orientation.portrait ? 30 : 24,
-                                  fontWeight: FontWeight.bold,
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown, // Ensures text shrinks when needed
+                                child: Text(
+                                  _data[index],
+                                  style: TextStyle(
+                                    fontSize: constraints.maxWidth / 8, // Adjust divisor for better fit
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                textAlign: TextAlign.center,
                               ),
-                            ),
-                          ),
+                            );
+                          },
                         ),
                       ),
-                    );
-                  }
+                    ),
+                  );
+                },
                 ),
               ),
             ),
           ],
         ),
+        
       ),
-    );
-  }
+    ),
+  ),
+);
+}
 
   void checkMatch(int currentIndex) {
     if (!_flip) {
@@ -444,28 +497,41 @@ class ClockDisplay extends StatelessWidget {
   final int seconds;
   const ClockDisplay({Key? key, required this.seconds}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    int minutes = seconds ~/ 60;
-    int remainingSeconds = seconds % 60;
-    return Padding(
-      padding: const EdgeInsets.only(top: 40.0),
-      child: Align(
-        alignment: Alignment.topCenter,
-        child: Container(
-          width: 120,
-          height: 120,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.white70.withOpacity(0.5),
-          ),
-          alignment: Alignment.center,
-          child: Text(
-            '$minutes:${remainingSeconds.toString().padLeft(2, '0')}',
-            style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-          ),
-        ),
+@override
+Widget build(BuildContext context) {
+  int minutes = seconds ~/ 60;
+  int remainingSeconds = seconds % 60;
+
+  return Padding(
+    padding: const EdgeInsets.only(top: 40.0),
+    child: Align(
+      alignment: Alignment.topCenter,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Calculate the width based on screen size
+          double containerWidth = constraints.maxWidth > 600
+              ? 350  // Set a fixed width of 350 when screen is maximized
+              : constraints.maxWidth * 0.5; // Scale width to 50% of available screen width when minimized
+
+          return Container(
+            width: containerWidth,
+            height: 40,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              //color: Colors.lightBlue,
+              color: Colors.grey[400], // Light grey
+              
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              '$minutes:${remainingSeconds.toString().padLeft(2, '0')}',
+              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            ),
+          );
+        },
       ),
-    );
-  }
+    ),
+  );
 }
+}
+

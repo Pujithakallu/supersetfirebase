@@ -3,6 +3,8 @@ import '../../utils/logout_util.dart';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
 import 'package:supersetfirebase/screens/home_screen.dart';
+import 'total_xp_display.dart';
+import 'total_xp_provider.dart';
 
 class MainMenu extends StatelessWidget {
   const MainMenu({Key? key}) : super(key: key);
@@ -10,10 +12,43 @@ class MainMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
+    final totalXp = Provider.of<TotalXpProvider>(context).score;
     return Scaffold(
       extendBodyBehindAppBar: true,
+      appBar: AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: FloatingActionButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomeScreen(pin: userPin),
+                ),
+              );
+            },
+            backgroundColor: Colors.white,
+            mini: true,
+            child: const Icon(
+              Icons.arrow_back_rounded,
+              color: Color(0xFF4A4A4A),
+              size: 26,
+            ),
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TotalXpDisplay(totalXp: totalXp),
+          ),
+        ],
+      ),
+
       body: Stack(
         children: [
+          // Background image
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
@@ -22,6 +57,8 @@ class MainMenu extends StatelessWidget {
               ),
             ),
           ),
+
+          // Main content
           Column(
             children: [
               const SizedBox(height: 60),
@@ -71,31 +108,7 @@ class MainMenu extends StatelessWidget {
               ),
             ],
           ),
-        ],
-      ),
-      floatingActionButton: Stack(
-        children: [
-          // Back Button (Left)
-          Positioned(
-            left: 24,
-            top: 16,
-            child: FloatingActionButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => HomeScreen(pin: userPin)),
-                );
-              },
-              backgroundColor: Colors.white,
-              child: const Icon(
-                Icons.arrow_back_rounded,
-                color: Color(0xFF4A4A4A),
-                size: 26,
-              ),
-            ),
-          ),
-          // PIN Display (Center)
+          // PIN Display (Top center)
           Positioned(
             top: 16,
             left: 0,
@@ -126,22 +139,20 @@ class MainMenu extends StatelessWidget {
               ),
             ),
           ),
-          // Logout Button (Right)
-          Positioned(
-            right: 16,
-            top: 16,
-            child: FloatingActionButton(
-              onPressed: () => logout(context),
-              backgroundColor: Colors.white,
-              child: const Icon(
-                Icons.logout_rounded,
-                color: Color(0xFF6C63FF),
-                size: 26,
-              ),
-            ),
-          ),
         ],
       ),
+
+      // Logout button (Bottom right)
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => logout(context),
+        backgroundColor: Colors.white,
+        child: const Icon(
+          Icons.logout_rounded,
+          color: Colors.black,
+          size: 26,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

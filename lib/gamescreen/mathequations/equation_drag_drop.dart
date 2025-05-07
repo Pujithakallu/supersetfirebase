@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'language_switcher.dart';
+import 'language_provider.dart';
 import 'instructions_widget.dart';
 import 'score_manager.dart';
 import 'analytics_engine.dart';
+import 'total_xp_provider.dart';
+import 'total_xp_display.dart';
 import 'package:supersetfirebase/utils/logout_util.dart';
-import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
 class EquationDragDrop extends StatefulWidget {
@@ -18,11 +22,12 @@ class EquationDragDrop extends StatefulWidget {
 class DraggableItem extends StatelessWidget {
   final String label;
   final String data;
+  final Key key;
 
   const DraggableItem({
-    Key? key,
     required this.label,
     required this.data,
+    required this.key,
   }) : super(key: key);
 
   @override
@@ -51,6 +56,7 @@ class DropTarget extends StatefulWidget {
   final bool showResults;
   final List<String> expectedData;
   final ValueChanged<List<String>> onAcceptedLabelsChanged;
+  final ValueChanged<String> onItemRemoved;
   final VoidCallback onCorrectAnswer;
   final String label;
   final bool isSpanish;
@@ -61,6 +67,7 @@ class DropTarget extends StatefulWidget {
     required this.showResults,
     required this.expectedData,
     required this.onAcceptedLabelsChanged,
+    required this.onItemRemoved,
     required this.onCorrectAnswer,
     required this.label,
     required this.isSpanish,
@@ -110,7 +117,8 @@ class _DropTargetState extends State<DropTarget> {
       mainAxisSize: MainAxisSize.min,
       children: [
         DragTarget<String>(
-          onWillAccept: (data) => true,
+          onWillAccept: (data) => !widget
+              .showResults, // Disable drag-and-drop when results are shown
           onAccept: (receivedItem) {
             setState(() {
               widget.acceptedLabels
@@ -160,10 +168,40 @@ class _DropTargetState extends State<DropTarget> {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
-          child: Text(
-            widget.acceptedLabels
-                .join(', '), // Display all accepted labels separated by commas
-            style: const TextStyle(fontSize: 18, color: Colors.black),
+          child: Wrap(
+            alignment: WrapAlignment.center,
+            spacing: 8.0,
+            children: widget.acceptedLabels
+                .map((label) => Draggable<String>(
+                      data: label,
+                      child: Chip(
+                        label:
+                            Text(label, style: const TextStyle(fontSize: 18)),
+                      ),
+                      feedback: Material(
+                        child: Chip(
+                          label: Text(label,
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 18)),
+                          backgroundColor: Colors.blue,
+                        ),
+                        elevation: 4.0,
+                      ),
+                      childWhenDragging: Chip(
+                        label: Text(label,
+                            style: const TextStyle(
+                                color: Colors.grey, fontSize: 18)),
+                      ),
+                      onDragCompleted: () {
+                        setState(() {
+                          widget.acceptedLabels.remove(label);
+                          widget.onItemRemoved(label);
+                        });
+                      },
+                      ignoringFeedbackSemantics: widget
+                          .showResults, // Disable drag-and-drop when results are shown
+                    ))
+                .toList(),
           ),
         ),
         if (showFeedback) ...[
@@ -327,7 +365,7 @@ class _EquationDragDropState extends State<EquationDragDrop> {
     }
   };
 
-  bool isSpanish = false; // Track the current language
+  bool _isQuestionAnsweredCorrectly = false;
 
   late List<Map<String, dynamic>> _shuffledQuestions;
   List<List<String>> _acceptedLabels = List.generate(4, (index) => []);
@@ -339,15 +377,24 @@ class _EquationDragDropState extends State<EquationDragDrop> {
   List<GlobalKey<_DropTargetState>> _dropTargetKeys =
       List.generate(4, (index) => GlobalKey<_DropTargetState>());
 
+  late List<String> _draggables;
+
   @override
   void initState() {
     super.initState();
     _shuffledQuestions = List.from(_questions);
     _shuffleQuestions();
+    _initializeDraggables();
   }
 
   void _shuffleQuestions() {
     _shuffledQuestions.shuffle();
+  }
+
+  void _initializeDraggables() {
+    var currentQuestion = _shuffledQuestions[_currentQuestionIndex];
+    var draggables = currentQuestion['draggables'] as List<String>;
+    _draggables = List.from(draggables);
   }
 
   void _checkAnswers() {
@@ -378,6 +425,8 @@ class _EquationDragDropState extends State<EquationDragDrop> {
       _showCorrectAnswerFeedback(context);
       _scoreManager.incrementScore(
           10); // Increment the score by 10 if all answers are correct
+      Provider.of<TotalXpProvider>(context, listen: false)
+          .incrementScore(10); // Update total XP
       _scoreUpdated = true; // Set flag to true to prevent further score updates
       _confettiController.play(); // Play confetti animation
 
@@ -398,27 +447,18 @@ class _EquationDragDropState extends State<EquationDragDrop> {
   void _retry() {
     setState(() {
       for (int i = 0; i < _acceptedLabels.length; i++) {
-        // var targetLabels = _shuffledQuestions[_currentQuestionIndex]['targets']
-        //     .values
-        //     .elementAt(i);
-        // var acceptedLabels = _acceptedLabels[i];
-
-        // Clear the values in the wrongly answered drop targets
-        // if (!(acceptedLabels.every(targetLabels.contains) &&
-        //     targetLabels.length == acceptedLabels.length)) {
         _acceptedLabels[i] = [];
-        // Reset the background color and feedback text for the wrongly answered targets
         _targetBackgroundColors[i] = Colors.transparent; // or default color
         _feedbackTexts[i] = ''; // Clear feedback text
-        // Reset the state of each drop target
-        // _dropTargetKeys[i].currentState?._resetState();
-        // }
       }
       for (int i = 0; i < _acceptedLabels.length; i++) {
         _dropTargetKeys[i].currentState?._resetState();
       }
       _showResults = false; // Clear feedback and colors for all targets
       retryVisible = false; // Hide the retry button
+
+      // Reset the draggable items to their original state
+      _initializeDraggables();
     });
   }
 
@@ -433,6 +473,7 @@ class _EquationDragDropState extends State<EquationDragDrop> {
         // Reset the state of each drop target
         _dropTargetKeys[i].currentState?._resetState();
       }
+      _isQuestionAnsweredCorrectly = false;
       _showResults = false; // Clear feedback and colors for all targets
       retryVisible = false; // Hide the retry button
       _currentQuestionIndex =
@@ -446,6 +487,9 @@ class _EquationDragDropState extends State<EquationDragDrop> {
         _endGameConfettiController
             .play(); // Play end-of-game confetti animation
       }
+
+      // Initialize draggables for the next question
+      _initializeDraggables();
     });
   }
 
@@ -456,6 +500,7 @@ class _EquationDragDropState extends State<EquationDragDrop> {
       duration: Duration(seconds: 4),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    _isQuestionAnsweredCorrectly = true;
   }
 
   void _resetDropTargets() {
@@ -466,24 +511,16 @@ class _EquationDragDropState extends State<EquationDragDrop> {
 
   @override
   Widget build(BuildContext context) {
+    final isSpanish = Provider.of<LanguageProvider>(context).isSpanish;
+    final totalXp = Provider.of<TotalXpProvider>(context).score;
+
     if (_gameCompleted) {
       return Scaffold(
         appBar: AppBar(
           title: Text(isSpanish
               ? translations['es']!['game_over']!
               : translations['en']!['game_over']!),
-          actions: [
-            IconButton(
-              icon: Icon(
-                Icons.logout_rounded,
-                color: Color(0xFF6C63FF),
-                size: 26,
-              ),
-              onPressed: () => logout(context),
-            ),
-          ],
         ),
-        extendBodyBehindAppBar: true,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -529,72 +566,48 @@ class _EquationDragDropState extends State<EquationDragDrop> {
             ],
           ),
         ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () => logout(context),
+          backgroundColor: Colors.white,
+          child: const Icon(
+            Icons.logout_rounded,
+            color: Color(0xFF6C63FF),
+            size: 26,
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       );
     }
 
     var currentQuestion = _shuffledQuestions[_currentQuestionIndex];
     var equation = currentQuestion['equation'];
-    var draggables = currentQuestion['draggables'] as List<String>;
     var targets = currentQuestion['targets'] as Map<String, List<String>>;
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Parts of Equations'),
         actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton.icon(
-                icon: Icon(
-                  IconData(0xe67b,
-                      fontFamily:
-                          'MaterialIcons'), // Custom icon for translation
-                  color: isSpanish
-                      ? Colors.blue
-                      : Colors.red, // Change icon color based on language
-                ),
-                label: Text(
-                  isSpanish ? 'Español' : 'English',
-                  style: TextStyle(
-                    color: isSpanish
-                        ? Colors.blue
-                        : Colors.red, // Change text color based on language
-                  ),
-                ),
-                onPressed: () {
-                  setState(() {
-                    isSpanish = !isSpanish; // Toggle language
-                  });
-                  print('Button clicked');
-                  AnalyticsEngine.logTranslateButtonClickPOE(
-                      isSpanish ? 'Changed to Spanish' : 'Changed to English');
-                },
-              ),
-              Text(
-                'PIN: $userPin',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.logout_rounded,
-                  color: Color(0xFF6C63FF),
-                  size: 26,
-                ),
-                onPressed: () => logout(context),
-              ),
-            ],
+          LanguageSwitcher(
+            isSpanish: isSpanish,
+            onLanguageChanged: (bool newIsSpanish) {
+              Provider.of<LanguageProvider>(context, listen: false)
+                  .setLanguage(newIsSpanish);
+              AnalyticsEngine.logTranslateButtonClickETW(
+                  newIsSpanish ? 'Changed to Spanish' : 'Changed to English');
+            },
           ),
           InstructionsWidget(
               instructions: isSpanish
                   ? translations['es']!['instructions']!
-                  : translations['en']!['instructions']!),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ScoreDisplay(score: _scoreManager.score),
+                  : translations['en']!['instructions']!
+          ),
+          Text(
+            'PIN: $userPin',
+            style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+            ),
           ),
         ],
         leading: IconButton(
@@ -614,7 +627,8 @@ class _EquationDragDropState extends State<EquationDragDrop> {
               ),
             ),
           ),
-          Column(
+          Center(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Padding(
@@ -627,13 +641,19 @@ class _EquationDragDropState extends State<EquationDragDrop> {
                 alignment: WrapAlignment.spaceEvenly,
                 spacing: 20,
                 runSpacing: 20,
-                children: draggables
-                    .map((label) => DraggableItem(label: label, data: label))
+                children: _draggables
+                    .map((label) => DraggableItem(
+                          key: Key(label),
+                          label: label,
+                          data: label,
+                        ))
                     .toList(),
               ),
               const SizedBox(height: 40),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              Wrap(
+                alignment: WrapAlignment.center, // Align children in the center horizontally
+                spacing: 20.0, // Horizontal spacing between children
+                runSpacing: 20.0, // Vertical spacing between rows
                 children: [
                   DropTarget(
                     key: _dropTargetKeys[0],
@@ -646,9 +666,17 @@ class _EquationDragDropState extends State<EquationDragDrop> {
                     onAcceptedLabelsChanged: (labels) {
                       setState(() {
                         _acceptedLabels[0] = labels;
+                        _draggables.removeWhere((item) => labels.contains(item));
                       });
                     },
-                    onCorrectAnswer: _checkAnswers, // Pass the callback
+                    onItemRemoved: (label) {
+                      setState(() {
+                        if (!_acceptedLabels.any((list) => list.contains(label))) {
+                          _draggables.add(label);
+                        }
+                      });
+                    },
+                    onCorrectAnswer: _checkAnswers,
                     isSpanish: isSpanish,
                   ),
                   DropTarget(
@@ -662,9 +690,17 @@ class _EquationDragDropState extends State<EquationDragDrop> {
                     onAcceptedLabelsChanged: (labels) {
                       setState(() {
                         _acceptedLabels[1] = labels;
+                        _draggables.removeWhere((item) => labels.contains(item));
                       });
                     },
-                    onCorrectAnswer: _checkAnswers, // Pass the callback
+                    onItemRemoved: (label) {
+                      setState(() {
+                        if (!_acceptedLabels.any((list) => list.contains(label))) {
+                          _draggables.add(label);
+                        }
+                      });
+                    },
+                    onCorrectAnswer: _checkAnswers,
                     isSpanish: isSpanish,
                   ),
                   DropTarget(
@@ -678,9 +714,17 @@ class _EquationDragDropState extends State<EquationDragDrop> {
                     onAcceptedLabelsChanged: (labels) {
                       setState(() {
                         _acceptedLabels[2] = labels;
+                        _draggables.removeWhere((item) => labels.contains(item));
                       });
                     },
-                    onCorrectAnswer: _checkAnswers, // Pass the callback
+                    onItemRemoved: (label) {
+                      setState(() {
+                        if (!_acceptedLabels.any((list) => list.contains(label))) {
+                          _draggables.add(label);
+                        }
+                      });
+                    },
+                    onCorrectAnswer: _checkAnswers,
                     isSpanish: isSpanish,
                   ),
                   DropTarget(
@@ -694,9 +738,17 @@ class _EquationDragDropState extends State<EquationDragDrop> {
                     onAcceptedLabelsChanged: (labels) {
                       setState(() {
                         _acceptedLabels[3] = labels;
+                        _draggables.removeWhere((item) => labels.contains(item));
                       });
                     },
-                    onCorrectAnswer: _checkAnswers, // Pass the callback
+                    onItemRemoved: (label) {
+                      setState(() {
+                        if (!_acceptedLabels.any((list) => list.contains(label))) {
+                          _draggables.add(label);
+                        }
+                      });
+                    },
+                    onCorrectAnswer: _checkAnswers,
                     isSpanish: isSpanish,
                   ),
                 ],
@@ -756,7 +808,7 @@ class _EquationDragDropState extends State<EquationDragDrop> {
               ],
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: _nextQuestion,
+                onPressed: _isQuestionAnsweredCorrectly ? _nextQuestion : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
                       Colors.orange, // Set the background color to orange
@@ -782,6 +834,7 @@ class _EquationDragDropState extends State<EquationDragDrop> {
               ),
             ],
           ),
+          ),
           ConfettiWidget(
             confettiController: _confettiController,
             blastDirectionality: BlastDirectionality.explosive,
@@ -794,9 +847,36 @@ class _EquationDragDropState extends State<EquationDragDrop> {
             ],
             child: Container(), // Placeholder widget
           ),
+          Positioned(
+            top: kToolbarHeight + 2, // Position below the app bar
+            right: 4, // Align to the right
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ScoreDisplay(score: _scoreManager.score),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TotalXpDisplay(totalXp: totalXp),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
-    );
+      floatingActionButton: FloatingActionButton(
+          onPressed: () => logout(context),
+          backgroundColor: Colors.white,
+          child: const Icon(
+            Icons.logout_rounded,
+            color: Color(0xFF6C63FF),
+            size: 26,
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );    
   }
 }
 
@@ -810,7 +890,7 @@ class ScoreDisplay extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.orangeAccent,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -821,13 +901,22 @@ class ScoreDisplay extends StatelessWidget {
           ),
         ],
       ),
-      child: Text(
-        'Score: $score',
-        style: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
+      child: Row(
+        children: [
+          const Icon(
+            Icons.rocket_launch,
+            color: Colors.black,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            'Current Score: $score',
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+        ],
       ),
     );
   }
