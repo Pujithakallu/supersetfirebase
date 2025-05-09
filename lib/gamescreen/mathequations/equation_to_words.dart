@@ -11,6 +11,7 @@ import 'total_xp_display.dart';
 import 'total_xp_provider.dart';
 import 'language_switcher.dart';
 import 'language_provider.dart';
+import 'session_score_provider.dart';
 
 class EquationToWordsScreen extends StatefulWidget {
   const EquationToWordsScreen({Key? key}) : super(key: key);
@@ -55,15 +56,7 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
       'words': ['x', 'four', 'times', 'equals', 'two', 'eight', 'plus'],
       'translated': ['x', 'cuatro', 'veces', 'igual', 'dos', 'ocho', 'más'],
       'answer': ['two', 'times', 'x', 'plus', 'four', 'equals', 'eight'],
-      'translatedAnswer': [
-        'dos',
-        'veces',
-        'x',
-        'más',
-        'cuatro',
-        'igual',
-        'ocho'
-      ],
+      'translatedAnswer': ['dos', 'veces', 'x', 'más', 'cuatro', 'igual', 'ocho'],
     },
     {
       'equation': '3y - 5 = 10',
@@ -77,14 +70,7 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
       'words': ['a', 'four', 'plus', 'equals', 'seven', 'nineteen'],
       'translated': ['a', 'cuatro', 'más', 'igual', 'siete', 'diecinueve'],
       'answer': ['four', 'a', 'plus', 'seven', 'equals', 'nineteen'],
-      'translatedAnswer': [
-        'cuatro',
-        'a',
-        'más',
-        'siete',
-        'igual',
-        'diecinueve'
-      ],
+      'translatedAnswer': ['cuatro', 'a', 'más', 'siete', 'igual', 'diecinueve'],
     },
     {
       'equation': '5b - 2 = 13',
@@ -108,14 +94,7 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
       'words': ['d', 'seven', 'minus', 'equals', 'four', 'seventeen'],
       'translated': ['d', 'siete', 'menos', 'igual', 'cuatro', 'diecisiete'],
       'answer': ['seven', 'd', 'minus', 'four', 'equals', 'seventeen'],
-      'translatedAnswer': [
-        'siete',
-        'd',
-        'menos',
-        'cuatro',
-        'igual',
-        'diecisiete'
-      ],
+      'translatedAnswer': ['siete', 'd', 'menos', 'cuatro', 'igual', 'diecisiete'],
     },
     {
       'equation': '8e + 2 = 18',
@@ -136,289 +115,88 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
       'words': ['a', 'b', 'four', 'five', 'minus', 'equals', 'twelve'],
       'translated': ['a', 'b', 'cuatro', 'cinco', 'menos', 'igual', 'doce'],
       'answer': ['four', 'a', 'minus', 'five', 'b', 'equals', 'twelve'],
-      'translatedAnswer': [
-        'cuatro',
-        'a',
-        'menos',
-        'cinco',
-        'b',
-        'igual',
-        'doce'
-      ],
+      'translatedAnswer': ['cuatro', 'a', 'menos', 'cinco', 'b', 'igual','doce'],
     },
     {
       'equation': '6c + 7d = 29',
       'words': ['c', 'd', 'six', 'seven', 'plus', 'equals', 'twenty-nine'],
       'translated': ['c', 'd', 'seis', 'siete', 'más', 'igual', 'veintinueve'],
       'answer': ['six', 'c', 'plus', 'seven', 'd', 'equals', 'twenty-nine'],
-      'translatedAnswer': [
-        'seis',
-        'c',
-        'más',
-        'siete',
-        'd',
-        'igual',
-        'veintinueve'
-      ],
+      'translatedAnswer': ['seis', 'c', 'más', 'siete', 'd', 'igual', 'veintinueve'],
     },
   ];
 
   final List<Map<String, dynamic>> hardQuestions = [
     {
+      'equation': '3/2x + 1 = 4/3',
+      'words': ['one', 'three', 'two', 'x', 'four', 'over', 'thirds', 'plus', 'equals'],
+      'translated': ['uno', 'tres', 'dos', 'x', 'cuatro', 'sobre', 'tercios', 'más', 'igual'],
+      'answer': ['three', 'over', 'two', 'x', 'plus', 'one', 'equals', 'four', 'thirds'],
+      'translatedAnswer': ['tres', 'sobre', 'dos', 'x', 'más', 'uno', 'igual', 'cuatro', 'tercios']
+    },
+    {
+      'equation': '1/2x = 5/6',
+      'words': ['half', 'equals', 'sixths', 'one', 'x', 'five'],
+      'translated': ['medio', 'igual', 'sextos', 'uno', 'x', 'cinco'],
+      'answer': ['one', 'half', 'x', 'equals', 'five', 'sixths'],
+      'translatedAnswer': ['uno', 'medio', 'x', 'igual', 'cinco', 'sextos']
+    },
+    {
+      'equation': 'x/3 + 2/3 = 1',
+      'words': ['two', 'one', 'x', 'equals', 'three', 'plus', 'thirds', 'over'],
+      'translated': ['dos', 'uno', 'x', 'igual', 'tres', 'más', 'tercios', 'sobre'],
+      'answer': ['x', 'over', 'three', 'plus', 'two', 'thirds', 'equals', 'one'],
+      'translatedAnswer': ['x', 'sobre', 'tres', 'más', 'dos', 'tercios', 'igual', 'uno']
+    },
+    {
+      'equation': '2x/5 = 4/5',
+      'words': ['x', 'five', 'equals', 'two', 'over', 'four', 'fifths'],
+      'translated': ['x', 'cinco', 'igual', 'dos', 'sobre', 'cuatro', 'quintos'],
+      'answer': ['two', 'x', 'over', 'five', 'equals', 'four', 'fifths'],
+      'translatedAnswer': ['dos', 'x', 'sobre', 'cinco', 'igual', 'cuatro', 'quintos']
+    },
+    {
+      'equation': '3x + 1/4 = 5/2',
+      'words': ['five', 'plus', 'equals', 'halves', 'x', 'fourth', 'one', 'three'],
+      'translated': ['cinco', 'más', 'igual', 'medios', 'x', 'fourth', 'uno', 'tres'],
+      'answer': ['three', 'x', 'plus', 'one', 'fourth', 'equals', 'five', 'halves'],
+      'translatedAnswer': ['tres', 'x', 'más', 'uno', 'fourth', 'igual', 'cinco', 'medios']
+    },
+    {
+      'equation': '1/4x - 2/3 = 0',
+      'words': ['two', 'x', 'minus', 'fourth', 'zero', 'one', 'thirds', 'equals'],
+      'translated': ['dos', 'x', 'menos', 'fourth', 'cero', 'uno', 'tercios', 'igual'],
+      'answer': ['one', 'fourth', 'x', 'minus', 'two', 'thirds', 'equals', 'zero'],
+      'translatedAnswer': ['uno', 'fourth', 'x', 'menos', 'dos', 'tercios', 'igual', 'cero']
+    },
+    {
+      'equation': 'x + 2/2 = 3/4',
+      'words': ['two', 'three', 'x', 'equals', 'halves', 'plus', 'fourths'],
+      'translated': ['dos', 'tres', 'x', 'igual', 'medios', 'más', 'cuartos'],
+      'answer': ['x', 'plus', 'two', 'halves', 'equals', 'three', 'fourths'],
+      'translatedAnswer': ['x', 'más', 'dos', 'medios', 'igual', 'tres', 'cuartos']
+    },
+    {
+      'equation': '2/3x + 1/2 = 7/6',
+      'words': ['two', 'thirds', 'one', 'equals', 'x', 'sixths', 'seven', 'plus', 'half'],
+      'translated': ['dos', 'tercios', 'uno', 'igual', 'x', 'sextos', 'siete', 'más', 'medio'],
+      'answer': ['two', 'thirds', 'x', 'plus', 'one', 'half', 'equals', 'seven', 'sixths'],
+      'translatedAnswer': ['dos', 'tercios', 'x', 'más', 'uno', 'medio', 'igual', 'siete', 'sextos']
+    },
+    {
       'equation': '5x + 4y - 3z = 10',
-      'words': [
-        'x',
-        'y',
-        'z',
-        'five',
-        'four',
-        'three',
-        'plus',
-        'minus',
-        'equals',
-        'ten'
-      ],
-      'translated': [
-        'x',
-        'y',
-        'z',
-        'cinco',
-        'cuatro',
-        'tres',
-        'más',
-        'menos',
-        'igual',
-        'diez'
-      ],
-      'answer': [
-        'five',
-        'x',
-        'plus',
-        'four',
-        'y',
-        'minus',
-        'three',
-        'z',
-        'equals',
-        'ten'
-      ],
-      'translatedAnswer': [
-        'cinco',
-        'x',
-        'más',
-        'cuatro',
-        'y',
-        'menos',
-        'tres',
-        'z',
-        'igual',
-        'diez'
-      ],
+      'words': ['x', 'y', 'z', 'five', 'four', 'three', 'plus', 'minus', 'equals', 'ten'],
+      'translated': ['x', 'y', 'z', 'cinco', 'cuatro', 'tres', 'más', 'menos', 'igual', 'diez'],
+      'answer': ['five', 'x', 'plus', 'four', 'y', 'minus', 'three', 'z', 'equals', 'ten'],
+      'translatedAnswer': ['cinco', 'x', 'más', 'cuatro', 'y', 'menos', 'tres', 'z', 'igual', 'diez'],
     },
     {
       'equation': '7p + 2q - r = 15',
-      'words': [
-        'p',
-        'q',
-        'r',
-        'seven',
-        'two',
-        'one',
-        'plus',
-        'minus',
-        'equals',
-        'fifteen'
-      ],
-      'translated': [
-        'p',
-        'q',
-        'r',
-        'siete',
-        'dos',
-        'uno',
-        'más',
-        'menos',
-        'igual',
-        'quince'
-      ],
-      'answer': [
-        'seven',
-        'p',
-        'plus',
-        'two',
-        'q',
-        'minus',
-        'one',
-        'r',
-        'equals',
-        'fifteen'
-      ],
-      'translatedAnswer': [
-        'siete',
-        'p',
-        'más',
-        'dos',
-        'q',
-        'menos',
-        'uno',
-        'r',
-        'igual',
-        'quince'
-      ],
-    },
-    {
-      'equation': '3m - 2n + 4o = 9',
-      'words': [
-        'm',
-        'n',
-        'o',
-        'three',
-        'two',
-        'four',
-        'plus',
-        'minus',
-        'equals',
-        'nine'
-      ],
-      'translated': [
-        'm',
-        'n',
-        'o',
-        'tres',
-        'dos',
-        'cuatro',
-        'más',
-        'menos',
-        'igual',
-        'nueve'
-      ],
-      'answer': [
-        'three',
-        'm',
-        'minus',
-        'two',
-        'n',
-        'plus',
-        'four',
-        'o',
-        'equals',
-        'nine'
-      ],
-      'translatedAnswer': [
-        'tres',
-        'm',
-        'menos',
-        'dos',
-        'n',
-        'más',
-        'cuatro',
-        'o',
-        'igual',
-        'nueve'
-      ],
-    },
-    {
-      'equation': '9k + 3l - 6m = 18',
-      'words': [
-        'k',
-        'l',
-        'm',
-        'nine',
-        'three',
-        'six',
-        'plus',
-        'minus',
-        'equals',
-        'eighteen'
-      ],
-      'translated': [
-        'k',
-        'l',
-        'm',
-        'nueve',
-        'tres',
-        'seis',
-        'más',
-        'menos',
-        'igual',
-        'dieciocho'
-      ],
-      'answer': [
-        'nine',
-        'k',
-        'plus',
-        'three',
-        'l',
-        'minus',
-        'six',
-        'm',
-        'equals',
-        'eighteen'
-      ],
-      'translatedAnswer': [
-        'nueve',
-        'k',
-        'más',
-        'tres',
-        'l',
-        'menos',
-        'seis',
-        'm',
-        'igual',
-        'dieciocho'
-      ],
-    },
-    {
-      'equation': '4a + 5b - 2c = 20',
-      'words': [
-        'a',
-        'b',
-        'c',
-        'four',
-        'five',
-        'two',
-        'plus',
-        'minus',
-        'equals',
-        'twenty'
-      ],
-      'translated': [
-        'a',
-        'b',
-        'c',
-        'cuatro',
-        'cinco',
-        'dos',
-        'más',
-        'menos',
-        'igual',
-        'veinte'
-      ],
-      'answer': [
-        'four',
-        'a',
-        'plus',
-        'five',
-        'b',
-        'minus',
-        'two',
-        'c',
-        'equals',
-        'twenty'
-      ],
-      'translatedAnswer': [
-        'cuatro',
-        'a',
-        'más',
-        'cinco',
-        'b',
-        'menos',
-        'dos',
-        'c',
-        'igual',
-        'veinte'
-      ],
-    },
+      'words': ['p', 'q', 'r', 'seven', 'two', 'one', 'plus', 'minus', 'equals', 'fifteen'],
+      'translated': ['p', 'q', 'r', 'siete', 'dos', 'uno', 'más', 'menos', 'igual', 'quince'],
+      'answer': ['seven', 'p', 'plus', 'two', 'q', 'minus', 'one', 'r', 'equals', 'fifteen'],
+      'translatedAnswer': ['siete', 'p', 'más', 'dos', 'q', 'menos', 'uno', 'r', 'igual', 'quince'],
+    }
   ];
 
   bool _isQuestionAnsweredCorrectly = false;
@@ -446,6 +224,9 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
   @override
   void initState() {
     super.initState();
+    // Reset the session score for Game 2
+    final sessionScoreProvider = Provider.of<SessionScoreProvider>(context, listen: false);
+    sessionScoreProvider.resetGame2Score();
     _loadLevelQuestions();
     _loadRandomQuestion();
   }
@@ -471,6 +252,7 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
   }
 
   void _checkAnswer() {
+    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     final isSpanish =
         Provider.of<LanguageProvider>(context, listen: false).isSpanish;
     final answer = currentLevelQuestions[currentQuestionIndex]
@@ -492,7 +274,14 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
     if (result == answer.join(' ')) {
       setState(() {
         _scoreManager.incrementScore(10); // Increment score by 10
-        // final xpProvider = Provider.of<TotalXpProvider>(context, listen: false);
+        
+        // Update session's best score for this game
+        final sessionScoreProvider =  Provider.of<SessionScoreProvider>(context, listen: false);
+        sessionScoreProvider.updateGame2Score(_scoreManager.score);
+        final combinedSessionScore = sessionScoreProvider.game1BestScore + sessionScoreProvider.game2BestScore;
+        print('Combined session score - $combinedSessionScore');
+        Provider.of<TotalXpProvider>(context, listen: false).updateBestScoreIfNeeded(userPin, combinedSessionScore);
+
         _confettiController.play(); // Play confetti on correct answer
         totalQuestionsAnswered++;
         _isQuestionAnsweredCorrectly = true;        
@@ -599,7 +388,7 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
     final currentQuestion = currentLevelQuestions[currentQuestionIndex];
     final equation = currentQuestion['equation'] as String;
     final isSpanish = Provider.of<LanguageProvider>(context).isSpanish;
-    final totalXp = Provider.of<TotalXpProvider>(context).score;
+    final totalXp = Provider.of<TotalXpProvider>(context).bestScore;
     final words = isSpanish
         ? currentQuestion['translated']
         : currentQuestion['words'] as List<String>;

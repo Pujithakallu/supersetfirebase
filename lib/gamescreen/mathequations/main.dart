@@ -15,6 +15,7 @@ import 'firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'language_provider.dart';
 import 'total_xp_provider.dart';
+import 'session_score_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,6 +41,7 @@ class MathEquationsApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => LanguageProvider()),
+        ChangeNotifierProvider(create: (_) => SessionScoreProvider()),
         ChangeNotifierProvider(create: (_) => TotalXpProvider()),
       ],
       child: MaterialApp(

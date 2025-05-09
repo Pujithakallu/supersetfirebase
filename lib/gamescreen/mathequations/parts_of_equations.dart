@@ -61,7 +61,7 @@ class _PartsOfEquationsState extends State<PartsOfEquations> {
     final isSpanish = Provider.of<LanguageProvider>(context).isSpanish;
     final text = isSpanish ? spanishText : englishText;
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
-    final totalXp = Provider.of<TotalXpProvider>(context).score;
+    final totalXp = Provider.of<TotalXpProvider>(context).bestScore;
     return Scaffold(
       appBar: AppBar(
         title: Text(text['title']!),

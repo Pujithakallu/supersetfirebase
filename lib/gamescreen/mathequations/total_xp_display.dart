@@ -29,7 +29,7 @@ class TotalXpDisplay extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            'Best Score: $totalXp',
+            'Total Best: $totalXp',
             style: const TextStyle(
               fontFamily: 'sans-serif',
               fontSize: 18,

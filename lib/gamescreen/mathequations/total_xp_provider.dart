@@ -10,31 +10,6 @@ class TotalXpProvider with ChangeNotifier {
   int get score => _score;
   int get bestScore => _bestScore;
 
-  /// Initialize the provider by setting user ID and fetching best score.
-  Future<void> init(String userId) async {
-    // _userId = userId;
-    await fetchBestScore('567');
-  }
-
-  void incrementScore(int increment) async {
-    _score += increment;
-    notifyListeners();
-    await fetchBestScore('567');
-
-    print('Comparing current score and best score');
-    print('Current score: $_score');
-    print('Best score: $_bestScore');
-
-    if (_score > _bestScore) {
-      _bestScore = _score;
-      notifyListeners();
-      // _updateBestScoreInFirestore(_score);
-    }
-    else{
-      print('Current score is less than Best score');
-    }
-  }
-
   void resetScore() {
     _score = 0;
     notifyListeners();
@@ -42,9 +17,8 @@ class TotalXpProvider with ChangeNotifier {
 
   Future<void> fetchBestScore(String pin) async {
     print('Fetching best score');
-    try {
-      
-        _bestScore = await _scoreService.getUserScoresForGame(pin, 'MathEquations');
+    try {      
+        _bestScore = await _scoreService.getUserScoreForGame(pin, 'MathEquations');
         print('Fetched best score: $_bestScore');
         notifyListeners();
     } catch (e) {
@@ -52,14 +26,12 @@ class TotalXpProvider with ChangeNotifier {
     }
   }
 
-  Future<void> _updateBestScoreInFirestore(score) async {
-    try {
-      print('Updating the best score in Firestore');
-      // DocumentReference userDocRef = _firestore.collection('users').doc('0001');
-      // await userDocRef.set({'bestScore': score}, SetOptions(merge: true));
-      // print('Best score updated');
-    } catch (e) {
-      print('Error updating best score in Firestore: $e');
+  Future<void> updateBestScoreIfNeeded(String userPin, int sessionScore) async {
+    if (sessionScore > _bestScore) {
+      _bestScore = sessionScore;
+      notifyListeners();
+      await _scoreService.updateUserScoreForGame(userPin, 'MathEquations', bestScore);
+      print('Best score updated in Firestore: $_bestScore');
     }
   }
 }
