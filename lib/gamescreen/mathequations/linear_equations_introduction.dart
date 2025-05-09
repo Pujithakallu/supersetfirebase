@@ -75,7 +75,7 @@ class _LinearEquationsIntroductionState
   Widget build(BuildContext context) {
     final isSpanish = Provider.of<LanguageProvider>(context).isSpanish;
     final text = isSpanish ? spanishText : englishText;
-    final totalXp = Provider.of<TotalXpProvider>(context).score;
+    final totalXp = Provider.of<TotalXpProvider>(context).bestScore;
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     return Scaffold(
       appBar: AppBar(

@@ -6,18 +6,32 @@ import 'package:supersetfirebase/screens/home_screen.dart';
 import 'total_xp_display.dart';
 import 'total_xp_provider.dart';
 
-class MainMenu extends StatelessWidget {
+class MainMenu extends StatefulWidget {
   const MainMenu({Key? key}) : super(key: key);
+
+  @override
+  State<MainMenu> createState() => _MainMenuState();
+}
+
+class _MainMenuState extends State<MainMenu> {
+  @override
+  void initState() {
+    super.initState();
+    final totalXpProvider = Provider.of<TotalXpProvider>(context, listen: false);
+    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
+    totalXpProvider.fetchBestScore(userPin); // Replace "567" with the appropriate PIN or user ID
+  }
 
   @override
   Widget build(BuildContext context) {
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
-    final totalXp = Provider.of<TotalXpProvider>(context).score;
+    final totalXp = Provider.of<TotalXpProvider>(context).bestScore;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: FloatingActionButton(

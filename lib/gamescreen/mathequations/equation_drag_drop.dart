@@ -9,6 +9,7 @@ import 'score_manager.dart';
 import 'analytics_engine.dart';
 import 'total_xp_provider.dart';
 import 'total_xp_display.dart';
+import 'session_score_provider.dart';
 import 'package:supersetfirebase/utils/logout_util.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
@@ -382,6 +383,9 @@ class _EquationDragDropState extends State<EquationDragDrop> {
   @override
   void initState() {
     super.initState();
+    // Reset the session score for Game 1
+    final sessionScoreProvider = Provider.of<SessionScoreProvider>(context, listen: false);
+    sessionScoreProvider.resetGame1Score();
     _shuffledQuestions = List.from(_questions);
     _shuffleQuestions();
     _initializeDraggables();
@@ -397,7 +401,8 @@ class _EquationDragDropState extends State<EquationDragDrop> {
     _draggables = List.from(draggables);
   }
 
-  void _checkAnswers() {
+  void _checkAnswers() {    
+    String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     if (_scoreUpdated) return; // Prevent score from updating more than once
     bool allCorrect = true;
     for (int i = 0; i < _acceptedLabels.length; i++) {
@@ -423,10 +428,15 @@ class _EquationDragDropState extends State<EquationDragDrop> {
 
     if (allCorrect) {
       _showCorrectAnswerFeedback(context);
-      _scoreManager.incrementScore(
-          10); // Increment the score by 10 if all answers are correct
-      Provider.of<TotalXpProvider>(context, listen: false)
-          .incrementScore(10); // Update total XP
+      _scoreManager.incrementScore(10); // Increment the score by 10 if all answers are correct
+
+      // Update session's best score for this game
+      final sessionScoreProvider =  Provider.of<SessionScoreProvider>(context, listen: false);
+      sessionScoreProvider.updateGame1Score(_scoreManager.score);
+      final combinedSessionScore = sessionScoreProvider.game1BestScore + sessionScoreProvider.game2BestScore;
+      print('Combined session score - $combinedSessionScore');
+      Provider.of<TotalXpProvider>(context, listen: false).updateBestScoreIfNeeded(userPin, combinedSessionScore); // Update total XP
+
       _scoreUpdated = true; // Set flag to true to prevent further score updates
       _confettiController.play(); // Play confetti animation
 
@@ -512,7 +522,7 @@ class _EquationDragDropState extends State<EquationDragDrop> {
   @override
   Widget build(BuildContext context) {
     final isSpanish = Provider.of<LanguageProvider>(context).isSpanish;
-    final totalXp = Provider.of<TotalXpProvider>(context).score;
+    final totalXp = Provider.of<TotalXpProvider>(context).bestScore;
 
     if (_gameCompleted) {
       return Scaffold(

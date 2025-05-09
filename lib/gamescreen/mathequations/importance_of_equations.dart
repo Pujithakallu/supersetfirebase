@@ -56,7 +56,7 @@ class _ImportanceOfEquationsState extends State<ImportanceOfEquations> {
   @override
   Widget build(BuildContext context) {
     final isSpanish = Provider.of<LanguageProvider>(context).isSpanish;
-    final totalXp = Provider.of<TotalXpProvider>(context).score;
+    final totalXp = Provider.of<TotalXpProvider>(context).bestScore;
     final text = isSpanish ? spanishText : englishText;
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
 

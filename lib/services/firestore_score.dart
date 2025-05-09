@@ -1,4 +1,4 @@
- import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreService {
   final CollectionReference users = FirebaseFirestore.instance.collection('users');
@@ -51,13 +51,39 @@ class FirestoreService {
   }
   
   // To get user score in each game separately using user pin and gameKey
-  Future<int> getUserScoresForGame(String pin, String gameKey) async {
+  Future<int> getUserScoreForGame(String pin, String gameKey) async {
+    print('getUserScoreForGame - $pin');
     final doc = await users.doc(pin).get();
     if (!doc.exists) {
-      print('No scores found for $pin');
+      print('getUserScoreForGame - No scores found for $pin');
       return 0;
     }
     final data = doc.data() as Map<String, dynamic>;
     return data[gameKey];
+  }
+
+  Future<void> updateUserScoreForGame(String pin, String gameKey, int newScore) async {
+    print('updateUserScoreForGame - Updating $gameKey to $newScore for user $pin');
+    final userDoc = users.doc(pin);
+    try {
+      final snapshot = await userDoc.get();
+      if (snapshot.exists) {
+        await userDoc.set({gameKey: newScore}, SetOptions(merge: true));
+        print('updateUserScoreForGame - Successfully updated $gameKey for user $pin');
+      }
+      else{
+        await userDoc.set({
+          'MathMingle': 0,
+          'MathEquations': 0,
+          'MathOperators': 0,
+          'TotalBestScore': 0,
+        });        
+        await userDoc.set({gameKey: newScore}, SetOptions(merge: true));
+        print('updateUserScoreForGame - Successfully updated $gameKey for user $pin');
+      }
+      await updateTotalScore(pin);
+    } catch (e) {
+      print('updateUserScoreForGame - Error updating $gameKey for user $pin: $e');
+    }
   }
 }

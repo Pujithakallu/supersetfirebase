@@ -14,7 +14,7 @@ class WhatAreEquations extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
-    final totalXp = Provider.of<TotalXpProvider>(context).score;
+    final totalXp = Provider.of<TotalXpProvider>(context).bestScore;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
