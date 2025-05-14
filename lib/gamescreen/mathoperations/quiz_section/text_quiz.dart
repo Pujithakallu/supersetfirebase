@@ -11,6 +11,8 @@ import 'package:supersetfirebase/gamescreen/mathoperations/common/level/level_in
 import 'package:supersetfirebase/utils/logout_util.dart';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
+import 'package:supersetfirebase/services/firestore_score.dart';
+
 
 class TextQuiz extends StatefulWidget {
   final String opSign;
@@ -22,6 +24,8 @@ class TextQuiz extends StatefulWidget {
 }
 
 class _TextQuizState extends State<TextQuiz> {
+  late final FirestoreService _firestoreService;
+  late final String userPin;
   String? selectedAnswer;
   int questionIndex = 0;
   bool? isCorrect;
@@ -44,6 +48,9 @@ class _TextQuizState extends State<TextQuiz> {
   @override
   void initState() {
     super.initState();
+    
+    userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
+    _firestoreService = FirestoreService();
     if (widget.opSign == 'mix') {
       questions = getMixTextQuestions(widget.opSign);
     } else {
@@ -124,7 +131,7 @@ class _TextQuizState extends State<TextQuiz> {
     });
   }
 
-  void gotoNextQuestion() {
+  void gotoNextQuestion() async{
     if (selectedAnswer == null && !isAnswerSubmitted) {
       // Show a SnackBar if no answer is submitted
       ScaffoldMessenger.of(context).showSnackBar(
@@ -142,6 +149,13 @@ class _TextQuizState extends State<TextQuiz> {
       textEditingController.clear(); // Clear text field
     } else {
       widget.level.updateScore(score);
+      // Step 2: Get previously stored high score from Firestore
+      int previousHighScore = await _firestoreService.getUserScoreForGame(userPin, 'MathOperators');
+
+      // Step 3: Only update if the new total is higher
+      if (GlobalVariables.totalScore.value > previousHighScore) {
+        await _firestoreService.updateUserScoreForGame(userPin, 'MathOperators', GlobalVariables.totalScore.value);
+      }
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -151,7 +165,9 @@ class _TextQuizState extends State<TextQuiz> {
                     score: score,
                     questionResults: questionResults,
                     questionType: "text",
-                  )));
+                  ))).then((_) {
+                        Navigator.pop(context, 'refresh'); // 👈 Send refresh back to PlayPage
+                      });
     }
     setState(() {});
   }

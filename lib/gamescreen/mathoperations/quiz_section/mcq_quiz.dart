@@ -14,6 +14,8 @@ import 'package:supersetfirebase/utils/logout_util.dart';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/analytics_engine.dart';
+import 'package:supersetfirebase/services/firestore_score.dart';
+
 
 class McqQuiz extends StatefulWidget {
   final String opSign;
@@ -26,6 +28,8 @@ class McqQuiz extends StatefulWidget {
 }
 
 class _McqQuizState extends State<McqQuiz> {
+  late final FirestoreService _firestoreService;
+  late final String userPin;
   int? selectedAnswerIndex;
   int questionIndex = 0;
   List<String> languageNames = ["English", "Spanish"];
@@ -43,6 +47,9 @@ class _McqQuizState extends State<McqQuiz> {
   @override
   void initState() {
     super.initState();
+    
+    userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
+    _firestoreService = FirestoreService();
     if (widget.opSign == 'mix') {
       questions = getMixMcqQuestions(widget.opSign);
     } else {
@@ -301,13 +308,21 @@ class _McqQuizState extends State<McqQuiz> {
                         //SizedBox(width: 170,),
                         Spacer(flex: 1),
                         InkWell(
-                          onTap: () {
+                          onTap: () async{
                             //print("..Current Question Index: $questionIndex");
                             //print("..Total Questions: ${questions.length}");
                             if (questionIndex == questions.length - 1 &&
                                 selectedAnswerIndex != null) {
                               // print("..Navigating to results page.");
                               widget.level.updateScore(score);
+                      
+                              // Step 2: Get previously stored high score from Firestore
+                              int previousHighScore = await _firestoreService.getUserScoreForGame(userPin, 'MathOperators');
+
+                              // Step 3: Only update if the new total is higher
+                              if (GlobalVariables.totalScore.value > previousHighScore) {
+                                await _firestoreService.updateUserScoreForGame(userPin, 'MathOperators', GlobalVariables.totalScore.value);
+                              }
                               log("global score: " +
                                   GlobalVariables.totalScore.toString());
                               log(GlobalVariables
@@ -323,7 +338,9 @@ class _McqQuizState extends State<McqQuiz> {
                                             score: score,
                                             questionResults: questionResults,
                                             questionType: "mcq",
-                                          )));
+                                          ))).then((_) {
+                                                Navigator.pop(context, 'refresh'); 
+                                              });
                             } else if (selectedAnswerIndex != null) {
                               gotoNextQuestion();
                             }

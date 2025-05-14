@@ -151,10 +151,9 @@ class ResultsPage extends StatelessWidget {
                                 // onTap: () => Navigator.popUntil(context, ModalRoute.withName('/level')),
 
                                 onTap: () {
-                                  Navigator.popUntil(
-                                      context, ModalRoute.withName('/'));
-                                  Navigator.pushNamed(context, '/level');
+                                  Navigator.pop(context); // Just pop ResultsPage and return to McqQuiz or TextQuiz
                                 },
+
 
                                 borderRadius: BorderRadius.circular(30),
                                 child: Container(
