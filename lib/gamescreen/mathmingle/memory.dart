@@ -34,7 +34,7 @@ class _MemoryGameState extends State<MemoryGame> {
   int _matchedPairs = 0;
   int? chapter;
   late Timer _timer;
-  int _seconds = 60;
+  int _seconds = 120;
 
   @override
   void initState() {
@@ -80,7 +80,7 @@ class _MemoryGameState extends State<MemoryGame> {
                 Navigator.pop(context);
                 restart();
                 setState(() {
-                  _seconds = 60;
+                  _seconds = 120;
                   _initializeTimer();
                 });
               },
@@ -264,7 +264,8 @@ class _MemoryGameState extends State<MemoryGame> {
           });
           if (_matchedPairs == _data.length ~/ 2) {
             _timer.cancel();
-            int score = ((_seconds / 60) * 10).toInt();
+            //int score = ((_seconds / 120) * 10).toInt();
+            int score = (_seconds >= 80 ? 10 : (_seconds / 120) * 10).toInt();
             showEndGameDialog(score);
             Future.delayed(Duration.zero, () {
               Provider.of<GameData1>(context, listen: false).setTotal(score);
@@ -288,35 +289,54 @@ class _MemoryGameState extends State<MemoryGame> {
     }
   }
 
+
+
   void showEndGameDialog(int score) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
+        final screenWidth = MediaQuery.of(dialogContext).size.width;
+
+        // Define responsive sizes
+        final double titleFontSize = screenWidth < 600 ? 20 : 33;
+        final double messageFontSize = screenWidth < 600 ? 18 : 29;
+        final double scoreFontSize = screenWidth < 600 ? 16 : 25;
+        final double buttonFontSize = screenWidth < 600 ? 16 : 25;
+        final double contentPadding = screenWidth < 600 ? 16 : 30;
+
         return AlertDialog(
-          title: const Text("C O N G R A T U L A T I O N S ! ! !", style: TextStyle(fontSize: 33)),
+          title: Text(
+            "C O N G R A T U L A T I O N S ! ! !",
+            style: TextStyle(fontSize: titleFontSize),
+            textAlign: TextAlign.center,
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text("You've Matched All Cards!", style: TextStyle(fontSize: 29), textAlign: TextAlign.center),
+              Text(
+                "You've Matched All Cards!",
+                style: TextStyle(fontSize: messageFontSize),
+                textAlign: TextAlign.center,
+              ),
               const SizedBox(height: 20),
-              Text("Score: \$score/10", style: const TextStyle(fontSize: 25)),
+              Text("Score: $score/10", style: TextStyle(fontSize: scoreFontSize)),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
-                    child: const Text("N E W  G A M E", style: TextStyle(fontSize: 25)),
+                    child: Text("N E W  G A M E", style: TextStyle(fontSize: buttonFontSize)),
                     onPressed: () {
                       Navigator.of(dialogContext).pop();
                       restart();
                       setState(() {
-                        _seconds = 60;
+                        _seconds = 120;
                         _initializeTimer();
                       });
                     },
                   ),
                   TextButton(
-                    child: const Text("E X I T", style: TextStyle(fontSize: 25)),
+                    child: Text("E X I T", style: TextStyle(fontSize: buttonFontSize)),
                     onPressed: () {
                       Navigator.of(dialogContext).pop();
                       Navigator.of(context).pop();
@@ -326,7 +346,7 @@ class _MemoryGameState extends State<MemoryGame> {
               ),
             ],
           ),
-          contentPadding: const EdgeInsets.all(30),
+          contentPadding: EdgeInsets.all(contentPadding),
         );
       },
     );

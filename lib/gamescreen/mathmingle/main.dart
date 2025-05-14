@@ -151,52 +151,91 @@ class WelcomeScreen extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Back Button (top left)
-                Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: FloatingActionButton(
-                    heroTag: "backButton",
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => home.HomeScreen(pin: userPin)),
-                      );
-                    },
-                    foregroundColor: Colors.black,
-                    backgroundColor: Colors.lightBlue,
-                    shape: const CircleBorder(),
-                    mini: true,
-                    child: const Icon(Icons.arrow_back_rounded, size: 24),
-                  ),
-                ),
+                Builder(
+                builder: (context) {
+                  final screenWidth = MediaQuery.of(context).size.width;
 
-                // Center PIN (expanded center)
-                Expanded(
-                  child: Center(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.9),
-                        borderRadius: BorderRadius.circular(15),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Text(
-                        'PIN: $userPin',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                  // Responsive values based on screen width
+                  final double buttonSize = screenWidth < 600 ? 30 : 50;
+                  final double iconSize = screenWidth < 600 ? 18 : 28;
+
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: SizedBox(
+                      width: buttonSize,
+                      height: buttonSize,
+                      child: RawMaterialButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => home.HomeScreen(pin: userPin)),
+                          );
+                        },
+                        fillColor: Colors.lightBlue,
+                        shape: const CircleBorder(),
+                        elevation: 2.0,
+                        constraints: BoxConstraints.tightFor(
+                          width: buttonSize,
+                          height: buttonSize,
+                        ),
+                        child: Icon(
+                          Icons.arrow_back_rounded,
+                          size: iconSize,
+                          color: Colors.black,
                         ),
                       ),
                     ),
+                  );
+                },
+              ),
+
+
+                // Center PIN (expanded center)            
+                Expanded(
+                  child: Builder(
+                    builder: (context) {
+                      final screenWidth = MediaQuery.of(context).size.width;
+
+                      // Responsive values based on screen width
+                      final double fontSize = screenWidth < 600 ? 12 : 16;
+                      final double horizontalPadding = screenWidth < 600 ? 10 : 16;
+                      final double verticalPadding = screenWidth < 600 ? 6 : 8;
+                      final double borderRadius = screenWidth < 600 ? 10 : 15;
+
+                      return Center(
+                        child: Transform.translate(
+                        offset: const Offset(-12, 0), // Move 12 logical pixels to the left
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: horizontalPadding,
+                            vertical: verticalPadding,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.9),
+                            borderRadius: BorderRadius.circular(borderRadius),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Text(
+                            'PIN: $userPin',
+                            style: TextStyle(
+                              fontSize: fontSize,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                       ),
+                      );
+                    },
                   ),
                 ),
+
               ],
             ),
           ),
