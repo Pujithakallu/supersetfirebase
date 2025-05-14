@@ -151,10 +151,55 @@ class MathMingleLearnPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
+        // leading: IconButton(
+        //   icon: Icon(Icons.arrow_back, color: Colors.black),
+        //   onPressed: () => Navigator.pop(context),
+        // ),
+        leading: Builder(
+          builder: (context) {
+            final screenWidth = MediaQuery.of(context).size.width;
+
+            // Responsive scaling
+            double buttonSize;
+            double iconSize;
+
+            if (screenWidth < 600) {
+              buttonSize = 25;
+              iconSize = 18;
+            } else if (screenWidth >= 600 && screenWidth < 1000) {
+              buttonSize = 50;
+              iconSize = 28;
+            } else {
+              buttonSize = 50;
+              iconSize = 28;
+            }
+
+            return Padding(
+              padding: const EdgeInsets.only(left: 12.0),
+              child: SizedBox(
+                width: buttonSize,
+                height: buttonSize,
+                child: RawMaterialButton(
+                  onPressed: () => Navigator.pop(context),
+                  fillColor: Colors.lightBlue,
+                  shape: const CircleBorder(),
+                  elevation: 2.0,
+                  constraints: BoxConstraints.tightFor(
+                    width: buttonSize,
+                    height: buttonSize,
+                  ),
+                  child: Icon(
+                    Icons.arrow_back,
+                    size: iconSize,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            );
+          },
         ),
+
+
       ),
      
       floatingActionButton: SizedBox(

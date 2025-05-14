@@ -78,6 +78,23 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
     }
 
     return Scaffold(
+       //logout button
+        floatingActionButton: SizedBox(
+              width: MediaQuery.of(context).size.height > 700 ? 56 : 40,
+              height: MediaQuery.of(context).size.height > 700 ? 56 : 40,
+              child: FloatingActionButton(
+                heroTag: "logoutButton",
+                onPressed: () => logout(context),
+                backgroundColor: Colors.blue,
+                child: Icon(
+                  Icons.logout_rounded,
+                  size: MediaQuery.of(context).size.height > 700 ? 28 : 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+             floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+
       extendBodyBehindAppBar: true,
       appBar: PreferredSize(
         preferredSize:
@@ -92,20 +109,34 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
               automaticallyImplyLeading: false, // Prevents default back button
             ),
 
+            
             // Back Button (Styled as FloatingActionButton)
             Positioned(
               left: 16,
               top: 12,
-              child: FloatingActionButton(
-                heroTag: "backButton",
-                onPressed: () => Navigator.pop(context),
-                foregroundColor: Colors.black,
-                backgroundColor: Colors.lightBlue,
-                shape: const CircleBorder(),
-                mini: true, // Smaller button
-                child: const Icon(Icons.arrow_back_rounded, size: 32),
+              child: Builder(
+                builder: (context) {
+                  final screenWidth = MediaQuery.of(context).size.width;
+                  final double buttonSize = screenWidth < 600 ? 30 : 50;
+                  final double iconSize = screenWidth < 600 ? 18 : 28;
+
+                  return SizedBox(
+                    width: buttonSize,
+                    height: buttonSize,
+                    child: FloatingActionButton(
+                      heroTag: "backButton",
+                      onPressed: () => Navigator.pop(context),
+                      foregroundColor: Colors.black,
+                      backgroundColor: Colors.lightBlue,
+                      shape: const CircleBorder(),
+                      mini: false, // We're handling size with SizedBox now
+                      child: Icon(Icons.arrow_back_rounded, size: iconSize),
+                    ),
+                  );
+                },
               ),
             ),
+
 
             // Column for PIN and VOCABULARY
             Positioned(
@@ -114,34 +145,50 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   // PIN Display (Smaller Width, Centered)
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    constraints: const BoxConstraints(
-                      maxWidth: 120, // Prevents it from being too wide
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 4,
-                          offset: Offset(0, 2),
+                  Builder(
+                    builder: (context) {
+                      final screenWidth = MediaQuery.of(context).size.width;
+
+                      // Fixed size when wide; responsive when narrow
+                      final double fontSize = screenWidth < 600 ? 12 : 14;
+                      final double horizontalPadding = screenWidth < 600 ? 10 : 12;
+                      final double verticalPadding = screenWidth < 600 ? 6 : 6;
+                      final double borderRadius = screenWidth < 600 ? 10 : 12;
+                      final double maxWidth = screenWidth < 600 ? 80 : 120;
+
+                      return Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: horizontalPadding,
+                          vertical: verticalPadding,
                         ),
-                      ],
-                    ),
-                    child: Center(
-                      child: Text(
-                        'PIN: $userPin',
-                        style: const TextStyle(
-                          fontSize: 14, // Slightly smaller font for better fit
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                        constraints: BoxConstraints(
+                          maxWidth: maxWidth,
                         ),
-                      ),
-                    ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(borderRadius),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Text(
+                            'PIN: $userPin',
+                            style: TextStyle(
+                              fontSize: fontSize,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
+
 
                   const SizedBox(
                       height: 4), // Small gap between PIN and VOCABULARY
@@ -160,20 +207,7 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
               ),
             ),
 
-            // Logout Button (Styled as FloatingActionButton)
-            Positioned(
-              right: 16,
-              top: 12,
-              child: FloatingActionButton(
-                heroTag: "logoutButton",
-                onPressed: () => logout(context),
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.blue,
-                shape: const CircleBorder(),
-                mini: true, // Smaller button
-                child: const Icon(Icons.logout_rounded, size: 32),
-              ),
-            ),
+           
           ],
         ),
       ),
