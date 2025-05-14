@@ -109,7 +109,7 @@ class PlayPage extends StatelessWidget {
                 top: 12,
                 child: FloatingActionButton(
                   heroTag: "backButton",
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => Navigator.pop(context, 'refresh'),
                   foregroundColor: Colors.black,
                   backgroundColor: Colors.white,
                   shape: const CircleBorder(),
@@ -286,6 +286,8 @@ class PlayPage extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: InkWell(
         onTap: () {
+          GlobalVariables.totalScore.value = 0;
+
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => nextPage));
         },

@@ -13,6 +13,8 @@ import 'package:supersetfirebase/screens/home_screen.dart';
 import 'package:supersetfirebase/utils/logout_util.dart';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
+import 'package:supersetfirebase/services/firestore_score.dart';
+
 
 class Operators extends StatelessWidget {
   final String userPin;
@@ -48,6 +50,35 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int? bestScore;
+  final FirestoreService _firestoreService = FirestoreService();
+
+  void _loadMathOperatorsScore() async {
+    print("loading score inside function");
+    int score = await _firestoreService.getUserScoreForGame(widget.pin, 'MathOperators');
+    setState(() {
+      bestScore = score;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    GlobalVariables.totalScore.value = 0; // Reset session score on entry
+    // _resetScore(); // <-- temp for testing
+    _loadMathOperatorsScore();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadMathOperatorsScore();
+  }
+
+  // void _resetScore() async {
+  //   await _firestoreService.updateUserScoreForGame(widget.pin, 'MathOperators', 0);
+  // }
+
   @override
   Widget build(BuildContext context) {
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
@@ -70,6 +101,7 @@ class _HomePageState extends State<HomePage> {
                   MaterialPageRoute(
                       builder: (context) => HomeScreen(pin: userPin)),
                 );
+                _loadMathOperatorsScore();
               },
               foregroundColor: Colors.white,
               backgroundColor: Colors.white,
@@ -113,7 +145,7 @@ class _HomePageState extends State<HomePage> {
                 valueListenable: GlobalVariables.totalScore,
                 builder: (context, int score, child) {
                   return Text(
-                    'Score: $score',
+                    'Score: $bestScore',
                     style: TextStyle(
                       fontSize:
                           baseScale * 0.02, // Adjusted font size for visibility
@@ -258,11 +290,15 @@ class _HomePageState extends State<HomePage> {
                         ),
                         Spacer(flex: 1),
                         InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => PlayPage()));
+                          onTap: () async {
+                            final result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => PlayPage()),
+                            );
+
+                            if (result == 'refresh') {
+                              _loadMathOperatorsScore();
+                            }
                           },
                           borderRadius: BorderRadius.circular(15),
                           child: Container(
