@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
 import 'score_topbar.dart';
 import 'package:supersetfirebase/utils/logout_util.dart';
+import 'package:confetti/confetti.dart';
 
 class GameData1 extends ChangeNotifier {
   int total = 0;
@@ -24,6 +25,7 @@ class MemoryGame extends StatefulWidget {
 }
 
 class _MemoryGameState extends State<MemoryGame> {
+  late ConfettiController _confettiController;
   int _previousIndex = -1;
   bool _flip = false;
   bool _wait = false;
@@ -38,6 +40,7 @@ class _MemoryGameState extends State<MemoryGame> {
 
   @override
   void initState() {
+    _confettiController = ConfettiController(duration: const Duration(seconds: 1));
     super.initState();
     _initializeTimer();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -51,6 +54,7 @@ class _MemoryGameState extends State<MemoryGame> {
   void dispose() {
     _timer.cancel();
     super.dispose();
+    _confettiController.dispose();
   }
 
   void _initializeTimer() {
@@ -138,109 +142,139 @@ class _MemoryGameState extends State<MemoryGame> {
     ),
     child: SafeArea( // Prevents UI elements from going behind status bar
       child: SingleChildScrollView( // Prevents bottom overflow
-        child: Column(
-          children: <Widget>[
-            const SizedBox(height: 10), 
+        //child: Column(
+        child: Stack(
+          children: [
+           Column(
+              children: <Widget>[
+                const SizedBox(height: 10), 
 
-            // Title & Timer
-            Text(
-              'R E M E M B E R  &  W I N',
-              style: TextStyle(
-              //fontSize: 50, 
-              fontSize: MediaQuery.of(context).size.width > 600 
-              ? 50 // Set max font size for larger windows
-              : MediaQuery.of(context).size.width / 14, // Dynamically scale for smaller windows
-              fontWeight: FontWeight.bold, 
-              letterSpacing: 2.0
+              // Title & Timer
+              Text(
+                'R E M E M B E R  &  W I N',
+                style: TextStyle(
+                //fontSize: 50, 
+                fontSize: MediaQuery.of(context).size.width > 600 
+                ? 50 // Set max font size for larger windows
+                : MediaQuery.of(context).size.width / 14, // Dynamically scale for smaller windows
+                fontWeight: FontWeight.bold, 
+                letterSpacing: 2.0
+                ),
+                textAlign: TextAlign.center,
+                strutStyle: StrutStyle(height: 1.0), 
               ),
-              textAlign: TextAlign.center,
-              strutStyle: StrutStyle(height: 1.0), 
-            ),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    double screenWidth = constraints.maxWidth;
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      double screenWidth = constraints.maxWidth;
 
-                    // Check if the screen width is large enough to maintain the 350px width
-                    double imageWidth = screenWidth > 600 ? 350 : screenWidth * 0.50;
+                      // Check if the screen width is large enough to maintain the 350px width
+                      double imageWidth = screenWidth > 600 ? 350 : screenWidth * 0.50;
 
-                    return Image.asset(
-                      "assets/Mathmingle/Memory_game_background.png",
-                      width: imageWidth,
-                      fit: BoxFit.cover, // Ensures the image scales correctly
-                    );
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 70),
-                  child: ClockDisplay(seconds: _seconds),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 25),
-            // Game Grid
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.6, // Limits grid height to prevent overflow
-              child: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: crossAxisCount,
-                    mainAxisSpacing: 8.0,
-                    crossAxisSpacing: 8.0,
-                    childAspectRatio: 1.5,
+                      return Image.asset(
+                        "assets/Mathmingle/Memory_game_background.png",
+                        width: imageWidth,
+                        fit: BoxFit.cover, // Ensures the image scales correctly
+                      );
+                    },
                   ),
-                  itemCount: _data.length,
-                  itemBuilder: (context, index) {
-                    return MouseRegion(
-                    cursor: SystemMouseCursors.click,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: FlipCard(
-                        key: _cardStateKeys[index],
-                        onFlip: () {
-                          if (!_wait) checkMatch(index);
-                        },
-                        flipOnTouch: !_wait && _cardFlips[index],
-                        direction: FlipDirection.HORIZONTAL,
-                        front: getQuestionMarkCard(),
-                        back: LayoutBuilder(
-                          builder: (context, constraints) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                color: _cardFlips[index] ? Colors.grey[100] : Colors.green,
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              padding: const EdgeInsets.all(8.0),
-                              alignment: Alignment.center,
-                              child: FittedBox(
-                                fit: BoxFit.scaleDown, // Ensures text shrinks when needed
-                                child: Text(
-                                  _data[index],
-                                  style: TextStyle(
-                                    fontSize: constraints.maxWidth / 8, // Adjust divisor for better fit
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            );
+                  Padding(
+                    padding: const EdgeInsets.only(top: 70),
+                    child: ClockDisplay(seconds: _seconds),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 25),
+              // Game Grid
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.6, // Limits grid height to prevent overflow
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      mainAxisSpacing: 8.0,
+                      crossAxisSpacing: 8.0,
+                      childAspectRatio: 1.5,
+                    ),
+                    itemCount: _data.length,
+                    itemBuilder: (context, index) {
+                      return MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: FlipCard(
+                          key: _cardStateKeys[index],
+                          onFlip: () {
+                            if (!_wait) checkMatch(index);
                           },
+                          flipOnTouch: !_wait && _cardFlips[index],
+                          direction: FlipDirection.HORIZONTAL,
+                          front: getQuestionMarkCard(),
+                          back: LayoutBuilder(
+                            builder: (context, constraints) {
+                              return Container(
+                                decoration: BoxDecoration(
+                                  color: _cardFlips[index] ? Colors.grey[100] : Colors.green,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                padding: const EdgeInsets.all(8.0),
+                                alignment: Alignment.center,
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown, // Ensures text shrinks when needed
+                                  child: Text(
+                                    _data[index],
+                                    style: TextStyle(
+                                      fontSize: constraints.maxWidth / 8, // Adjust divisor for better fit
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                  ),
                 ),
               ),
+             ],
+           ),
+            Align(
+            alignment: Alignment.topCenter,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final double width = constraints.maxWidth;
+                final double scale = width < 600 ? 0.5 : 1.0; // Scale down on small screens
+
+                return ConfettiWidget(
+                  confettiController: _confettiController,
+                  blastDirection: pi / 2, // Downward
+                  maxBlastForce: 20 * scale,
+                  minBlastForce: 10 * scale,
+                  emissionFrequency: 0.05 * scale,
+                  numberOfParticles: (25 * scale).round(),
+                  gravity: 0.3,
+                  colors: const [
+                    Colors.red,
+                    Colors.blue,
+                    Colors.green,
+                    Colors.orange,
+                    Colors.purple,
+                  ],
+                );
+              },
             ),
-          ],
+          ),
+        ],
         ),
-        
       ),
     ),
   ),
@@ -262,6 +296,7 @@ class _MemoryGameState extends State<MemoryGame> {
             _cardFlips[currentIndex] = false;
             _matchedPairs++;
           });
+          _confettiController.play(); // Celebrate match
           if (_matchedPairs == _data.length ~/ 2) {
             _timer.cancel();
             //int score = ((_seconds / 120) * 10).toInt();

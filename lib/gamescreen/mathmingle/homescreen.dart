@@ -7,7 +7,7 @@ import 'package:supersetfirebase/gamescreen/mathmingle/matching.dart';
 import 'package:supersetfirebase/gamescreen/mathmingle/memory.dart';
 import 'score_topbar.dart';
 import 'studymaterial.dart';
-//import 'package:auto_size_text/auto_size_text.dart';
+
 
 class MyHomePage extends StatefulWidget {
   final int chapterNumber;
@@ -24,7 +24,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
 final screenWidth = MediaQuery.of(context).size.width;
   final bool isSmallScreen = screenWidth < 600; // You can adjust this threshold
-
+  final BoxFit imageFit = screenWidth < 1000 ? BoxFit.scaleDown : BoxFit.none;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -53,10 +53,12 @@ final screenWidth = MediaQuery.of(context).size.width;
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
+           // Choose fit based on screen width
           image: DecorationImage(
             image: AssetImage("assets/Mathmingle/homescreen/Learn_page.png"),
-            fit: BoxFit.scaleDown,
+             fit: imageFit,
+             scale: 0.9, // Higher value = smaller image
           ),
           gradient: LinearGradient(
             colors: [Colors.lightBlue, Colors.white],
@@ -151,10 +153,6 @@ class MathMingleLearnPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        // leading: IconButton(
-        //   icon: Icon(Icons.arrow_back, color: Colors.black),
-        //   onPressed: () => Navigator.pop(context),
-        // ),
         leading: Builder(
           builder: (context) {
             final screenWidth = MediaQuery.of(context).size.width;
