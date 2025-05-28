@@ -25,6 +25,8 @@ class MemoryGame extends StatefulWidget {
 }
 
 class _MemoryGameState extends State<MemoryGame> {
+  bool _showCorrectIcon = false;
+  int _currentlyFlippedCount = 0;
   late ConfettiController _confettiController;
   int _previousIndex = -1;
   bool _flip = false;
@@ -103,6 +105,7 @@ class _MemoryGameState extends State<MemoryGame> {
       _matchedPairs = 0;
       _flip = false;
       _wait = false;
+      _currentlyFlippedCount = 0;
     });
   }
 
@@ -207,38 +210,63 @@ class _MemoryGameState extends State<MemoryGame> {
                       cursor: SystemMouseCursors.click,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: FlipCard(
-                          key: _cardStateKeys[index],
-                          onFlip: () {
-                            if (!_wait) checkMatch(index);
+                        child: GestureDetector(
+                          onTap: () {
+                            // Step 3: Add this condition to allow flipping only if less than 2 cards are flipped
+                            if (_wait || !_cardFlips[index]) return;
+                            if (_cardStateKeys[index].currentState?.isFront == false) return;
+                            if (_currentlyFlippedCount >= 2) return;
+
+                            _cardStateKeys[index].currentState?.toggleCard();
+                            _currentlyFlippedCount++;
+                            checkMatch(index);
                           },
-                          flipOnTouch: !_wait && _cardFlips[index],
-                          direction: FlipDirection.HORIZONTAL,
-                          front: getQuestionMarkCard(),
-                          back: LayoutBuilder(
-                            builder: (context, constraints) {
-                              return Container(
-                                decoration: BoxDecoration(
+                          child: FlipCard(
+                            key: _cardStateKeys[index],
+                            flipOnTouch: false, // turn off auto-flip
+                            direction: FlipDirection.HORIZONTAL,
+                            front: getQuestionMarkCard(),
+                            back: LayoutBuilder(
+                              builder: (context, constraints) {
+                                return Container(
+                                  decoration: BoxDecoration(
                                   color: _cardFlips[index] ? Colors.grey[100] : Colors.green,
                                   borderRadius: BorderRadius.circular(5),
-                                ),
-                                padding: const EdgeInsets.all(8.0),
-                                alignment: Alignment.center,
-                                child: FittedBox(
-                                  fit: BoxFit.scaleDown, // Ensures text shrinks when needed
-                                  child: Text(
-                                    _data[index],
-                                    style: TextStyle(
-                                      fontSize: constraints.maxWidth / 8, // Adjust divisor for better fit
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    textAlign: TextAlign.center,
+                                  border: Border.all(
+                                    color: !_cardFlips[index] ? Colors.white : Colors.transparent, // White border
+                                    width: 4, // Thicker border for more emphasis
                                   ),
+                                  boxShadow: !_cardFlips[index]
+                                      ? [
+                                          BoxShadow(
+                                            color: Colors.white.withOpacity(0.9), // Almost fully bright white
+                                            blurRadius: 20,  // Higher blur makes glow softer and larger
+                                            spreadRadius: 5, // Makes the glow spread outward more
+                                            offset: const Offset(0, 0), // Centered glow
+                                          ),
+                                        ]
+                                      : [],
                                 ),
-                              );
-                            },
+
+                                  padding: const EdgeInsets.all(8.0),
+                                  alignment: Alignment.center,
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      _data[index],
+                                      style: TextStyle(
+                                        fontSize: constraints.maxWidth / 8,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         ),
+
                       ),
                     );
                   },
@@ -253,15 +281,16 @@ class _MemoryGameState extends State<MemoryGame> {
               builder: (context, constraints) {
                 final double width = constraints.maxWidth;
                 final double scale = width < 600 ? 0.5 : 1.0; // Scale down on small screens
+                final double emissionFrequency = width < 600 ? 0.05 * scale : 0.1; // Adjust emission frequency based on screen size
 
                 return ConfettiWidget(
                   confettiController: _confettiController,
                   blastDirection: pi / 2, // Downward
                   maxBlastForce: 20 * scale,
-                  minBlastForce: 10 * scale,
-                  emissionFrequency: 0.05 * scale,
+                  minBlastForce: 10 * scale,             
+                  emissionFrequency: emissionFrequency,
                   numberOfParticles: (25 * scale).round(),
-                  gravity: 0.3,
+                  gravity: 0.1,
                   colors: const [
                     Colors.red,
                     Colors.blue,
@@ -273,6 +302,32 @@ class _MemoryGameState extends State<MemoryGame> {
               },
             ),
           ),
+          Positioned(
+          top: MediaQuery.of(context).size.width < 600 ? 210 : 230, // Move up when minimized
+          left: 0,
+          right: 50,
+          child: AnimatedOpacity(
+            duration: const Duration(milliseconds: 500),
+            opacity: _showCorrectIcon ? 1.0 : 0.0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.check_circle, color: Colors.green[900], size: 28),
+                SizedBox(width: 5),
+                Text(
+                    "Correct!",
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width < 600 ? 16 : 28,
+                      color: Colors.green[900],
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+
+
         ],
         ),
       ),
@@ -295,7 +350,17 @@ class _MemoryGameState extends State<MemoryGame> {
             _cardFlips[_previousIndex] = false;
             _cardFlips[currentIndex] = false;
             _matchedPairs++;
-          });
+            _currentlyFlippedCount = 0;
+            _showCorrectIcon = true;
+          }
+          );
+          Future.delayed(const Duration(seconds: 1), () {
+          if (mounted) {
+            setState(() {
+              _showCorrectIcon = false;
+            });
+          }
+        });
           _confettiController.play(); // Celebrate match
           if (_matchedPairs == _data.length ~/ 2) {
             _timer.cancel();
@@ -316,6 +381,7 @@ class _MemoryGameState extends State<MemoryGame> {
               if (!mounted) return;
               setState(() {
                 _wait = false;
+                _currentlyFlippedCount = 0;                
               });
             });
           });
@@ -573,7 +639,6 @@ Widget build(BuildContext context) {
             height: 40,
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
-              //color: Colors.lightBlue,
               color: Colors.grey[400], // Light grey
               
             ),
