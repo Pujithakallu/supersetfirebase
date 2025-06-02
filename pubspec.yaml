@@ -44,6 +44,7 @@ flutter:
     - assets/Mathmingle/Memory_game_background.png
     - assets/Mathmingle/audio/
     - assets/Mathmingle/homescreen/
+    - assets/Mathmingle/Parallel.png
     - assets/Mathmingle/matchGame/chapter1.json
     - assets/Mathmingle/matchGame/chapter2.json
     - assets/Mathmingle/matchGame/chapter3.json

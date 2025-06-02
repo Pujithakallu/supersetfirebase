@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:supersetfirebase/utils/logout_util.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
 import 'score_topbar.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class GameData extends ChangeNotifier {
   int total = 0;
@@ -26,16 +27,25 @@ class MatchGame extends StatefulWidget {
 class _MatchGameState extends State<MatchGame> {
   late List<ItemModel> items;
   late List<ItemModel> items2;
+  // define two separate players:
+  late AudioPlayer _tickPlayer;
+  late AudioPlayer _wordPlayer;
   int score = 0;
   bool gameOver = false;
   bool isGameStarted = false;
   int? chapter;
+
+  late AudioPlayer _audioPlayer;
 
   @override
   void initState() {
     super.initState();
     items = [];
     items2 = [];
+     // Initialize the audio player.
+    _audioPlayer = AudioPlayer();
+    _tickPlayer = AudioPlayer();
+   _wordPlayer = AudioPlayer();
   }
 
   @override
@@ -318,6 +328,7 @@ class _MatchGameState extends State<MatchGame> {
                                           score += 2;
                                           item.accepting = false;
                                         });
+                                        showMatchPopup(item.name);
                                       } else {
                                         setState(() {
                                           item.accepting = false;
@@ -505,6 +516,110 @@ class _MatchGameState extends State<MatchGame> {
       items2.shuffle();
     });
   }
+
+void showMatchPopup(String matchedWord) {
+  final fileName = matchedWord.toLowerCase().replaceAll("/", "_");
+  String fileName2 = fileName;
+  if (fileName=="≠")fileName2 = "not_equal";
+ 
+  // 1) Play tick first:
+  _tickPlayer.play(AssetSource('Mathmingle/audio/Correct_Answer_Tick.mp3')).then((_) {
+    // 2) Only after tick finishes play the matchedWord audio:   
+  _wordPlayer.play(AssetSource('Mathmingle/audio/$fileName.mp3'));
+  //_wordPlayer.play(AssetSource('Mathmingle/audio/$matchedWord.mp3'));
+  });
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      final screenHeight = MediaQuery.of(context).size.height;
+
+      // If screen height < 600, use 300×350; otherwise use 400×450.
+      final dialogWidth = screenHeight < 600 ? 200.0 : 400.0;
+      //final dialogHeight = screenHeight < 600 ? 300.0 : 450.0;
+      final dialogHeight = screenHeight < 400
+        ? 200.0
+        : (screenHeight < 600 ? 300.0 : 450.0);
+      //final imageHeight = screenHeight < 600 ? 100.0 : 320.0;
+      final textFontSize = screenHeight < 600 ? 16.0 : 22.0;
+      final partypopperHeight = screenHeight < 600 ? 20.0 : 28.0;
+      final partypopperWidth = screenHeight < 600 ? 20.0 : 28.0;
+      final iconsize = screenHeight < 600 ? 30.0 : 40.0;
+      final matchedwordfontSize = screenHeight < 600 ? 16.0 : 22.0;
+
+      final imageHeight = screenHeight < 400
+      ? 100.0
+      : (screenHeight < 600
+          ? 200.0
+          : 320.0);
+   
+      return AlertDialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        contentPadding: const EdgeInsets.all(10),
+        content: SizedBox(
+          width: dialogWidth,  // Set custom width
+          height: dialogHeight, // Set custom height
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Well done! You got it right.",
+                    style: TextStyle(fontSize: textFontSize),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(width: 4),
+                  Image.asset(
+                    'assets/Mathmingle/party-popper.png',
+                    height: partypopperHeight,
+                    width: partypopperWidth,
+                  ),
+                  
+                  Icon(
+                    Icons.check_circle,
+                    color: Colors.green[700],
+                    size: iconsize, // adjust size as needed
+                  ),
+                ],
+              ),
+             
+              //const SizedBox(height: 16),
+              const SizedBox(height: 8),
+              
+              Image.asset(
+                'assets/Mathmingle/$fileName2.png',
+                height: imageHeight,
+                fit: BoxFit.contain,
+              ),
+              //const SizedBox(height: 16),
+              const SizedBox(height: 8),
+              Text(
+                matchedWord,
+                style: TextStyle(fontSize: matchedwordfontSize, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+        actionsPadding: const EdgeInsets.only(bottom: 10),
+        actions: [
+          Center(
+            child: TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text("OK", style: TextStyle(fontSize: 16)),
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+
 }
 
 class ItemModel {
