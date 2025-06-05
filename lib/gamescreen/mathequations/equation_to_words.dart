@@ -251,7 +251,7 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
     );
   }
 
-  void _checkAnswer() {
+  void _checkAnswer() async{
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     final isSpanish =
         Provider.of<LanguageProvider>(context, listen: false).isSpanish;
@@ -271,7 +271,12 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
     final result =
         isSpanish ? userJoinedSpanishAnswer : userJoinedEnglishAnswer;
 
-    if (result == answer.join(' ')) {
+
+    if (result == answer.join(' ')) {  
+      await _speak(result);
+      await _speak(isSpanish
+        ? translations['es']!['correct']!
+        : translations['en']!['correct']!);
       setState(() {
         _scoreManager.incrementScore(10); // Increment score by 10
         
@@ -295,6 +300,9 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
         backgroundColor: Colors.green,
       ));
     } else {
+      await _speak(isSpanish
+        ? translations['es']!['incorrect']!
+        : translations['en']!['incorrect']!);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -612,6 +620,10 @@ class DraggableItem extends StatelessWidget {
         child: _buildDraggableContent(context),
       ),
       child: _buildDraggableContent(context),
+        onDragStarted: () {
+        final parentState = context.findAncestorStateOfType<_EquationToWordsScreenState>();
+        parentState?._speak(label);
+      },
     );
   }
 
