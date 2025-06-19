@@ -8,6 +8,7 @@ import 'package:supersetfirebase/provider/user_pin_provider.dart';
 import 'score_topbar.dart';
 import 'package:supersetfirebase/utils/logout_util.dart';
 import 'package:confetti/confetti.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class GameData1 extends ChangeNotifier {
   int total = 0;
@@ -25,6 +26,9 @@ class MemoryGame extends StatefulWidget {
 }
 
 class _MemoryGameState extends State<MemoryGame> {
+  late AudioPlayer _tickPlayer;
+  late AudioPlayer _wordPlayer;
+  late AudioPlayer _audioPlayer;
   bool _showCorrectIcon = false;
   int _currentlyFlippedCount = 0;
   late ConfettiController _confettiController;
@@ -42,6 +46,10 @@ class _MemoryGameState extends State<MemoryGame> {
 
   @override
   void initState() {
+     // Initialize the audio player.
+    _audioPlayer = AudioPlayer();
+    _tickPlayer = AudioPlayer();
+   _wordPlayer = AudioPlayer();
     _confettiController = ConfettiController(duration: const Duration(seconds: 1));
     super.initState();
     _initializeTimer();
@@ -333,8 +341,8 @@ class _MemoryGameState extends State<MemoryGame> {
       ),
     ),
   ),
-);
-}
+ );
+ }
 
   void checkMatch(int currentIndex) {
     if (!_flip) {
@@ -362,6 +370,17 @@ class _MemoryGameState extends State<MemoryGame> {
           }
         });
           _confettiController.play(); // Celebrate match
+          
+           String matchedWord;
+
+          if (_translations.containsKey(_data[_previousIndex])) {
+            matchedWord = _data[_previousIndex];  // English → Spanish
+          } else {
+            matchedWord = _data[currentIndex];   // Spanish → English
+          }
+          Future.delayed(const Duration(seconds: 1), () => showMatchPopup(matchedWord));
+          //showMatchPopup(matchedWord);
+
           if (_matchedPairs == _data.length ~/ 2) {
             _timer.cancel();
             //int score = ((_seconds / 120) * 10).toInt();
@@ -452,6 +471,107 @@ class _MemoryGameState extends State<MemoryGame> {
       },
     );
   }
+  void showMatchPopup(String matchedWord) {
+  final fileName = matchedWord.toLowerCase().replaceAll("/", "_");
+  String fileName2 = fileName;
+  if (fileName=="≠")fileName2 = "not_equal";
+ 
+  // 1) Play tick first:
+  _tickPlayer.play(AssetSource('Mathmingle/audio/Correct_Answer_Tick.mp3')).then((_) {
+    // 2) Only after tick finishes play the matchedWord audio:   
+  _wordPlayer.play(AssetSource('Mathmingle/audio/$fileName.mp3'));
+  //_wordPlayer.play(AssetSource('Mathmingle/audio/$matchedWord.mp3'));
+  });
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      final screenHeight = MediaQuery.of(context).size.height;
+
+      // If screen height < 600, use 300×350; otherwise use 400×450.
+      final dialogWidth = screenHeight < 600 ? 200.0 : 400.0;
+      //final dialogHeight = screenHeight < 600 ? 300.0 : 450.0;
+      final dialogHeight = screenHeight < 400
+        ? 200.0
+        : (screenHeight < 600 ? 300.0 : 450.0);
+      //final imageHeight = screenHeight < 600 ? 100.0 : 320.0;
+      final textFontSize = screenHeight < 600 ? 16.0 : 22.0;
+      final partypopperHeight = screenHeight < 600 ? 20.0 : 28.0;
+      final partypopperWidth = screenHeight < 600 ? 20.0 : 28.0;
+      final iconsize = screenHeight < 600 ? 30.0 : 40.0;
+      final matchedwordfontSize = screenHeight < 600 ? 16.0 : 22.0;
+
+      final imageHeight = screenHeight < 400
+      ? 100.0
+      : (screenHeight < 600
+          ? 200.0
+          : 320.0);
+   
+      return AlertDialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        contentPadding: const EdgeInsets.all(10),
+        content: SizedBox(
+          width: dialogWidth,  // Set custom width
+          height: dialogHeight, // Set custom height
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Well done! You got it right.",
+                    style: TextStyle(fontSize: textFontSize),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(width: 4),
+                  Image.asset(
+                    'assets/Mathmingle/party-popper.png',
+                    height: partypopperHeight,
+                    width: partypopperWidth,
+                  ),
+                  
+                  Icon(
+                    Icons.check_circle,
+                    color: Colors.green[700],
+                    size: iconsize, // adjust size as needed
+                  ),
+                ],
+              ),
+             
+              //const SizedBox(height: 16),
+              const SizedBox(height: 8),
+              
+              Image.asset(
+                'assets/Mathmingle/$fileName2.png',
+                height: imageHeight,
+                fit: BoxFit.contain,
+              ),
+              //const SizedBox(height: 16),
+              const SizedBox(height: 8),
+              Text(
+                matchedWord,
+                style: TextStyle(fontSize: matchedwordfontSize, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+        actionsPadding: const EdgeInsets.only(bottom: 10),
+        actions: [
+          Center(
+            child: TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text("OK", style: TextStyle(fontSize: 16)),
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}
 
   bool isMatch(String t1, String t2) {
     return _translations[t1] == t2 || _translations[t2] == t1;
