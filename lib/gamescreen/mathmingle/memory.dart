@@ -46,16 +46,8 @@ class _MemoryGameState extends State<MemoryGame> {
 
   @override
   void initState() {
-<<<<<<< HEAD
-     // Initialize the audio player.
-    _audioPlayer = AudioPlayer();
-    _tickPlayer = AudioPlayer();
-   _wordPlayer = AudioPlayer();
-    _confettiController = ConfettiController(duration: const Duration(seconds: 1));
-=======
     _confettiController =
         ConfettiController(duration: const Duration(seconds: 1));
->>>>>>> 5be0bd2 (Main Page Changes)
     super.initState();
     _initializeTimer();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -377,15 +369,8 @@ class _MemoryGameState extends State<MemoryGame> {
           ),
         ),
       ),
-<<<<<<< HEAD
-    ),
-  ),
- );
- }
-=======
     );
   }
->>>>>>> 5be0bd2 (Main Page Changes)
 
   void checkMatch(int currentIndex) {
     if (!_flip) {
