@@ -7,7 +7,7 @@ import 'total_xp_display.dart';
 import 'total_xp_provider.dart';
 
 class MainMenu extends StatefulWidget {
-  const MainMenu({Key? key}) : super(key: key);
+  const MainMenu({super.key});
 
   @override
   State<MainMenu> createState() => _MainMenuState();
@@ -17,9 +17,11 @@ class _MainMenuState extends State<MainMenu> {
   @override
   void initState() {
     super.initState();
-    final totalXpProvider = Provider.of<TotalXpProvider>(context, listen: false);
+    final totalXpProvider =
+        Provider.of<TotalXpProvider>(context, listen: false);
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
-    totalXpProvider.fetchBestScore(userPin); // Replace "567" with the appropriate PIN or user ID
+    totalXpProvider.fetchBestScore(
+        userPin); // Replace "567" with the appropriate PIN or user ID
   }
 
   @override
@@ -36,12 +38,13 @@ class _MainMenuState extends State<MainMenu> {
           padding: const EdgeInsets.all(8.0),
           child: FloatingActionButton(
             onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HomeScreen(pin: userPin),
-                ),
-              );
+              Navigator.of(context, rootNavigator: true).pop();
+              //  Navigator.pushReplacement(
+              //  context,
+              // MaterialPageRoute(
+              //  builder: (context) => HomeScreen(pin: userPin),
+              //),
+              //);
             },
             backgroundColor: Colors.white,
             mini: true,

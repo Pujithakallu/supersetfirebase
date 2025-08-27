@@ -9,7 +9,7 @@ import 'total_xp_display.dart';
 import 'total_xp_provider.dart';
 
 class WhatAreEquationsDetail extends StatefulWidget {
-  const WhatAreEquationsDetail({Key? key}) : super(key: key);
+  const WhatAreEquationsDetail({super.key});
 
   @override
   State<WhatAreEquationsDetail> createState() => _WhatAreEquationsDetailState();
@@ -145,7 +145,7 @@ class _WhatAreEquationsDetailState extends State<WhatAreEquationsDetail> {
                         onPressed: () => checkAnswer('True'),
                         style: ButtonStyle(
                           backgroundColor: selectedAnswer == 'True'
-                              ? MaterialStateProperty.all(Colors.green)
+                              ? WidgetStateProperty.all(Colors.green)
                               : null,
                         ),
                         child: const Text('True'),
@@ -155,7 +155,7 @@ class _WhatAreEquationsDetailState extends State<WhatAreEquationsDetail> {
                         onPressed: () => checkAnswer('False'),
                         style: ButtonStyle(
                           backgroundColor: selectedAnswer == 'False'
-                              ? MaterialStateProperty.all(Colors.red)
+                              ? WidgetStateProperty.all(Colors.red)
                               : null,
                         ),
                         child: const Text('False'),

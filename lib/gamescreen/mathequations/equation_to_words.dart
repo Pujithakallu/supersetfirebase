@@ -14,7 +14,7 @@ import 'language_provider.dart';
 import 'session_score_provider.dart';
 
 class EquationToWordsScreen extends StatefulWidget {
-  const EquationToWordsScreen({Key? key}) : super(key: key);
+  const EquationToWordsScreen({super.key});
 
   @override
   State<EquationToWordsScreen> createState() => _EquationToWordsScreenState();
@@ -56,7 +56,15 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
       'words': ['x', 'four', 'times', 'equals', 'two', 'eight', 'plus'],
       'translated': ['x', 'cuatro', 'veces', 'igual', 'dos', 'ocho', 'más'],
       'answer': ['two', 'times', 'x', 'plus', 'four', 'equals', 'eight'],
-      'translatedAnswer': ['dos', 'veces', 'x', 'más', 'cuatro', 'igual', 'ocho'],
+      'translatedAnswer': [
+        'dos',
+        'veces',
+        'x',
+        'más',
+        'cuatro',
+        'igual',
+        'ocho'
+      ],
     },
     {
       'equation': '3y - 5 = 10',
@@ -70,7 +78,14 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
       'words': ['a', 'four', 'plus', 'equals', 'seven', 'nineteen'],
       'translated': ['a', 'cuatro', 'más', 'igual', 'siete', 'diecinueve'],
       'answer': ['four', 'a', 'plus', 'seven', 'equals', 'nineteen'],
-      'translatedAnswer': ['cuatro', 'a', 'más', 'siete', 'igual', 'diecinueve'],
+      'translatedAnswer': [
+        'cuatro',
+        'a',
+        'más',
+        'siete',
+        'igual',
+        'diecinueve'
+      ],
     },
     {
       'equation': '5b - 2 = 13',
@@ -94,7 +109,14 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
       'words': ['d', 'seven', 'minus', 'equals', 'four', 'seventeen'],
       'translated': ['d', 'siete', 'menos', 'igual', 'cuatro', 'diecisiete'],
       'answer': ['seven', 'd', 'minus', 'four', 'equals', 'seventeen'],
-      'translatedAnswer': ['siete', 'd', 'menos', 'cuatro', 'igual', 'diecisiete'],
+      'translatedAnswer': [
+        'siete',
+        'd',
+        'menos',
+        'cuatro',
+        'igual',
+        'diecisiete'
+      ],
     },
     {
       'equation': '8e + 2 = 18',
@@ -115,24 +137,80 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
       'words': ['a', 'b', 'four', 'five', 'minus', 'equals', 'twelve'],
       'translated': ['a', 'b', 'cuatro', 'cinco', 'menos', 'igual', 'doce'],
       'answer': ['four', 'a', 'minus', 'five', 'b', 'equals', 'twelve'],
-      'translatedAnswer': ['cuatro', 'a', 'menos', 'cinco', 'b', 'igual','doce'],
+      'translatedAnswer': [
+        'cuatro',
+        'a',
+        'menos',
+        'cinco',
+        'b',
+        'igual',
+        'doce'
+      ],
     },
     {
       'equation': '6c + 7d = 29',
       'words': ['c', 'd', 'six', 'seven', 'plus', 'equals', 'twenty-nine'],
       'translated': ['c', 'd', 'seis', 'siete', 'más', 'igual', 'veintinueve'],
       'answer': ['six', 'c', 'plus', 'seven', 'd', 'equals', 'twenty-nine'],
-      'translatedAnswer': ['seis', 'c', 'más', 'siete', 'd', 'igual', 'veintinueve'],
+      'translatedAnswer': [
+        'seis',
+        'c',
+        'más',
+        'siete',
+        'd',
+        'igual',
+        'veintinueve'
+      ],
     },
   ];
 
   final List<Map<String, dynamic>> hardQuestions = [
     {
       'equation': '3/2x + 1 = 4/3',
-      'words': ['one', 'three', 'two', 'x', 'four', 'over', 'thirds', 'plus', 'equals'],
-      'translated': ['uno', 'tres', 'dos', 'x', 'cuatro', 'sobre', 'tercios', 'más', 'igual'],
-      'answer': ['three', 'over', 'two', 'x', 'plus', 'one', 'equals', 'four', 'thirds'],
-      'translatedAnswer': ['tres', 'sobre', 'dos', 'x', 'más', 'uno', 'igual', 'cuatro', 'tercios']
+      'words': [
+        'one',
+        'three',
+        'two',
+        'x',
+        'four',
+        'over',
+        'thirds',
+        'plus',
+        'equals'
+      ],
+      'translated': [
+        'uno',
+        'tres',
+        'dos',
+        'x',
+        'cuatro',
+        'sobre',
+        'tercios',
+        'más',
+        'igual'
+      ],
+      'answer': [
+        'three',
+        'over',
+        'two',
+        'x',
+        'plus',
+        'one',
+        'equals',
+        'four',
+        'thirds'
+      ],
+      'translatedAnswer': [
+        'tres',
+        'sobre',
+        'dos',
+        'x',
+        'más',
+        'uno',
+        'igual',
+        'cuatro',
+        'tercios'
+      ]
     },
     {
       'equation': '1/2x = 5/6',
@@ -144,58 +222,309 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
     {
       'equation': 'x/3 + 2/3 = 1',
       'words': ['two', 'one', 'x', 'equals', 'three', 'plus', 'thirds', 'over'],
-      'translated': ['dos', 'uno', 'x', 'igual', 'tres', 'más', 'tercios', 'sobre'],
-      'answer': ['x', 'over', 'three', 'plus', 'two', 'thirds', 'equals', 'one'],
-      'translatedAnswer': ['x', 'sobre', 'tres', 'más', 'dos', 'tercios', 'igual', 'uno']
+      'translated': [
+        'dos',
+        'uno',
+        'x',
+        'igual',
+        'tres',
+        'más',
+        'tercios',
+        'sobre'
+      ],
+      'answer': [
+        'x',
+        'over',
+        'three',
+        'plus',
+        'two',
+        'thirds',
+        'equals',
+        'one'
+      ],
+      'translatedAnswer': [
+        'x',
+        'sobre',
+        'tres',
+        'más',
+        'dos',
+        'tercios',
+        'igual',
+        'uno'
+      ]
     },
     {
       'equation': '2x/5 = 4/5',
       'words': ['x', 'five', 'equals', 'two', 'over', 'four', 'fifths'],
-      'translated': ['x', 'cinco', 'igual', 'dos', 'sobre', 'cuatro', 'quintos'],
+      'translated': [
+        'x',
+        'cinco',
+        'igual',
+        'dos',
+        'sobre',
+        'cuatro',
+        'quintos'
+      ],
       'answer': ['two', 'x', 'over', 'five', 'equals', 'four', 'fifths'],
-      'translatedAnswer': ['dos', 'x', 'sobre', 'cinco', 'igual', 'cuatro', 'quintos']
+      'translatedAnswer': [
+        'dos',
+        'x',
+        'sobre',
+        'cinco',
+        'igual',
+        'cuatro',
+        'quintos'
+      ]
     },
     {
       'equation': '3x + 1/4 = 5/2',
-      'words': ['five', 'plus', 'equals', 'halves', 'x', 'fourth', 'one', 'three'],
-      'translated': ['cinco', 'más', 'igual', 'medios', 'x', 'fourth', 'uno', 'tres'],
-      'answer': ['three', 'x', 'plus', 'one', 'fourth', 'equals', 'five', 'halves'],
-      'translatedAnswer': ['tres', 'x', 'más', 'uno', 'fourth', 'igual', 'cinco', 'medios']
+      'words': [
+        'five',
+        'plus',
+        'equals',
+        'halves',
+        'x',
+        'fourth',
+        'one',
+        'three'
+      ],
+      'translated': [
+        'cinco',
+        'más',
+        'igual',
+        'medios',
+        'x',
+        'fourth',
+        'uno',
+        'tres'
+      ],
+      'answer': [
+        'three',
+        'x',
+        'plus',
+        'one',
+        'fourth',
+        'equals',
+        'five',
+        'halves'
+      ],
+      'translatedAnswer': [
+        'tres',
+        'x',
+        'más',
+        'uno',
+        'fourth',
+        'igual',
+        'cinco',
+        'medios'
+      ]
     },
     {
       'equation': '1/4x - 2/3 = 0',
-      'words': ['two', 'x', 'minus', 'fourth', 'zero', 'one', 'thirds', 'equals'],
-      'translated': ['dos', 'x', 'menos', 'fourth', 'cero', 'uno', 'tercios', 'igual'],
-      'answer': ['one', 'fourth', 'x', 'minus', 'two', 'thirds', 'equals', 'zero'],
-      'translatedAnswer': ['uno', 'fourth', 'x', 'menos', 'dos', 'tercios', 'igual', 'cero']
+      'words': [
+        'two',
+        'x',
+        'minus',
+        'fourth',
+        'zero',
+        'one',
+        'thirds',
+        'equals'
+      ],
+      'translated': [
+        'dos',
+        'x',
+        'menos',
+        'fourth',
+        'cero',
+        'uno',
+        'tercios',
+        'igual'
+      ],
+      'answer': [
+        'one',
+        'fourth',
+        'x',
+        'minus',
+        'two',
+        'thirds',
+        'equals',
+        'zero'
+      ],
+      'translatedAnswer': [
+        'uno',
+        'fourth',
+        'x',
+        'menos',
+        'dos',
+        'tercios',
+        'igual',
+        'cero'
+      ]
     },
     {
       'equation': 'x + 2/2 = 3/4',
       'words': ['two', 'three', 'x', 'equals', 'halves', 'plus', 'fourths'],
       'translated': ['dos', 'tres', 'x', 'igual', 'medios', 'más', 'cuartos'],
       'answer': ['x', 'plus', 'two', 'halves', 'equals', 'three', 'fourths'],
-      'translatedAnswer': ['x', 'más', 'dos', 'medios', 'igual', 'tres', 'cuartos']
+      'translatedAnswer': [
+        'x',
+        'más',
+        'dos',
+        'medios',
+        'igual',
+        'tres',
+        'cuartos'
+      ]
     },
     {
       'equation': '2/3x + 1/2 = 7/6',
-      'words': ['two', 'thirds', 'one', 'equals', 'x', 'sixths', 'seven', 'plus', 'half'],
-      'translated': ['dos', 'tercios', 'uno', 'igual', 'x', 'sextos', 'siete', 'más', 'medio'],
-      'answer': ['two', 'thirds', 'x', 'plus', 'one', 'half', 'equals', 'seven', 'sixths'],
-      'translatedAnswer': ['dos', 'tercios', 'x', 'más', 'uno', 'medio', 'igual', 'siete', 'sextos']
+      'words': [
+        'two',
+        'thirds',
+        'one',
+        'equals',
+        'x',
+        'sixths',
+        'seven',
+        'plus',
+        'half'
+      ],
+      'translated': [
+        'dos',
+        'tercios',
+        'uno',
+        'igual',
+        'x',
+        'sextos',
+        'siete',
+        'más',
+        'medio'
+      ],
+      'answer': [
+        'two',
+        'thirds',
+        'x',
+        'plus',
+        'one',
+        'half',
+        'equals',
+        'seven',
+        'sixths'
+      ],
+      'translatedAnswer': [
+        'dos',
+        'tercios',
+        'x',
+        'más',
+        'uno',
+        'medio',
+        'igual',
+        'siete',
+        'sextos'
+      ]
     },
     {
       'equation': '5x + 4y - 3z = 10',
-      'words': ['x', 'y', 'z', 'five', 'four', 'three', 'plus', 'minus', 'equals', 'ten'],
-      'translated': ['x', 'y', 'z', 'cinco', 'cuatro', 'tres', 'más', 'menos', 'igual', 'diez'],
-      'answer': ['five', 'x', 'plus', 'four', 'y', 'minus', 'three', 'z', 'equals', 'ten'],
-      'translatedAnswer': ['cinco', 'x', 'más', 'cuatro', 'y', 'menos', 'tres', 'z', 'igual', 'diez'],
+      'words': [
+        'x',
+        'y',
+        'z',
+        'five',
+        'four',
+        'three',
+        'plus',
+        'minus',
+        'equals',
+        'ten'
+      ],
+      'translated': [
+        'x',
+        'y',
+        'z',
+        'cinco',
+        'cuatro',
+        'tres',
+        'más',
+        'menos',
+        'igual',
+        'diez'
+      ],
+      'answer': [
+        'five',
+        'x',
+        'plus',
+        'four',
+        'y',
+        'minus',
+        'three',
+        'z',
+        'equals',
+        'ten'
+      ],
+      'translatedAnswer': [
+        'cinco',
+        'x',
+        'más',
+        'cuatro',
+        'y',
+        'menos',
+        'tres',
+        'z',
+        'igual',
+        'diez'
+      ],
     },
     {
       'equation': '7p + 2q - r = 15',
-      'words': ['p', 'q', 'r', 'seven', 'two', 'one', 'plus', 'minus', 'equals', 'fifteen'],
-      'translated': ['p', 'q', 'r', 'siete', 'dos', 'uno', 'más', 'menos', 'igual', 'quince'],
-      'answer': ['seven', 'p', 'plus', 'two', 'q', 'minus', 'one', 'r', 'equals', 'fifteen'],
-      'translatedAnswer': ['siete', 'p', 'más', 'dos', 'q', 'menos', 'uno', 'r', 'igual', 'quince'],
+      'words': [
+        'p',
+        'q',
+        'r',
+        'seven',
+        'two',
+        'one',
+        'plus',
+        'minus',
+        'equals',
+        'fifteen'
+      ],
+      'translated': [
+        'p',
+        'q',
+        'r',
+        'siete',
+        'dos',
+        'uno',
+        'más',
+        'menos',
+        'igual',
+        'quince'
+      ],
+      'answer': [
+        'seven',
+        'p',
+        'plus',
+        'two',
+        'q',
+        'minus',
+        'one',
+        'r',
+        'equals',
+        'fifteen'
+      ],
+      'translatedAnswer': [
+        'siete',
+        'p',
+        'más',
+        'dos',
+        'q',
+        'menos',
+        'uno',
+        'r',
+        'igual',
+        'quince'
+      ],
     }
   ];
 
@@ -225,7 +554,8 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
   void initState() {
     super.initState();
     // Reset the session score for Game 2
-    final sessionScoreProvider = Provider.of<SessionScoreProvider>(context, listen: false);
+    final sessionScoreProvider =
+        Provider.of<SessionScoreProvider>(context, listen: false);
     sessionScoreProvider.resetGame2Score();
     _loadLevelQuestions();
     _loadRandomQuestion();
@@ -279,17 +609,20 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
         : translations['en']!['correct']!);
       setState(() {
         _scoreManager.incrementScore(10); // Increment score by 10
-        
+
         // Update session's best score for this game
-        final sessionScoreProvider =  Provider.of<SessionScoreProvider>(context, listen: false);
+        final sessionScoreProvider =
+            Provider.of<SessionScoreProvider>(context, listen: false);
         sessionScoreProvider.updateGame2Score(_scoreManager.score);
-        final combinedSessionScore = sessionScoreProvider.game1BestScore + sessionScoreProvider.game2BestScore;
+        final combinedSessionScore = sessionScoreProvider.game1BestScore +
+            sessionScoreProvider.game2BestScore;
         print('Combined session score - $combinedSessionScore');
-        Provider.of<TotalXpProvider>(context, listen: false).updateBestScoreIfNeeded(userPin, combinedSessionScore);
+        Provider.of<TotalXpProvider>(context, listen: false)
+            .updateBestScoreIfNeeded(userPin, combinedSessionScore);
 
         _confettiController.play(); // Play confetti on correct answer
         totalQuestionsAnswered++;
-        _isQuestionAnsweredCorrectly = true;        
+        _isQuestionAnsweredCorrectly = true;
       });
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
@@ -403,192 +736,203 @@ class _EquationToWordsScreenState extends State<EquationToWordsScreen> {
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
 
     return Scaffold(
-  appBar: AppBar(
-    title: Text('Equations to Words - Level $currentLevel'),
-    actions: [
-      LanguageSwitcher(
-        isSpanish: isSpanish,
-        onLanguageChanged: (bool newIsSpanish) {
-          Provider.of<LanguageProvider>(context, listen: false)
-              .setLanguage(newIsSpanish);
-          AnalyticsEngine.logTranslateButtonClickETW(
-              newIsSpanish ? 'Changed to Spanish' : 'Changed to English');
-        },
-      ),
-      const SizedBox(width: 16),
-      Text(
-        'PIN: $userPin',
-        style: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: Colors.black87,
-        ),
-      ),
-      InstructionsWidget(
-        instructions: isSpanish
-            ? translations['es']!['instructions']!
-            : translations['en']!['instructions']!,
-      ),
-    ],
-  ),
-  body: Stack(
-    children: [
-      Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/Mathequations/Background.png"),
-            fit: BoxFit.cover,
+      appBar: AppBar(
+        title: Text('Equations to Words - Level $currentLevel'),
+        actions: [
+          LanguageSwitcher(
+            isSpanish: isSpanish,
+            onLanguageChanged: (bool newIsSpanish) {
+              Provider.of<LanguageProvider>(context, listen: false)
+                  .setLanguage(newIsSpanish);
+              AnalyticsEngine.logTranslateButtonClickETW(
+                  newIsSpanish ? 'Changed to Spanish' : 'Changed to English');
+            },
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-          child: Center(
-          child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                equation,
-                style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
+          const SizedBox(width: 16),
+          Text(
+            'PIN: $userPin',
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
+          InstructionsWidget(
+            instructions: isSpanish
+                ? translations['es']!['instructions']!
+                : translations['en']!['instructions']!,
+          ),
+        ],
+      ),
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/Mathequations/Background.png"),
+                fit: BoxFit.cover,
               ),
-              const SizedBox(height: 30),
+            ),
+            child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 24.0),
+                child: Center(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          equation,
+                          style: const TextStyle(
+                              fontSize: 28, fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 30),
 
-              // Drop Targets
-              Wrap(
-                alignment: WrapAlignment.center,
-                spacing: 10.0,
-                runSpacing: 10.0,
-                children: List.generate(userAnswer.length, (index) {
-                  return DropTarget(
-                    index: index,
-                    label: isSpanish
-                        ? (userAnswer[index]['spanish']?.isNotEmpty ?? false)
-                            ? userAnswer[index]['spanish']!
-                            : translations['es']!['drop_items']!
-                        : (userAnswer[index]['english']?.isNotEmpty ?? false)
-                            ? userAnswer[index]['english']!
-                            : translations['en']!['drop_items']!,
-                    onAccept: (receivedItem) {
-                      setState(() {
-                        int wordIndex = words.indexOf(receivedItem);
-                        userAnswer[index] = {
-                          'english': currentQuestion['words'][wordIndex],
-                          'spanish': currentQuestion['translated'][wordIndex],
-                        };
-                      });
-                    },
-                  );
-                }),
-              ),
+                        // Drop Targets
+                        Wrap(
+                          alignment: WrapAlignment.center,
+                          spacing: 10.0,
+                          runSpacing: 10.0,
+                          children: List.generate(userAnswer.length, (index) {
+                            return DropTarget(
+                              index: index,
+                              label: isSpanish
+                                  ? (userAnswer[index]['spanish']?.isNotEmpty ??
+                                          false)
+                                      ? userAnswer[index]['spanish']!
+                                      : translations['es']!['drop_items']!
+                                  : (userAnswer[index]['english']?.isNotEmpty ??
+                                          false)
+                                      ? userAnswer[index]['english']!
+                                      : translations['en']!['drop_items']!,
+                              onAccept: (receivedItem) {
+                                setState(() {
+                                  int wordIndex = words.indexOf(receivedItem);
+                                  userAnswer[index] = {
+                                    'english': currentQuestion['words']
+                                        [wordIndex],
+                                    'spanish': currentQuestion['translated']
+                                        [wordIndex],
+                                  };
+                                });
+                              },
+                            );
+                          }),
+                        ),
 
-              const SizedBox(height: 40),
+                        const SizedBox(height: 40),
 
-              // Draggable Items (Styled like POE)
-              Wrap(
-                  alignment: WrapAlignment.center,
-                  spacing: 10.0,
-                  runSpacing: 10.0,
-                  children: words.map<Widget>((word) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: DraggableItem(
-                        label: word,
-                        data: word,
-                      ),
-                    );
-                  }).toList(),
+                        // Draggable Items (Styled like POE)
+                        Wrap(
+                          alignment: WrapAlignment.center,
+                          spacing: 10.0,
+                          runSpacing: 10.0,
+                          children: words.map<Widget>((word) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: DraggableItem(
+                                label: word,
+                                data: word,
+                              ),
+                            );
+                          }).toList(),
+                        ),
+
+                        const SizedBox(height: 40),
+
+                        // Buttons
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton.icon(
+                              onPressed: _checkAnswer,
+                              icon:
+                                  const Icon(Icons.check, color: Colors.white),
+                              label: Text(
+                                isSpanish
+                                    ? translations['es']!['check_answers']!
+                                    : translations['en']!['check_answers']!,
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green,
+                              ),
+                            ),
+                            const SizedBox(width: 20),
+                            ElevatedButton.icon(
+                              onPressed: _isQuestionAnsweredCorrectly
+                                  ? _onNextQuestionButtonClicked
+                                  : null,
+                              icon: const Icon(Icons.arrow_forward,
+                                  color: Colors.white),
+                              label: Text(
+                                isSpanish
+                                    ? translations['es']!['next_question']!
+                                    : translations['en']!['next_question']!,
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.orange,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                )),
+          ),
+          Positioned(
+            top: kToolbarHeight + 2, // Position below the app bar
+            right: 4, // Align to the right
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ScoreDisplay(score: _scoreManager.score),
                 ),
-
-              const SizedBox(height: 40),
-
-              // Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: _checkAnswer,
-                    icon: const Icon(Icons.check, color: Colors.white),
-                    label: Text(
-                      isSpanish
-                          ? translations['es']!['check_answers']!
-                          : translations['en']!['check_answers']!,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  ElevatedButton.icon(
-                    onPressed: _isQuestionAnsweredCorrectly
-                        ? _onNextQuestionButtonClicked
-                        : null,
-                    icon: const Icon(Icons.arrow_forward, color: Colors.white),
-                    label: Text(
-                      isSpanish
-                          ? translations['es']!['next_question']!
-                          : translations['en']!['next_question']!,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TotalXpDisplay(totalXp: totalXp),
+                ),
+              ],
+            ),
           ),
-        ),
-      )
-        ),
-      ),
-      Positioned(
-        top: kToolbarHeight + 2, // Position below the app bar
-        right: 4, // Align to the right
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ScoreDisplay(score: _scoreManager.score),
+
+          // Confetti Effect
+          Align(
+            alignment: Alignment.center,
+            child: ConfettiWidget(
+              confettiController: _confettiController,
+              blastDirectionality: BlastDirectionality.explosive,
+              shouldLoop: false,
+              colors: const [
+                Colors.green,
+                Colors.blue,
+                Colors.pink,
+                Colors.yellow
+              ],
+              numberOfParticles: 10,
+              emissionFrequency: 0.1,
+              gravity: 0.1,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TotalXpDisplay(totalXp: totalXp),
-            ),
-          ],
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => logout(context),
+        backgroundColor: Colors.white,
+        child: const Icon(
+          Icons.logout_rounded,
+          color: Colors.black,
+          size: 26,
         ),
       ),
-
-
-      // Confetti Effect
-      Align(
-        alignment: Alignment.center,
-        child: ConfettiWidget(
-          confettiController: _confettiController,
-          blastDirectionality: BlastDirectionality.explosive,
-          shouldLoop: false,
-          colors: const [Colors.green, Colors.blue, Colors.pink, Colors.yellow],
-          numberOfParticles: 10,
-          emissionFrequency: 0.1,
-          gravity: 0.1,
-        ),
-      ),
-    ],
-  ),
-  floatingActionButton: FloatingActionButton(
-    onPressed: () => logout(context),
-    backgroundColor: Colors.white,
-    child: const Icon(
-      Icons.logout_rounded,
-      color: Colors.black,
-      size: 26,
-    ),
-  ),
-  floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-);
-
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
   }
 }
 
@@ -597,23 +941,23 @@ class DraggableItem extends StatelessWidget {
   final String data;
 
   const DraggableItem({
-    Key? key,
+    super.key,
     required this.label,
     required this.data,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Draggable<String>(
       data: data,
       feedback: Material(
-        color: Colors.transparent, // No background for feedback chip
+        color: Colors.transparent,
+        elevation: 4.0, // No background for feedback chip
         child: Chip(
           label: Text(label,
               style: const TextStyle(color: Colors.white, fontSize: 18)),
           backgroundColor: Colors.blue, // Blue background while dragging
         ),
-        elevation: 4.0,
       ),
       childWhenDragging: Opacity(
         opacity: 0.5,
@@ -675,17 +1019,22 @@ class DropTarget extends StatelessWidget {
   final Function(String) onAccept;
 
   const DropTarget(
-      {Key? key,
+      {super.key,
       required this.index,
       required this.label,
-      required this.onAccept})
-      : super(key: key);
+      required this.onAccept});
 
   @override
   Widget build(BuildContext context) {
     return DragTarget<String>(
-      onWillAccept: (data) => true,
-      onAccept: onAccept,
+      // always accept
+      onWillAcceptWithDetails: (_) => true,
+
+      // extract the String from details.data
+      onAcceptWithDetails: (details) {
+        onAccept(details.data);
+      },
+
       builder: (context, candidateData, rejectedData) {
         bool isPlaceholder =
             label == 'Drop items here' || label == 'Suelta los elementos aquí';
@@ -718,7 +1067,7 @@ class DropTarget extends StatelessWidget {
 class ScoreDisplay extends StatelessWidget {
   final int score;
 
-  const ScoreDisplay({Key? key, required this.score}) : super(key: key);
+  const ScoreDisplay({super.key, required this.score});
 
   @override
   Widget build(BuildContext context) {

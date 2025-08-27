@@ -21,6 +21,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,10 +36,9 @@ class MyApp extends StatelessWidget {
           primary: Color(0xFF6C63FF),
         ),
       ),
-       home: LoginScreen(),
+      home: LoginScreen(),
       // Use ResponsiveLoginWrapper as the home screen instead of LoginScreen
       // home: const ResponsiveLoginWrapper(),
     );
   }
 }
-

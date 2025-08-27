@@ -15,6 +15,7 @@ dependencies:
   firebase_database: ^11.1.6
   cloud_firestore: ^5.5.1
   provider: ^6.1.2
+  firebase_data_connect: ^0.1.4+1
 
   http: ^1.2.2
   audioplayers: ^6.0.1
@@ -64,7 +65,9 @@ flutter:
     - assets/Mathoperations/egg.png
     - assets/Mathoperations/child.png
     - assets/Mathoperations/BackGround_1.png
-    
+    - assets/images/all_maths_tile.png
+    - assets/images/kids_tile.png
+    - assets/images/teens_tile.png
     - assets/images/background.png
     - assets/images/profile_pic.png
     - assets/images/math_mingle.png

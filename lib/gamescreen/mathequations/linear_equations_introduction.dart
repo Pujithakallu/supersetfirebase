@@ -9,7 +9,7 @@ import 'language_switcher.dart';
 import 'language_provider.dart';
 
 class LinearEquationsIntroduction extends StatefulWidget {
-  const LinearEquationsIntroduction({Key? key}) : super(key: key);
+  const LinearEquationsIntroduction({super.key});
 
   @override
   _LinearEquationsIntroductionState createState() =>
@@ -186,7 +186,7 @@ class _LinearEquationsIntroductionState
                             onPressed: () => checkAnswer('y = mx + b'),
                             style: ButtonStyle(
                               backgroundColor: selectedAnswer == 'y = mx + b'
-                                  ? MaterialStateProperty.all(Colors.green)
+                                  ? WidgetStateProperty.all(Colors.green)
                                   : null,
                             ),
                             child: const Text('y = mx + b'),
@@ -196,7 +196,7 @@ class _LinearEquationsIntroductionState
                             onPressed: () => checkAnswer('Ax + By = C'),
                             style: ButtonStyle(
                               backgroundColor: selectedAnswer == 'Ax + By = C'
-                                  ? MaterialStateProperty.all(Colors.red)
+                                  ? WidgetStateProperty.all(Colors.red)
                                   : null,
                             ),
                             child: const Text('Ax + By = C'),

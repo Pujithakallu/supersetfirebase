@@ -14,7 +14,7 @@ import 'package:supersetfirebase/utils/logout_util.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
 class EquationDragDrop extends StatefulWidget {
-  const EquationDragDrop({Key? key}) : super(key: key);
+  const EquationDragDrop({super.key});
 
   @override
   State<EquationDragDrop> createState() => _EquationDragDropState();
@@ -23,6 +23,7 @@ class EquationDragDrop extends StatefulWidget {
 class DraggableItem extends StatelessWidget {
   final String label;
   final String data;
+  @override
   final Key key;
 
   const DraggableItem({
@@ -35,19 +36,19 @@ class DraggableItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Draggable<String>(
       data: data,
-      child: Chip(label: Text(label, style: const TextStyle(fontSize: 18))),
       feedback: Material(
+        elevation: 4.0,
         child: Chip(
           label: Text(label,
               style: const TextStyle(color: Colors.white, fontSize: 18)),
           backgroundColor: Colors.blue,
         ),
-        elevation: 4.0,
       ),
       childWhenDragging: Chip(
         label: Text(label,
             style: const TextStyle(color: Colors.grey, fontSize: 18)),
       ),
+      child: Chip(label: Text(label, style: const TextStyle(fontSize: 18))),
     );
   }
 }
@@ -63,7 +64,7 @@ class DropTarget extends StatefulWidget {
   final bool isSpanish;
 
   const DropTarget({
-    Key? key,
+    super.key,
     required this.acceptedLabels,
     required this.showResults,
     required this.expectedData,
@@ -72,7 +73,7 @@ class DropTarget extends StatefulWidget {
     required this.onCorrectAnswer,
     required this.label,
     required this.isSpanish,
-  }) : super(key: key);
+  });
 
   @override
   _DropTargetState createState() => _DropTargetState();
@@ -118,12 +119,13 @@ class _DropTargetState extends State<DropTarget> {
       mainAxisSize: MainAxisSize.min,
       children: [
         DragTarget<String>(
-          onWillAccept: (data) => !widget
+          onWillAcceptWithDetails: (details) => !widget
               .showResults, // Disable drag-and-drop when results are shown
-          onAccept: (receivedItem) {
+          onAcceptWithDetails: (details) {
+            final String receivedValue = details.data;
             setState(() {
               widget.acceptedLabels
-                  .add(receivedItem); // Add the received item to the list
+                  .add(receivedValue); // Add the received item to the list
               widget.onAcceptedLabelsChanged(
                   widget.acceptedLabels); // Notify parent of changes
             });
@@ -175,18 +177,14 @@ class _DropTargetState extends State<DropTarget> {
             children: widget.acceptedLabels
                 .map((label) => Draggable<String>(
                       data: label,
-                      child: Chip(
-                        label:
-                            Text(label, style: const TextStyle(fontSize: 18)),
-                      ),
                       feedback: Material(
+                        elevation: 4.0,
                         child: Chip(
                           label: Text(label,
                               style: const TextStyle(
                                   color: Colors.white, fontSize: 18)),
                           backgroundColor: Colors.blue,
                         ),
-                        elevation: 4.0,
                       ),
                       childWhenDragging: Chip(
                         label: Text(label,
@@ -199,8 +197,11 @@ class _DropTargetState extends State<DropTarget> {
                           widget.onItemRemoved(label);
                         });
                       },
-                      ignoringFeedbackSemantics: widget
-                          .showResults, // Disable drag-and-drop when results are shown
+                      ignoringFeedbackSemantics: widget.showResults,
+                      child: Chip(
+                        label:
+                            Text(label, style: const TextStyle(fontSize: 18)),
+                      ), // Disable drag-and-drop when results are shown
                     ))
                 .toList(),
           ),
@@ -370,12 +371,12 @@ class _EquationDragDropState extends State<EquationDragDrop> {
 
   late List<Map<String, dynamic>> _shuffledQuestions;
   List<List<String>> _acceptedLabels = List.generate(4, (index) => []);
-  List<Color> _targetBackgroundColors =
+  final List<Color> _targetBackgroundColors =
       List.generate(4, (index) => Colors.transparent);
-  List<String> _feedbackTexts = List.generate(4, (index) => '');
+  final List<String> _feedbackTexts = List.generate(4, (index) => '');
 
   // Define a list of GlobalKeys for each DropTarget
-  List<GlobalKey<_DropTargetState>> _dropTargetKeys =
+  final List<GlobalKey<_DropTargetState>> _dropTargetKeys =
       List.generate(4, (index) => GlobalKey<_DropTargetState>());
 
   late List<String> _draggables;
@@ -384,7 +385,8 @@ class _EquationDragDropState extends State<EquationDragDrop> {
   void initState() {
     super.initState();
     // Reset the session score for Game 1
-    final sessionScoreProvider = Provider.of<SessionScoreProvider>(context, listen: false);
+    final sessionScoreProvider =
+        Provider.of<SessionScoreProvider>(context, listen: false);
     sessionScoreProvider.resetGame1Score();
     _shuffledQuestions = List.from(_questions);
     _shuffleQuestions();
@@ -401,7 +403,7 @@ class _EquationDragDropState extends State<EquationDragDrop> {
     _draggables = List.from(draggables);
   }
 
-  void _checkAnswers() {    
+  void _checkAnswers() {
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     if (_scoreUpdated) return; // Prevent score from updating more than once
     bool allCorrect = true;
@@ -428,14 +430,19 @@ class _EquationDragDropState extends State<EquationDragDrop> {
 
     if (allCorrect) {
       _showCorrectAnswerFeedback(context);
-      _scoreManager.incrementScore(10); // Increment the score by 10 if all answers are correct
+      _scoreManager.incrementScore(
+          10); // Increment the score by 10 if all answers are correct
 
       // Update session's best score for this game
-      final sessionScoreProvider =  Provider.of<SessionScoreProvider>(context, listen: false);
+      final sessionScoreProvider =
+          Provider.of<SessionScoreProvider>(context, listen: false);
       sessionScoreProvider.updateGame1Score(_scoreManager.score);
-      final combinedSessionScore = sessionScoreProvider.game1BestScore + sessionScoreProvider.game2BestScore;
+      final combinedSessionScore = sessionScoreProvider.game1BestScore +
+          sessionScoreProvider.game2BestScore;
       print('Combined session score - $combinedSessionScore');
-      Provider.of<TotalXpProvider>(context, listen: false).updateBestScoreIfNeeded(userPin, combinedSessionScore); // Update total XP
+      Provider.of<TotalXpProvider>(context, listen: false)
+          .updateBestScoreIfNeeded(
+              userPin, combinedSessionScore); // Update total XP
 
       _scoreUpdated = true; // Set flag to true to prevent further score updates
       _confettiController.play(); // Play confetti animation
@@ -576,7 +583,7 @@ class _EquationDragDropState extends State<EquationDragDrop> {
             ],
           ),
         ),
-      floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton(
           onPressed: () => logout(context),
           backgroundColor: Colors.white,
           child: const Icon(
@@ -609,14 +616,13 @@ class _EquationDragDropState extends State<EquationDragDrop> {
           InstructionsWidget(
               instructions: isSpanish
                   ? translations['es']!['instructions']!
-                  : translations['en']!['instructions']!
-          ),
+                  : translations['en']!['instructions']!),
           Text(
             'PIN: $userPin',
             style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
             ),
           ),
         ],
@@ -638,212 +644,223 @@ class _EquationDragDropState extends State<EquationDragDrop> {
             ),
           ),
           Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Text(equation,
-                    style: const TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold)),
-              ),
-              Wrap(
-                alignment: WrapAlignment.spaceEvenly,
-                spacing: 20,
-                runSpacing: 20,
-                children: _draggables
-                    .map((label) => DraggableItem(
-                          key: Key(label),
-                          label: label,
-                          data: label,
-                        ))
-                    .toList(),
-              ),
-              const SizedBox(height: 40),
-              Wrap(
-                alignment: WrapAlignment.center, // Align children in the center horizontally
-                spacing: 20.0, // Horizontal spacing between children
-                runSpacing: 20.0, // Vertical spacing between rows
-                children: [
-                  DropTarget(
-                    key: _dropTargetKeys[0],
-                    label: isSpanish
-                        ? translations['es']!['coefficient']!
-                        : translations['en']!['coefficient']!,
-                    expectedData: targets['Coefficient']!,
-                    showResults: _showResults,
-                    acceptedLabels: _acceptedLabels[0],
-                    onAcceptedLabelsChanged: (labels) {
-                      setState(() {
-                        _acceptedLabels[0] = labels;
-                        _draggables.removeWhere((item) => labels.contains(item));
-                      });
-                    },
-                    onItemRemoved: (label) {
-                      setState(() {
-                        if (!_acceptedLabels.any((list) => list.contains(label))) {
-                          _draggables.add(label);
-                        }
-                      });
-                    },
-                    onCorrectAnswer: _checkAnswers,
-                    isSpanish: isSpanish,
-                  ),
-                  DropTarget(
-                    key: _dropTargetKeys[1],
-                    label: isSpanish
-                        ? translations['es']!['variable']!
-                        : translations['en']!['variable']!,
-                    expectedData: targets['Variable']!,
-                    showResults: _showResults,
-                    acceptedLabels: _acceptedLabels[1],
-                    onAcceptedLabelsChanged: (labels) {
-                      setState(() {
-                        _acceptedLabels[1] = labels;
-                        _draggables.removeWhere((item) => labels.contains(item));
-                      });
-                    },
-                    onItemRemoved: (label) {
-                      setState(() {
-                        if (!_acceptedLabels.any((list) => list.contains(label))) {
-                          _draggables.add(label);
-                        }
-                      });
-                    },
-                    onCorrectAnswer: _checkAnswers,
-                    isSpanish: isSpanish,
-                  ),
-                  DropTarget(
-                    key: _dropTargetKeys[2],
-                    label: isSpanish
-                        ? translations['es']!['operator']!
-                        : translations['en']!['operator']!,
-                    expectedData: targets['Operator']!,
-                    showResults: _showResults,
-                    acceptedLabels: _acceptedLabels[2],
-                    onAcceptedLabelsChanged: (labels) {
-                      setState(() {
-                        _acceptedLabels[2] = labels;
-                        _draggables.removeWhere((item) => labels.contains(item));
-                      });
-                    },
-                    onItemRemoved: (label) {
-                      setState(() {
-                        if (!_acceptedLabels.any((list) => list.contains(label))) {
-                          _draggables.add(label);
-                        }
-                      });
-                    },
-                    onCorrectAnswer: _checkAnswers,
-                    isSpanish: isSpanish,
-                  ),
-                  DropTarget(
-                    key: _dropTargetKeys[3],
-                    label: isSpanish
-                        ? translations['es']!['constant']!
-                        : translations['en']!['constant']!,
-                    expectedData: targets['Constant']!,
-                    showResults: _showResults,
-                    acceptedLabels: _acceptedLabels[3],
-                    onAcceptedLabelsChanged: (labels) {
-                      setState(() {
-                        _acceptedLabels[3] = labels;
-                        _draggables.removeWhere((item) => labels.contains(item));
-                      });
-                    },
-                    onItemRemoved: (label) {
-                      setState(() {
-                        if (!_acceptedLabels.any((list) => list.contains(label))) {
-                          _draggables.add(label);
-                        }
-                      });
-                    },
-                    onCorrectAnswer: _checkAnswers,
-                    isSpanish: isSpanish,
-                  ),
-                ],
-              ),
-              if (retryVisible) ...[
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _retry,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        Colors.blue, // Set the background color to blue
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.refresh,
-                          color: Colors.white), // Add the refresh icon
-                      SizedBox(
-                          width:
-                              8), // Add some space between the icon and the text
-                      Text(
-                        isSpanish
-                            ? translations['es']!['retry']!
-                            : translations['en']!['retry']!,
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
-                  ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Text(equation,
+                      style: const TextStyle(
+                          fontSize: 24, fontWeight: FontWeight.bold)),
                 ),
-              ] else ...[
+                Wrap(
+                  alignment: WrapAlignment.spaceEvenly,
+                  spacing: 20,
+                  runSpacing: 20,
+                  children: _draggables
+                      .map((label) => DraggableItem(
+                            key: Key(label),
+                            label: label,
+                            data: label,
+                          ))
+                      .toList(),
+                ),
+                const SizedBox(height: 40),
+                Wrap(
+                  alignment: WrapAlignment
+                      .center, // Align children in the center horizontally
+                  spacing: 20.0, // Horizontal spacing between children
+                  runSpacing: 20.0, // Vertical spacing between rows
+                  children: [
+                    DropTarget(
+                      key: _dropTargetKeys[0],
+                      label: isSpanish
+                          ? translations['es']!['coefficient']!
+                          : translations['en']!['coefficient']!,
+                      expectedData: targets['Coefficient']!,
+                      showResults: _showResults,
+                      acceptedLabels: _acceptedLabels[0],
+                      onAcceptedLabelsChanged: (labels) {
+                        setState(() {
+                          _acceptedLabels[0] = labels;
+                          _draggables
+                              .removeWhere((item) => labels.contains(item));
+                        });
+                      },
+                      onItemRemoved: (label) {
+                        setState(() {
+                          if (!_acceptedLabels
+                              .any((list) => list.contains(label))) {
+                            _draggables.add(label);
+                          }
+                        });
+                      },
+                      onCorrectAnswer: _checkAnswers,
+                      isSpanish: isSpanish,
+                    ),
+                    DropTarget(
+                      key: _dropTargetKeys[1],
+                      label: isSpanish
+                          ? translations['es']!['variable']!
+                          : translations['en']!['variable']!,
+                      expectedData: targets['Variable']!,
+                      showResults: _showResults,
+                      acceptedLabels: _acceptedLabels[1],
+                      onAcceptedLabelsChanged: (labels) {
+                        setState(() {
+                          _acceptedLabels[1] = labels;
+                          _draggables
+                              .removeWhere((item) => labels.contains(item));
+                        });
+                      },
+                      onItemRemoved: (label) {
+                        setState(() {
+                          if (!_acceptedLabels
+                              .any((list) => list.contains(label))) {
+                            _draggables.add(label);
+                          }
+                        });
+                      },
+                      onCorrectAnswer: _checkAnswers,
+                      isSpanish: isSpanish,
+                    ),
+                    DropTarget(
+                      key: _dropTargetKeys[2],
+                      label: isSpanish
+                          ? translations['es']!['operator']!
+                          : translations['en']!['operator']!,
+                      expectedData: targets['Operator']!,
+                      showResults: _showResults,
+                      acceptedLabels: _acceptedLabels[2],
+                      onAcceptedLabelsChanged: (labels) {
+                        setState(() {
+                          _acceptedLabels[2] = labels;
+                          _draggables
+                              .removeWhere((item) => labels.contains(item));
+                        });
+                      },
+                      onItemRemoved: (label) {
+                        setState(() {
+                          if (!_acceptedLabels
+                              .any((list) => list.contains(label))) {
+                            _draggables.add(label);
+                          }
+                        });
+                      },
+                      onCorrectAnswer: _checkAnswers,
+                      isSpanish: isSpanish,
+                    ),
+                    DropTarget(
+                      key: _dropTargetKeys[3],
+                      label: isSpanish
+                          ? translations['es']!['constant']!
+                          : translations['en']!['constant']!,
+                      expectedData: targets['Constant']!,
+                      showResults: _showResults,
+                      acceptedLabels: _acceptedLabels[3],
+                      onAcceptedLabelsChanged: (labels) {
+                        setState(() {
+                          _acceptedLabels[3] = labels;
+                          _draggables
+                              .removeWhere((item) => labels.contains(item));
+                        });
+                      },
+                      onItemRemoved: (label) {
+                        setState(() {
+                          if (!_acceptedLabels
+                              .any((list) => list.contains(label))) {
+                            _draggables.add(label);
+                          }
+                        });
+                      },
+                      onCorrectAnswer: _checkAnswers,
+                      isSpanish: isSpanish,
+                    ),
+                  ],
+                ),
+                if (retryVisible) ...[
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _retry,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          Colors.blue, // Set the background color to blue
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.refresh,
+                            color: Colors.white), // Add the refresh icon
+                        SizedBox(
+                            width:
+                                8), // Add some space between the icon and the text
+                        Text(
+                          isSpanish
+                              ? translations['es']!['retry']!
+                              : translations['en']!['retry']!,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                ] else ...[
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _checkAnswers,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          Colors.green, // Set the background color to green
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.check,
+                            color: Colors
+                                .white), // Add the check icon with white color
+                        SizedBox(
+                            width:
+                                8), // Add some space between the icon and the text
+                        Text(
+                          isSpanish
+                              ? translations['es']!['check_answers']!
+                              : translations['en']!['check_answers']!,
+                          style: TextStyle(
+                              color:
+                                  Colors.white), // Set the text color to white
+                        ),
+                      ],
+                    ),
+                  )
+                ],
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: _checkAnswers,
+                  onPressed:
+                      _isQuestionAnsweredCorrectly ? _nextQuestion : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
-                        Colors.green, // Set the background color to green
+                        Colors.orange, // Set the background color to orange
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.check,
+                      Icon(Icons.arrow_forward,
                           color: Colors
-                              .white), // Add the check icon with white color
+                              .white), // Add the arrow forward icon with white color
                       SizedBox(
                           width:
                               8), // Add some space between the icon and the text
                       Text(
                         isSpanish
-                            ? translations['es']!['check_answers']!
-                            : translations['en']!['check_answers']!,
+                            ? translations['es']!['next_question']!
+                            : translations['en']!['next_question']!,
                         style: TextStyle(
                             color: Colors.white), // Set the text color to white
                       ),
                     ],
                   ),
-                )
+                ),
               ],
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _isQuestionAnsweredCorrectly ? _nextQuestion : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      Colors.orange, // Set the background color to orange
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.arrow_forward,
-                        color: Colors
-                            .white), // Add the arrow forward icon with white color
-                    SizedBox(
-                        width:
-                            8), // Add some space between the icon and the text
-                    Text(
-                      isSpanish
-                          ? translations['es']!['next_question']!
-                          : translations['en']!['next_question']!,
-                      style: TextStyle(
-                          color: Colors.white), // Set the text color to white
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
           ),
           ConfettiWidget(
             confettiController: _confettiController,
@@ -877,23 +894,23 @@ class _EquationDragDropState extends State<EquationDragDrop> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () => logout(context),
-          backgroundColor: Colors.white,
-          child: const Icon(
-            Icons.logout_rounded,
-            color: Color(0xFF6C63FF),
-            size: 26,
-          ),
+        onPressed: () => logout(context),
+        backgroundColor: Colors.white,
+        child: const Icon(
+          Icons.logout_rounded,
+          color: Color(0xFF6C63FF),
+          size: 26,
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-    );    
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
   }
 }
 
 class ScoreDisplay extends StatelessWidget {
   final int score;
 
-  const ScoreDisplay({Key? key, required this.score}) : super(key: key);
+  const ScoreDisplay({super.key, required this.score});
 
   @override
   Widget build(BuildContext context) {

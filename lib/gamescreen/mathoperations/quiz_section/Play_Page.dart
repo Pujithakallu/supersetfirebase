@@ -48,8 +48,9 @@ class LevelSelectionContainer extends StatelessWidget {
         if (isUnlocked) {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => nextPage));
-        } else
+        } else {
           () => {};
+        }
       },
       borderRadius: BorderRadius.circular(30),
       child: Container(
@@ -78,7 +79,7 @@ class LevelSelectionContainer extends StatelessWidget {
 }
 
 class PlayPage extends StatelessWidget {
-  const PlayPage({Key? key}) : super(key: key);
+  const PlayPage({super.key});
 
   @override
   Widget build(BuildContext context) {

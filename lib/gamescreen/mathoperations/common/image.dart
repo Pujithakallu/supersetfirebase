@@ -4,7 +4,7 @@ class ImageBanner extends StatelessWidget {
   final String _assetPath;
   final double _h;
   final double _w;
-  ImageBanner(this._assetPath, this._h, this._w);
+  const ImageBanner(this._assetPath, this._h, this._w, {super.key});
 
   @override
   Widget build(BuildContext context) {

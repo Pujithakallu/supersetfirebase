@@ -6,7 +6,7 @@ import 'total_xp_display.dart';
 import 'total_xp_provider.dart';
 
 class PlayMenu extends StatelessWidget {
-  const PlayMenu({Key? key}) : super(key: key);
+  const PlayMenu({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
 
 class OperatorsMatchingGamePage extends StatefulWidget {
-  const OperatorsMatchingGamePage({Key? key}) : super(key: key);
+  const OperatorsMatchingGamePage({super.key});
 
   @override
   State<OperatorsMatchingGamePage> createState() =>

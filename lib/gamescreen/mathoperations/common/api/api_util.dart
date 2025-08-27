@@ -1,12 +1,10 @@
 import 'package:http/http.dart' as http;
-import 'dart:developer';
 import 'dart:convert';
 
 class apiUtils {
-
-  final String baseUrl = "'https://jsonplaceholder.typicode.com" ;
-  final String postPath = "/post" ;
-  final String getPath = "/get" ;
+  final String baseUrl = "'https://jsonplaceholder.typicode.com";
+  final String postPath = "/post";
+  final String getPath = "/get";
 
   Future<Map<String, dynamic>> makeGetRequest(String urlStr) async {
     // The URL of the API endpoint
@@ -23,11 +21,12 @@ class apiUtils {
       return data;
     } else {
       print('Failed to load data. Status code: ${response.statusCode}');
-      return {'error': response.statusCode} ;
+      return {'error': response.statusCode};
     }
   }
 
-  Future<void> makePostRequest(String urlStr, Map<String, dynamic> inData) async {
+  Future<void> makePostRequest(
+      String urlStr, Map<String, dynamic> inData) async {
     // The URL of the API endpoint
     final url = Uri.parse(urlStr);
 
@@ -47,5 +46,4 @@ class apiUtils {
       print('Failed to post data. Status code: ${response.statusCode}');
     }
   }
-
 }

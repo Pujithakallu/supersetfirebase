@@ -10,10 +10,10 @@ class SingleQuestionPage extends StatelessWidget {
   final Map<String, dynamic> questionData;
   final String questionType;
   const SingleQuestionPage({
-    Key? key,
+    super.key,
     required this.questionData,
     required this.questionType,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

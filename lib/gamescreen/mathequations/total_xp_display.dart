@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class TotalXpDisplay extends StatelessWidget {
   final int totalXp;
 
-  const TotalXpDisplay({Key? key, required this.totalXp}) : super(key: key);
+  const TotalXpDisplay({super.key, required this.totalXp});
 
   @override
   Widget build(BuildContext context) {

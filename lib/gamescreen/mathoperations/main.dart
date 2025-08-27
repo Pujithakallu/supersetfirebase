@@ -15,7 +15,6 @@ import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
 import 'package:supersetfirebase/services/firestore_score.dart';
 
-
 class Operators extends StatelessWidget {
   final String userPin;
 
@@ -42,8 +41,8 @@ class HomePage extends StatefulWidget {
 
   const HomePage({
     required this.pin,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -55,7 +54,8 @@ class _HomePageState extends State<HomePage> {
 
   void _loadMathOperatorsScore() async {
     print("loading score inside function");
-    int score = await _firestoreService.getUserScoreForGame(widget.pin, 'MathOperators');
+    int score = await _firestoreService.getUserScoreForGame(
+        widget.pin, 'MathOperators');
     setState(() {
       bestScore = score;
     });
@@ -96,11 +96,12 @@ class _HomePageState extends State<HomePage> {
             child: FloatingActionButton(
               heroTag: "backButton",
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => HomeScreen(pin: userPin)),
-                );
+                Navigator.of(context, rootNavigator: true).pop();
+                //    Navigator.pushReplacement(
+                //    context,
+                //  MaterialPageRoute(
+                //    builder: (context) => HomeScreen(pin: userPin)),
+                // );
                 _loadMathOperatorsScore();
               },
               foregroundColor: Colors.white,
@@ -189,7 +190,7 @@ class _HomePageState extends State<HomePage> {
               child: Text(
                 'PIN: ${widget.pin}',
                 style: TextStyle(
-                  fontSize:  baseScale * 0.02,
+                  fontSize: baseScale * 0.02,
                   fontWeight: FontWeight.bold,
                   color: const Color.fromARGB(255, 33, 140, 101),
                 ),
@@ -199,8 +200,10 @@ class _HomePageState extends State<HomePage> {
             // OPERATORS text inside a styled box
             Container(
               // width: MediaQuery.of(context).size.width * 0.8,
-              padding: EdgeInsets.symmetric( horizontal: (baseScale * 0.04).clamp(12.0, 24.0),
-    vertical: (baseScale * 0.015).clamp(6.0, 16.0),),
+              padding: EdgeInsets.symmetric(
+                horizontal: (baseScale * 0.04).clamp(12.0, 24.0),
+                vertical: (baseScale * 0.015).clamp(6.0, 16.0),
+              ),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(15),
@@ -216,7 +219,7 @@ class _HomePageState extends State<HomePage> {
               child: Text(
                 "OPERATORS",
                 style: TextStyle(
-                  fontSize:(baseScale * 0.066).clamp(22.0, 34.0),
+                  fontSize: (baseScale * 0.066).clamp(22.0, 34.0),
                   fontWeight: FontWeight.bold,
                   color: const Color.fromARGB(
                       255, 33, 140, 101), // Text color inside the white box
@@ -282,7 +285,7 @@ class _HomePageState extends State<HomePage> {
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
-                                      fontSize:  baseScale * 0.025),
+                                      fontSize: baseScale * 0.025),
                                 ),
                               ],
                             ),
@@ -293,7 +296,8 @@ class _HomePageState extends State<HomePage> {
                           onTap: () async {
                             final result = await Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => PlayPage()),
+                              MaterialPageRoute(
+                                  builder: (context) => PlayPage()),
                             );
 
                             if (result == 'refresh') {
@@ -349,4 +353,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-

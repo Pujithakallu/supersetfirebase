@@ -5,7 +5,7 @@ class TestScoreScreen extends StatelessWidget {
   final String pin;
   final FirestoreService _firestoreService = FirestoreService();
 
-  TestScoreScreen({required this.pin, Key? key}) : super(key: key);
+  TestScoreScreen({required this.pin, super.key});
 
   void sendDummyScores(BuildContext context) async {
     print("Sending dummy scores for pin: $pin");

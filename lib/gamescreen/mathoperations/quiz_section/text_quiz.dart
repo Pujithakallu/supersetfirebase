@@ -3,7 +3,6 @@ import 'package:supersetfirebase/gamescreen/mathoperations/common/question_data/
 import 'package:supersetfirebase/gamescreen/mathoperations/common/question_data/text_question.dart';
 // import 'package:op_games/common/widgets/next_button.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'dart:developer';
 import "package:supersetfirebase/gamescreen/mathoperations/common/translate/translate.dart";
 import 'package:supersetfirebase/gamescreen/mathoperations/common/global.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/quiz_section/result_page.dart';
@@ -12,7 +11,6 @@ import 'package:supersetfirebase/utils/logout_util.dart';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
 import 'package:supersetfirebase/services/firestore_score.dart';
-
 
 class TextQuiz extends StatefulWidget {
   final String opSign;
@@ -48,7 +46,7 @@ class _TextQuizState extends State<TextQuiz> {
   @override
   void initState() {
     super.initState();
-    
+
     userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     _firestoreService = FirestoreService();
     if (widget.opSign == 'mix') {
@@ -131,7 +129,7 @@ class _TextQuizState extends State<TextQuiz> {
     });
   }
 
-  void gotoNextQuestion() async{
+  void gotoNextQuestion() async {
     if (selectedAnswer == null && !isAnswerSubmitted) {
       // Show a SnackBar if no answer is submitted
       ScaffoldMessenger.of(context).showSnackBar(
@@ -150,11 +148,13 @@ class _TextQuizState extends State<TextQuiz> {
     } else {
       widget.level.updateScore(score);
       // Step 2: Get previously stored high score from Firestore
-      int previousHighScore = await _firestoreService.getUserScoreForGame(userPin, 'MathOperators');
+      int previousHighScore =
+          await _firestoreService.getUserScoreForGame(userPin, 'MathOperators');
 
       // Step 3: Only update if the new total is higher
       if (GlobalVariables.totalScore.value > previousHighScore) {
-        await _firestoreService.updateUserScoreForGame(userPin, 'MathOperators', GlobalVariables.totalScore.value);
+        await _firestoreService.updateUserScoreForGame(
+            userPin, 'MathOperators', GlobalVariables.totalScore.value);
       }
       Navigator.push(
           context,
@@ -166,8 +166,8 @@ class _TextQuizState extends State<TextQuiz> {
                     questionResults: questionResults,
                     questionType: "text",
                   ))).then((_) {
-                        Navigator.pop(context, 'refresh'); // 👈 Send refresh back to PlayPage
-                      });
+        Navigator.pop(context, 'refresh'); // 👈 Send refresh back to PlayPage
+      });
     }
     setState(() {});
   }
@@ -187,7 +187,8 @@ class _TextQuizState extends State<TextQuiz> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    double baseScale = (screenWidth < screenHeight ? screenWidth : screenHeight) / 100;
+    double baseScale =
+        (screenWidth < screenHeight ? screenWidth : screenHeight) / 100;
     final quizquestion = questions[questionIndex];
     // log('data: $questions');
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
@@ -202,74 +203,77 @@ class _TextQuizState extends State<TextQuiz> {
           children: [
             // Transparent AppBar Layer
             AppBar(
-        backgroundColor: Color.fromARGB(255, 95, 177, 179), // Light sky blue
-        elevation: 4,
-        automaticallyImplyLeading: false,
-        toolbarHeight: 70,
-        flexibleSpace: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              children: [
-                // 🔙 Back Button
-                IconButton(
-                  icon: Icon(Icons.arrow_back, color: const Color.fromARGB(255, 1, 2, 3), size: 28),
-                  onPressed: () => Navigator.pop(context),
-                ),
-
-                // 🧩 Level & Score (Centered)
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+              backgroundColor:
+                  Color.fromARGB(255, 95, 177, 179), // Light sky blue
+              elevation: 4,
+              automaticallyImplyLeading: false,
+              toolbarHeight: 70,
+              flexibleSpace: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
                     children: [
-                      Text(
-                        'Level ${widget.level.levelNumber}',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: const Color.fromARGB(255, 229, 232, 238),
-                        ),
+                      // 🔙 Back Button
+                      IconButton(
+                        icon: Icon(Icons.arrow_back,
+                            color: const Color.fromARGB(255, 1, 2, 3),
+                            size: 28),
+                        onPressed: () => Navigator.pop(context),
                       ),
-                      Text(
-                        'Score: $score',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: const Color.fromARGB(221, 246, 246, 246),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
 
-                // 🔐 PIN Display (Styled)
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 4,
-                        offset: Offset(0, 2),
+                      // 🧩 Level & Score (Centered)
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Level ${widget.level.levelNumber}',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: const Color.fromARGB(255, 229, 232, 238),
+                              ),
+                            ),
+                            Text(
+                              'Score: $score',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: const Color.fromARGB(221, 246, 246, 246),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      // 🔐 PIN Display (Styled)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 4,
+                              offset: Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Text(
+                          'PIN: $userPin',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue.shade900,
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                  child: Text(
-                    'PIN: $userPin',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue.shade900,
-                    ),
-                  ),
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
-
           ],
         ),
       ),
@@ -283,7 +287,12 @@ class _TextQuizState extends State<TextQuiz> {
               ),
             ),
             child: Padding(
-              padding: EdgeInsets.fromLTRB((baseScale * 10).clamp(8.0, 24.0),(baseScale * 3).clamp(6.0, 20.0),(baseScale * 10).clamp(8.0, 24.0),  (baseScale * 1).clamp(4.0, 16.0),),
+              padding: EdgeInsets.fromLTRB(
+                (baseScale * 10).clamp(8.0, 24.0),
+                (baseScale * 3).clamp(6.0, 20.0),
+                (baseScale * 10).clamp(8.0, 24.0),
+                (baseScale * 1).clamp(4.0, 16.0),
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -323,7 +332,8 @@ class _TextQuizState extends State<TextQuiz> {
                       pickAnswer(value);
                     },
                     style: TextStyle(
-                      fontSize:(baseScale * 2.0).clamp(12.0, 24.0), // Adjust the font size as needed
+                      fontSize: (baseScale * 2.0)
+                          .clamp(12.0, 24.0), // Adjust the font size as needed
                       fontWeight: FontWeight.bold, // Make the text bold
                     ),
                     decoration: InputDecoration(
@@ -358,7 +368,8 @@ class _TextQuizState extends State<TextQuiz> {
                         borderRadius: BorderRadius.circular(30),
                         child: Container(
                           width: screenWidth / 10,
-                          padding: EdgeInsets.all((baseScale * 2).clamp(8.0, 20.0)),
+                          padding:
+                              EdgeInsets.all((baseScale * 2).clamp(8.0, 20.0)),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
                             color: Colors.lightGreen,
@@ -383,7 +394,8 @@ class _TextQuizState extends State<TextQuiz> {
                         borderRadius: BorderRadius.circular(30),
                         child: Container(
                           width: screenWidth / 4,
-                          padding: EdgeInsets.all((baseScale * 2).clamp(8.0, 20.0)),
+                          padding:
+                              EdgeInsets.all((baseScale * 2).clamp(8.0, 20.0)),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
                             color: selectedAnswer != null && !isAnswerSubmitted
@@ -417,7 +429,8 @@ class _TextQuizState extends State<TextQuiz> {
                         borderRadius: BorderRadius.circular(30),
                         child: Container(
                           width: screenWidth / 4,
-                          padding: EdgeInsets.all((baseScale * 2).clamp(8.0, 20.0)),
+                          padding:
+                              EdgeInsets.all((baseScale * 2).clamp(8.0, 20.0)),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
                             color: isAnswerSubmitted
@@ -445,7 +458,8 @@ class _TextQuizState extends State<TextQuiz> {
                         borderRadius: BorderRadius.circular(30),
                         child: Container(
                           width: screenWidth / 10,
-                          padding:EdgeInsets.all((baseScale * 2).clamp(8.0, 20.0)),
+                          padding:
+                              EdgeInsets.all((baseScale * 2).clamp(8.0, 20.0)),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
                             color: Colors.lightGreen,
@@ -456,7 +470,8 @@ class _TextQuizState extends State<TextQuiz> {
                               Text(
                                 currentLanguage == 0 ? 'Español' : 'English',
                                 style: TextStyle(
-                                    fontSize: (baseScale * 1.6).clamp(12.0, 22.0),
+                                    fontSize:
+                                        (baseScale * 1.6).clamp(12.0, 22.0),
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold),
                               )

@@ -12,7 +12,7 @@ enum Language { English, Spanish }
 enum Operation { Addition, Subtraction }
 
 class QuizPage extends StatefulWidget {
-  const QuizPage({Key? key}) : super(key: key);
+  const QuizPage({super.key});
 
   @override
   _QuizPageState createState() => _QuizPageState();
@@ -275,6 +275,31 @@ class _QuizPageState extends State<QuizPage> {
                           onPressed: !questionAnswered
                               ? () => checkAnswer(option)
                               : null,
+                          style: ButtonStyle(
+                            backgroundColor:
+                                WidgetStateProperty.resolveWith<Color>(
+                              (states) {
+                                // Change the color based on the answer status
+                                if (!questionAnswered) {
+                                  return Colors
+                                      .white54; // Default color before selection
+                                }
+                                if (option == selectedOption &&
+                                    option !=
+                                        questions[currentQuestionIndex]
+                                            .correctAnswer) {
+                                  return Colors.redAccent; // Wrong answer
+                                }
+                                if (option ==
+                                    questions[currentQuestionIndex]
+                                        .correctAnswer) {
+                                  return Colors.greenAccent; // Correct answer
+                                }
+                                return Colors
+                                    .white54; // Default color for unselected options
+                              },
+                            ),
+                          ),
                           child: Text(
                             getOptionText(
                                 option), // This method should handle the conversion or fetching of the option text.
@@ -282,28 +307,6 @@ class _QuizPageState extends State<QuizPage> {
                               color: Colors.black87,
                               fontSize: 30,
                               fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.resolveWith<Color>(
-                              (states) {
-                                // Change the color based on the answer status
-                                if (!questionAnswered)
-                                  return Colors
-                                      .white54; // Default color before selection
-                                if (option == selectedOption &&
-                                    option !=
-                                        questions[currentQuestionIndex]
-                                            .correctAnswer)
-                                  return Colors.redAccent; // Wrong answer
-                                if (option ==
-                                    questions[currentQuestionIndex]
-                                        .correctAnswer)
-                                  return Colors.greenAccent; // Correct answer
-                                return Colors
-                                    .white54; // Default color for unselected options
-                              },
                             ),
                           ),
                         ),
@@ -321,11 +324,11 @@ class _QuizPageState extends State<QuizPage> {
                                   builder: (context) =>
                                       PlayPage())); // Use pushReplacement to prevent going back to the quiz
                         },
-                        child: Text('Back to Levels',
-                            style: TextStyle(fontSize: 20)),
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,
                             foregroundColor: Colors.white),
+                        child: Text('Back to Levels',
+                            style: TextStyle(fontSize: 20)),
                       ),
                     ),
                   SizedBox(height: 30),
@@ -339,14 +342,14 @@ class _QuizPageState extends State<QuizPage> {
                     children: [
                       FloatingActionButton(
                         onPressed: () => speakQuestion(getQuestionText()),
-                        child: Icon(Icons.volume_up, size: 40),
                         backgroundColor: Colors.white38,
+                        child: Icon(Icons.volume_up, size: 40),
                       ),
                       SizedBox(width: 20),
                       FloatingActionButton(
                         onPressed: toggleLanguage,
-                        child: Icon(Icons.g_translate, size: 40),
                         backgroundColor: Colors.white38,
+                        child: Icon(Icons.g_translate, size: 40),
                       ),
                     ],
                   ),
@@ -399,11 +402,11 @@ class OrangesDisplay extends StatelessWidget {
   final Operation operation;
 
   const OrangesDisplay({
-    Key? key,
+    super.key,
     required this.firstSetOfOranges,
     required this.secondSetOfOranges,
     required this.operation,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -428,7 +431,7 @@ class OrangesDisplay extends StatelessWidget {
 class _Oranges extends StatelessWidget {
   final int count;
 
-  const _Oranges({Key? key, required this.count}) : super(key: key);
+  const _Oranges({super.key, required this.count});
 
   @override
   Widget build(BuildContext context) {

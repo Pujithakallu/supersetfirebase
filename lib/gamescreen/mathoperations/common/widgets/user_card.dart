@@ -6,11 +6,11 @@ class UserCard extends StatelessWidget {
   final int score;
 
   const UserCard({
-    Key? key,
+    super.key,
     //required this.username,
     // required this.avatarUrl,
     required this.score,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class UserCard extends StatelessWidget {
           //   radius: screenWidth/80,
           // ),
         ),
-        SizedBox(width: screenWidth/80),
+        SizedBox(width: screenWidth / 80),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -43,17 +43,18 @@ class UserCard extends StatelessWidget {
             //     color: Colors.white
             //   ),
             // ),
-            SizedBox(width: screenWidth/2),
+            SizedBox(width: screenWidth / 2),
             Text(
               'Score: $score',
               style: TextStyle(
-                fontSize: screenWidth/40,
+                fontSize: screenWidth / 40,
                 color: Colors.white54,
               ),
             ),
           ],
         ),
-        Spacer(flex: 1),],
+        Spacer(flex: 1),
+      ],
     );
   }
 }

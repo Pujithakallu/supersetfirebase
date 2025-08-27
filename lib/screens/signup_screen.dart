@@ -3,12 +3,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:supersetfirebase/screens/login_screen.dart';
 
 class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
+
   @override
   _SignupScreenState createState() => _SignupScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderStateMixin {
-  final List<TextEditingController> _controllers = List.generate(3, (_) => TextEditingController());
+class _SignupScreenState extends State<SignupScreen>
+    with SingleTickerProviderStateMixin {
+  final List<TextEditingController> _controllers =
+      List.generate(3, (_) => TextEditingController());
   final List<FocusNode> _focusNodes = List.generate(3, (_) => FocusNode());
   late AnimationController _bounceController;
   late Animation<double> _bounceAnimation;
@@ -28,7 +32,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
       duration: Duration(milliseconds: 1500),
       vsync: this,
     )..repeat(reverse: true);
-    
+
     _bounceAnimation = Tween<double>(
       begin: -10.0,
       end: 10.0,
@@ -52,7 +56,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
 
   Future<void> _signup() async {
     String pin = _controllers.map((c) => c.text).join();
-    
+
     if (pin.length != 3) {
       setState(() {
         _errorMessage = 'Oops! We need all 3 numbers for your secret code! 🎯';
@@ -73,7 +77,8 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
 
       if (existingPin.docs.isNotEmpty) {
         setState(() {
-          _errorMessage = 'This secret code is already taken! Try another one! 🎲';
+          _errorMessage =
+              'This secret code is already taken! Try another one! 🎲';
           _isLoading = false;
         });
         return;
@@ -85,9 +90,8 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
       });
 
       if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => LoginScreen())
-        );
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen()));
       }
     } catch (e) {
       setState(() {
@@ -113,7 +117,8 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
           ),
           margin: EdgeInsets.all(8),
           child: IconButton(
-            icon: Icon(Icons.arrow_back, color: Color.fromARGB(255, 101, 67, 33)),
+            icon:
+                Icon(Icons.arrow_back, color: Color.fromARGB(255, 101, 67, 33)),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
@@ -122,7 +127,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/profile_pic.png'), 
+            image: AssetImage('assets/images/profile_pic.png'),
             fit: BoxFit.cover,
           ),
         ),
@@ -195,14 +200,14 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                                   textAlign: TextAlign.center,
                                   keyboardType: TextInputType.number,
                                   maxLength: 1,
-                                  textInputAction: index < 2 
-                                      ? TextInputAction.next 
+                                  textInputAction: index < 2
+                                      ? TextInputAction.next
                                       : TextInputAction.done,
                                   onSubmitted: (value) {
                                     if (index < 2) {
                                       _focusNodes[index + 1].requestFocus();
                                     } else {
-                                      if (_controllers.every((controller) => 
+                                      if (_controllers.every((controller) =>
                                           controller.text.isNotEmpty)) {
                                         _signup();
                                       }
@@ -215,7 +220,8 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                                   decoration: InputDecoration(
                                     counterText: '',
                                     filled: true,
-                                    fillColor: _pinBoxColors[index].withOpacity(1.0),
+                                    fillColor:
+                                        _pinBoxColors[index].withOpacity(1.0),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(15),
                                       borderSide: BorderSide.none,
@@ -256,7 +262,8 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                             onPressed: _isLoading ? null : _signup,
                             child: _isLoading
                                 ? CircularProgressIndicator(color: Colors.white)
-                                : Text('Create My Code!', style: TextStyle(fontSize: 20)),
+                                : Text('Create My Code!',
+                                    style: TextStyle(fontSize: 20)),
                           ),
                         ],
                       ),

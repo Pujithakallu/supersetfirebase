@@ -9,7 +9,7 @@ import 'package:supersetfirebase/provider/user_pin_provider.dart';
 import 'package:supersetfirebase/gamescreen/mathmingle/analytics_engine.dart';
 
 class StudyMaterialScreen extends StatefulWidget {
-  const StudyMaterialScreen({Key? key}) : super(key: key);
+  const StudyMaterialScreen({super.key});
 
   @override
   _StudyMaterialScreenState createState() => _StudyMaterialScreenState();
@@ -115,7 +115,8 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
                     builder: (context) {
                       final screenWidth = MediaQuery.of(context).size.width;
                       final double fontSize = screenWidth < 600 ? 12 : 14;
-                      final double horizontalPadding = screenWidth < 600 ? 10 : 12;
+                      final double horizontalPadding =
+                          screenWidth < 600 ? 10 : 12;
                       final double verticalPadding = screenWidth < 600 ? 6 : 6;
                       final double borderRadius = screenWidth < 600 ? 10 : 12;
                       final double maxWidth = screenWidth < 600 ? 80 : 120;
@@ -308,8 +309,7 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
       child: Text(
         label,
         style: TextStyle(
-          fontSize:
-              MediaQuery.of(context).size.width > 700 ? 25 : 18,
+          fontSize: MediaQuery.of(context).size.width > 700 ? 25 : 18,
           color: isExit ? Colors.red : Colors.blue,
           fontWeight: isExit ? FontWeight.bold : FontWeight.bold,
         ),
@@ -353,8 +353,7 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
     );
   }
 
-  Widget _buildLargeScreenContent(
-      String spanish, String english, int chapter) {
+  Widget _buildLargeScreenContent(String spanish, String english, int chapter) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -401,13 +400,13 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
     );
   }
 
-  Widget _buildSmallScreenContent(
-      String spanish, String english, int chapter) {
+  Widget _buildSmallScreenContent(String spanish, String english, int chapter) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final minCardHeight = 120.0;
         final preferredHeight = constraints.maxHeight * 0.3;
-        final cardHeight = preferredHeight.clamp(minCardHeight, double.infinity);
+        final cardHeight =
+            preferredHeight.clamp(minCardHeight, double.infinity);
         return SizedBox(
           height: cardHeight,
           child: Column(
@@ -431,7 +430,8 @@ class _StudyMaterialScreenState extends State<StudyMaterialScreen> {
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.volume_up, size: 20, color: Colors.blue),
+                      icon: const Icon(Icons.volume_up,
+                          size: 20, color: Colors.blue),
                       onPressed: () => _playAudio(english, chapter),
                     ),
                   ],

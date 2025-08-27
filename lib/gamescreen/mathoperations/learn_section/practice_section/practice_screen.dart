@@ -15,7 +15,7 @@ import 'package:supersetfirebase/gamescreen/mathoperations/analytics_engine.dart
 
 class PracticeScreen extends StatefulWidget {
   final String opSign;
-  const PracticeScreen({Key? key, required this.opSign}) : super(key: key);
+  const PracticeScreen({super.key, required this.opSign});
 
   @override
   State<PracticeScreen> createState() => _PracticeScreenState();
@@ -86,7 +86,8 @@ class _PracticeScreenState extends State<PracticeScreen> {
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    double baseScale = (screenWidth < screenHeight ? screenWidth : screenHeight) / 100;
+    double baseScale =
+        (screenWidth < screenHeight ? screenWidth : screenHeight) / 100;
     final question = questions[questionIndex];
     bool isLastQuestion = questionIndex == questions.length - 1;
     return Scaffold(
@@ -166,7 +167,12 @@ class _PracticeScreenState extends State<PracticeScreen> {
               ),
             ),
             child: Padding(
-              padding: EdgeInsets.fromLTRB( (baseScale * 10).clamp(8.0, 24.0),(baseScale * 3).clamp(6.0, 20.0),(baseScale * 10).clamp(8.0, 24.0),  (baseScale * 1).clamp(4.0, 16.0),),
+              padding: EdgeInsets.fromLTRB(
+                (baseScale * 10).clamp(8.0, 24.0),
+                (baseScale * 3).clamp(6.0, 20.0),
+                (baseScale * 10).clamp(8.0, 24.0),
+                (baseScale * 1).clamp(4.0, 16.0),
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -202,25 +208,25 @@ class _PracticeScreenState extends State<PracticeScreen> {
                       ],
                     ),
                   ),
-                 Expanded(
-                  child:ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: question.options.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: selectedAnswerIndex == null
-                            ? () => pickAnswer(index)
-                            : null,
-                        child: AnswerCard(
-                          currentIndex: index,
-                          question: question.options[index][currentLanguage],
-                          isSelected: selectedAnswerIndex == index,
-                          selectedAnswerIndex: selectedAnswerIndex,
-                          correctAnswerIndex: question.correctAnswerIndex,
-                        ),
-                      );
-                    },
-                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: question.options.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: selectedAnswerIndex == null
+                              ? () => pickAnswer(index)
+                              : null,
+                          child: AnswerCard(
+                            currentIndex: index,
+                            question: question.options[index][currentLanguage],
+                            isSelected: selectedAnswerIndex == index,
+                            selectedAnswerIndex: selectedAnswerIndex,
+                            correctAnswerIndex: question.correctAnswerIndex,
+                          ),
+                        );
+                      },
+                    ),
                   ),
                   // Next button
                   SizedBox(
@@ -239,7 +245,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
                         borderRadius: BorderRadius.circular(30),
                         child: Container(
                           width: screenWidth / 10,
-                          padding:  EdgeInsets.all(baseScale * 1),
+                          padding: EdgeInsets.all(baseScale * 1),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
                             color: Colors.lightGreen,
@@ -269,7 +275,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
                         borderRadius: BorderRadius.circular(30),
                         child: Container(
                           width: screenWidth / 4,
-                          padding:  EdgeInsets.all(baseScale * 1),
+                          padding: EdgeInsets.all(baseScale * 1),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
                             color: selectedAnswerIndex != null
@@ -300,7 +306,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
                         borderRadius: BorderRadius.circular(30),
                         child: Container(
                           width: screenWidth / 10,
-                          padding:  EdgeInsets.all(baseScale * 1),
+                          padding: EdgeInsets.all(baseScale * 1),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
                             color: Colors.lightGreen,

@@ -10,7 +10,7 @@ import 'package:supersetfirebase/provider/user_pin_provider.dart';
 class OperatorPage extends StatelessWidget {
   final Map<String, dynamic> operatorData;
 
-  OperatorPage({required this.operatorData});
+  const OperatorPage({super.key, required this.operatorData});
 
   @override
   Widget build(BuildContext context) {
@@ -53,12 +53,16 @@ class OperatorPage extends StatelessWidget {
             Positioned(
               top: 12,
               child: Container(
-                padding: const EdgeInsets.symmetric( horizontal: 12, vertical: 6), // Reduced padding
-                constraints: const BoxConstraints(maxWidth:120, // Limits the width to prevent it from being too wide
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 12, vertical: 6), // Reduced padding
+                constraints: const BoxConstraints(
+                  maxWidth:
+                      120, // Limits the width to prevent it from being too wide
                 ),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(12), // Slightly rounded corners
+                  borderRadius:
+                      BorderRadius.circular(12), // Slightly rounded corners
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.1),
@@ -70,8 +74,9 @@ class OperatorPage extends StatelessWidget {
                 child: Center(
                   child: Text(
                     'PIN: $userPin',
-                    style:  TextStyle(
-                      fontSize: (baseScale * 0.014).clamp(10.0, 20.0), // Slightly smaller font for better fit
+                    style: TextStyle(
+                      fontSize: (baseScale * 0.014).clamp(
+                          10.0, 20.0), // Slightly smaller font for better fit
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
                     ),
@@ -155,7 +160,8 @@ class OperatorPage extends StatelessWidget {
                                       style: TextStyle(
                                           color: Colors.black87,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: (baseScale * 0.025).clamp(14.0, 22.0)),
+                                          fontSize: (baseScale * 0.025)
+                                              .clamp(14.0, 22.0)),
                                     ),
                                   ],
                                 ),
@@ -173,7 +179,7 @@ class OperatorPage extends StatelessWidget {
                               },
                               borderRadius: BorderRadius.circular(30),
                               child: Container(
-                                width:(baseScale * 0.12).clamp(100.0, 160.0),
+                                width: (baseScale * 0.12).clamp(100.0, 160.0),
                                 // height: screenWidth/15,
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
@@ -188,7 +194,8 @@ class OperatorPage extends StatelessWidget {
                                       style: TextStyle(
                                           color: Colors.black87,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: (baseScale * 0.025).clamp(14.0, 22.0)),
+                                          fontSize: (baseScale * 0.025)
+                                              .clamp(14.0, 22.0)),
                                     ),
                                   ],
                                 ),

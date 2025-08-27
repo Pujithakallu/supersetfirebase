@@ -9,7 +9,7 @@ import 'total_xp_display.dart';
 import 'total_xp_provider.dart';
 
 class WhatAreEquations extends StatelessWidget {
-  const WhatAreEquations({Key? key}) : super(key: key);
+  const WhatAreEquations({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +18,8 @@ class WhatAreEquations extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: FloatingActionButton(

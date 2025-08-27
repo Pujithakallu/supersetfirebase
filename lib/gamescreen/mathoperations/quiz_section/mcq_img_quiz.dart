@@ -400,7 +400,7 @@ class _McqImgQuizState extends State<McqImgQuiz> {
 class OrangesWithNumber extends StatelessWidget {
   final int count;
 
-  const OrangesWithNumber({Key? key, required this.count}) : super(key: key);
+  const OrangesWithNumber({super.key, required this.count});
 
   @override
   Widget build(BuildContext context) {
@@ -438,11 +438,11 @@ class OrangesDisplay extends StatelessWidget {
   final String sign;
 
   const OrangesDisplay({
-    Key? key,
+    super.key,
     required this.firstSetOfOranges,
     required this.secondSetOfOranges,
     required this.sign,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

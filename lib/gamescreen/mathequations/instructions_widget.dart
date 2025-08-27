@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class InstructionsWidget extends StatelessWidget {
   final String instructions;
 
-  const InstructionsWidget({Key? key, required this.instructions})
-      : super(key: key);
+  const InstructionsWidget({super.key, required this.instructions});
 
   @override
   Widget build(BuildContext context) {

@@ -9,14 +9,13 @@ import 'total_xp_display.dart';
 import 'total_xp_provider.dart';
 
 class ImportanceOfEquations extends StatefulWidget {
-  const ImportanceOfEquations({Key? key}) : super(key: key);
+  const ImportanceOfEquations({super.key});
 
   @override
   _ImportanceOfEquationsState createState() => _ImportanceOfEquationsState();
 }
 
 class _ImportanceOfEquationsState extends State<ImportanceOfEquations> {
-
   final Map<String, String> englishText = {
     'title': 'Importance of Equations',
     'foundation':
@@ -94,15 +93,19 @@ class _ImportanceOfEquationsState extends State<ImportanceOfEquations> {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          final isWideScreen = constraints.maxWidth > 600; // Check if the screen is wide
+          final isWideScreen =
+              constraints.maxWidth > 600; // Check if the screen is wide
           return Center(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Container(
+              child: SizedBox(
                 width: isWideScreen
-                    ? constraints.maxWidth * 0.7 // Use 60% width for wide screens
-                    : constraints.maxWidth * 0.8, // Use 80% width for smaller screens
-                child: SingleChildScrollView( // Added to prevent overflow
+                    ? constraints.maxWidth *
+                        0.7 // Use 60% width for wide screens
+                    : constraints.maxWidth *
+                        0.8, // Use 80% width for smaller screens
+                child: SingleChildScrollView(
+                  // Added to prevent overflow
                   child: IntrinsicHeight(
                     child: Card(
                       color: Colors.blue[50],

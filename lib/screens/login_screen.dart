@@ -2,16 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'signup_screen.dart';
-import 'home_screen.dart';
+
+//import 'home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:supersetfirebase/provider/user_pin_provider.dart';
+import 'package:supersetfirebase/screens/category_page.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
+class _LoginScreenState extends State<LoginScreen>
+    with TickerProviderStateMixin {
   final List<TextEditingController> _controllers =
       List.generate(3, (_) => TextEditingController());
   final List<FocusNode> _focusNodes = List.generate(3, (_) => FocusNode());
@@ -90,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       if (mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (_) => HomeScreen(pin: pin),
+            builder: (_) => CategoryPage(),
           ),
         );
       }
@@ -128,7 +133,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                             offset: Offset(0, _bounceAnimation.value),
                             child: CircleAvatar(
                               radius: 40, // Adjust size if needed
-                              backgroundImage: AssetImage('assets/images/spiderman.png'), // Ensure the image is in assets
+                              backgroundImage: AssetImage(
+                                  'assets/images/spiderman.png'), // Ensure the image is in assets
                               backgroundColor: Colors.transparent,
                             ),
                           );
@@ -206,7 +212,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                     decoration: InputDecoration(
                                       counterText: '',
                                       filled: true,
-                                      fillColor: _pinBoxColors[index].withOpacity(1.0),
+                                      fillColor:
+                                          _pinBoxColors[index].withOpacity(1.0),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide.none,
@@ -240,7 +247,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Color(0xFF6C63FF),
                                 foregroundColor: Colors.white,
-                                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 50, vertical: 15),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30),
                                 ),
@@ -248,7 +256,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                 shadowColor: Color(0xFF6C63FF).withOpacity(1.0),
                               ),
                               child: _isLoading
-                                  ? CircularProgressIndicator(color: Colors.white)
+                                  ? CircularProgressIndicator(
+                                      color: Colors.white)
                                   : Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
@@ -260,7 +269,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                           ),
                                         ),
                                         SizedBox(width: 10),
-                                        Icon(Icons.rocket_launch, color: Colors.white),
+                                        Icon(Icons.rocket_launch,
+                                            color: Colors.white),
                                       ],
                                     ),
                             ),
@@ -268,7 +278,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (_) => SignupScreen()),
+                                  MaterialPageRoute(
+                                      builder: (_) => SignupScreen()),
                                 );
                               },
                               child: Text(

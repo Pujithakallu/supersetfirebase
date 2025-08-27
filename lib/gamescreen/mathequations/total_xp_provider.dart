@@ -1,10 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:supersetfirebase/services/firestore_score.dart';
 
 class TotalXpProvider with ChangeNotifier {
   int _score = 0;
-  int _bestScore = 0;  
+  int _bestScore = 0;
   final FirestoreService _scoreService = FirestoreService();
 
   int get score => _score;
@@ -17,10 +16,11 @@ class TotalXpProvider with ChangeNotifier {
 
   Future<void> fetchBestScore(String pin) async {
     print('Fetching best score');
-    try {      
-        _bestScore = await _scoreService.getUserScoreForGame(pin, 'MathEquations');
-        print('Fetched best score: $_bestScore');
-        notifyListeners();
+    try {
+      _bestScore =
+          await _scoreService.getUserScoreForGame(pin, 'MathEquations');
+      print('Fetched best score: $_bestScore');
+      notifyListeners();
     } catch (e) {
       print('Error fetching best score: $e');
     }
@@ -30,7 +30,8 @@ class TotalXpProvider with ChangeNotifier {
     if (sessionScore > _bestScore) {
       _bestScore = sessionScore;
       notifyListeners();
-      await _scoreService.updateUserScoreForGame(userPin, 'MathEquations', bestScore);
+      await _scoreService.updateUserScoreForGame(
+          userPin, 'MathEquations', bestScore);
       print('Best score updated in Firestore: $_bestScore');
     }
   }

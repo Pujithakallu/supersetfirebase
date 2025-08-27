@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/common/image.dart';
 
 class ScorePage extends StatefulWidget {
-  const ScorePage({Key? key}) : super(key: key);
+  const ScorePage({super.key});
 
   @override
   _ScorePageState createState() => _ScorePageState();
@@ -35,8 +35,11 @@ class _ScorePageState extends State<ScorePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Score : ${score}',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 40),
+                'Score : $score',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 40),
               ),
               const SizedBox(width: 300),
               ElevatedButton(

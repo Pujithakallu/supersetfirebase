@@ -24,17 +24,16 @@ Future<void> main() async {
   );
   await AnalyticsEngine.init();
   runApp(MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => LanguageProvider()),
-        ChangeNotifierProvider(create: (context) => TotalXpProvider()),
-      ],
-      child: const MathEquationsApp(),
-    )
-  );
+    providers: [
+      ChangeNotifierProvider(create: (context) => LanguageProvider()),
+      ChangeNotifierProvider(create: (context) => TotalXpProvider()),
+    ],
+    child: const MathEquationsApp(),
+  ));
 }
 
 class MathEquationsApp extends StatelessWidget {
-  const MathEquationsApp({Key? key}) : super(key: key);
+  const MathEquationsApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +58,8 @@ class MathEquationsApp extends StatelessWidget {
           '/equationToWords': (context) => const EquationToWordsScreen(),
           '/whatAreEquations': (context) => const WhatAreEquations(),
           '/partsOfEquations': (context) => PartsOfEquations(),
-          '/whatAreEquationsDetail': (context) => const WhatAreEquationsDetail(),
+          '/whatAreEquationsDetail': (context) =>
+              const WhatAreEquationsDetail(),
           '/importanceOfEquations': (context) => const ImportanceOfEquations(),
           '/realWorldApplications': (context) => const RealWorldApplications(),
         },

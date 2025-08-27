@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/learn_section/operator.dart';
 import 'package:supersetfirebase/gamescreen/mathoperations/common/operator_data/op_data.dart';
 import 'package:supersetfirebase/utils/logout_util.dart';
@@ -40,7 +39,7 @@ class LearnPage extends StatelessWidget {
                 backgroundColor: Colors.white,
                 shape: const CircleBorder(),
                 mini: true, // Smaller button
-                child:  Icon(Icons.arrow_back_rounded,
+                child: Icon(Icons.arrow_back_rounded,
                     size: baseScale * 3.2, color: Colors.black),
               ),
             ),
@@ -70,8 +69,9 @@ class LearnPage extends StatelessWidget {
                 child: Center(
                   child: Text(
                     'PIN: $userPin',
-                    style:  TextStyle(
-                      fontSize: baseScale * 1.4, // Slightly smaller font for better fit
+                    style: TextStyle(
+                      fontSize: baseScale *
+                          1.4, // Slightly smaller font for better fit
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
                     ),
@@ -124,7 +124,7 @@ class LearnPage extends StatelessWidget {
                     style: TextStyle(
                         color: Colors.black87,
                         fontWeight: FontWeight.bold,
-                        fontSize:  baseScale * 2.4),
+                        fontSize: baseScale * 2.4),
                   ),
                   Spacer(flex: 1),
                   Row(

@@ -1,5 +1,4 @@
-
-class TextQuestion{
+class TextQuestion {
   final List<String> question;
   final String answer;
   final String sign;
@@ -9,7 +8,8 @@ class TextQuestion{
     required this.question,
     required this.sign,
   });
-  String toString(){
+  @override
+  String toString() {
     return 'TextQuestion{question: $question, answer: $answer, sign: $sign}';
   }
 }

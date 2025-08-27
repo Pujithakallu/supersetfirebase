@@ -2,16 +2,16 @@ import 'dart:math';
 
 int getRandomNumberWithLimit(int upperLimit) {
   Random random = Random();
-  return random.nextInt(99999999)%upperLimit;
+  return random.nextInt(99999999) % upperLimit;
 }
 
-int getRandomNumberWithLimitNotEqual(int upperLimit, int uniq_num) {
+int getRandomNumberWithLimitNotEqual(int upperLimit, int uniqNum) {
   Random random = Random();
   int res;
 
   do {
     res = random.nextInt(upperLimit) + 1;
-  } while (res == uniq_num);
+  } while (res == uniqNum);
 
   return res;
 }

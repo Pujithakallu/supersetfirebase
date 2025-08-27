@@ -89,13 +89,15 @@ class _FlashCardState extends State<FlashCard> {
                 backgroundColor: Colors.white,
                 shape: const CircleBorder(),
                 mini: true,
-                child: const Icon(Icons.arrow_back_rounded, size: 32, color: Colors.black),
+                child: const Icon(Icons.arrow_back_rounded,
+                    size: 32, color: Colors.black),
               ),
             ),
             Positioned(
               top: 12,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 constraints: const BoxConstraints(maxWidth: 120),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -110,7 +112,7 @@ class _FlashCardState extends State<FlashCard> {
                 ),
                 child: Center(
                   child: Text(
-                    'PIN: ${userPin}',
+                    'PIN: $userPin',
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -138,13 +140,22 @@ class _FlashCardState extends State<FlashCard> {
                 children: [
                   Expanded(
                     child: Container(
-                      padding:  EdgeInsets.fromLTRB((baseScale * 2).clamp(12.0, 24.0), (MediaQuery.of(context).padding.top + baseScale * 0.8).clamp(8.0, 40.0),(baseScale * 2).clamp(12.0, 24.0), (baseScale * 5).clamp(30.0, 60.0),),
+                      padding: EdgeInsets.fromLTRB(
+                        (baseScale * 2).clamp(12.0, 24.0),
+                        (MediaQuery.of(context).padding.top + baseScale * 0.8)
+                            .clamp(8.0, 40.0),
+                        (baseScale * 2).clamp(12.0, 24.0),
+                        (baseScale * 5).clamp(30.0, 60.0),
+                      ),
                       width: MediaQuery.of(context).size.width * 0.75,
                       child: _renderFlashCard(flashCards[currentCardIndex]),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: (baseScale * 1.5).clamp(6.0, 16.0),bottom: (baseScale * 2).clamp(10.0, 30.0),),
+                    padding: EdgeInsets.only(
+                      top: (baseScale * 1.5).clamp(6.0, 16.0),
+                      bottom: (baseScale * 2).clamp(10.0, 30.0),
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -167,7 +178,8 @@ class _FlashCardState extends State<FlashCard> {
               backgroundColor: Colors.white,
               shape: const CircleBorder(),
               mini: true,
-              child: const Icon(Icons.logout_rounded, size: 32, color: Colors.black),
+              child: const Icon(Icons.logout_rounded,
+                  size: 32, color: Colors.black),
             ),
           ),
         ],
@@ -291,7 +303,8 @@ class _FlashCardState extends State<FlashCard> {
                               child: Text(
                                 currentLanguage == 0 ? 'Español' : 'English',
                                 style: TextStyle(
-                                  fontSize: (baseScale * 0.02).clamp(16.0, 28.0),
+                                  fontSize:
+                                      (baseScale * 0.02).clamp(16.0, 28.0),
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -301,8 +314,11 @@ class _FlashCardState extends State<FlashCard> {
                         ),
                         InkWell(
                           onTap: () async {
-                            ReadOut(data['op_def'][currentLanguage] + "; " + data['op_name'][currentLanguage]);
-                            await AnalyticsEngine.logAudioButtonClick(currentLanguage);
+                            ReadOut(data['op_def'][currentLanguage] +
+                                "; " +
+                                data['op_name'][currentLanguage]);
+                            await AnalyticsEngine.logAudioButtonClick(
+                                currentLanguage);
                           },
                           borderRadius: BorderRadius.circular(30),
                           child: Container(
@@ -370,7 +386,8 @@ class _FlashCardState extends State<FlashCard> {
                               child: Text(
                                 currentLanguage == 0 ? 'Español' : 'English',
                                 style: TextStyle(
-                                  fontSize: (baseScale * 0.02).clamp(16.0, 28.0),
+                                  fontSize:
+                                      (baseScale * 0.02).clamp(16.0, 28.0),
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -380,8 +397,10 @@ class _FlashCardState extends State<FlashCard> {
                         ),
                         InkWell(
                           onTap: () async {
-                            ReadOut('${data["fst_num"]} \$signPron ${data["snd_num"]} = \${get_op_result(data["op_sign"], data["fst_num"], data["snd_num"])} \${data["op_sign"] == "÷" ? rem : "."}');
-                            await AnalyticsEngine.logAudioButtonClick(currentLanguage);
+                            ReadOut(
+                                '${data["fst_num"]} \$signPron ${data["snd_num"]} = \${get_op_result(data["op_sign"], data["fst_num"], data["snd_num"])} \${data["op_sign"] == "÷" ? rem : "."}');
+                            await AnalyticsEngine.logAudioButtonClick(
+                                currentLanguage);
                           },
                           borderRadius: BorderRadius.circular(30),
                           child: Container(
@@ -420,8 +439,8 @@ class _FlashCardState extends State<FlashCard> {
     } else if (newIndex < 0) {
       Navigator.pop(context);
     } else {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const LearnComplete()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const LearnComplete()));
     }
   }
 }
-

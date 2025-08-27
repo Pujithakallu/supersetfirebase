@@ -18,7 +18,7 @@ class GameData extends ChangeNotifier {
 }
 
 class MatchGame extends StatefulWidget {
-  const MatchGame({Key? key}) : super(key: key);
+  const MatchGame({super.key});
 
   @override
   _MatchGameState createState() => _MatchGameState();
@@ -42,10 +42,10 @@ class _MatchGameState extends State<MatchGame> {
     super.initState();
     items = [];
     items2 = [];
-     // Initialize the audio player.
+    // Initialize the audio player.
     _audioPlayer = AudioPlayer();
     _tickPlayer = AudioPlayer();
-   _wordPlayer = AudioPlayer();
+    _wordPlayer = AudioPlayer();
   }
 
   @override
@@ -69,8 +69,7 @@ class _MatchGameState extends State<MatchGame> {
             onBack: () => Navigator.pop(context),
           ),
         ),
-
-          floatingActionButton: SizedBox(
+        floatingActionButton: SizedBox(
           width: MediaQuery.of(context).size.height > 700 ? 56 : 40,
           height: MediaQuery.of(context).size.height > 700 ? 56 : 40,
           child: FloatingActionButton(
@@ -99,11 +98,12 @@ class _MatchGameState extends State<MatchGame> {
                 Text(
                   'J U N G L E    M A T C H I N G    S A F A R I',
                   style: TextStyle(
-                  //fontSize: 45, 
-                  fontSize: MediaQuery.of(context).size.width > 900 
-                  ? 45 // Set max font size for larger windows
-                  : MediaQuery.of(context).size.width / 20, // Dynamically scale for smaller windows
-                  color: Colors.white),
+                      //fontSize: 45,
+                      fontSize: MediaQuery.of(context).size.width > 900
+                          ? 45 // Set max font size for larger windows
+                          : MediaQuery.of(context).size.width /
+                              20, // Dynamically scale for smaller windows
+                      color: Colors.white),
                 ),
                 const SizedBox(height: 20),
                 Row(
@@ -121,7 +121,8 @@ class _MatchGameState extends State<MatchGame> {
                       },
                       child: const Text(
                         'Start Game',
-                        style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 24.0, fontWeight: FontWeight.bold),
                       ),
                     ),
                     const SizedBox(width: 20),
@@ -137,7 +138,8 @@ class _MatchGameState extends State<MatchGame> {
                       },
                       child: const Text(
                         'Exit',
-                        style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 24.0, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],
@@ -165,20 +167,20 @@ class _MatchGameState extends State<MatchGame> {
         ),
       ),
       // Logout FAB at bottom right
-          floatingActionButton: SizedBox(
-          width: MediaQuery.of(context).size.height > 700 ? 56 : 27,
-          height: MediaQuery.of(context).size.height > 700 ? 56 : 27,
-          child: FloatingActionButton(
-            heroTag: "logoutButton",
-            onPressed: () => logout(context),
-            backgroundColor: Colors.blue,
-            child: Icon(
-              Icons.logout_rounded,
-              size: MediaQuery.of(context).size.height > 700 ? 28 : 20,
-              color: Colors.white,
-            ),
+      floatingActionButton: SizedBox(
+        width: MediaQuery.of(context).size.height > 700 ? 56 : 27,
+        height: MediaQuery.of(context).size.height > 700 ? 56 : 27,
+        child: FloatingActionButton(
+          heroTag: "logoutButton",
+          onPressed: () => logout(context),
+          backgroundColor: Colors.blue,
+          child: Icon(
+            Icons.logout_rounded,
+            size: MediaQuery.of(context).size.height > 700 ? 28 : 20,
+            color: Colors.white,
           ),
         ),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Container(
         decoration: const BoxDecoration(
@@ -196,12 +198,13 @@ class _MatchGameState extends State<MatchGame> {
                 Text(
                   'J U N G L E    M A T C H I N G    S A F A R I',
                   style: TextStyle(
-                  //fontSize: 45, 
-                  fontSize: MediaQuery.of(context).size.width > 900 
-                  ? 40 // Set max font size for larger windows
-                  : MediaQuery.of(context).size.width / 23, // Dynamically scale for smaller windows
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
+                      //fontSize: 45,
+                      fontSize: MediaQuery.of(context).size.width > 900
+                          ? 40 // Set max font size for larger windows
+                          : MediaQuery.of(context).size.width /
+                              23, // Dynamically scale for smaller windows
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
                 Text.rich(
@@ -223,7 +226,6 @@ class _MatchGameState extends State<MatchGame> {
                     )
                   ]),
                 ),
-
                 if (!gameOver)
                   LayoutBuilder(
                     builder: (context, constraints) {
@@ -231,13 +233,11 @@ class _MatchGameState extends State<MatchGame> {
                       double scale = constraints.maxWidth / baseWidth;
                       if (scale > 1.0) scale = 1.0;
 
-                        // Flip the logic: use 220 for smaller screens, 170 for larger
-                      double itemWidth = (scale < 1.0)
-                          ? 220 * scale
-                          : 170 * scale;
-                      double itemHeight = (scale < 1.0)
-                          ? 95 * scale
-                          : 120 * scale;
+                      // Flip the logic: use 220 for smaller screens, 170 for larger
+                      double itemWidth =
+                          (scale < 1.0) ? 220 * scale : 170 * scale;
+                      double itemHeight =
+                          (scale < 1.0) ? 95 * scale : 120 * scale;
 
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -251,14 +251,15 @@ class _MatchGameState extends State<MatchGame> {
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(10.0),
-                                  border: Border.all(color: Colors.white70, width: 2.0),
+                                  border: Border.all(
+                                      color: Colors.white70, width: 2.0),
                                 ),
                                 child: Center(
                                   child: MouseRegion(
                                     cursor: SystemMouseCursors.click,
                                     child: Draggable<ItemModel>(
                                       data: item,
-                                      childWhenDragging: Container(
+                                      childWhenDragging: SizedBox(
                                         width: double.infinity,
                                         height: double.infinity,
                                       ),
@@ -270,8 +271,11 @@ class _MatchGameState extends State<MatchGame> {
                                           padding: const EdgeInsets.all(8.0),
                                           decoration: BoxDecoration(
                                             color: Colors.white70,
-                                            borderRadius: BorderRadius.circular(10.0),
-                                            border: Border.all(color: Colors.white70, width: 2.0),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                            border: Border.all(
+                                                color: Colors.white70,
+                                                width: 2.0),
                                           ),
                                           child: Center(
                                             child: Text(
@@ -291,8 +295,11 @@ class _MatchGameState extends State<MatchGame> {
                                         padding: const EdgeInsets.all(8.0),
                                         decoration: BoxDecoration(
                                           color: Colors.white70,
-                                          borderRadius: BorderRadius.circular(10.0),
-                                          border: Border.all(color: Colors.white70, width: 2.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          border: Border.all(
+                                              color: Colors.white70,
+                                              width: 2.0),
                                         ),
                                         child: Center(
                                           child: Text(
@@ -314,13 +321,15 @@ class _MatchGameState extends State<MatchGame> {
                           const Spacer(),
                           Column(
                             children: items2.map((item) {
-                              return Container(
+                              return SizedBox(
                                 width: itemWidth,
                                 height: itemHeight,
                                 child: MouseRegion(
                                   cursor: SystemMouseCursors.click,
                                   child: DragTarget<ItemModel>(
-                                    onAccept: (receivedItem) {
+                                    onAcceptWithDetails: (details) {
+                                      final ItemModel receivedItem =
+                                          details.data;
                                       if (item.value == receivedItem.value) {
                                         setState(() {
                                           items.remove(receivedItem);
@@ -340,17 +349,23 @@ class _MatchGameState extends State<MatchGame> {
                                         item.accepting = false;
                                       });
                                     },
-                                    onWillAccept: (receivedItem) {
+                                    onWillAcceptWithDetails: (receivedItem) {
                                       setState(() {
                                         item.accepting = true;
                                       });
                                       return true;
                                     },
-                                    builder: (context, acceptedItems, rejectedItem) => Container(
+                                    builder: (context, acceptedItems,
+                                            rejectedItem) =>
+                                        Container(
                                       decoration: BoxDecoration(
-                                        color: item.accepting ? Colors.red : Colors.white70,
-                                        borderRadius: BorderRadius.circular(10.0),
-                                        border: Border.all(color: Colors.white, width: 2.0),
+                                        color: item.accepting
+                                            ? Colors.red
+                                            : Colors.white70,
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        border: Border.all(
+                                            color: Colors.white, width: 2.0),
                                       ),
                                       height: itemHeight,
                                       width: itemWidth,
@@ -375,8 +390,6 @@ class _MatchGameState extends State<MatchGame> {
                       );
                     },
                   ),
-
-
                 if (gameOver)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -435,7 +448,8 @@ class _MatchGameState extends State<MatchGame> {
       height: 120,
       margin: const EdgeInsets.all(8.0),
       child: DragTarget<ItemModel>(
-        onAccept: (receivedItem) {
+        onAcceptWithDetails: (details) {
+          final ItemModel receivedItem = details.data;
           setState(() {
             if (item.value == receivedItem.value) {
               items.remove(receivedItem);
@@ -452,7 +466,7 @@ class _MatchGameState extends State<MatchGame> {
             item.accepting = false;
           });
         },
-        onWillAccept: (receivedItem) {
+        onWillAcceptWithDetails: (receivedItem) {
           setState(() {
             item.accepting = true;
           });
@@ -492,7 +506,8 @@ class _MatchGameState extends State<MatchGame> {
   }
 
   Future<Map<String, List<String>>> loadJsonData(int chapter) async {
-    String jsonString = await rootBundle.loadString('assets/Mathmingle/matchGame/chapter$chapter.json');
+    String jsonString = await rootBundle
+        .loadString('assets/Mathmingle/matchGame/chapter$chapter.json');
     Map<String, dynamic> jsonMap = json.decode(jsonString);
     List<String> spanish = List<String>.from(jsonMap['spanish']);
     List<String> english = List<String>.from(jsonMap['english']);
@@ -517,109 +532,107 @@ class _MatchGameState extends State<MatchGame> {
     });
   }
 
-void showMatchPopup(String matchedWord) {
-  final fileName = matchedWord.toLowerCase().replaceAll("/", "_");
-  String fileName2 = fileName;
-  if (fileName=="≠")fileName2 = "not_equal";
- 
-  // 1) Play tick first:
-  _tickPlayer.play(AssetSource('Mathmingle/audio/Correct_Answer_Tick.mp3')).then((_) {
-    // 2) Only after tick finishes play the matchedWord audio:   
-  _wordPlayer.play(AssetSource('Mathmingle/audio/$fileName.mp3'));
-  //_wordPlayer.play(AssetSource('Mathmingle/audio/$matchedWord.mp3'));
-  });
+  void showMatchPopup(String matchedWord) {
+    final fileName = matchedWord.toLowerCase().replaceAll("/", "_");
+    String fileName2 = fileName;
+    if (fileName == "≠") fileName2 = "not_equal";
 
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      final screenHeight = MediaQuery.of(context).size.height;
+    // 1) Play tick first:
+    _tickPlayer
+        .play(AssetSource('Mathmingle/audio/Correct_Answer_Tick.mp3'))
+        .then((_) {
+      // 2) Only after tick finishes play the matchedWord audio:
+      _wordPlayer.play(AssetSource('Mathmingle/audio/$fileName.mp3'));
+      //_wordPlayer.play(AssetSource('Mathmingle/audio/$matchedWord.mp3'));
+    });
 
-      // If screen height < 600, use 300×350; otherwise use 400×450.
-      final dialogWidth = screenHeight < 600 ? 200.0 : 400.0;
-      //final dialogHeight = screenHeight < 600 ? 300.0 : 450.0;
-      final dialogHeight = screenHeight < 400
-        ? 200.0
-        : (screenHeight < 600 ? 300.0 : 450.0);
-      //final imageHeight = screenHeight < 600 ? 100.0 : 320.0;
-      final textFontSize = screenHeight < 600 ? 16.0 : 22.0;
-      final partypopperHeight = screenHeight < 600 ? 20.0 : 28.0;
-      final partypopperWidth = screenHeight < 600 ? 20.0 : 28.0;
-      final iconsize = screenHeight < 600 ? 30.0 : 40.0;
-      final matchedwordfontSize = screenHeight < 600 ? 16.0 : 22.0;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        final screenHeight = MediaQuery.of(context).size.height;
 
-      final imageHeight = screenHeight < 400
-      ? 100.0
-      : (screenHeight < 600
-          ? 200.0
-          : 320.0);
-   
-      return AlertDialog(
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        contentPadding: const EdgeInsets.all(10),
-        content: SizedBox(
-          width: dialogWidth,  // Set custom width
-          height: dialogHeight, // Set custom height
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Well done! You got it right.",
-                    style: TextStyle(fontSize: textFontSize),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(width: 4),
-                  Image.asset(
-                    'assets/Mathmingle/party-popper.png',
-                    height: partypopperHeight,
-                    width: partypopperWidth,
-                  ),
-                  
-                  Icon(
-                    Icons.check_circle,
-                    color: Colors.green[700],
-                    size: iconsize, // adjust size as needed
-                  ),
-                ],
-              ),
-             
-              //const SizedBox(height: 16),
-              const SizedBox(height: 8),
-              
-              Image.asset(
-                'assets/Mathmingle/$fileName2.png',
-                height: imageHeight,
-                fit: BoxFit.contain,
-              ),
-              //const SizedBox(height: 16),
-              const SizedBox(height: 8),
-              Text(
-                matchedWord,
-                style: TextStyle(fontSize: matchedwordfontSize, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ),
-        actionsPadding: const EdgeInsets.only(bottom: 10),
-        actions: [
-          Center(
-            child: TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: const Text("OK", style: TextStyle(fontSize: 16)),
+        // If screen height < 600, use 300×350; otherwise use 400×450.
+        final dialogWidth = screenHeight < 600 ? 200.0 : 400.0;
+        //final dialogHeight = screenHeight < 600 ? 300.0 : 450.0;
+        final dialogHeight =
+            screenHeight < 400 ? 200.0 : (screenHeight < 600 ? 300.0 : 450.0);
+        //final imageHeight = screenHeight < 600 ? 100.0 : 320.0;
+        final textFontSize = screenHeight < 600 ? 16.0 : 22.0;
+        final partypopperHeight = screenHeight < 600 ? 20.0 : 28.0;
+        final partypopperWidth = screenHeight < 600 ? 20.0 : 28.0;
+        final iconsize = screenHeight < 600 ? 30.0 : 40.0;
+        final matchedwordfontSize = screenHeight < 600 ? 16.0 : 22.0;
+
+        final imageHeight =
+            screenHeight < 400 ? 100.0 : (screenHeight < 600 ? 200.0 : 320.0);
+
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          contentPadding: const EdgeInsets.all(10),
+          content: SizedBox(
+            width: dialogWidth, // Set custom width
+            height: dialogHeight, // Set custom height
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Well done! You got it right.",
+                      style: TextStyle(fontSize: textFontSize),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(width: 4),
+                    Image.asset(
+                      'assets/Mathmingle/party-popper.png',
+                      height: partypopperHeight,
+                      width: partypopperWidth,
+                    ),
+                    Icon(
+                      Icons.check_circle,
+                      color: Colors.green[700],
+                      size: iconsize, // adjust size as needed
+                    ),
+                  ],
+                ),
+
+                //const SizedBox(height: 16),
+                const SizedBox(height: 8),
+
+                Image.asset(
+                  'assets/Mathmingle/$fileName2.png',
+                  height: imageHeight,
+                  fit: BoxFit.contain,
+                ),
+                //const SizedBox(height: 16),
+                const SizedBox(height: 8),
+                Text(
+                  matchedWord,
+                  style: TextStyle(
+                      fontSize: matchedwordfontSize,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
           ),
-        ],
-      );
-    },
-  );
-}
-
-
+          actionsPadding: const EdgeInsets.only(bottom: 10),
+          actions: [
+            Center(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: const Text("OK", style: TextStyle(fontSize: 16)),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
 
 class ItemModel {

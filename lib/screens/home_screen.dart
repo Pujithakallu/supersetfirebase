@@ -7,17 +7,19 @@ import '../gamescreen/mathmingle/main.dart';
 import '../gamescreen/mathequations/main.dart';
 import '../gamescreen/mathoperations/main.dart';
 import 'package:supersetfirebase/services/firestore_score.dart';
+
 // import 'package:supersetfirebase/services/test_score.dart';
 class HomeScreen extends StatefulWidget {
   final String pin;
 
-  const HomeScreen({required this.pin, Key? key}) : super(key: key);
+  const HomeScreen({required this.pin, super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
 
@@ -152,7 +154,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     children: [
                       ScaleTransition(
                         scale: _scaleAnimation,
-                        child: const Icon(Icons.school, size: 40, color: Colors.blue),
+                        child: const Icon(Icons.school,
+                            size: 40, color: Colors.blue),
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -168,8 +171,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ),
                   const SizedBox(height: 20),
 
-             
-
                   // Test scores button
                   // ElevatedButton.icon(
                   //   onPressed: () async {
@@ -179,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   //         builder: (_) => TestScoreScreen(pin: widget.pin),
                   //       ),
                   //     );
-                  //     refreshTotalScore(); 
+                  //     refreshTotalScore();
                   //   },
                   //    icon: Icon(Icons.bug_report),
                   //    label: Text("Test/Set Dummy Scores"),
@@ -196,98 +197,101 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   ? maxWidth / 2 - 20
                                   : maxWidth - 40;
 
-                          return Center(
-                          child: Wrap(
-                            spacing: 20,
-                            runSpacing: 20,
-                            alignment: WrapAlignment.center,
-                            children: games.map((game) {
-
-                          return MouseRegion(
-                            cursor: game['route'] != null
-                                ? SystemMouseCursors.click
-                                : SystemMouseCursors.basic,
-                            child: GestureDetector(
-                              onTap: () async {
-                                if (game['route'] != null) {
-                                  await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => game['route'](widget.pin),
-                                    ),
-                                  );
-                                  refreshTotalScore();
-                                }
-                              },
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                    width: tileSize,
-                                    height: tileSize,
-                                    alignment: Alignment.center,
-                                    child: ScaleTransition(
-                                      scale: _scaleAnimation,
-                                      child: Container(
-                                        width: tileSize * 0.9,
-                                        height: tileSize * 0.9,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: AssetImage(game['backgroundImage']),
-                                            fit: BoxFit.cover,
-                                          ),
-                                          borderRadius: BorderRadius.circular(20),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black26,
-                                              blurRadius: 6,
-                                              offset: Offset(0, 3),
+                      return Center(
+                        child: Wrap(
+                          spacing: 20,
+                          runSpacing: 20,
+                          alignment: WrapAlignment.center,
+                          children: games.map((game) {
+                            return MouseRegion(
+                              cursor: game['route'] != null
+                                  ? SystemMouseCursors.click
+                                  : SystemMouseCursors.basic,
+                              child: GestureDetector(
+                                onTap: () async {
+                                  if (game['route'] != null) {
+                                    await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            game['route'](widget.pin),
+                                      ),
+                                    );
+                                    refreshTotalScore();
+                                  }
+                                },
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      width: tileSize,
+                                      height: tileSize,
+                                      alignment: Alignment.center,
+                                      child: ScaleTransition(
+                                        scale: _scaleAnimation,
+                                        child: Container(
+                                          width: tileSize * 0.9,
+                                          height: tileSize * 0.9,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: AssetImage(
+                                                  game['backgroundImage']),
+                                              fit: BoxFit.cover,
                                             ),
-                                          ],
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black26,
+                                                blurRadius: 6,
+                                                offset: Offset(0, 3),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    game['title'],
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  const SizedBox(height: 6),
-                                  Icon(
-                                    game['icon'] as IconData,
-                                    size: 30,
-                                    color: Colors.blueAccent,
-                                  ),
-                                  const SizedBox(height: 6),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                    decoration: BoxDecoration(
-                                      color: Colors.black.withOpacity(0.8),
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Text(
-                                      game['description'] as String,
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      game['title'],
                                       style: const TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w500,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
                                       ),
                                       textAlign: TextAlign.center,
                                     ),
-                                  ),
-                                ],
+                                    const SizedBox(height: 6),
+                                    Icon(
+                                      game['icon'] as IconData,
+                                      size: 30,
+                                      color: Colors.blueAccent,
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 6),
+                                      decoration: BoxDecoration(
+                                        color: Colors.black.withOpacity(0.8),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Text(
+                                        game['description'] as String,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                     );
+                            );
+                          }).toList(),
+                        ),
+                      );
                     },
                   ),
                 ],

@@ -8,10 +8,9 @@ import 'package:supersetfirebase/gamescreen/mathmingle/memory.dart';
 import 'score_topbar.dart';
 import 'studymaterial.dart';
 
-
 class MyHomePage extends StatefulWidget {
   final int chapterNumber;
-  const MyHomePage({Key? key, required this.chapterNumber}) : super(key: key);
+  const MyHomePage({super.key, required this.chapterNumber});
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -22,9 +21,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-final screenWidth = MediaQuery.of(context).size.width;
-  final bool isSmallScreen = screenWidth < 600; // You can adjust this threshold
-  final BoxFit imageFit = screenWidth < 1000 ? BoxFit.scaleDown : BoxFit.none;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final bool isSmallScreen =
+        screenWidth < 600; // You can adjust this threshold
+    final BoxFit imageFit = screenWidth < 1000 ? BoxFit.scaleDown : BoxFit.none;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -34,31 +34,30 @@ final screenWidth = MediaQuery.of(context).size.width;
           onBack: () => Navigator.pop(context),
         ),
       ),
-      
       floatingActionButton: SizedBox(
-      width: MediaQuery.of(context).size.height > 700 ? 56 : 40,
-      height: MediaQuery.of(context).size.height > 700 ? 56 : 40,
-      child: FloatingActionButton(
-        heroTag: "logoutButton",
-        onPressed: () => logout(context),
-        backgroundColor: Colors.blue,
-        child: Icon(
-          Icons.logout_rounded,
-          size: MediaQuery.of(context).size.height > 700 ? 28 : 20,
-          color: Colors.white,
+        width: MediaQuery.of(context).size.height > 700 ? 56 : 40,
+        height: MediaQuery.of(context).size.height > 700 ? 56 : 40,
+        child: FloatingActionButton(
+          heroTag: "logoutButton",
+          onPressed: () => logout(context),
+          backgroundColor: Colors.blue,
+          child: Icon(
+            Icons.logout_rounded,
+            size: MediaQuery.of(context).size.height > 700 ? 28 : 20,
+            color: Colors.white,
+          ),
         ),
       ),
-    ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
-           // Choose fit based on screen width
+          // Choose fit based on screen width
           image: DecorationImage(
             image: AssetImage("assets/Mathmingle/homescreen/Learn_page.png"),
-             fit: imageFit,
-             scale: 0.9, // Higher value = smaller image
+            fit: imageFit,
+            scale: 0.9, // Higher value = smaller image
           ),
           gradient: LinearGradient(
             colors: [Colors.lightBlue, Colors.white],
@@ -68,7 +67,8 @@ final screenWidth = MediaQuery.of(context).size.width;
         ),
         child: Column(
           children: [
-            const SizedBox(height: kToolbarHeight + 20), // Adjusted for AppBar spacing
+            const SizedBox(
+                height: kToolbarHeight + 20), // Adjusted for AppBar spacing
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -87,7 +87,8 @@ final screenWidth = MediaQuery.of(context).size.width;
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MathMingleLearnPage(chapterNumber: widget.chapterNumber),
+                          builder: (context) => MathMingleLearnPage(
+                              chapterNumber: widget.chapterNumber),
                         ),
                       );
                     },
@@ -107,12 +108,13 @@ final screenWidth = MediaQuery.of(context).size.width;
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MathMinglePlayPage(chapterNumber: widget.chapterNumber),
+                          builder: (context) => MathMinglePlayPage(
+                              chapterNumber: widget.chapterNumber),
                         ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                       padding: EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                         vertical: isSmallScreen ? 8 : 16,
                         horizontal: isSmallScreen ? 15 : 32,
                       ),
@@ -133,7 +135,7 @@ final screenWidth = MediaQuery.of(context).size.width;
 
 class MathMingleLearnPage extends StatelessWidget {
   final int chapterNumber;
-  const MathMingleLearnPage({Key? key, required this.chapterNumber}) : super(key: key);
+  const MathMingleLearnPage({super.key, required this.chapterNumber});
 
   @override
   Widget build(BuildContext context) {
@@ -143,8 +145,10 @@ class MathMingleLearnPage extends StatelessWidget {
     // Scale factor (1.0 = full size; <1 = scaled down)
     final double scaleFactor = isSmallScreen ? screenWidth / 700 : 1.0;
 
-   final double cardWidth = isSmallScreen ? 200 : 300; // 200 for small screen, 300 for large
-    final double cardHeight = isSmallScreen ? 200 : 400; // 200 for small screen, 400 for large
+    final double cardWidth =
+        isSmallScreen ? 200 : 300; // 200 for small screen, 300 for large
+    final double cardHeight =
+        isSmallScreen ? 200 : 400; // 200 for small screen, 400 for large
 
     String userPin = Provider.of<UserPinProvider>(context, listen: false).pin;
 
@@ -196,24 +200,21 @@ class MathMingleLearnPage extends StatelessWidget {
             );
           },
         ),
-
-
       ),
-     
       floatingActionButton: SizedBox(
-      width: MediaQuery.of(context).size.height > 700 ? 56 : 40,
-      height: MediaQuery.of(context).size.height > 700 ? 56 : 40,
-      child: FloatingActionButton(
-        heroTag: "logoutButton",
-        onPressed: () => logout(context),
-        backgroundColor: Colors.blue,
-        child: Icon(
-          Icons.logout_rounded,
-          size: MediaQuery.of(context).size.height > 700 ? 28 : 20,
-          color: Colors.white,
+        width: MediaQuery.of(context).size.height > 700 ? 56 : 40,
+        height: MediaQuery.of(context).size.height > 700 ? 56 : 40,
+        child: FloatingActionButton(
+          heroTag: "logoutButton",
+          onPressed: () => logout(context),
+          backgroundColor: Colors.blue,
+          child: Icon(
+            Icons.logout_rounded,
+            size: MediaQuery.of(context).size.height > 700 ? 28 : 20,
+            color: Colors.white,
+          ),
         ),
       ),
-    ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: SingleChildScrollView(
         child: Column(
@@ -222,7 +223,8 @@ class MathMingleLearnPage extends StatelessWidget {
             SizedBox(height: 40),
             Center(
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.9),
                   borderRadius: BorderRadius.circular(15),
@@ -244,7 +246,7 @@ class MathMingleLearnPage extends StatelessWidget {
                 ),
               ),
             ),
-             SizedBox(height: isSmallScreen ? 0 : 20),
+            SizedBox(height: isSmallScreen ? 0 : 20),
             Center(
               child: Text(
                 "Math Mingle",
@@ -255,23 +257,24 @@ class MathMingleLearnPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: isSmallScreen ? 0 : 30),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final double screenWidth = constraints.maxWidth;
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final double screenWidth = constraints.maxWidth;
 
-                // Total width of both cards + spacing
-                final double totalCardsWidth = cardWidth * 2 + 12; 
+                  // Total width of both cards + spacing
+                  final double totalCardsWidth = cardWidth * 2 + 12;
 
-                // Calculate scale factor if the screen width is less than total width of cards
-                final double scaleFactor = screenWidth < totalCardsWidth
-                    ? screenWidth / totalCardsWidth
-                    : 1.0;
+                  // Calculate scale factor if the screen width is less than total width of cards
+                  final double scaleFactor = screenWidth < totalCardsWidth
+                      ? screenWidth / totalCardsWidth
+                      : 1.0;
 
-                return Center(
+                  return Center(
                     child: Transform.scale(
-                      scale: scaleFactor, // Adjust this scaleFactor to fit your needs
+                      scale:
+                          scaleFactor, // Adjust this scaleFactor to fit your needs
                       alignment: Alignment.topCenter,
                       child: buildGameCard(
                         context,
@@ -286,9 +289,9 @@ class MathMingleLearnPage extends StatelessWidget {
                       ),
                     ),
                   );
-              },
+                },
+              ),
             ),
-             ),
           ],
         ),
       ),
@@ -298,7 +301,7 @@ class MathMingleLearnPage extends StatelessWidget {
 
 class MathMinglePlayPage extends StatelessWidget {
   final int chapterNumber;
-  const MathMinglePlayPage({Key? key, required this.chapterNumber}) : super(key: key);
+  const MathMinglePlayPage({super.key, required this.chapterNumber});
 
   @override
   Widget build(BuildContext context) {
@@ -306,9 +309,11 @@ class MathMinglePlayPage extends StatelessWidget {
     final bool isSmallScreen = screenWidth < 700;
     final double scaleFactor = isSmallScreen ? screenWidth / 900 : 1.0;
 
-   // Define card dimensions based on screen size
-    final double cardWidth = isSmallScreen ? 200 : 300; // 200 for small screen, 300 for large
-    final double cardHeight = isSmallScreen ? 200 : 400; // 200 for small screen, 400 for large
+    // Define card dimensions based on screen size
+    final double cardWidth =
+        isSmallScreen ? 200 : 300; // 200 for small screen, 300 for large
+    final double cardHeight =
+        isSmallScreen ? 200 : 400; // 200 for small screen, 400 for large
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -349,66 +354,64 @@ class MathMinglePlayPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: isSmallScreen ? 0 : 20),
-                Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          final double screenWidth = constraints.maxWidth;
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final double screenWidth = constraints.maxWidth;
 
-                          // Total width of both cards + spacing
-                          final double totalCardsWidth = cardWidth * 2 + 12; 
+                  // Total width of both cards + spacing
+                  final double totalCardsWidth = cardWidth * 2 + 12;
 
-                          // Calculate scale factor if the screen width is less than total width of cards
-                          final double scaleFactor = screenWidth < totalCardsWidth
-                              ? screenWidth / totalCardsWidth
-                              : 1.0;
+                  // Calculate scale factor if the screen width is less than total width of cards
+                  final double scaleFactor = screenWidth < totalCardsWidth
+                      ? screenWidth / totalCardsWidth
+                      : 1.0;
 
-                          return Center(
-                            child: Transform.scale(
-                              scale: scaleFactor,
-                              alignment: Alignment.topCenter,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  buildGameCard(
-                                    context,
-                                    'Jungle Matching Safari\n',
-                                    'assets/Mathmingle/homescreen/level_2.png',
-                                    'Match and test your memory in the wild jungle-themed drag-and-drop game.',
-                                    '/matching',
-                                    chapterNumber,
-                                    30,
-                                    cardHeight: cardHeight,
-                                    cardWidth: cardWidth,
-                                  ),
-                                  const SizedBox(width: 12),
-                                  buildGameCard(
-                                    context,
-                                    'Remember & Win\n',
-                                    'assets/Mathmingle/homescreen/level_3.png',
-                                    'Boost your memory with this exciting matching tile game and earn rewards.',
-                                    '/memory',
-                                    chapterNumber,
-                                    40,
-                                    cardHeight: cardHeight,
-                                    cardWidth: cardWidth,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
+                  return Center(
+                    child: Transform.scale(
+                      scale: scaleFactor,
+                      alignment: Alignment.topCenter,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          buildGameCard(
+                            context,
+                            'Jungle Matching Safari\n',
+                            'assets/Mathmingle/homescreen/level_2.png',
+                            'Match and test your memory in the wild jungle-themed drag-and-drop game.',
+                            '/matching',
+                            chapterNumber,
+                            30,
+                            cardHeight: cardHeight,
+                            cardWidth: cardWidth,
+                          ),
+                          const SizedBox(width: 12),
+                          buildGameCard(
+                            context,
+                            'Remember & Win\n',
+                            'assets/Mathmingle/homescreen/level_3.png',
+                            'Boost your memory with this exciting matching tile game and earn rewards.',
+                            '/memory',
+                            chapterNumber,
+                            40,
+                            cardHeight: cardHeight,
+                            cardWidth: cardWidth,
+                          ),
+                        ],
                       ),
                     ),
-
-
-                      const SizedBox(height: 40),
-                    ],
-                  ),
-                ),
-              );
-            }
-          }
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 40),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 // Top-level function to build a game card widget.
 Widget buildGameCard(
@@ -436,9 +439,8 @@ Widget buildGameCard(
           Navigator.pushNamed(context, route, arguments: chapter);
         },
         child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0)
-          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
           elevation: 4,
           child: Padding(
             padding: EdgeInsets.all(11.0),
@@ -446,22 +448,22 @@ Widget buildGameCard(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width < 700 
-                          ? 14 // smaller font size for small screens
-                          : 22, // larger font size for larger screens
-                      fontWeight: FontWeight.bold,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width < 700
+                            ? 14 // smaller font size for small screens
+                            : 22, // larger font size for larger screens
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
-              ),
                 SizedBox(
                   height: MediaQuery.of(context).size.width < 700 ? 0 : 10,
                 ),
@@ -472,7 +474,8 @@ Widget buildGameCard(
                       child: Image.asset(
                         imagePath,
                         width: double.infinity,
-                        height: MediaQuery.of(context).size.width < 700 ? 80 : 150,
+                        height:
+                            MediaQuery.of(context).size.width < 700 ? 80 : 150,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -502,8 +505,7 @@ Widget buildGameCard(
                     ),
                   ],
                 ),
-                
-                 SizedBox(
+                SizedBox(
                   height: MediaQuery.of(context).size.width < 700 ? 0 : 10,
                 ),
                 SizedBox(
@@ -512,7 +514,8 @@ Widget buildGameCard(
                     description,
                     textAlign: TextAlign.justify,
                     style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width < 700 ? 10 : 16,
+                      fontSize:
+                          MediaQuery.of(context).size.width < 700 ? 10 : 16,
                     ),
                   ),
                 )

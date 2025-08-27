@@ -9,14 +9,13 @@ import 'total_xp_display.dart';
 import 'total_xp_provider.dart';
 
 class RealWorldApplications extends StatefulWidget {
-  const RealWorldApplications({Key? key}) : super(key: key);
+  const RealWorldApplications({super.key});
 
   @override
   _RealWorldApplicationsState createState() => _RealWorldApplicationsState();
 }
 
 class _RealWorldApplicationsState extends State<RealWorldApplications> {
-
   final Map<String, String> englishText = {
     'title': 'Real-world Applications of Equations',
     'content':

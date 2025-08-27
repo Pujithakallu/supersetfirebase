@@ -19,7 +19,7 @@ class GameData1 extends ChangeNotifier {
 }
 
 class MemoryGame extends StatefulWidget {
-  const MemoryGame({Key? key}) : super(key: key);
+  const MemoryGame({super.key});
 
   @override
   _MemoryGameState createState() => _MemoryGameState();
@@ -46,11 +46,16 @@ class _MemoryGameState extends State<MemoryGame> {
 
   @override
   void initState() {
+<<<<<<< HEAD
      // Initialize the audio player.
     _audioPlayer = AudioPlayer();
     _tickPlayer = AudioPlayer();
    _wordPlayer = AudioPlayer();
     _confettiController = ConfettiController(duration: const Duration(seconds: 1));
+=======
+    _confettiController =
+        ConfettiController(duration: const Duration(seconds: 1));
+>>>>>>> 5be0bd2 (Main Page Changes)
     super.initState();
     _initializeTimer();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -86,7 +91,8 @@ class _MemoryGameState extends State<MemoryGame> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Times up! Try again.", style: TextStyle(fontSize: 25)),
+          title: const Text("Times up! Try again.",
+              style: TextStyle(fontSize: 25)),
           actions: <Widget>[
             TextButton(
               child: const Text('Restart Game'),
@@ -109,7 +115,8 @@ class _MemoryGameState extends State<MemoryGame> {
     setState(() {
       _data = getSourceArray(chapter!);
       _cardFlips = List<bool>.filled(_data.length, true);
-      _cardStateKeys = List.generate(_data.length, (_) => GlobalKey<FlipCardState>());
+      _cardStateKeys =
+          List.generate(_data.length, (_) => GlobalKey<FlipCardState>());
       _matchedPairs = 0;
       _flip = false;
       _wait = false;
@@ -119,230 +126,266 @@ class _MemoryGameState extends State<MemoryGame> {
 
   @override
   Widget build(BuildContext context) {
-    bool isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     int crossAxisCount = isPortrait ? 4 : 5;
 
-    
-   return Scaffold(
-  extendBodyBehindAppBar: true,
-  appBar: TopBarWithScore(
-    onBack: () => Navigator.pop(context),
-  ),
-          floatingActionButton: SizedBox(
-          width: MediaQuery.of(context).size.height > 700 ? 56 : 27,
-          height: MediaQuery.of(context).size.height > 700 ? 56 : 27,
-          child: FloatingActionButton(
-            heroTag: "logoutButton",
-            onPressed: () => logout(context),
-            backgroundColor: Colors.blue,
-            child: Icon(
-              Icons.logout_rounded,
-              size: MediaQuery.of(context).size.height > 700 ? 28 : 20,
-              color: Colors.white,
-            ),
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: TopBarWithScore(
+        onBack: () => Navigator.pop(context),
+      ),
+      floatingActionButton: SizedBox(
+        width: MediaQuery.of(context).size.height > 700 ? 56 : 27,
+        height: MediaQuery.of(context).size.height > 700 ? 56 : 27,
+        child: FloatingActionButton(
+          heroTag: "logoutButton",
+          onPressed: () => logout(context),
+          backgroundColor: Colors.blue,
+          child: Icon(
+            Icons.logout_rounded,
+            size: MediaQuery.of(context).size.height > 700 ? 28 : 20,
+            color: Colors.white,
           ),
         ),
-  floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-  body: Container(
-    decoration: const BoxDecoration(
-      gradient: LinearGradient(
-        colors: [Colors.lightBlue, Colors.white],
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
       ),
-    ),
-    child: SafeArea( // Prevents UI elements from going behind status bar
-      child: SingleChildScrollView( // Prevents bottom overflow
-        //child: Column(
-        child: Stack(
-          children: [
-           Column(
-              children: <Widget>[
-                const SizedBox(height: 10), 
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.lightBlue, Colors.white],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SafeArea(
+          // Prevents UI elements from going behind status bar
+          child: SingleChildScrollView(
+            // Prevents bottom overflow
+            //child: Column(
+            child: Stack(
+              children: [
+                Column(
+                  children: <Widget>[
+                    const SizedBox(height: 10),
 
-              // Title & Timer
-              Text(
-                'R E M E M B E R  &  W I N',
-                style: TextStyle(
-                //fontSize: 50, 
-                fontSize: MediaQuery.of(context).size.width > 600 
-                ? 50 // Set max font size for larger windows
-                : MediaQuery.of(context).size.width / 14, // Dynamically scale for smaller windows
-                fontWeight: FontWeight.bold, 
-                letterSpacing: 2.0
+                    // Title & Timer
+                    Text(
+                      'R E M E M B E R  &  W I N',
+                      style: TextStyle(
+                          //fontSize: 50,
+                          fontSize: MediaQuery.of(context).size.width > 600
+                              ? 50 // Set max font size for larger windows
+                              : MediaQuery.of(context).size.width /
+                                  14, // Dynamically scale for smaller windows
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2.0),
+                      textAlign: TextAlign.center,
+                      strutStyle: StrutStyle(height: 1.0),
+                    ),
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        LayoutBuilder(
+                          builder: (context, constraints) {
+                            double screenWidth = constraints.maxWidth;
+
+                            // Check if the screen width is large enough to maintain the 350px width
+                            double imageWidth =
+                                screenWidth > 600 ? 350 : screenWidth * 0.50;
+
+                            return Image.asset(
+                              "assets/Mathmingle/Memory_game_background.png",
+                              width: imageWidth,
+                              fit: BoxFit
+                                  .cover, // Ensures the image scales correctly
+                            );
+                          },
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 70),
+                          child: ClockDisplay(seconds: _seconds),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 25),
+                    // Game Grid
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height *
+                          0.6, // Limits grid height to prevent overflow
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: GridView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: crossAxisCount,
+                            mainAxisSpacing: 8.0,
+                            crossAxisSpacing: 8.0,
+                            childAspectRatio: 1.5,
+                          ),
+                          itemCount: _data.length,
+                          itemBuilder: (context, index) {
+                            return MouseRegion(
+                              cursor: SystemMouseCursors.click,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    // Step 3: Add this condition to allow flipping only if less than 2 cards are flipped
+                                    if (_wait || !_cardFlips[index]) return;
+                                    if (_cardStateKeys[index]
+                                            .currentState
+                                            ?.isFront ==
+                                        false) return;
+                                    if (_currentlyFlippedCount >= 2) return;
+
+                                    _cardStateKeys[index]
+                                        .currentState
+                                        ?.toggleCard();
+                                    _currentlyFlippedCount++;
+                                    checkMatch(index);
+                                  },
+                                  child: FlipCard(
+                                    key: _cardStateKeys[index],
+                                    flipOnTouch: false, // turn off auto-flip
+                                    direction: FlipDirection.HORIZONTAL,
+                                    front: getQuestionMarkCard(),
+                                    back: LayoutBuilder(
+                                      builder: (context, constraints) {
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                            color: _cardFlips[index]
+                                                ? Colors.grey[100]
+                                                : Colors.green,
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            border: Border.all(
+                                              color: !_cardFlips[index]
+                                                  ? Colors.white
+                                                  : Colors
+                                                      .transparent, // White border
+                                              width:
+                                                  4, // Thicker border for more emphasis
+                                            ),
+                                            boxShadow: !_cardFlips[index]
+                                                ? [
+                                                    BoxShadow(
+                                                      color: Colors.white
+                                                          .withOpacity(
+                                                              0.9), // Almost fully bright white
+                                                      blurRadius:
+                                                          20, // Higher blur makes glow softer and larger
+                                                      spreadRadius:
+                                                          5, // Makes the glow spread outward more
+                                                      offset: const Offset(0,
+                                                          0), // Centered glow
+                                                    ),
+                                                  ]
+                                                : [],
+                                          ),
+                                          padding: const EdgeInsets.all(8.0),
+                                          alignment: Alignment.center,
+                                          child: FittedBox(
+                                            fit: BoxFit.scaleDown,
+                                            child: Text(
+                                              _data[index],
+                                              style: TextStyle(
+                                                fontSize:
+                                                    constraints.maxWidth / 8,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                textAlign: TextAlign.center,
-                strutStyle: StrutStyle(height: 1.0), 
-              ),
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  LayoutBuilder(
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: LayoutBuilder(
                     builder: (context, constraints) {
-                      double screenWidth = constraints.maxWidth;
+                      final double width = constraints.maxWidth;
+                      final double scale = width < 600
+                          ? 0.5
+                          : 1.0; // Scale down on small screens
+                      final double emissionFrequency = width < 600
+                          ? 0.05 * scale
+                          : 0.1; // Adjust emission frequency based on screen size
 
-                      // Check if the screen width is large enough to maintain the 350px width
-                      double imageWidth = screenWidth > 600 ? 350 : screenWidth * 0.50;
-
-                      return Image.asset(
-                        "assets/Mathmingle/Memory_game_background.png",
-                        width: imageWidth,
-                        fit: BoxFit.cover, // Ensures the image scales correctly
+                      return ConfettiWidget(
+                        confettiController: _confettiController,
+                        blastDirection: pi / 2, // Downward
+                        maxBlastForce: 20 * scale,
+                        minBlastForce: 10 * scale,
+                        emissionFrequency: emissionFrequency,
+                        numberOfParticles: (25 * scale).round(),
+                        gravity: 0.1,
+                        colors: const [
+                          Colors.red,
+                          Colors.blue,
+                          Colors.green,
+                          Colors.orange,
+                          Colors.purple,
+                        ],
                       );
                     },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 70),
-                    child: ClockDisplay(seconds: _seconds),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 25),
-              // Game Grid
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.6, // Limits grid height to prevent overflow
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: crossAxisCount,
-                      mainAxisSpacing: 8.0,
-                      crossAxisSpacing: 8.0,
-                      childAspectRatio: 1.5,
-                    ),
-                    itemCount: _data.length,
-                    itemBuilder: (context, index) {
-                      return MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            // Step 3: Add this condition to allow flipping only if less than 2 cards are flipped
-                            if (_wait || !_cardFlips[index]) return;
-                            if (_cardStateKeys[index].currentState?.isFront == false) return;
-                            if (_currentlyFlippedCount >= 2) return;
-
-                            _cardStateKeys[index].currentState?.toggleCard();
-                            _currentlyFlippedCount++;
-                            checkMatch(index);
-                          },
-                          child: FlipCard(
-                            key: _cardStateKeys[index],
-                            flipOnTouch: false, // turn off auto-flip
-                            direction: FlipDirection.HORIZONTAL,
-                            front: getQuestionMarkCard(),
-                            back: LayoutBuilder(
-                              builder: (context, constraints) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                  color: _cardFlips[index] ? Colors.grey[100] : Colors.green,
-                                  borderRadius: BorderRadius.circular(5),
-                                  border: Border.all(
-                                    color: !_cardFlips[index] ? Colors.white : Colors.transparent, // White border
-                                    width: 4, // Thicker border for more emphasis
-                                  ),
-                                  boxShadow: !_cardFlips[index]
-                                      ? [
-                                          BoxShadow(
-                                            color: Colors.white.withOpacity(0.9), // Almost fully bright white
-                                            blurRadius: 20,  // Higher blur makes glow softer and larger
-                                            spreadRadius: 5, // Makes the glow spread outward more
-                                            offset: const Offset(0, 0), // Centered glow
-                                          ),
-                                        ]
-                                      : [],
-                                ),
-
-                                  padding: const EdgeInsets.all(8.0),
-                                  alignment: Alignment.center,
-                                  child: FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      _data[index],
-                                      style: TextStyle(
-                                        fontSize: constraints.maxWidth / 8,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
+                ),
+                Positioned(
+                  top: MediaQuery.of(context).size.width < 600
+                      ? 210
+                      : 230, // Move up when minimized
+                  left: 0,
+                  right: 50,
+                  child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 500),
+                    opacity: _showCorrectIcon ? 1.0 : 0.0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.check_circle,
+                            color: Colors.green[900], size: 28),
+                        SizedBox(width: 5),
+                        Text(
+                          "Correct!",
+                          style: TextStyle(
+                            fontSize: MediaQuery.of(context).size.width < 600
+                                ? 16
+                                : 28,
+                            color: Colors.green[900],
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-
-                      ),
-                    );
-                  },
-                  ),
-                ),
-              ),
-             ],
-           ),
-            Align(
-            alignment: Alignment.topCenter,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final double width = constraints.maxWidth;
-                final double scale = width < 600 ? 0.5 : 1.0; // Scale down on small screens
-                final double emissionFrequency = width < 600 ? 0.05 * scale : 0.1; // Adjust emission frequency based on screen size
-
-                return ConfettiWidget(
-                  confettiController: _confettiController,
-                  blastDirection: pi / 2, // Downward
-                  maxBlastForce: 20 * scale,
-                  minBlastForce: 10 * scale,             
-                  emissionFrequency: emissionFrequency,
-                  numberOfParticles: (25 * scale).round(),
-                  gravity: 0.1,
-                  colors: const [
-                    Colors.red,
-                    Colors.blue,
-                    Colors.green,
-                    Colors.orange,
-                    Colors.purple,
-                  ],
-                );
-              },
-            ),
-          ),
-          Positioned(
-          top: MediaQuery.of(context).size.width < 600 ? 210 : 230, // Move up when minimized
-          left: 0,
-          right: 50,
-          child: AnimatedOpacity(
-            duration: const Duration(milliseconds: 500),
-            opacity: _showCorrectIcon ? 1.0 : 0.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.check_circle, color: Colors.green[900], size: 28),
-                SizedBox(width: 5),
-                Text(
-                    "Correct!",
-                    style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width < 600 ? 16 : 28,
-                      color: Colors.green[900],
-                      fontWeight: FontWeight.bold,
+                      ],
                     ),
                   ),
+                ),
               ],
             ),
           ),
         ),
-
-
-        ],
-        ),
       ),
+<<<<<<< HEAD
     ),
   ),
  );
  }
+=======
+    );
+  }
+>>>>>>> 5be0bd2 (Main Page Changes)
 
   void checkMatch(int currentIndex) {
     if (!_flip) {
@@ -360,15 +403,14 @@ class _MemoryGameState extends State<MemoryGame> {
             _matchedPairs++;
             _currentlyFlippedCount = 0;
             _showCorrectIcon = true;
-          }
-          );
+          });
           Future.delayed(const Duration(seconds: 1), () {
-          if (mounted) {
-            setState(() {
-              _showCorrectIcon = false;
-            });
-          }
-        });
+            if (mounted) {
+              setState(() {
+                _showCorrectIcon = false;
+              });
+            }
+          });
           _confettiController.play(); // Celebrate match
           
            String matchedWord;
@@ -400,7 +442,7 @@ class _MemoryGameState extends State<MemoryGame> {
               if (!mounted) return;
               setState(() {
                 _wait = false;
-                _currentlyFlippedCount = 0;                
+                _currentlyFlippedCount = 0;
               });
             });
           });
@@ -408,8 +450,6 @@ class _MemoryGameState extends State<MemoryGame> {
       }
     }
   }
-
-
 
   void showEndGameDialog(int score) {
     showDialog(
@@ -439,13 +479,15 @@ class _MemoryGameState extends State<MemoryGame> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
-              Text("Score: $score/10", style: TextStyle(fontSize: scoreFontSize)),
+              Text("Score: $score/10",
+                  style: TextStyle(fontSize: scoreFontSize)),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
-                    child: Text("N E W  G A M E", style: TextStyle(fontSize: buttonFontSize)),
+                    child: Text("N E W  G A M E",
+                        style: TextStyle(fontSize: buttonFontSize)),
                     onPressed: () {
                       Navigator.of(dialogContext).pop();
                       restart();
@@ -456,7 +498,8 @@ class _MemoryGameState extends State<MemoryGame> {
                     },
                   ),
                   TextButton(
-                    child: Text("E X I T", style: TextStyle(fontSize: buttonFontSize)),
+                    child: Text("E X I T",
+                        style: TextStyle(fontSize: buttonFontSize)),
                     onPressed: () {
                       Navigator.of(dialogContext).pop();
                       Navigator.of(context).pop();
@@ -623,65 +666,237 @@ class _MemoryGameState extends State<MemoryGame> {
     switch (chapter) {
       case 1:
         englishWords = [
-          'one','two','three','four','five','six','seven','eight','nine','ten',
-          "Eleven","Twelve","Thirteen","Fourteen","Fifteen",
-          "Sixteen","Seventeen","Eighteen","Nineteen","Twenty"
+          'one',
+          'two',
+          'three',
+          'four',
+          'five',
+          'six',
+          'seven',
+          'eight',
+          'nine',
+          'ten',
+          "Eleven",
+          "Twelve",
+          "Thirteen",
+          "Fourteen",
+          "Fifteen",
+          "Sixteen",
+          "Seventeen",
+          "Eighteen",
+          "Nineteen",
+          "Twenty"
         ];
         spanishWords = [
-          'uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve','diez',
-          "Once","Doce","Trece","Catorce","Quince","Dieciséis","Diecisiete",
-          "Dieciocho","Diecinueve","Veinte"
+          'uno',
+          'dos',
+          'tres',
+          'cuatro',
+          'cinco',
+          'seis',
+          'siete',
+          'ocho',
+          'nueve',
+          'diez',
+          "Once",
+          "Doce",
+          "Trece",
+          "Catorce",
+          "Quince",
+          "Dieciséis",
+          "Diecisiete",
+          "Dieciocho",
+          "Diecinueve",
+          "Veinte"
         ];
         break;
       case 2:
         englishWords = [
-          'Numbers','Addition','Subtraction','Multiplication','Division','Equal','Greater than',
-          'Less than','Plus','Minus','Times','Divided by','Sum','Difference','Product',
-          'Quotient','Fraction','Decimal','Ratio','Equation'
+          'Numbers',
+          'Addition',
+          'Subtraction',
+          'Multiplication',
+          'Division',
+          'Equal',
+          'Greater than',
+          'Less than',
+          'Plus',
+          'Minus',
+          'Times',
+          'Divided by',
+          'Sum',
+          'Difference',
+          'Product',
+          'Quotient',
+          'Fraction',
+          'Decimal',
+          'Ratio',
+          'Equation'
         ];
         spanishWords = [
-          'Número','Adición','Resta','Multiplicación','División','Igual','Mayor que','Menor que',
-          'Más','Menos','Por','Dividido por','Suma','Diferencia','Producto','Cociente','Fracción',
-          'Decimal','Proporción','Ecuación'
+          'Número',
+          'Adición',
+          'Resta',
+          'Multiplicación',
+          'División',
+          'Igual',
+          'Mayor que',
+          'Menor que',
+          'Más',
+          'Menos',
+          'Por',
+          'Dividido por',
+          'Suma',
+          'Diferencia',
+          'Producto',
+          'Cociente',
+          'Fracción',
+          'Decimal',
+          'Proporción',
+          'Ecuación'
         ];
         break;
       case 3:
         englishWords = [
-          'Circle','Triangle','Square','Rectangle','Rhombus','Parallelogram','Trapezium','Oval',
-          'Ellipse','Sphere','Cube','Cylinder','Cone','Pentagonal prism','Hexagonal prism',
-          'Pyramid','Cuboid','Triangular prism','Hemisphere','Torus'
+          'Circle',
+          'Triangle',
+          'Square',
+          'Rectangle',
+          'Rhombus',
+          'Parallelogram',
+          'Trapezium',
+          'Oval',
+          'Ellipse',
+          'Sphere',
+          'Cube',
+          'Cylinder',
+          'Cone',
+          'Pentagonal prism',
+          'Hexagonal prism',
+          'Pyramid',
+          'Cuboid',
+          'Triangular prism',
+          'Hemisphere',
+          'Torus'
         ];
         spanishWords = [
-          'Círculo','Triángulo','Cuadrado','Rectángulo','Rombus','Paralelogramo','Trapecio','Óvalo',
-          'Elipse','Esfera','Cubo','Cilindro','Cono','Prisma pentagonal','Prisma hexagonal','Pirámide',
-          'Cuboide','Prisma triangular','Hemisferio','Toro'
+          'Círculo',
+          'Triángulo',
+          'Cuadrado',
+          'Rectángulo',
+          'Rombus',
+          'Paralelogramo',
+          'Trapecio',
+          'Óvalo',
+          'Elipse',
+          'Esfera',
+          'Cubo',
+          'Cilindro',
+          'Cono',
+          'Prisma pentagonal',
+          'Prisma hexagonal',
+          'Pirámide',
+          'Cuboide',
+          'Prisma triangular',
+          'Hemisferio',
+          'Toro'
         ];
         break;
       case 4:
         englishWords = [
-          '+','-','=','>','<','×','÷','√','/','%','^','∑','∫','d/dx','∞','≠','≥','≤','≈','lim'
+          '+',
+          '-',
+          '=',
+          '>',
+          '<',
+          '×',
+          '÷',
+          '√',
+          '/',
+          '%',
+          '^',
+          '∑',
+          '∫',
+          'd/dx',
+          '∞',
+          '≠',
+          '≥',
+          '≤',
+          '≈',
+          'lim'
         ];
         spanishWords = [
-          'Más','Menos','Igual','Mayor que','Menor que','Por','Dividido por','Raíz cuadrada','Fracción',
-          'Porcentaje','Exponenciación','Sumatoria','Integral','Derivada','Infinito','No igual a',
-          'Mayor o igual que','Menor o igual que','Aproximadamente igual a','Límite'
+          'Más',
+          'Menos',
+          'Igual',
+          'Mayor que',
+          'Menor que',
+          'Por',
+          'Dividido por',
+          'Raíz cuadrada',
+          'Fracción',
+          'Porcentaje',
+          'Exponenciación',
+          'Sumatoria',
+          'Integral',
+          'Derivada',
+          'Infinito',
+          'No igual a',
+          'Mayor o igual que',
+          'Menor o igual que',
+          'Aproximadamente igual a',
+          'Límite'
         ];
         break;
       case 5:
         englishWords = [
-          "Length","Width","Height","Diameter","Radius","Perimeter","Circumference","Area","Volume","Angle",
-          "Slope","Intersection","Symmetry","Perpendicular","Parallel","Coordinate","Vertex","Axis","Hypotenuse",
+          "Length",
+          "Width",
+          "Height",
+          "Diameter",
+          "Radius",
+          "Perimeter",
+          "Circumference",
+          "Area",
+          "Volume",
+          "Angle",
+          "Slope",
+          "Intersection",
+          "Symmetry",
+          "Perpendicular",
+          "Parallel",
+          "Coordinate",
+          "Vertex",
+          "Axis",
+          "Hypotenuse",
           "Gradient"
         ];
         spanishWords = [
-          "Longitud","Ancho","Altura","Diámetro","Radio","Perímetro","Circunferencia","Superficie","Volumen","Ángulo",
-          "Pendiente","Intersección","Simetría","Perpendicular","Paralelo","Coordenada","Vértice","Eje","Hipotenusa",
+          "Longitud",
+          "Ancho",
+          "Altura",
+          "Diámetro",
+          "Radio",
+          "Perímetro",
+          "Circunferencia",
+          "Superficie",
+          "Volumen",
+          "Ángulo",
+          "Pendiente",
+          "Intersección",
+          "Simetría",
+          "Perpendicular",
+          "Paralelo",
+          "Coordenada",
+          "Vértice",
+          "Eje",
+          "Hipotenusa",
           "Gradiente"
         ];
         break;
       default:
-        englishWords = ['one','two'];
-        spanishWords = ['uno','dos'];
+        englishWords = ['one', 'two'];
+        spanishWords = ['uno', 'dos'];
     }
     return [englishWords, spanishWords];
   }
@@ -690,88 +905,163 @@ class _MemoryGameState extends State<MemoryGame> {
     switch (chapter) {
       case 1:
         return {
-          'one': 'uno','two': 'dos','three': 'tres','four': 'cuatro','five': 'cinco','six': 'seis',
-          'seven': 'siete','eight': 'ocho','nine': 'nueve','ten': 'diez','Eleven': 'Once','Twelve': 'Doce',
-          'Thirteen': 'Trece','Fourteen': 'Catorce','Fifteen': 'Quince','Sixteen': 'Dieciséis',
-          'Seventeen': 'Diecisiete','Eighteen': 'Dieciocho','Nineteen': 'Diecinueve','Twenty': 'Veinte'
+          'one': 'uno',
+          'two': 'dos',
+          'three': 'tres',
+          'four': 'cuatro',
+          'five': 'cinco',
+          'six': 'seis',
+          'seven': 'siete',
+          'eight': 'ocho',
+          'nine': 'nueve',
+          'ten': 'diez',
+          'Eleven': 'Once',
+          'Twelve': 'Doce',
+          'Thirteen': 'Trece',
+          'Fourteen': 'Catorce',
+          'Fifteen': 'Quince',
+          'Sixteen': 'Dieciséis',
+          'Seventeen': 'Diecisiete',
+          'Eighteen': 'Dieciocho',
+          'Nineteen': 'Diecinueve',
+          'Twenty': 'Veinte'
         };
       case 2:
         return {
-          'Numbers': 'Número','Addition': 'Adición','Subtraction': 'Resta','Multiplication': 'Multiplicación',
-          'Division': 'División','Equal': 'Igual','Greater than': 'Mayor que','Less than': 'Menor que',
-          'Plus': 'Más','Minus': 'Menos','Times': 'Por','Divided by': 'Dividido por','Sum': 'Suma',
-          'Difference': 'Diferencia','Product': 'Producto','Quotient': 'Cociente','Fraction': 'Fracción',
-          'Decimal': 'Decimal','Ratio': 'Proporción','Equation': 'Ecuación'
+          'Numbers': 'Número',
+          'Addition': 'Adición',
+          'Subtraction': 'Resta',
+          'Multiplication': 'Multiplicación',
+          'Division': 'División',
+          'Equal': 'Igual',
+          'Greater than': 'Mayor que',
+          'Less than': 'Menor que',
+          'Plus': 'Más',
+          'Minus': 'Menos',
+          'Times': 'Por',
+          'Divided by': 'Dividido por',
+          'Sum': 'Suma',
+          'Difference': 'Diferencia',
+          'Product': 'Producto',
+          'Quotient': 'Cociente',
+          'Fraction': 'Fracción',
+          'Decimal': 'Decimal',
+          'Ratio': 'Proporción',
+          'Equation': 'Ecuación'
         };
       case 3:
         return {
-          'Circle': 'Círculo','Triangle': 'Triángulo','Square': 'Cuadrado','Rectangle': 'Rectángulo',
-          'Rhombus': 'Rombus','Parallelogram': 'Paralelogramo','Trapezium': 'Trapecio','Oval': 'Óvalo',
-          'Ellipse': 'Elipse','Sphere': 'Esfera','Cube': 'Cubo','Cylinder': 'Cilindro','Cone': 'Cono',
-          'Pentagonal prism': 'Prisma pentagonal','Hexagonal prism': 'Prisma hexagonal','Pyramid': 'Pirámide',
-          'Cuboid': 'Cuboide','Triangular prism': 'Prisma triangular','Hemisphere': 'Hemisferio','Torus': 'Toro'
+          'Circle': 'Círculo',
+          'Triangle': 'Triángulo',
+          'Square': 'Cuadrado',
+          'Rectangle': 'Rectángulo',
+          'Rhombus': 'Rombus',
+          'Parallelogram': 'Paralelogramo',
+          'Trapezium': 'Trapecio',
+          'Oval': 'Óvalo',
+          'Ellipse': 'Elipse',
+          'Sphere': 'Esfera',
+          'Cube': 'Cubo',
+          'Cylinder': 'Cilindro',
+          'Cone': 'Cono',
+          'Pentagonal prism': 'Prisma pentagonal',
+          'Hexagonal prism': 'Prisma hexagonal',
+          'Pyramid': 'Pirámide',
+          'Cuboid': 'Cuboide',
+          'Triangular prism': 'Prisma triangular',
+          'Hemisphere': 'Hemisferio',
+          'Torus': 'Toro'
         };
       case 4:
         return {
-          '+': 'Más','-': 'Menos','=': 'Igual','>': 'Mayor que','<': 'Menor que','×': 'Por','÷': 'Dividido por',
-          '√': 'Raíz cuadrada','/': 'Fracción','%': 'Porcentaje','^': 'Exponenciación','∑': 'Sumatoria',
-          '∫': 'Integral','d/dx': 'Derivada','∞': 'Infinito','≠': 'No igual a','≥': 'Mayor o igual que',
-          '≤': 'Menor o igual que','≈': 'Aproximadamente igual a','lim': 'Límite'
+          '+': 'Más',
+          '-': 'Menos',
+          '=': 'Igual',
+          '>': 'Mayor que',
+          '<': 'Menor que',
+          '×': 'Por',
+          '÷': 'Dividido por',
+          '√': 'Raíz cuadrada',
+          '/': 'Fracción',
+          '%': 'Porcentaje',
+          '^': 'Exponenciación',
+          '∑': 'Sumatoria',
+          '∫': 'Integral',
+          'd/dx': 'Derivada',
+          '∞': 'Infinito',
+          '≠': 'No igual a',
+          '≥': 'Mayor o igual que',
+          '≤': 'Menor o igual que',
+          '≈': 'Aproximadamente igual a',
+          'lim': 'Límite'
         };
       case 5:
         return {
-          "Length": "Longitud","Width": "Ancho","Height": "Altura","Diameter": "Diámetro","Radius": "Radio",
-          "Perimeter": "Perímetro","Circumference": "Circunferencia","Area": "Superficie","Volume": "Volumen",
-          "Angle": "Ángulo","Slope": "Pendiente","Intersection": "Intersección","Symmetry": "Simetría",
-          "Perpendicular": "Perpendicular","Parallel": "Paralelo","Coordinate": "Coordenada","Vertex": "Vértice",
-          "Axis": "Eje","Hypotenuse": "Hipotenusa","Gradient": "Gradiente"
+          "Length": "Longitud",
+          "Width": "Ancho",
+          "Height": "Altura",
+          "Diameter": "Diámetro",
+          "Radius": "Radio",
+          "Perimeter": "Perímetro",
+          "Circumference": "Circunferencia",
+          "Area": "Superficie",
+          "Volume": "Volumen",
+          "Angle": "Ángulo",
+          "Slope": "Pendiente",
+          "Intersection": "Intersección",
+          "Symmetry": "Simetría",
+          "Perpendicular": "Perpendicular",
+          "Parallel": "Paralelo",
+          "Coordinate": "Coordenada",
+          "Vertex": "Vértice",
+          "Axis": "Eje",
+          "Hypotenuse": "Hipotenusa",
+          "Gradient": "Gradiente"
         };
       default:
-        return {
-          'one': 'uno','two': 'dos'
-        };
+        return {'one': 'uno', 'two': 'dos'};
     }
   }
 }
 
 class ClockDisplay extends StatelessWidget {
   final int seconds;
-  const ClockDisplay({Key? key, required this.seconds}) : super(key: key);
+  const ClockDisplay({super.key, required this.seconds});
 
-@override
-Widget build(BuildContext context) {
-  int minutes = seconds ~/ 60;
-  int remainingSeconds = seconds % 60;
+  @override
+  Widget build(BuildContext context) {
+    int minutes = seconds ~/ 60;
+    int remainingSeconds = seconds % 60;
 
-  return Padding(
-    padding: const EdgeInsets.only(top: 40.0),
-    child: Align(
-      alignment: Alignment.topCenter,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          // Calculate the width based on screen size
-          double containerWidth = constraints.maxWidth > 600
-              ? 350  // Set a fixed width of 350 when screen is maximized
-              : constraints.maxWidth * 0.5; // Scale width to 50% of available screen width when minimized
+    return Padding(
+      padding: const EdgeInsets.only(top: 40.0),
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            // Calculate the width based on screen size
+            double containerWidth = constraints.maxWidth > 600
+                ? 350 // Set a fixed width of 350 when screen is maximized
+                : constraints.maxWidth *
+                    0.5; // Scale width to 50% of available screen width when minimized
 
-          return Container(
-            width: containerWidth,
-            height: 40,
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: Colors.grey[400], // Light grey
-              
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              '$minutes:${remainingSeconds.toString().padLeft(2, '0')}',
-              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            ),
-          );
-        },
+            return Container(
+              width: containerWidth,
+              height: 40,
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: Colors.grey[400], // Light grey
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                '$minutes:${remainingSeconds.toString().padLeft(2, '0')}',
+                style:
+                    const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              ),
+            );
+          },
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
-}
-

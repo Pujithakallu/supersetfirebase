@@ -8,10 +8,10 @@ class DetailsPage extends StatelessWidget {
   final List<Map<String, dynamic>> questionResults;
   final String questionType;
   const DetailsPage({
-    Key? key,
+    super.key,
     required this.questionResults,
     required this.questionType,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

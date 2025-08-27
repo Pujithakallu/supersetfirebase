@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class QuizAnswerCard extends StatelessWidget {
   const QuizAnswerCard({
-    Key? key,
+    super.key,
     required this.question,
     required this.selectedAnswer,
     required this.correctAnswer,
-  }) : super(key: key);
+  });
 
   final String question;
   final String selectedAnswer;
@@ -14,7 +14,8 @@ class QuizAnswerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isCorrect = selectedAnswer.toLowerCase() == correctAnswer.toLowerCase();
+    final bool isCorrect =
+        selectedAnswer.toLowerCase() == correctAnswer.toLowerCase();
     final bool isSelected = selectedAnswer.isNotEmpty;
 
     return Padding(
@@ -25,7 +26,9 @@ class QuizAnswerCard extends StatelessWidget {
         height: 70,
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
-          color: isSelected ? (isCorrect ? Colors.green : Colors.red) : Colors.white54,
+          color: isSelected
+              ? (isCorrect ? Colors.green : Colors.red)
+              : Colors.white54,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: Colors.white70,
@@ -43,10 +46,7 @@ class QuizAnswerCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-            if (isSelected)
-              isCorrect
-                  ? buildCorrectIcon()
-                  : buildWrongIcon(),
+            if (isSelected) isCorrect ? buildCorrectIcon() : buildWrongIcon(),
           ],
         ),
       ),
@@ -55,19 +55,19 @@ class QuizAnswerCard extends StatelessWidget {
 }
 
 Widget buildCorrectIcon() => const CircleAvatar(
-  radius: 15,
-  backgroundColor: Colors.green,
-  child: Icon(
-    Icons.check,
-    color: Colors.white,
-  ),
-);
+      radius: 15,
+      backgroundColor: Colors.green,
+      child: Icon(
+        Icons.check,
+        color: Colors.white,
+      ),
+    );
 
 Widget buildWrongIcon() => const CircleAvatar(
-  radius: 15,
-  backgroundColor: Colors.red,
-  child: Icon(
-    Icons.close,
-    color: Colors.white,
-  ),
-);
+      radius: 15,
+      backgroundColor: Colors.red,
+      child: Icon(
+        Icons.close,
+        color: Colors.white,
+      ),
+    );

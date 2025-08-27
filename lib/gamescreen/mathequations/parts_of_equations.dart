@@ -9,6 +9,8 @@ import 'total_xp_display.dart';
 import 'total_xp_provider.dart';
 
 class PartsOfEquations extends StatefulWidget {
+  const PartsOfEquations({super.key});
+
   @override
   _PartsOfEquationsState createState() => _PartsOfEquationsState();
 }
@@ -160,7 +162,7 @@ class _PartsOfEquationsState extends State<PartsOfEquations> {
                               onPressed: () => checkAnswer('x'),
                               style: ButtonStyle(
                                 backgroundColor: selectedAnswer == 'x'
-                                    ? MaterialStateProperty.all(Colors.green)
+                                    ? WidgetStateProperty.all(Colors.green)
                                     : null,
                               ),
                               child: const Text('x'),
@@ -170,7 +172,7 @@ class _PartsOfEquationsState extends State<PartsOfEquations> {
                               onPressed: () => checkAnswer('2'),
                               style: ButtonStyle(
                                 backgroundColor: selectedAnswer == '2'
-                                    ? MaterialStateProperty.all(Colors.red)
+                                    ? WidgetStateProperty.all(Colors.red)
                                     : null,
                               ),
                               child: const Text('2'),
@@ -180,7 +182,7 @@ class _PartsOfEquationsState extends State<PartsOfEquations> {
                               onPressed: () => checkAnswer('5'),
                               style: ButtonStyle(
                                 backgroundColor: selectedAnswer == '5'
-                                    ? MaterialStateProperty.all(Colors.red)
+                                    ? WidgetStateProperty.all(Colors.red)
                                     : null,
                               ),
                               child: const Text('5'),

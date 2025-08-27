@@ -72,7 +72,7 @@ class NumberToWordsEnglish {
     if (number == 0) {
       return soFar;
     }
-    return _numNames[number] + ' $_hundred ' + soFar;
+    return '${_numNames[number]} $_hundred $soFar';
   }
 
   ///handle converter
@@ -118,10 +118,10 @@ class NumberToWordsEnglish {
         tradBillions = '';
         break;
       case 1:
-        tradBillions = _convertLessThanOneThousand(billions) + ' $_billion ';
+        tradBillions = '${_convertLessThanOneThousand(billions)} $_billion ';
         break;
       default:
-        tradBillions = _convertLessThanOneThousand(billions) + ' $_billion ';
+        tradBillions = '${_convertLessThanOneThousand(billions)} $_billion ';
     }
     return tradBillions;
   }
@@ -134,10 +134,10 @@ class NumberToWordsEnglish {
         tradMillions = '';
         break;
       case 1:
-        tradMillions = _convertLessThanOneThousand(millions) + ' $_million ';
+        tradMillions = '${_convertLessThanOneThousand(millions)} $_million ';
         break;
       default:
-        tradMillions = _convertLessThanOneThousand(millions) + ' $_million ';
+        tradMillions = '${_convertLessThanOneThousand(millions)} $_million ';
     }
     return tradMillions;
   }
@@ -151,17 +151,16 @@ class NumberToWordsEnglish {
         break;
       case 1:
         tradHundredThousands =
-            _convertLessThanOneThousand(hundredThousands) + ' $_thousand ';
+            '${_convertLessThanOneThousand(hundredThousands)} $_thousand ';
         break;
       default:
         tradHundredThousands =
-            _convertLessThanOneThousand(hundredThousands) + ' $_thousand ';
+            '${_convertLessThanOneThousand(hundredThousands)} $_thousand ';
     }
 
     return tradHundredThousands;
   }
 }
-
 
 class NumberToWordsSpanish {
   NumberToWordsSpanish._();
@@ -234,7 +233,7 @@ class NumberToWordsSpanish {
     if (number == 0) {
       return soFar;
     }
-    return _numNames[number] + ' $_hundred ' + soFar;
+    return '${_numNames[number]} $_hundred $soFar';
   }
 
   ///handle converter
@@ -280,10 +279,10 @@ class NumberToWordsSpanish {
         tradBillions = '';
         break;
       case 1:
-        tradBillions = _convertLessThanOneThousand(billions) + ' $_billion ';
+        tradBillions = '${_convertLessThanOneThousand(billions)} $_billion ';
         break;
       default:
-        tradBillions = _convertLessThanOneThousand(billions) + ' $_billion ';
+        tradBillions = '${_convertLessThanOneThousand(billions)} $_billion ';
     }
     return tradBillions;
   }
@@ -296,10 +295,10 @@ class NumberToWordsSpanish {
         tradMillions = '';
         break;
       case 1:
-        tradMillions = _convertLessThanOneThousand(millions) + ' $_million ';
+        tradMillions = '${_convertLessThanOneThousand(millions)} $_million ';
         break;
       default:
-        tradMillions = _convertLessThanOneThousand(millions) + ' $_million ';
+        tradMillions = '${_convertLessThanOneThousand(millions)} $_million ';
     }
     return tradMillions;
   }
@@ -313,14 +312,13 @@ class NumberToWordsSpanish {
         break;
       case 1:
         tradHundredThousands =
-            _convertLessThanOneThousand(hundredThousands) + ' $_thousand ';
+            '${_convertLessThanOneThousand(hundredThousands)} $_thousand ';
         break;
       default:
         tradHundredThousands =
-            _convertLessThanOneThousand(hundredThousands) + ' $_thousand ';
+            '${_convertLessThanOneThousand(hundredThousands)} $_thousand ';
     }
 
     return tradHundredThousands;
   }
 }
-
