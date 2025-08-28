@@ -1,5 +1,3 @@
-// lib/screens/category_page.dart
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
