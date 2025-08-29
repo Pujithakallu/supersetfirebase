@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../provider/user_pin_provider.dart';
 import '../utils/logout_util.dart';
 import '../gamescreen/mathoperations/main.dart' show Operators;
+import '../gamescreen/mathcountingandsequence/main.dart' show MyApp;
 
 class KidsPage extends StatefulWidget {
   const KidsPage({Key? key}) : super(key: key);
@@ -39,6 +40,32 @@ class _KidsPageState extends State<KidsPage> with SingleTickerProviderStateMixin
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
+    // Game cards data
+    final games = [
+      {
+        'title': 'Operators',
+        'subtitle': 'Learn new symbols & more!',
+        'image': 'assets/images/math_operators.png',
+        'icon': Icons.show_chart,
+        'color': Colors.green,
+        'onTap': () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => Operators(userPin: pin)),
+            ),
+      },
+      {
+        'title': 'Counting & Sequence',
+        'subtitle': 'Learn numbers & order!',
+        'image': 'assets/images/math_countseq.png',
+        'icon': Icons.format_list_numbered,
+        'color': Colors.blue,
+        'onTap': () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => MyApp()),
+            ),
+      },
+    ];
+
     return Scaffold(
       extendBodyBehindAppBar: true,
 
@@ -58,6 +85,7 @@ class _KidsPageState extends State<KidsPage> with SingleTickerProviderStateMixin
 
       body: Stack(
         children: [
+          // Background image
           Positioned.fill(
             child: Image.asset('assets/images/background.png', fit: BoxFit.cover),
           ),
@@ -86,71 +114,100 @@ class _KidsPageState extends State<KidsPage> with SingleTickerProviderStateMixin
               children: [
                 const SizedBox(height: 16),
 
-                // PIN badge with orange gradient
-                _PinBadge(pin: pin),
+                // Centered PIN badge
+                Center(child: _PinBadge(pin: pin)),
 
-                SizedBox(height: screenHeight * 0.03),
+                SizedBox(height: screenHeight * 0.05),
 
-                // Image tile with responsive sizing
+                // Centered game cards
                 Expanded(
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      double cardWidth = min(constraints.maxWidth * 0.6, 250); // max width 250
+                  child: Center(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: games.map((game) {
+                          double cardWidth = min(screenWidth * 0.7, 300);
+                          double cardHeight = screenHeight * 0.55;
 
-                      return Center(
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (_) => Operators(userPin: pin)),
-                            );
-                          },
-                          child: SizedBox(
-                            width: cardWidth,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(16),
-                                  child: Image.asset(
-                                    'assets/images/math_operators.png',
-                                    fit: BoxFit.contain,
-                                  ),
-                                ),
-                                const SizedBox(height: 12),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Icon(Icons.show_chart, size: 28, color: Colors.green),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      'Operators',
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.deepPurple,
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: GestureDetector(
+                              onTap: game['onTap'] as VoidCallback,
+                              child: SizedBox(
+                                width: cardWidth,
+                                height: cardHeight,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    // Image card
+                                    Expanded(
+                                      flex: 7,
+                                      child: Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        elevation: 6,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(16),
+                                          child: Image.asset(
+                                            game['image'] as String,
+                                            width: double.infinity,
+                                            height: double.infinity,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                    const SizedBox(height: 12),
+
+                                    // Content BELOW the image
+                                    Expanded(
+                                      flex: 3,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                game['icon'] as IconData,
+                                                size: 28,
+                                                color: game['color'] as Color,
+                                              ),
+                                              const SizedBox(width: 8),
+                                              Text(
+                                                game['title'] as String,
+                                                style: const TextStyle(
+                                                  fontSize: 22,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.deepPurple,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 6),
+                                          Text(
+                                            game['subtitle'] as String,
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.black54,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 6),
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 16),
-                                  child: Text(
-                                    'Learn new symbols & more!',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black54,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                      );
-                    },
+                          );
+                        }).toList(),
+                      ),
+                    ),
                   ),
                 ),
 

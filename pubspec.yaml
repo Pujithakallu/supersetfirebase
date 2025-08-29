@@ -31,6 +31,13 @@ dependencies:
   spelling_number: ^0.0.4
   flutter_svg: ^2.0.5
   shared_preferences: ^2.2.0
+  cupertino_icons: ^1.0.6
+  simple_animations: ^5.0.2
+  video_player: ^2.9.1
+  just_audio: ^0.9.40
+  flutter_animate: ^4.5.2
+ 
+
 
 dev_dependencies:
   flutter_test:
@@ -40,6 +47,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+  # Mathmingle
     - assets/Mathmingle/
     - assets/Mathmingle/gif1.gif
     - assets/Mathmingle/Memory_game_background.png
@@ -51,8 +59,10 @@ flutter:
     - assets/Mathmingle/matchGame/chapter3.json
     - assets/Mathmingle/matchGame/chapter4.json
     - assets/Mathmingle/matchGame/chapter5.json
+    # Mathequations
     - assets/Mathequations/Background.png
     - assets/Mathequations/PartsOfEquation.png
+    # Mathoperations
     - assets/Mathoperations/home_screen.png
     - assets/Mathoperations/heading.png
     - assets/Mathoperations/background.png
@@ -74,8 +84,206 @@ flutter:
     - assets/images/math_equations.png
     - assets/images/math_operators.png
     - assets/images/background.png
+    - assets/images/math_geometry.png
+    - assets/images/math_countseq.png
 
     - assets/images/spiderman.png
+  #  Mathgeometry
+    - assets/Mathgeometry/backgroundd.gif
+    - assets/Mathgeometry/practice.gif
+    - assets/Mathgeometry/practice-dark.gif
+    - assets/Mathgeometry/party-pop.gif
+    - assets/Mathgeometry/full-marks.gif
+    - assets/Mathgeometry/quadrilateral/parallelogram.png
+    - assets/Mathgeometry/quadrilateral/rectangle.png
+    - assets/Mathgeometry/quadrilateral/square.png
+    - assets/Mathgeometry/quadrilateral/quadrilateral_image.png
+    - assets/Mathgeometry/plane/inclined_plane.png
+    - assets/Mathgeometry/plane/plane_image.png
+    - assets/Mathgeometry/plane/verticle_plane.png
+    - assets/Mathgeometry/plane/horizontal_plane.png
+    - assets/Mathgeometry/plane/plane.png
+    - assets/Mathgeometry/lines/lines.png
+    - assets/Mathgeometry/lines/lines_copy.png
+    - assets/Mathgeometry/lines/line_ans.png
+    - assets/Mathgeometry/lines/ray.png
+    - assets/Mathgeometry/lines/segment.png
+    - assets/Mathgeometry/angles/angles.png
+    - assets/Mathgeometry/angles/right.png
+    - assets/Mathgeometry/angles/acute.png
+    - assets/Mathgeometry/angles/obtuse.png
+    - assets/Mathgeometry/lines/line_all_new.png
+    - assets/Mathgeometry/lines/ray_learn.png
+    - assets/Mathgeometry/lines/segment_learn.png
+    - assets/Mathgeometry/lines/parallel_lines.png
+    - assets/Mathgeometry/lines/perpendicular_lines.png
+    - assets/Mathgeometry/lines/line.png
+    - assets/Mathgeometry/lines/intersecting_lines.png
+    - assets/Mathgeometry/lines/line_all_spanish.png
+    - assets/Mathgeometry/lines/intersecting_lines_spanish.png
+    - assets/Mathgeometry/lines/line_spanish.png
+    - assets/Mathgeometry/lines/parallel_lines_spanish.png
+    - assets/Mathgeometry/lines/perpendiculat_lines_spanish.png
+    - assets/Mathgeometry/lines/ray_spanish.png
+    - assets/Mathgeometry/lines/segment_spanish.png
+    - assets/Mathgeometry/lines/P7.png
+    - assets/Mathgeometry/lines/P8.png
+    - assets/Mathgeometry/lines/P10.png
+    - assets/Mathgeometry/angles/Acute_E.png
+    - assets/Mathgeometry/angles/AcuteAngle_s.png
+    - assets/Mathgeometry/angles/Angles_E.png
+    - assets/Mathgeometry/angles/Angles_S.png
+    - assets/Mathgeometry/angles/FullRotationAngle_E.png
+    - assets/Mathgeometry/angles/FullRotationAngle_s.png
+    - assets/Mathgeometry/angles/ObtuseANgle_E.png
+    - assets/Mathgeometry/angles/ObtuseAngle_S.png
+    - assets/Mathgeometry/angles/ReflexAngle_E.png
+    - assets/Mathgeometry/angles/ReflexAngle_S.png
+    - assets/Mathgeometry/angles/Right_Angle_E.png
+    - assets/Mathgeometry/angles/RightAngle_S.png
+    - assets/Mathgeometry/angles/StraightAngle_E.png
+    - assets/Mathgeometry/angles/StraightAngle_S.png
+    - assets/Mathgeometry/quadrilateral/Kite_E.png
+    - assets/Mathgeometry/quadrilateral/Kite_S.png
+    - assets/Mathgeometry/quadrilateral/Parallelogram_E.png
+    - assets/Mathgeometry/quadrilateral/Parallelogram_S.png
+    - assets/Mathgeometry/quadrilateral/Quadrilateral_E.png
+    - assets/Mathgeometry/quadrilateral/Quadrilateral_S.png
+    - assets/Mathgeometry/quadrilateral/Rectangle_E.png
+    - assets/Mathgeometry/quadrilateral/Rectangle_S.png
+    - assets/Mathgeometry/quadrilateral/Rhombus_E.png
+    - assets/Mathgeometry/quadrilateral/Rhombus_S.png
+    - assets/Mathgeometry/quadrilateral/Square_E.png
+    - assets/Mathgeometry/quadrilateral/Square_S.png
+    - assets/Mathgeometry/quadrilateral/Trapezoid_E.png
+    - assets/Mathgeometry/quadrilateral/Trapezoid_S.png
+    - assets/Mathgeometry/triangle/Acute_E.png
+    - assets/Mathgeometry/triangle/Acute_S.png
+    - assets/Mathgeometry/triangle/Equilateral_E.png
+    - assets/Mathgeometry/triangle/Equilateral_S.png
+    - assets/Mathgeometry/triangle/Isoceles_E.png
+    - assets/Mathgeometry/triangle/Isoceles_S.png
+    - assets/Mathgeometry/triangle/Obtuse_E.png
+    - assets/Mathgeometry/triangle/Obtuse_S.png
+    - assets/Mathgeometry/triangle/Right_E.png
+    - assets/Mathgeometry/triangle/Right_S.png
+    - assets/Mathgeometry/triangle/Scalene_E.png
+    - assets/Mathgeometry/triangle/Scalene_S.png
+    - assets/Mathgeometry/triangle/Triangle_E.png
+    - assets/Mathgeometry/triangle/Triangle_S.png
+    - assets/Mathgeometry/plane/Horizontal_E.png
+    - assets/Mathgeometry/plane/Horizontal_S.png
+    - assets/Mathgeometry/plane/Inclined_E.png
+    - assets/Mathgeometry/plane/Plane_E.png
+    - assets/Mathgeometry/plane/Inclined_S.png
+    - assets/Mathgeometry/plane/Plane_S.png
+    - assets/Mathgeometry/plane/Vertical_E.png
+    - assets/Mathgeometry/plane/Vertical_S.png
+    - assets/Mathgeometry/angles/A_Acute.png
+    - assets/Mathgeometry/angles/A_Obtuse.png
+    - assets/Mathgeometry/angles/A_Right.png
+    - assets/Mathgeometry/angles/3.png
+    - assets/Mathgeometry/angles/Reflex_Angle.png
+    - assets/Mathgeometry/angles/4.png
+    - assets/Mathgeometry/angles/quiz/aq1.jpg
+    - assets/Mathgeometry/angles/quiz/aq2.png
+    - assets/Mathgeometry/angles/quiz/aq3.jpg
+    - assets/Mathgeometry/angles/quiz/aq4.jpeg
+    - assets/Mathgeometry/angles/quiz/aq5.webp
+    - assets/Mathgeometry/angles/quiz/aq6.jpg
+    - assets/Mathgeometry/angles/quiz/aq7.jpg
+    - assets/Mathgeometry/angles/quiz/aq8.jpg
+    - assets/Mathgeometry/angles/quiz/aq9.jpg
+    - assets/Mathgeometry/angles/quiz/aq10.webp
+    - assets/Mathgeometry/lines/quiz/lq1.webp
+    - assets/Mathgeometry/lines/quiz/lq2.jpg
+    - assets/Mathgeometry/lines/quiz/lq3.jpg
+    - assets/Mathgeometry/lines/quiz/lq4.jpg
+    - assets/Mathgeometry/lines/quiz/lq5.jpg
+    - assets/Mathgeometry/lines/quiz/lq6.jpg
+    - assets/Mathgeometry/lines/quiz/lq7.webp
+    - assets/Mathgeometry/lines/quiz/lq8.jpg
+    - assets/Mathgeometry/lines/quiz/lq9.jpg
+    - assets/Mathgeometry/lines/quiz/lq10.jpg
+    - assets/Mathgeometry/plane/quiz/pq1.jpg
+    - assets/Mathgeometry/plane/quiz/pq2.jpg
+    - assets/Mathgeometry/plane/quiz/pq3.jpg
+    - assets/Mathgeometry/plane/quiz/pq4.jpg
+    - assets/Mathgeometry/plane/quiz/pq5.jpg
+    - assets/Mathgeometry/plane/quiz/pq6.jpg
+    - assets/Mathgeometry/plane/quiz/pq7.jpg
+    - assets/Mathgeometry/plane/quiz/pq8.jpg
+    - assets/Mathgeometry/plane/quiz/pq9.webp
+    - assets/Mathgeometry/plane/quiz/pq10.jpg
+    - assets/Mathgeometry/quadrilateral/quiz/qq1.jpg
+    - assets/Mathgeometry/quadrilateral/quiz/qq2.jpg
+    - assets/Mathgeometry/quadrilateral/quiz/qq3.jpg
+    - assets/Mathgeometry/quadrilateral/quiz/qq4.webp
+    - assets/Mathgeometry/quadrilateral/quiz/qq5.jpg
+    - assets/Mathgeometry/quadrilateral/quiz/qq6.jpg
+    - assets/Mathgeometry/quadrilateral/quiz/qq7.png
+    - assets/Mathgeometry/quadrilateral/quiz/qq8.png
+    - assets/Mathgeometry/quadrilateral/quiz/qq9.png
+    - assets/Mathgeometry/quadrilateral/quiz/qq10.png
+    - assets/Mathgeometry/triangle/quiz/tq1.webp
+    - assets/Mathgeometry/triangle/quiz/tq2.webp
+    - assets/Mathgeometry/triangle/quiz/tq3.jpg
+    - assets/Mathgeometry/triangle/quiz/tq4.jpg
+    - assets/Mathgeometry/triangle/quiz/q5.png
+    - assets/Mathgeometry/triangle/quiz/q7.png
+    - assets/Mathgeometry/triangle/quiz/q8.png
+    - assets/Mathgeometry/triangle/quiz/q9.png
+    - assets/Mathgeometry/triangle/quiz/q10.png
+    - assets/Mathgeometry/circle/circle_e.png
+    - assets/Mathgeometry/circle/circle_s.png
+    - assets/Mathgeometry/circle/Raduis_s.png
+    - assets/Mathgeometry/circle/Raduis_e.png
+    - assets/Mathgeometry/circle/Diameter_s.png
+    - assets/Mathgeometry/circle/Diameter_e.png
+    - assets/Mathgeometry/circle/Circumference_s.png
+    - assets/Mathgeometry/circle/Circumference_e.png
+    - assets/Mathgeometry/circle/Chord_s.png
+    - assets/Mathgeometry/circle/Chord_e.png
+    - assets/Mathgeometry/circle/Arc_s.png
+    - assets/Mathgeometry/circle/Arc_e.png
+    - assets/Mathgeometry/circle/Tangent_s.png
+    - assets/Mathgeometry/circle/Tangent_e.png
+    - assets/Mathgeometry/circle/Practice1.png
+    - assets/Mathgeometry/circle/Practice2.png
+    - assets/Mathgeometry/circle/Practice3.png
+    - assets/Mathgeometry/circle/Practice4.png
+    - assets/Mathgeometry/circle/Practice5.png
+    - assets/Mathgeometry/circle/Practice6.png
+    - assets/Mathgeometry/circle/q1.png
+    - assets/Mathgeometry/circle/q2.png
+    - assets/Mathgeometry/circle/q3.png
+    - assets/Mathgeometry/circle/q4.png
+    - assets/Mathgeometry/circle/q5.png
+    - assets/Mathgeometry/circle/q6.png
+    - assets/Mathgeometry/circle/q7.png
+    - assets/Mathgeometry/circle/q8.png
+    - assets/Mathgeometry/circle/q9.png
+    - assets/Mathgeometry/circle/q10.png
+    - assets/Mathgeometry/backgroundd-dark.gif
+    # Counting n sequence
+    - assets/MathC&S/p5.gif
+    - assets/MathC&S/grapes.png
+    - assets/MathC&S/greenAnt.png
+    - assets/MathC&S/oranges.png
+    - assets/MathC&S/p3.gif
+    - assets/MathC&S/p9.gif
+    - assets/MathC&S/audio/game-music-loop.mp3
+    - assets/MathC&S/audio/game-correct.mp3
+    - assets/MathC&S/audio/game-wrong.mp3
+    - assets/MathC&S/shell.svg
+    - assets/MathC&S/seahorse.svg
+    - assets/MathC&S/videos/background.mp4
+    - assets/MathC&S/shark.svg
+    - assets/MathC&S/mermaid.svg
+    - assets/MathC&S/audio/ocea.mp3
+    - assets/MathC&S/seahorse-2.png
+    - assets/MathC&S/jelly.png
+
     
     
     

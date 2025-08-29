@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +9,7 @@ import '../utils/logout_util.dart';
 import 'all_maths_page.dart';
 import 'kids_page.dart';
 import 'teens_page.dart';
+import '../screens/login_screen.dart';
 
 class CategoryPage extends StatefulWidget {
   const CategoryPage({Key? key}) : super(key: key);
@@ -25,7 +25,6 @@ class _CategoryPageState extends State<CategoryPage>
   @override
   void initState() {
     super.initState();
-    // Animation controller for floating symbols
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 20),
@@ -59,17 +58,17 @@ class _CategoryPageState extends State<CategoryPage>
       Category(
         title: 'All Maths',
         assetPath: 'assets/images/all_maths_tile.png',
-        page: AllMathsPage(),
+        page: const AllMathsPage(),
       ),
       Category(
         title: 'Kids',
         assetPath: 'assets/images/kids_tile.png',
-        page: KidsPage(),
+        page: const KidsPage(),
       ),
       Category(
         title: 'Teens',
         assetPath: 'assets/images/teens_tile.png',
-        page: TeensPage(),
+        page: const TeensPage(),
       ),
     ];
 
@@ -99,6 +98,19 @@ class _CategoryPageState extends State<CategoryPage>
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            } else {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const LoginScreen()),
+              );
+            }
+          },
+        ),
         title: Text(
           "Welcome to Math World",
           style: TextStyle(
@@ -125,8 +137,7 @@ class _CategoryPageState extends State<CategoryPage>
               fit: BoxFit.cover,
             ),
           ),
-
-          // Animated gradient overlay
+          
           AnimatedBuilder(
             animation: _controller,
             builder: (context, child) {
@@ -145,10 +156,9 @@ class _CategoryPageState extends State<CategoryPage>
               );
             },
           ),
-
-          // Floating symbols for playfulness
+          // Floating symbols
           ..._buildFloatingSymbols(screenWidth, screenHeight),
-
+          // Main content
           SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -181,12 +191,11 @@ class _CategoryPageState extends State<CategoryPage>
                   ),
                 ),
                 SizedBox(height: screenHeight * 0.05),
-
-                // Row of 3 cards (responsive)
+                
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: categories.map((cat) {
                       final subtitle = _subtitleFor(cat.title);
                       return Expanded(
@@ -234,7 +243,7 @@ class _CategoryPageState extends State<CategoryPage>
                                       ),
                                     ),
                                   ),
-                                  SizedBox(height: screenHeight * 0.008),
+                                  const SizedBox(height: 6),
                                   Text(
                                     cat.title,
                                     style: TextStyle(
@@ -251,17 +260,17 @@ class _CategoryPageState extends State<CategoryPage>
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
-                                  SizedBox(height: screenHeight * 0.003),
+                                  const SizedBox(height: 4),
                                   Text(
                                     subtitle,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 14,
                                       color: Colors.black54,
                                       fontStyle: FontStyle.italic,
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
-                                  SizedBox(height: screenHeight * 0.008),
+                                  const SizedBox(height: 8),
                                 ],
                               ),
                             ),
@@ -286,19 +295,18 @@ class _CategoryPageState extends State<CategoryPage>
   }
 
   List<Widget> _buildFloatingSymbols(double width, double height) {
-    final random = Random();
     List<Widget> symbols = [];
     for (int i = 0; i < 6; i++) {
       symbols.add(
         AnimatedBuilder(
           animation: _controller,
           builder: (context, child) {
-            double top =
-                (height * 0.1 + i * 50 + 20 * sin(_controller.value * 2 * pi + i)) %
-                    height;
-            double left =
-                (width * 0.1 + i * 60 + 30 * cos(_controller.value * 2 * pi + i)) %
-                    width;
+            double top = (height * 0.1 + i * 50 +
+                    20 * sin(_controller.value * 2 * pi + i)) %
+                height;
+            double left = (width * 0.1 + i * 60 +
+                    30 * cos(_controller.value * 2 * pi + i)) %
+                width;
             return Positioned(
               top: top,
               left: left,

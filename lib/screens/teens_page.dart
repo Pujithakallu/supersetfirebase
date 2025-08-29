@@ -1,5 +1,3 @@
-// lib/screens/teens_page.dart
-
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +5,8 @@ import 'package:provider/provider.dart';
 import '../provider/user_pin_provider.dart';
 import '../utils/logout_util.dart';
 import '../gamescreen/mathequations/main.dart' show MathEquationsApp;
+import '../screens/category_page.dart';
+import '../gamescreen/mathgeometry/main.dart' show BilingualMathGeo;
 
 class TeensPage extends StatefulWidget {
   const TeensPage({Key? key}) : super(key: key);
@@ -15,7 +15,8 @@ class TeensPage extends StatefulWidget {
   State<TeensPage> createState() => _TeensPageState();
 }
 
-class _TeensPageState extends State<TeensPage> with SingleTickerProviderStateMixin {
+class _TeensPageState extends State<TeensPage>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   @override
@@ -39,13 +40,24 @@ class _TeensPageState extends State<TeensPage> with SingleTickerProviderStateMix
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
+    // Responsive card dimensions
+    final double cardWidth = min(screenWidth * 0.4, 220);
+    final double cardHeight = cardWidth * 1.1;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
-
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: const BackButton(color: Colors.black),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const CategoryPage()),
+            );
+          },
+        ),
         title: const Text(
           'Teens',
           style: TextStyle(
@@ -55,14 +67,16 @@ class _TeensPageState extends State<TeensPage> with SingleTickerProviderStateMix
         ),
         centerTitle: true,
       ),
-
       body: Stack(
         children: [
+          
           Positioned.fill(
-            child: Image.asset('assets/images/background.png', fit: BoxFit.cover),
+            child: Image.asset(
+              'assets/images/background.png',
+              fit: BoxFit.cover,
+            ),
           ),
-
-          // Animated gradient overlay
+          
           AnimatedBuilder(
             animation: _controller,
             builder: (context, child) {
@@ -70,7 +84,8 @@ class _TeensPageState extends State<TeensPage> with SingleTickerProviderStateMix
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Colors.white.withOpacity(0.35 + 0.15 * sin(_controller.value * 2 * pi)),
+                      Colors.white.withOpacity(
+                          0.35 + 0.15 * sin(_controller.value * 2 * pi)),
                       Colors.white.withOpacity(0.6),
                     ],
                     begin: Alignment.topLeft,
@@ -80,78 +95,65 @@ class _TeensPageState extends State<TeensPage> with SingleTickerProviderStateMix
               );
             },
           ),
-
           SafeArea(
             child: Column(
               children: [
                 const SizedBox(height: 16),
-
-                // PIN badge with orange gradient
                 _PinBadge(pin: pin),
-
-                SizedBox(height: screenHeight * 0.03),
-
-                // Image card
+                SizedBox(height: screenHeight * 0.05),
                 Expanded(
                   child: Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => MathEquationsApp()),
-                        );
-                      },
-                      child: SizedBox(
-                        width: min(screenWidth * 0.6, 250),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: Image.asset(
-                                'assets/images/math_equations.png',
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.functions, size: 28, color: Colors.purple),
-                                SizedBox(width: 8),
-                                Text(
-                                  'Equations',
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.deepPurple,
-                                  ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          child: _GameCard(
+                            width: cardWidth,
+                            height: cardHeight,
+                            image: 'assets/images/math_equations.png',
+                            icon: Icons.functions,
+                            iconColor: Colors.purple,
+                            title: 'Equations',
+                            description: 'Master equations!',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => MathEquationsApp(),
                                 ),
-                              ],
-                            ),
-                            const SizedBox(height: 6),
-                            const Text(
-                              'Master equations!',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black54,
-                              ),
-                            ),
-                          ],
+                              );
+                            },
+                          ),
                         ),
-                      ),
+                        SizedBox(width: screenWidth * 0.05),
+                        Flexible(
+                          child: _GameCard(
+                            width: cardWidth,
+                            height: cardHeight,
+                            image: 'assets/images/math_geometry.png',
+                            icon: Icons.square_foot,
+                            iconColor: Colors.teal,
+                            title: 'Geometry',
+                            description: 'Learn shapes & angles!',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => BilingualMathGeo(),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-
-                const SizedBox(height: 24),
               ],
             ),
           ),
         ],
       ),
-
       floatingActionButton: FloatingActionButton(
         heroTag: 'logoutTeens',
         onPressed: () => logout(context),
@@ -162,7 +164,6 @@ class _TeensPageState extends State<TeensPage> with SingleTickerProviderStateMix
   }
 }
 
-// Orange gradient PIN badge
 class _PinBadge extends StatelessWidget {
   final String pin;
   const _PinBadge({required this.pin});
@@ -191,6 +192,86 @@ class _PinBadge extends StatelessWidget {
           fontWeight: FontWeight.bold,
           color: Colors.white,
           letterSpacing: 1.2,
+        ),
+      ),
+    );
+  }
+}
+
+class _GameCard extends StatelessWidget {
+  final double width;
+  final double height;
+  final String image;
+  final IconData icon;
+  final Color iconColor;
+  final String title;
+  final String description;
+  final VoidCallback onTap;
+
+  const _GameCard({
+    required this.width,
+    required this.height,
+    required this.image,
+    required this.icon,
+    required this.iconColor,
+    required this.title,
+    required this.description,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        constraints: BoxConstraints(
+          maxWidth: width,
+          maxHeight: height + 60,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Image fills the card
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: SizedBox(
+                width: width,
+                height: height,
+                child: Image.asset(
+                  image,
+                  fit: BoxFit.cover, // ✅ fills the card
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon, size: 22, color: iconColor),
+                const SizedBox(width: 6),
+                Flexible(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.deepPurple,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            Text(
+              description,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.black54,
+              ),
+            ),
+          ],
         ),
       ),
     );
