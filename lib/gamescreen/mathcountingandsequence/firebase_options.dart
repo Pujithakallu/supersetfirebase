@@ -41,15 +41,17 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyABUtos1NwnovkZovSiElB8nU8R9VuYjSc',
-    appId: '1:874191291104:web:ed565d25df661cdc454685',
-    messagingSenderId: '874191291104',
-    projectId: 'counting-and-sequencing-fa19c',
-    authDomain: 'counting-and-sequencing-fa19c.firebaseapp.com',
-    storageBucket: 'counting-and-sequencing-fa19c.firebasestorage.app',
-    measurementId: 'G-HMNMV72599',
+    apiKey: "AIzaSyDYC7_yReYQZJWTl1O9n3auL9pRCZQp4A4",
+    authDomain: "fih-superset-dev.firebaseapp.com",
+    projectId: "fih-superset-dev",
+    storageBucket: "fih-superset-dev.firebasestorage.app",
+    messagingSenderId: "1058242616848",
+    appId: "1:1058242616848:web:7f407ce57f5ae4eafb3495",
+  measurementId: "G-1MLYB5F9ZG"
   );
 
+  
+// we need to change firebase options for other platforms ..we chnaged only for webapp
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAfSer4nC4y1V5QUF3BlJUWkwpKZjVo0xY',
     appId: '1:874191291104:android:b326e7b61c1456ec454685',
