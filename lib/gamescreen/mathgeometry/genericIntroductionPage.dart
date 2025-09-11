@@ -300,7 +300,7 @@ class _GenericIntroductionPageState extends State<GenericIntroductionPage> {
                           icon: const Icon(Icons.translate, color: Colors.white),
                           onPressed:(){
                             analytics.logEvent(name: '${widget.shapeName} Learn Translate');
-                            _toggleLanguage;
+                            _toggleLanguage();
                           }
                         ),
                         IconButton(
