@@ -1,12 +1,15 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:supersetfirebase/main.dart';
 
 import '../provider/user_pin_provider.dart';
 import '../utils/logout_util.dart';
 import '../gamescreen/mathequations/main.dart' show MathEquationsApp;
 import '../screens/category_page.dart';
 import '../gamescreen/mathgeometry/main.dart' show BilingualMathGeo;
+import '../gamescreen/mathdecimals/main.dart' show DecimalApp;
+// import '../gamescreen/numquest/main.dart' show NumQuestApp;
 
 class TeensPage extends StatefulWidget {
   const TeensPage({Key? key}) : super(key: key);
@@ -69,14 +72,15 @@ class _TeensPageState extends State<TeensPage>
       ),
       body: Stack(
         children: [
-          
+          // Background
           Positioned.fill(
             child: Image.asset(
               'assets/images/background.png',
               fit: BoxFit.cover,
             ),
           ),
-          
+
+          // Animated gradient overlay
           AnimatedBuilder(
             animation: _controller,
             builder: (context, child) {
@@ -95,55 +99,88 @@ class _TeensPageState extends State<TeensPage>
               );
             },
           ),
+
           SafeArea(
             child: Column(
               children: [
                 const SizedBox(height: 16),
                 _PinBadge(pin: pin),
                 SizedBox(height: screenHeight * 0.05),
+
+                // Cards section
                 Expanded(
                   child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    child: Wrap(
+                      spacing: screenWidth * 0.05,
+                      runSpacing: screenHeight * 0.04,
+                      alignment: WrapAlignment.center,
                       children: [
-                        Flexible(
-                          child: _GameCard(
-                            width: cardWidth,
-                            height: cardHeight,
-                            image: 'assets/images/math_equations.png',
-                            icon: Icons.functions,
-                            iconColor: Colors.purple,
-                            title: 'Equations',
-                            description: 'Master equations!',
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => MathEquationsApp(),
-                                ),
-                              );
-                            },
-                          ),
+                        _GameCard(
+                          width: cardWidth,
+                          height: cardHeight,
+                          image: 'assets/images/math_equations.png',
+                          icon: Icons.functions,
+                          iconColor: Colors.purple,
+                          title: 'Equations',
+                          description: 'Master equations!',
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => MathEquationsApp(),
+                              ),
+                            );
+                          },
                         ),
-                        SizedBox(width: screenWidth * 0.05),
-                        Flexible(
-                          child: _GameCard(
-                            width: cardWidth,
-                            height: cardHeight,
-                            image: 'assets/images/math_geometry.png',
-                            icon: Icons.square_foot,
-                            iconColor: Colors.teal,
-                            title: 'Geometry',
-                            description: 'Learn shapes & angles!',
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => BilingualMathGeo(),
-                                ),
-                              );
-                            },
-                          ),
+                        _GameCard(
+                          width: cardWidth,
+                          height: cardHeight,
+                          image: 'assets/images/math_geometry.png',
+                          icon: Icons.square_foot,
+                          iconColor: Colors.teal,
+                          title: 'Geometry',
+                          description: 'Learn shapes & angles!',
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => BilingualMathGeo(),
+                              ),
+                            );
+                          },
+                        ),
+                        _GameCard(
+                          width: cardWidth,
+                          height: cardHeight,
+                          image: 'assets/images/decimals.png',
+                          icon: Icons.calculate,
+                          iconColor: Colors.indigo,
+                          title: 'Decimals',
+                          description: 'Work with decimals!',
+                          onTap: () {
+                           Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const DecimalApp(),
+                              ),
+                            );
+                          },
+                        ),
+                        _GameCard(
+                          width: cardWidth,
+                          height: cardHeight,
+                          image: 'assets/images/math_numquest.png',
+                          icon: Icons.quiz,
+                          iconColor: Colors.deepOrange,
+                          title: 'NumQuest',
+                          description: 'Fun number challenges!',
+                          onTap: () {
+                            // Replace with actual NumQuest game later
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text("NumQuest game coming soon!")),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -239,7 +276,7 @@ class _GameCard extends StatelessWidget {
                 height: height,
                 child: Image.asset(
                   image,
-                  fit: BoxFit.cover, // ✅ fills the card
+                  fit: BoxFit.cover,
                 ),
               ),
             ),

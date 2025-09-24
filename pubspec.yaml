@@ -18,7 +18,7 @@ dependencies:
   firebase_data_connect: ^0.1.4+1
 
   http: ^1.2.2
-  audioplayers: ^6.0.1
+  audioplayers: ^6.1.1
   firebase_analytics: ^11.3.0 
   confetti: ^0.8.0
   flutter_tts: ^4.2.1
@@ -30,7 +30,7 @@ dependencies:
   animated_text_kit: ^4.2.2
   spelling_number: ^0.0.4
   flutter_svg: ^2.0.5
-  shared_preferences: ^2.2.0
+  shared_preferences: ^2.2.15
   cupertino_icons: ^1.0.6
   simple_animations: ^5.0.2
   video_player: ^2.9.1
@@ -75,6 +75,7 @@ flutter:
     - assets/Mathoperations/egg.png
     - assets/Mathoperations/child.png
     - assets/Mathoperations/BackGround_1.png
+    #common images
     - assets/images/all_maths_tile.png
     - assets/images/kids_tile.png
     - assets/images/teens_tile.png
@@ -86,6 +87,7 @@ flutter:
     - assets/images/background.png
     - assets/images/math_geometry.png
     - assets/images/math_countseq.png
+    - assets/images/decimals.png
 
     - assets/images/spiderman.png
   #  Mathgeometry
@@ -283,6 +285,43 @@ flutter:
     - assets/MathC&S/audio/ocea.mp3
     - assets/MathC&S/seahorse-2.png
     - assets/MathC&S/jelly.png
+    # Mathdecimals
+    - assets/MathDecimals/decimal1.png
+    - assets/MathDecimals/kids.jpeg
+    - assets/MathDecimals/decimal2.png
+    - assets/MathDecimals/bird.jpg
+    - assets/MathDecimals/background.jpeg
+    - assets/MathDecimals/fish.png
+    - assets/MathDecimals/bird.jpg
+    - assets/MathDecimals/bird.png
+    - assets/MathDecimals/orangefish.png
+    - assets/MathDecimals/backgroundlake.jpg
+    - assets/MathDecimals/sounds/error.mp3
+    - assets/MathDecimals/sounds/success.mp3
+    - assets/MathDecimals/demo1.jpg
+    - assets/MathDecimals/finalbackground.jpg
+    - assets/MathDecimals/play.jpg
+    - assets/MathDecimals/matchitbackground.png
+    - assets/MathDecimals/b2.png
+    - assets/MathDecimals/l2.png
+    - assets/MathDecimals/top2.png
+    - assets/MathDecimals/fishnew.png
+    - assets/MathDecimals/birdnew.png
+    - assets/MathDecimals/backdrop.png
+    - assets/MathDecimals/backdrop2.jpeg
+    - assets/MathDecimals/comparingdecimals.png
+    - assets/MathDecimals/balloon_red.png
+    - assets/MathDecimals/balloon_yellow.png
+    - assets/MathDecimals/balloon_purple.png
+    - assets/MathDecimals/balloon_green.png
+    - assets/MathDecimals/decimalpopbg.jpeg
+    - assets/MathDecimals/decimalpopbg.png
+    - assets/MathDecimals/poppy.png
+    - assets/MathDecimals/learnsectionbg.png
+
+
+
+
 
     
     

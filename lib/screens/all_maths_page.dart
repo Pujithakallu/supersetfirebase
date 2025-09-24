@@ -43,18 +43,18 @@ class _AllMathsPageState extends State<AllMathsPage>
         'desc': 'Fun with numbers!',
         'widget': MathMingleApp(),
       },
-      {
-        'image': '', //'assets/images/math_equations.png',
-        'title': 'Math Equations',
-        'desc': 'Solve tricky puzzles!',
-        'widget': null,
-      },
-      {
-        'image': '', //'assets/images/math_operators.png',
-        'title': 'Math Operators',
-        'desc': 'Learn + - × ÷ easily!',
-        'widget': null,
-      },
+      // {
+      //   'image': '', //'assets/images/math_equations.png',
+      //   'title': 'Math Equations',
+      //   'desc': 'Solve tricky puzzles!',
+      //   'widget': null,
+      // },
+      // {
+      //   'image': '', //'assets/images/math_operators.png',
+      //   'title': 'Math Operators',
+      //   'desc': 'Learn + - × ÷ easily!',
+      //   'widget': null,
+      // },
     ];
 
     return Scaffold(
