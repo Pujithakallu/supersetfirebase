@@ -1,0 +1,25 @@
+{
+    "pages": [
+      {
+        "text_en": "A prime number can be defined as a natural number greater than 1 (one) whose only factors are 1 (one) and the number itself.",
+        "text_es": "Un número primo se puede definir como un número natural mayor que 1 cuyos únicos factores son 1 y el propio número.",
+        "image": "assets/MathNumQuest/prime1.png"
+      },
+      {
+        "text_en": "A prime number is always bigger than 1. The number 1 is not a prime number...",
+        "text_es": "Un número primo siempre es mayor que 1. El número 1 no es un número primo...",
+        "image": "assets/MathNumQuest/prime2.png"
+      },
+      {
+        "text_en": "The chart below shows the prime numbers up to 100 (one hundred), represented in coloured boxes.",
+        "text_es": "El cuadro de abajo muestra los números primos hasta 100, representados en cuadros de colores.",
+        "image": "assets/MathNumQuest/prime3.png"
+      },
+      {
+        "text_en": "Now that you know what prime numbers are let's go ahead and solve some fun problems.",
+        "text_es": "Ahora que sabes qué son los números primos, vamos a resolver algunos problemas divertidos.",
+        "image": "assets/MathNumQuest/practice.png"
+      }
+    ]
+  }
+  

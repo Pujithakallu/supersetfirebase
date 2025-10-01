@@ -1,0 +1,53 @@
+{
+    "pages":[
+        {
+            "english":{
+                "text": "Composite numbers have more than 2 factors. 16 (sixteen) is an example of a composite number. The factors of 16 are 1(one), 2(two), 4(four), 8(eight) and 16(sixteen). All of these numbers divide into 16(sixteen) evenly. Let's use pictures to visualize composite numbers.",
+                "description":"A farmer is inventing a new egg carton where he will store the eggs his hens lay. He wants each carton to hold 16 (sixteen) eggs.He could have 1 (one) row of 16 (sixteen) eggs. He could also have 2 (two) rows with 8 (eight) eggs in each row."
+
+            },
+            "spanish":{
+                "text":"Los números compuestos tienen más de 2 factores. 16 es un ejemplo de un número compuesto. Los factores de 16 son 1, 2, 4, 8 y 16. Todos estos números se dividen en 16 de manera uniforme. Usemos imágenes para visualizar los números compuestos.",
+                "description":"Un granjero está inventando un nuevo cartón de huevos donde almacenará los huevos que ponen sus gallinas. Quiere que cada cartón contenga 16 huevos. Podría tener 1 fila de 16 huevos. También podría tener 2 filas con 8 huevos en cada fila."
+            },
+            "image": "assets/MathNumQuest/composite1.png"
+        },
+        {
+            "english":{
+                "text": "4 (four) rows with 4 (four) eggs in each row. An array of 16 (sixteen) eggs arranged in 4 (four) rows of 4 (four) eggs each. Composite numbers have more than one way that they can be divided into equal groups.",
+                "description":""
+
+            },
+            "spanish":{
+                "text":"4 filas con 4 huevos en cada fila. Una matriz de 16 huevos dispuestos en 4 filas de 4 huevos cada una. Los números compuestos tienen más de una forma en que pueden dividirse en grupos iguales.",
+                "description":""
+            },
+            "image": "assets/MathNumQuest/composite2.png"
+        },
+        {
+            "english":{
+                "text": "The chart below shows the composite numbers up to 100 (one hundred), represented in coloured boxes.",
+                "description":""
+
+            },
+            "spanish":{
+                "text":"El cuadro de abajo muestra los números compuestos hasta 100, representados en cuadros de colores.",
+                "description":""
+            },
+            "image": "assets/MathNumQuest/composite3.png"
+        },
+        {
+           "english":{
+                "text": "Now that you know what composite numbers are let's go ahead and solve some fun problems.",
+                "description":""
+
+            },
+            "spanish":{
+                "text":"Ahora que sabes qué son los números compuestos, vamos a resolver algunos problemas divertidos.",
+                "description":""
+            },
+             "image": "assets/MathNumQuest/practice.png"  
+        }
+
+    ]
+}

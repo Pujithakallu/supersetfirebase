@@ -1,0 +1,49 @@
+{
+    "pages": [
+      {
+        "english": {
+          "text": "Odd numbers, like even numbers, can be small or they can be very big. If a number ends in a 1 (one), 3 (three), 5 (five), 7 (seven), or 9 (nine), it is an odd number.",
+          "description": "Imagine you have some candies, and you want to share them equally between you and your friend. If after dividing the candies equally, there is one candy left over, then the number of candies you have is an odd number! Odd numbers can't be halved exactly, there's always one left over."
+        },
+        "spanish": {
+          "text": "Los números impares, al igual que los pares, pueden ser pequeños o muy grandes. Si un número termina en 1 (uno), 3 (tres), 5 (cinco), 7 (siete) o 9 (nueve), es un número impar.",
+          "description": "Imagina que tienes algunos dulces y quieres compartirlos en partes iguales entre tú y tu amigo. Si después de dividir los caramelos en partes iguales queda un caramelo, entonces el número de caramelos que tienes es impar. ¡Los números impares no se pueden dividir exactamente por la mitad, siempre sobra uno!"
+        },
+        "image": "assets/MathNumQuest/Odd_candy.png"
+      },
+      {
+        "english": {
+          "text": "Suppose you have 7 (seven) candies. Let’s make pairs, and we see that after pairing the candies, there is one candy left over. That means 7 (seven) is an odd number! Odd numbers can't be halved exactly, there's always one left over.",
+          "description": ""
+        },
+        "spanish": {
+          "text": "Supongamos que tienes 7 caramelos. Hagamos parejas, vemos que después de emparejar los caramelos queda un caramelo. ¡Eso significa que 7 es un número impar! Los números impares no se pueden dividir exactamente por la mitad, siempre sobra uno.",
+          "description": ""
+        },
+        "image": "assets/MathNumQuest/Odd_candy_2.png"
+      },
+      {
+        "english": {
+          "text": "This is a number square. Do you see the numbers that are highlighted in a special color? Those are our odd numbers! They form a special pattern! Can you see the way they line up in neat rows and columns?",
+          "description": ""
+        },
+        "spanish": {
+          "text": "Este es un cuadrado numérico. ¿Ves los números que están resaltados en un color especial? ¡Esos son nuestros números impares! ¡Forman un patrón especial! ¿Puedes ver cómo se alinean en filas y columnas ordenadas?",
+          "description": ""
+        },
+        "image": "assets/MathNumQuest/odd_table.png"
+      },
+      {
+        "english": {
+          "text": "Now that you know what odd numbers are, let’s go ahead and solve some fun problems.",
+          "description": ""
+        },
+        "spanish": {
+          "text": "Ahora que sabes qué son los números impares, vamos a resolver algunos problemas divertidos.",
+          "description": ""
+        },
+        "image": "assets/MathNumQuest/practice.png"
+      }
+    ]
+  }
+  

@@ -16,7 +16,7 @@ dependencies:
   cloud_firestore: ^5.5.1
   provider: ^6.1.2
   firebase_data_connect: ^0.1.4+1
-
+  google_fonts: ^5.0.0
   http: ^1.2.2
   audioplayers: ^6.1.1
   firebase_analytics: ^11.3.0 
@@ -36,7 +36,9 @@ dependencies:
   video_player: ^2.9.1
   just_audio: ^0.9.40
   flutter_animate: ^4.5.2
- 
+  tflite_flutter: ^0.9.0
+  tflite_flutter_helper: ^0.3.1
+  font_awesome_flutter: ^10.7.0
 
 
 dev_dependencies:
@@ -88,6 +90,7 @@ flutter:
     - assets/images/math_geometry.png
     - assets/images/math_countseq.png
     - assets/images/decimals.png
+    - assets/images/math_numquest.png
 
     - assets/images/spiderman.png
   #  Mathgeometry
@@ -318,6 +321,54 @@ flutter:
     - assets/MathDecimals/decimalpopbg.png
     - assets/MathDecimals/poppy.png
     - assets/MathDecimals/learnsectionbg.png
+
+    #MathNumQuest
+    
+    - assets/MathNumQuest/start_page.jpg
+    - assets/MathNumQuest/background1.jpg
+    - assets/MathNumQuest/word_problem.jpg
+    - assets/MathNumQuest/LCM_bg.jpg
+    - assets/MathNumQuest/lesson_page.jpeg
+    - assets/MathNumQuest/Bigschooldesk_generated.jpg
+    - assets/MathNumQuest/dark-blue-gradient-z2jl20hogbbvxyax.jpg
+    - assets/MathNumQuest/even_lessons.json
+    - assets/MathNumQuest/odd_lessons.json
+    - assets/MathNumQuest/prime_lessons.json
+    - assets/MathNumQuest/candies.png
+    - assets/MathNumQuest/candies2.png
+    - assets/MathNumQuest/Odd_candy.png
+    - assets/MathNumQuest/Odd_candy_2.png
+    - assets/MathNumQuest/odd_table.png
+    - assets/MathNumQuest/practice.png
+    - assets/MathNumQuest/prime1.png
+    - assets/MathNumQuest/prime2.png
+    - assets/MathNumQuest/prime3.png
+    - assets/MathNumQuest/cube1.png
+    - assets/MathNumQuest/cube2.png
+    - assets/MathNumQuest/perfect1.png
+    - assets/MathNumQuest/perfect2.png
+    - assets/MathNumQuest/number_square.png
+    - assets/MathNumQuest/square1.png
+    - assets/MathNumQuest/square2.png
+    - assets/MathNumQuest/square3.png
+    - assets/MathNumQuest/composite1.png
+    - assets/MathNumQuest/composite2.png
+    - assets/MathNumQuest/composite3.png
+    - assets/MathNumQuest/triangular1.png
+    - assets/MathNumQuest/triangular2.png
+    - assets/MathNumQuest/factors1.png
+    - assets/MathNumQuest/factors3.png
+    - assets/MathNumQuest/fibonacci1.png
+    - assets/MathNumQuest/fibonacci2.png
+    - assets/MathNumQuest/fibonacci3.png
+    - assets/MathNumQuest/sounds/celebration.mp3
+    - assets/MathNumQuest/composite_lesson.json
+    - assets/MathNumQuest/triangular_lesson.json
+    - assets/MathNumQuest/perfectnum_lesson.json 
+    - assets/MathNumQuest/squarenum_lesson.json
+    - assets/MathNumQuest/fibonacci_lesson.json 
+    - assets/MathNumQuest/factors_lesson.json
+    - assets/MathNumQuest/cubenum_lesson.json  
 
 
 

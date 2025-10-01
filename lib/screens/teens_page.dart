@@ -9,7 +9,7 @@ import '../gamescreen/mathequations/main.dart' show MathEquationsApp;
 import '../screens/category_page.dart';
 import '../gamescreen/mathgeometry/main.dart' show BilingualMathGeo;
 import '../gamescreen/mathdecimals/main.dart' show DecimalApp;
-// import '../gamescreen/numquest/main.dart' show NumQuestApp;
+import '../gamescreen/mathnumquest/main.dart' show NumQuestPage;
 
 class TeensPage extends StatefulWidget {
   const TeensPage({Key? key}) : super(key: key);
@@ -175,10 +175,11 @@ class _TeensPageState extends State<TeensPage>
                           title: 'NumQuest',
                           description: 'Fun number challenges!',
                           onTap: () {
-                            // Replace with actual NumQuest game later
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text("NumQuest game coming soon!")),
+                           Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => NumQuestPage(),
+                              ),
                             );
                           },
                         ),

@@ -371,7 +371,7 @@ class _ShellCountingGameState extends State<ShellCountingGame> {
                                       Positioned.fill(
                                         child: Align(
                                           alignment: Alignment.center,
-                                          child: SvgPicture.asset('assets/shark.svg'),
+                                          child: SvgPicture.asset('assets/MathC&S/shark.svg'),
                                         ),
                                       ),
                                     if (_mermaidCurrentPosition == cellNumber)

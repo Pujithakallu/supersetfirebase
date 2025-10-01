@@ -1,0 +1,48 @@
+{
+  "pages": [
+    {
+      "english": {
+        "text": "Even numbers can be small or they can be very big. If a number ends in a 0 (zero), 2 (two), 4 (four), 6 (six), or 8 (eight), it is an even number.",
+        "description": "Imagine you have some candies, and you want to share them equally between you and your friend. If you can give each of you exactly the same amount of candies without any extras, then the number of candies you have is an even number! Even Numbers can be halved with no remainders left over."
+      },
+      "spanish": {
+        "text": "Los números pares pueden ser pequeños o muy grandes. Si un número termina en 0, 2, 4, 6 u 8, es un número par.",
+        "description": "Imagina que tienes algunos dulces y quieres compartirlos en partes iguales entre tú y tu amigo. Si pueden darles a cada uno exactamente la misma cantidad de dulces sin extras, ¡entonces la cantidad de dulces que tienen es par! Los números pares se pueden dividir por la mitad sin dejar restos."
+      },
+      "image": "assets/MathNumQuest/candies.png"
+    },
+    {
+      "english": {
+        "text": "Suppose you have 6 (six) candies. Let's make pairs, and we see that all the candies are in pairs, with no candies left over. That means 6 (six) is an even number! Even Numbers can be halved with no remainders left over.",
+        "description": ""
+      },
+      "spanish": {
+        "text": "Supongamos que tienes 6 caramelos. Hagamos parejas, vemos que todos los caramelos están emparejados y no queda ningún caramelo sobrante. ¡Eso significa que 6 es un número par! Los números pares se pueden dividir por la mitad sin dejar restos.",
+        "description": ""
+      },
+      "image": "assets/MathNumQuest/candies2.png"
+    },
+    {
+      "english": {
+        "text": "This is a number square. Do you see the numbers that are highlighted in a special color? Those are our even numbers! They form a special pattern! Can you see the way they line up in neat rows and columns?",
+        "description": ""
+      },
+      "spanish": {
+        "text": "Este es un cuadrado numérico. ¿Ves los números que están resaltados en un color especial? ¡Esos son nuestros números pares! ¡Forman un patrón especial! ¿Puedes ver cómo se alinean en filas y columnas ordenadas?",
+        "description": ""
+      },
+      "image": "assets/MathNumQuest/number_square.png"
+    },
+    {
+      "english": {
+        "text": "Now that you know what even numbers are let’s go ahead and solve some fun problems.",
+        "description": ""
+      },
+      "spanish": {
+        "text": "Ahora que sabes qué son los números pares, vamos a resolver algunos problemas divertidos.",
+        "description": ""
+      },
+      "image": "assets/MathNumQuest/practice.png"
+    }
+  ]
+}

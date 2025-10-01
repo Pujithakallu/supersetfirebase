@@ -1,0 +1,53 @@
+{
+    "pages":[
+        {
+            "english":{
+                "text": "The Fibonacci sequence is a famous series of numbers with a pattern. The pattern is that every number is added to the one before it. Here’s the first few parts of the sequence: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89.",
+                "description":"As you can see, 1 + 1 = 2, 2 + 1 = 3, 3 + 2 = 5 and so on. It’s a really simple progression and can go on forever. What’s impressive about this sequence is that you get a spiral if you turn those numbers into boxes."
+
+            },
+            "spanish":{
+                "text":"La secuencia de Fibonacci es una serie famosa de números con un patrón. El patrón es que cada número se suma al anterior. Aquí están las primeras partes de la secuencia: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89.",
+                "description":"Como puedes ver, 1 + 1 = 2, 2 + 1 = 3, 3 + 2 = 5, y así sucesivamente. Es una progresión muy simple y puede continuar para siempre. Lo impresionante de esta secuencia es que obtienes una espiral si conviertes esos números en cuadrados."
+            },
+            "image": "assets/MathNumQuest/fibonacci1.png"
+        },
+        {
+            "english":{
+                "text": "You can see the Fibonacci sequence in a lot of things in real life. Surprisingly, it’s found a lot in nature. Here’s a list of where you can find the Fibonacci sequence in real life, think about the spiral from earlier and where you might find it.",
+                "description":""
+
+            },
+            "spanish":{
+                "text":"Puedes ver la secuencia de Fibonacci en muchas cosas en la vida real. Sorprendentemente, se encuentra mucho en la naturaleza. Aquí hay una lista de dónde puedes encontrar la secuencia de Fibonacci en la vida real, piensa en la espiral de antes y dónde podrías encontrarla.",
+                "description":""
+            },
+            "image": "assets/MathNumQuest/fibonacci2.png"
+        },
+        {
+            "english":{
+                "text": "Here’s the Fibonacci sequence.",
+                "description":""
+
+            },
+            "spanish":{
+                "text":"Aquí está la secuencia de Fibonacci.",
+                "description":""
+            },
+            "image": "assets/MathNumQuest/fibonacci3.png"
+        },
+        {
+           "english":{
+                "text": "Now that you know what composite numbers are let's go ahead and solve some fun problems.",
+                "description":""
+
+            },
+            "spanish":{
+                "text":"Ahora que sabes qué son los números compuestos, vamos a resolver algunos problemas divertidos.",
+                "description":""
+            },
+             "image": "assets/MathNumQuest/practice.png"  
+        }
+
+    ]
+}

@@ -1,0 +1,37 @@
+{
+  "pages": [
+    {
+      "english": {
+        "text": "A perfect number is a positive integer equal to the total of its positive divisors, except the number itself in number theory. For example, 6 is a perfect number since 1 + 2 + 3 equals 6.",
+        "description": "Some of the first perfect numbers are 6, 28, 496, and 8128. Perfect numbers are also known as “Complete Numbers” and “Proper Numbers“."
+      },
+      "spanish": {
+        "text": "Un número perfecto es un número entero positivo que es igual a la suma de sus divisores positivos, excepto el propio número, en la teoría de números. Por ejemplo, 6 es un número perfecto ya que 1 + 2 + 3 es igual a 6.",
+        "description": "Algunos de los primeros números perfectos son 6, 28, 496 y 8128. Los números perfectos también se conocen como 'Números Completos' y 'Números Propios'."
+      },
+      "image": "assets/MathNumQuest/perfect1.png"
+    },
+    {
+      "english": {
+        "text": "The smallest perfect number example is the number six. However, there are also several other small perfect numbers whose divisors can be figured out and summed together manually. Below is a short, perfect number list that includes a few smaller perfect numbers. Please keep in mind that this list is not exhaustive.",
+        "description": ""
+      },
+      "spanish": {
+        "text": "El ejemplo más pequeño de número perfecto es el número seis. Sin embargo, también hay varios otros números perfectos pequeños cuyos divisores pueden ser calculados y sumados manualmente. A continuación, se presenta una lista corta de números perfectos que incluye algunos de los números perfectos más pequeños. Por favor, tenga en cuenta que esta lista no es exhaustiva.",
+        "description": ""
+      },
+      "image": "assets/MathNumQuest/perfect2.png"
+    },
+    {
+      "english": {
+        "text": "Now that you know what even numbers are let’s go ahead and solve some fun problems.",
+        "description": ""
+      },
+      "spanish": {
+        "text": "Ahora que sabes qué son los números pares, vamos a resolver algunos problemas divertidos.",
+        "description": ""
+      },
+      "image": "assets/MathNumQuest/practice.png"
+    }
+  ]
+}

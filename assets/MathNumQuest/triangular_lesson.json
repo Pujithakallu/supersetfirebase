@@ -1,0 +1,37 @@
+{
+  "pages": [
+    {
+      "english": {
+        "text": "The triangular number sequence is the representation of the numbers in the form of equilateral triangle arranged in a series or sequence. These numbers are in a sequence of 1, 3, 6, 10, 15, 21, 28, 36, 45, and so on..",
+        "description": "List Of Triangular Numbers: 0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78, 91, 105, 120,136, 153, 171, 190, 210, 231, 253, 276, 300, 325, 351, 378, 406, 435, 465, 496, 528, 561, 595, 630, 666, 703, 741, 780, 820, 861, 903, 946, 990, 1035, 1081, 1128, 1176, 1225, 1275, 1326, 1378, 1431, and so on."
+      },
+      "spanish": {
+        "text": "La secuencia de números triangulares es la representación de los números en forma de triángulo equilátero dispuestos en una serie o secuencia. Estos números están en una secuencia de 1, 3, 6, 10, 15, 21, 28, 36, 45, y así sucesivamente.",
+        "description": "Lista de Números Triangulares: 0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78, 91, 105, 120, 136, 153, 171, 190, 210, 231, 253, 276, 300, 325, 351, 378, 406, 435, 465, 496, 528, 561, 595, 630, 666, 703, 741, 780, 820, 861, 903, 946, 990, 1035, 1081, 1128, 1176, 1225, 1275, 1326, 1378, 1431, y así sucesivamente."
+      },
+      "image": "assets/MathNumQuest/triangular1.png"
+    },
+    {
+      "english": {
+        "text": "In the pattern of triangular numbers you will see, the next number in the sequence is added with an extra row. Let us explain in detail. First number is 1. In number 2,  a row is added with two dots to the first number. In number 3, a row is added with three dots to the second numberAgain, in number 4, a row is added with four dots to the third number and so on. So the sequence formed here is in the pattern: 1, 1 + 2, 1 + 2 + 3, 1 + 2 + 3 + 4,  and so on.",
+        "description": ""
+      },
+      "spanish": {
+        "text": "En el patrón de los números triangulares, verás que el siguiente número en la secuencia se forma añadiendo una fila extra. Vamos a explicar esto en detalle. El primer número es 1. En el número 2, se añade una fila con dos puntos al primer número. En el número 3, se añade una fila con tres puntos al segundo número. De nuevo, en el número 4, se añade una fila con cuatro puntos al tercer número, y así sucesivamente. Así que la secuencia que se forma sigue el patrón: 1, 1 + 2, 1 + 2 + 3, 1 + 2 + 3 + 4, y así sucesivamente.",
+        "description": ""
+      },
+      "image": "assets/MathNumQuest/triangular2.png"
+    },
+    {
+      "english": {
+        "text": "Now that you know what even numbers are let’s go ahead and solve some fun problems.",
+        "description": ""
+      },
+      "spanish": {
+        "text": "Ahora que sabes qué son los números pares, vamos a resolver algunos problemas divertidos.",
+        "description": ""
+      },
+      "image": "assets/MathNumQuest/practice.png"
+    }
+  ]
+}

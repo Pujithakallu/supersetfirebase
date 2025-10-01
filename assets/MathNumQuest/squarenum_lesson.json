@@ -1,0 +1,53 @@
+{
+    "pages":[
+        {
+            "english":{
+                "text": "When a number or integer (not a fraction) is multiplied by itself, the resultant is called a 'Square Number' For example, 3 multiplied by 3 is equal to 3-squared or 3 x 3 = 3². The exponential form of multiplication of a number or integer by itself is called a square number. Also, if we multiply the number by itself again, we get the cube of the integer: a x a x a = a³.",
+                "description":"Square numbers are always positive. If a negative sign is multiplied by itself, it results in a positive sign (+). For example, (-4)² = 16. So, we can say here 16 is a positive square number, whose square root is an integer again, i.e. √16 = 4."
+
+            },
+            "spanish":{
+                "text":"Cuando un número o entero (no una fracción) se multiplica por sí mismo, el resultado se llama 'Número Cuadrado'. Por ejemplo, 3 multiplicado por 3 es igual a 3 al cuadrado o 3 x 3 = 3². La forma exponencial de multiplicar un número o entero por sí mismo se llama número cuadrado. Además, si multiplicamos el número por sí mismo nuevamente, obtenemos el cubo del entero: a x a x a = a³.",
+                "description":"Los números cuadrados siempre son positivos. Si un signo negativo se multiplica por sí mismo, resulta en un signo positivo (+). Por ejemplo, (-4)² = 16. Entonces, podemos decir que 16 es un número cuadrado positivo, cuya raíz cuadrada es un número entero, es decir, √16 = 4."
+            },
+            "image": "assets/MathNumQuest/square2.png"
+        },
+        {
+            "english":{
+                "text": "In geometry, a square shape has all its sides equal. Therefore the area of the square is equal to the square of its side.",
+                "description":""
+
+            },
+            "spanish":{
+                "text":"En geometría, una forma cuadrada tiene todos sus lados iguales. Por lo tanto, el área del cuadrado es igual al cuadrado de su lado.",
+                "description":""
+            },
+            "image": "assets/MathNumQuest/square1.png"
+        },
+        {
+            "english":{
+                "text": "The area of square is best example of square of a number.",
+                "description":""
+
+            },
+            "spanish":{
+                "text":"El área de un cuadrado es el mejor ejemplo del cuadrado de un número.",
+                "description":""
+            },
+            "image": "assets/MathNumQuest/square3.png"
+        },
+        {
+           "english":{
+                "text": "Now that you know what composite numbers are let's go ahead and solve some fun problems.",
+                "description":""
+
+            },
+            "spanish":{
+                "text":"Ahora que sabes qué son los números compuestos, vamos a resolver algunos problemas divertidos.",
+                "description":""
+            },
+             "image": "assets/MathNumQuest/practice.png"  
+        }
+
+    ]
+}
