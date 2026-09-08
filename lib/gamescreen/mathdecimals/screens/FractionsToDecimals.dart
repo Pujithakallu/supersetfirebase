@@ -18,7 +18,7 @@ class _FractionsToDecimalsScreenState extends State<FractionsToDecimalsScreen> {
         '2. Write the result as a decimal.\n'
         '3. If necessary, round the decimal to the desired place value.',
     'examples': 'Examples:',
-    'NextPage': 'Next Page',
+    'Finish': 'Finish',
   };
 
   Map<String, String> translatedTexts = {};
@@ -168,13 +168,13 @@ class _FractionsToDecimalsScreenState extends State<FractionsToDecimalsScreen> {
                   elevation: 3,
                 ),
                 onPressed: () {
-                  // Navigate to another lesson
+                  _navigateToHome(context);
                 },
                 child: Text(
                   translated
-                      ? translatedTexts['NextPage'] ??
-                          originalTexts['NextPage']!
-                      : originalTexts['NextPage']!,
+                      ? translatedTexts['Finish'] ??
+                          originalTexts['Finish']!
+                      : originalTexts['Finish']!,
                   style: const TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
