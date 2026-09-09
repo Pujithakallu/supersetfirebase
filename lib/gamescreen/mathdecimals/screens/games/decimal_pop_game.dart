@@ -141,8 +141,10 @@ class _DecimalPopGameState extends State<DecimalPopGame>
     await _flutterTts.setLanguage("en-US");
     // Speak each option
     String optionsText = "The options are: ";
-    for (double option in shuffledOptions) {
-      optionsText += "${pronounceDecimal(option)},  ";
+    for (int i = 0; i < shuffledOptions.length; i++) {
+     if (_controllers[i].value < 1.0) {
+      optionsText += "${pronounceDecimal(shuffledOptions[i])},  ";
+     }
     }
     await _flutterTts.speak(optionsText);
   }
@@ -419,10 +421,10 @@ class _DecimalPopGameState extends State<DecimalPopGame>
                         child: child,
                       );
                     },
-                    child: Image.asset(
-                      'assets/MathDecimals/poppy.png',
-                      width: 80,
-                      height: 80,
+                    child: const Icon(
+                      Icons.volume_up,
+                      size: 60,
+                      color: Colors.blue,
                     ),
                   ),
                 ),
